@@ -1,0 +1,57 @@
+name: Create Directory Structure
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch: # Permite disparar manualmente
+permissions:
+  contents: write # Garante permissão de escrita
+jobs:
+  create-structure:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+      - name: Create directories
+        run: |
+          mkdir -p Estrutura/Aplicacao/FASE1/App_MeshWave \
+                  Estrutura/Aplicacao/FASE1/Comunicacao_Nativa \
+                  Estrutura/Aplicacao/FASE1/APIs_Desenvolvedores \
+                  Estrutura/Rede_MESH/FASE1/Descoberta_Vizinhos \
+                  Estrutura/Rede_MESH/FASE1/Gerenciamento_Conexoes \
+                  Estrutura/Rede_MESH/FASE1/Roteamento_Basico \
+                  Estrutura/Otimizacao_de_IA/FASE1 \
+                  Estrutura/Integracao/FASE1/Middleware \
+                  Estrutura/Integracao/FASE1/Bridges_WiFi-Celular \
+                  Estrutura/Integracao/FASE1/Adaptadores_Servicos \
+                  Estrutura/Seguranca/FASE1/Criptografia_E2E \
+                  Estrutura/Seguranca/FASE1/Autenticação_Basica \
+                  Estrutura/Seguranca/FASE1/Privacidade_Fundamental \
+                  Estrutura/Blockchain/FASE1 \
+                  Estrutura/Hardware/FASE1/Otimizacao_Dispositivo \ 
+                  Estrutura/Armazenamento_Processamento/FASE1 \
+          touch Estrutura/Aplicacao/FASE1/App_MeshWave/.gitkeep \
+                  Estrutura/Aplicacao/FASE1/Comunicacao_Nativa/.gitkeep \
+                  Estrutura/Aplicacao/FASE1/APIs_Desenvolvedores/.gitkeep \
+                  Estrutura/Rede_MESH/FASE1/Descoberta_Vizinhos/.gitkeep \
+                  Estrutura/Rede_MESH/FASE1/Gerenciamento_Conexoes/.gitkeep \
+                  Estrutura/Rede_MESH/FASE1/Roteamento_Basico/.gitkeep \
+                  Estrutura/Otimizacao_de_IA/FASE1/.gitkeep \
+                  Estrutura/Integracao/FASE1/Middleware/.gitkeep \
+                  Estrutura/Integracao/FASE1/Bridges_WiFi-Celular/.gitkeep \
+                  Estrutura/Integracao/FASE1/Adaptadores_Servicos/.gitkeep \
+                  Estrutura/Seguranca/FASE1/Criptografia_E2E/.gitkeep \
+                  Estrutura/Seguranca/FASE1/Autenticação_Basica/.gitkeep \
+                  Estrutura/Seguranca/FASE1/Privacidade_Fundamental/.gitkeep \
+                  Estrutura/Blockchain/FASE1/.gitkeep \
+                  Estrutura/Hardware/FASE1/Otimizacao_Dispositivo/.gitkeep \ 
+                  Estrutura/Armazenamento_Processamento/FASE1/.gitkeep \
+      - name: Commit and push changes
+        run: |
+          git config --global user.name "Diógenes Duarte Sobral"
+          git config --global user.email "dds@meshwave.com.br" # Substitua por seu email
+          git add .
+          git commit -m "Cria estrutura inicial de diretórios fases e modulos" || echo "Nenhuma mudança para commit"
+          git push
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
