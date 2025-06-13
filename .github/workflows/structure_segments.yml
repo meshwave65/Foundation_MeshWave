@@ -1,0 +1,32 @@
+name: Create Directory Structure
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch: # Permite disparar manualmente
+permissions:
+  contents: write # Garante permissão de escrita
+jobs:
+  create-structure:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+      - name: Create directories
+        run: |
+          mkdir -p Estrutura/Aplicacao Estrutura/Rede_MESH Estrutura/Otimizacao_de_IA \
+                   Estrutura/Integracao Estrutura/Seguranca Estrutura/Blockchain \
+                   Estrutura/Hardware Estrutura/Armazenamento_Processamento
+          touch Estrutura/Aplicacao/.gitkeep Estrutura/Rede_MESH/.gitkeep \
+                Estrutura/Otimizacao_de_IA/.gitkeep Estrutura/Integracao/.gitkeep \
+                Estrutura/Seguranca/.gitkeep Estrutura/Blockchain/.gitkeep \
+                Estrutura/Hardware/.gitkeep Estrutura/Armazenamento_Processamento/.gitkeep
+      - name: Commit and push changes
+        run: |
+          git config --global user.name "Diógenes Duarte Sobral"
+          git config --global user.email "seuemail@exemplo.com" # Substitua por seu email
+          git add .
+          git commit -m "Cria estrutura inicial de diretórios" || echo "Nenhuma mudança para commit"
+          git push
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
