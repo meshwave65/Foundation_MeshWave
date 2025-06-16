@@ -12,100 +12,92 @@ jobs:
         uses: actions/checkout@v3
       - name: Create directories
         run: |
-          mkdir -p Estrutura/Aplicacao Estrutura/Rede_MESH Estrutura/Fase1 \
-                   Estrutura/Aplicacao Estrutura/Rede_MESH Estrutura/Fase1 \
-                   Estrutura/Aplicacao Estrutura/Rede_MESH Estrutura/Fase2 \
-                   Estrutura/Aplicacao Estrutura/Rede_MESH Estrutura/Fase3 \
-                   Estrutura/Aplicacao Estrutura/Rede_MESH Estrutura/Fase4 \
-                   Estrutura/Integracao Estrutura/Seguranca Estrutura/Fase1/Aplicação \
-                   Estrutura/Integracao Estrutura/Seguranca Estrutura/Fase1/Armazenamento_Processos \
-                   Estrutura/Integracao Estrutura/Seguranca Estrutura/Fase1/Blockchain \
-                   Estrutura/Integracao Estrutura/Seguranca Estrutura/Fase1/Hardware \
-                   Estrutura/Integracao Estrutura/Seguranca Estrutura/Fase1/Integracao \
-                   Estrutura/Integracao Estrutura/Seguranca Estrutura/Fase1/Otimizacao_de_IA \
-                   Estrutura/Integracao Estrutura/Seguranca Estrutura/Fase1/Rede_MESH \
-                   Estrutura/Integracao Estrutura/Seguranca Estrutura/Fase1/Seguranca \
-                   Estrutura/Integracao Estrutura/Seguranca Estrutura/Fase1/Aplicação/docs \
-                   Estrutura/Integracao Estrutura/Seguranca Estrutura/Fase1/Aplicação/code \
-                   Estrutura/Integracao Estrutura/Seguranca Estrutura/Fase1/Aplicação/midia \
-                   Estrutura/Integracao Estrutura/Seguranca Estrutura/Fase1/Aplicação/history \
-                   Estrutura/Integracao Estrutura/Seguranca Estrutura/Fase1/Armazenamento_Processos/docs \
-                   Estrutura/Integracao Estrutura/Seguranca Estrutura/Fase1/Armazenamento_Processos/code \
-                   Estrutura/Integracao Estrutura/Seguranca Estrutura/Fase1/Armazenamento_Processos/midia \
-                   Estrutura/Integracao Estrutura/Seguranca Estrutura/Fase1/Armazenamento_Processos/history \
-                   Estrutura/Integracao Estrutura/Seguranca Estrutura/Fase1/Blockchain/docs \
-                   Estrutura/Integracao Estrutura/Seguranca Estrutura/Fase1/Blockchain/code \
-                   Estrutura/Integracao Estrutura/Seguranca Estrutura/Fase1/Blockchain/midia \
-                   Estrutura/Integracao Estrutura/Seguranca Estrutura/Fase1/Blockchain/history \
-                   Estrutura/Integracao Estrutura/Seguranca Estrutura/Fase1/Hardware/docs \
-                   Estrutura/Integracao Estrutura/Seguranca Estrutura/Fase1/Hardware/code \
-                   Estrutura/Integracao Estrutura/Seguranca Estrutura/Fase1/Hardware/midia \
-                   Estrutura/Integracao Estrutura/Seguranca Estrutura/Fase1/Hardware/history \
-                   Estrutura/Integracao Estrutura/Seguranca Estrutura/Fase1/Integracao/docs \
-                   Estrutura/Integracao Estrutura/Seguranca Estrutura/Fase1/Integracao/code \
-                   Estrutura/Integracao Estrutura/Seguranca Estrutura/Fase1/Integracao/midia \
-                   Estrutura/Integracao Estrutura/Seguranca Estrutura/Fase1/Integracao/history \
-                   Estrutura/Integracao Estrutura/Seguranca Estrutura/Fase1/Otimzacao_de_IA/docs \
-                   Estrutura/Integracao Estrutura/Seguranca Estrutura/Fase1/Otimzacao_de_IA/code \
-                   Estrutura/Integracao Estrutura/Seguranca Estrutura/Fase1/Otimzacao_de_IA/midia \
-                   Estrutura/Integracao Estrutura/Seguranca Estrutura/Fase1/Otimzacao_de_IA/history \
-                   Estrutura/Integracao Estrutura/Seguranca Estrutura/Fase1/Rede_MESH/docs \
-                   Estrutura/Integracao Estrutura/Seguranca Estrutura/Fase1/Rede_MESH/code \
-                   Estrutura/Integracao Estrutura/Seguranca Estrutura/Fase1/Rede_MESH/midia \
-                   Estrutura/Integracao Estrutura/Seguranca Estrutura/Fase1/Rede_MESH/history \
-                   Estrutura/Integracao Estrutura/Seguranca Estrutura/Fase1/Seguranca/docs \
-                   Estrutura/Integracao Estrutura/Seguranca Estrutura/Fase1/Seguranca/code \
-                   Estrutura/Integracao Estrutura/Seguranca Estrutura/Fase1/Seguranca/midia \
-                   Estrutura/Integracao Estrutura/Seguranca Estrutura/Fase1/Seguranca/history \
-          touch Estrutura/Aplicacao Estrutura/Rede_MESH Estrutura/Fase1/.gitkeep \
-                   Estrutura/Aplicacao Estrutura/Rede_MESH Estrutura/Fase1/.gitkeep \
-                   Estrutura/Aplicacao Estrutura/Rede_MESH Estrutura/Fase2/.gitkeep \
-                   Estrutura/Aplicacao Estrutura/Rede_MESH Estrutura/Fase3/.gitkeep \
-                   Estrutura/Aplicacao Estrutura/Rede_MESH Estrutura/Fase4/.gitkeep \
-                   Estrutura/Integracao Estrutura/Seguranca Estrutura/Fase1/Aplicação/.gitkeep \
-                   Estrutura/Integracao Estrutura/Seguranca Estrutura/Fase1/Armazenamento_Processos/.gitkeep \
-                   Estrutura/Integracao Estrutura/Seguranca Estrutura/Fase1/Blockchain/.gitkeep \
-                   Estrutura/Integracao Estrutura/Seguranca Estrutura/Fase1/Hardware/.gitkeep \
-                   Estrutura/Integracao Estrutura/Seguranca Estrutura/Fase1/Integracao/.gitkeep \
-                   Estrutura/Integracao Estrutura/Seguranca Estrutura/Fase1/Otimizacao_de_IA/.gitkeep \
-                   Estrutura/Integracao Estrutura/Seguranca Estrutura/Fase1/Rede_MESH/.gitkeep \
-                   Estrutura/Integracao Estrutura/Seguranca Estrutura/Fase1/Seguranca/.gitkeep \
-                   Estrutura/Integracao Estrutura/Seguranca Estrutura/Fase1/Aplicação/docs/.gitkeep \
-                   Estrutura/Integracao Estrutura/Seguranca Estrutura/Fase1/Aplicação/code/.gitkeep \
-                   Estrutura/Integracao Estrutura/Seguranca Estrutura/Fase1/Aplicação/midia/.gitkeep \
-                   Estrutura/Integracao Estrutura/Seguranca Estrutura/Fase1/Aplicação/history/.gitkeep \
-                   Estrutura/Integracao Estrutura/Seguranca Estrutura/Fase1/Armazenamento_Processos/docs/.gitkeep \
-                   Estrutura/Integracao Estrutura/Seguranca Estrutura/Fase1/Armazenamento_Processos/code/.gitkeep \
-                   Estrutura/Integracao Estrutura/Seguranca Estrutura/Fase1/Armazenamento_Processos/midia/.gitkeep \
-                   Estrutura/Integracao Estrutura/Seguranca Estrutura/Fase1/Armazenamento_Processos/history/.gitkeep \
-                   Estrutura/Integracao Estrutura/Seguranca Estrutura/Fase1/Blockchain/docs/.gitkeep \
-                   Estrutura/Integracao Estrutura/Seguranca Estrutura/Fase1/Blockchain/code/.gitkeep \
-                   Estrutura/Integracao Estrutura/Seguranca Estrutura/Fase1/Blockchain/midia/.gitkeep \
-                   Estrutura/Integracao Estrutura/Seguranca Estrutura/Fase1/Blockchain/history/.gitkeep \
-                   Estrutura/Integracao Estrutura/Seguranca Estrutura/Fase1/Hardware/docs/.gitkeep \
-                   Estrutura/Integracao Estrutura/Seguranca Estrutura/Fase1/Hardware/code/.gitkeep \
-                   Estrutura/Integracao Estrutura/Seguranca Estrutura/Fase1/Hardware/midia/.gitkeep \
-                   Estrutura/Integracao Estrutura/Seguranca Estrutura/Fase1/Hardware/history/.gitkeep \
-                   Estrutura/Integracao Estrutura/Seguranca Estrutura/Fase1/Integracao/docs/.gitkeep \
-                   Estrutura/Integracao Estrutura/Seguranca Estrutura/Fase1/Integracao/code/.gitkeep \
-                   Estrutura/Integracao Estrutura/Seguranca Estrutura/Fase1/Integracao/midia/.gitkeep \
-                   Estrutura/Integracao Estrutura/Seguranca Estrutura/Fase1/Integracao/history/.gitkeep \
-                   Estrutura/Integracao Estrutura/Seguranca Estrutura/Fase1/Otimzacao_de_IA/docs/.gitkeep \
-                   Estrutura/Integracao Estrutura/Seguranca Estrutura/Fase1/Otimzacao_de_IA/code/.gitkeep \
-                   Estrutura/Integracao Estrutura/Seguranca Estrutura/Fase1/Otimzacao_de_IA/midia/.gitkeep \
-                   Estrutura/Integracao Estrutura/Seguranca Estrutura/Fase1/Otimzacao_de_IA/history/.gitkeep \
-                   Estrutura/Integracao Estrutura/Seguranca Estrutura/Fase1/Rede_MESH/docs/.gitkeep \
-                   Estrutura/Integracao Estrutura/Seguranca Estrutura/Fase1/Rede_MESH/code/.gitkeep \
-                   Estrutura/Integracao Estrutura/Seguranca Estrutura/Fase1/Rede_MESH/midia/.gitkeep \
-                   Estrutura/Integracao Estrutura/Seguranca Estrutura/Fase1/Rede_MESH/history/.gitkeep \
-                   Estrutura/Integracao Estrutura/Seguranca Estrutura/Fase1/Seguranca/docs/.gitkeep \
-                   Estrutura/Integracao Estrutura/Seguranca Estrutura/Fase1/Seguranca/code/.gitkeep \
-                   Estrutura/Integracao Estrutura/Seguranca Estrutura/Fase1/Seguranca/midia/.gitkeep \
-                   Estrutura/Integracao Estrutura/Seguranca Estrutura/Fase1/Seguranca/history/.gitkeep \
+          mkdir -p Estrutura/Fase1 \
+                   Estrutura/Fase1/Aplicação \
+                   Estrutura/Fase1/Armazenamento_Processos \
+                   Estrutura/Fase1/Blockchain \
+                   Estrutura/Fase1/Hardware \
+                   Estrutura/Fase1/Integracao \
+                   Estrutura/Fase1/Otimizacao_de_IA \
+                   Estrutura/Fase1/Rede_MESH \
+                   Estrutura/Fase1/Seguranca \
+                   Estrutura/Fase1/Aplicação/docs \
+                   Estrutura/Fase1/Aplicação/code \
+                   Estrutura/Fase1/Aplicação/midia \
+                   Estrutura/Fase1/Aplicação/history \
+                   Estrutura/Fase1/Armazenamento_Processos/docs \
+                   Estrutura/Fase1/Armazenamento_Processos/code \
+                   Estrutura/Fase1/Armazenamento_Processos/midia \
+                   Estrutura/Fase1/Armazenamento_Processos/history \
+                   Estrutura/Fase1/Blockchain/docs \
+                   Estrutura/Fase1/Blockchain/code \
+                   Estrutura/Fase1/Blockchain/midia \
+                   Estrutura/Fase1/Blockchain/history \
+                   Estrutura/Fase1/Hardware/docs \
+                   Estrutura/Fase1/Hardware/code \
+                   Estrutura/Fase1/Hardware/midia \
+                   Estrutura/Fase1/Hardware/history \
+                   Estrutura/Fase1/Integracao/docs \
+                   Estrutura/Fase1/Integracao/code \
+                   Estrutura/Fase1/Integracao/midia \
+                   Estrutura/Fase1/Integracao/history \
+                   Estrutura/Fase1/Otimzacao_de_IA/docs \
+                   Estrutura/Fase1/Otimzacao_de_IA/code \
+                   Estrutura/Fase1/Otimzacao_de_IA/midia \
+                   Estrutura/Fase1/Otimzacao_de_IA/history \
+                   Estrutura/Fase1/Rede_MESH/docs \
+                   Estrutura/Fase1/Rede_MESH/code \
+                   Estrutura/Fase1/Rede_MESH/midia \
+                   Estrutura/Fase1/Rede_MESH/history \
+                   Estrutura/Fase1/Seguranca/docs \
+                   Estrutura/Fase1/Seguranca/code \
+                   Estrutura/Fase1/Seguranca/midia \
+                   Estrutura/Fase1/Seguranca/history \
+          touch Estrutura/Fase1/.gitkeep \
+                   Estrutura/Fase1/Aplicação/.gitkeep \
+                   Estrutura/Fase1/Armazenamento_Processos/.gitkeep \
+                   Estrutura/Fase1/Blockchain/.gitkeep \
+                   Estrutura/Fase1/Hardware/.gitkeep \
+                   Estrutura/Fase1/Integracao/.gitkeep \
+                   Estrutura/Fase1/Otimizacao_de_IA/.gitkeep \
+                   Estrutura/Fase1/Rede_MESH/.gitkeep \
+                   Estrutura/Fase1/Seguranca/.gitkeep \
+                   Estrutura/Fase1/Aplicação/docs/.gitkeep \
+                   Estrutura/Fase1/Aplicação/code/.gitkeep \
+                   Estrutura/Fase1/Aplicação/midia/.gitkeep \
+                   Estrutura/Fase1/Aplicação/history/.gitkeep \
+                   Estrutura/Fase1/Armazenamento_Processos/docs/.gitkeep \
+                   Estrutura/Fase1/Armazenamento_Processos/code/.gitkeep \
+                   Estrutura/Fase1/Armazenamento_Processos/midia/.gitkeep \
+                   Estrutura/Fase1/Armazenamento_Processos/history/.gitkeep \
+                   Estrutura/Fase1/Blockchain/docs/.gitkeep \
+                   Estrutura/Fase1/Blockchain/code/.gitkeep \
+                   Estrutura/Fase1/Blockchain/midia/.gitkeep \
+                   Estrutura/Fase1/Blockchain/history/.gitkeep \
+                   Estrutura/Fase1/Hardware/docs/.gitkeep \
+                   Estrutura/Fase1/Hardware/code/.gitkeep \
+                   Estrutura/Fase1/Hardware/midia/.gitkeep \
+                   Estrutura/Fase1/Hardware/history/.gitkeep \
+                   Estrutura/Fase1/Integracao/docs/.gitkeep \
+                   Estrutura/Fase1/Integracao/code/.gitkeep \
+                   Estrutura/Fase1/Integracao/midia/.gitkeep \
+                   Estrutura/Fase1/Integracao/history/.gitkeep \
+                   Estrutura/Fase1/Otimzacao_de_IA/docs/.gitkeep \
+                   Estrutura/Fase1/Otimzacao_de_IA/code/.gitkeep \
+                   Estrutura/Fase1/Otimzacao_de_IA/midia/.gitkeep \
+                   Estrutura/Fase1/Otimzacao_de_IA/history/.gitkeep \
+                   Estrutura/Fase1/Rede_MESH/docs/.gitkeep \
+                   Estrutura/Fase1/Rede_MESH/code/.gitkeep \
+                   Estrutura/Fase1/Rede_MESH/midia/.gitkeep \
+                   Estrutura/Fase1/Rede_MESH/history/.gitkeep \
+                   Estrutura/Fase1/Seguranca/docs/.gitkeep \
+                   Estrutura/Fase1/Seguranca/code/.gitkeep \
+                   Estrutura/Fase1/Seguranca/midia/.gitkeep \
+                   Estrutura/Fase1/Seguranca/history/.gitkeep \
       - name: Commit and push changes
         run: |
-          git config --global user.name "Diógenes Duarte Sobral"
-          git config --global user.email "dds@meshwave.com.br"
+          git config --global user.name "meshwave65"
+          git config --global user.email "meshwave65@gmail.com"
           git add .
           git commit -m "Cria estrutura inicial de diretórios" || echo "Nenhuma mudança para commit"
           git push
