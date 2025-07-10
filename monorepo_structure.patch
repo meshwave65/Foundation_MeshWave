@@ -1,1 +1,938 @@
-Teste
+diff --git a/app/.gitignore b/app/.gitignore
+rename from app/.gitignore
+rename to code/1_Aplicacao/Fase_1/Modulo_App_MeshWave/Prototipo/Versao_1_0/android/app/.gitignore
+--- a/app/.gitignore
++++ b/code/1_Aplicacao/Fase_1/Modulo_App_MeshWave/Prototipo/Versao_1_0/android/app/.gitignore
+@@ -1,12 +1,12 @@
+ /build
+ /.cxx
+ /.externalNativeBuild
+ /.gradle
+ /.idea
+ /.kotlin
+ /local.properties
+ /captures
+ /generated
+ /src/main/assets/backups
+ /src/main/res/raw/backups
+ /src/test/assets/backups
+diff --git a/app/build.gradle b/app/build.gradle
+rename from app/build.gradle
+rename to code/1_Aplicacao/Fase_1/Modulo_App_MeshWave/Prototipo/Versao_1_0/android/app/build.gradle
+--- a/app/build.gradle
++++ b/code/1_Aplicacao/Fase_1/Modulo_App_MeshWave/Prototipo/Versao_1_0/android/app/build.gradle
+@@ -1,33 +1,35 @@
+ plugins {
+     id 'com.android.application'
+     id 'org.jetbrains.kotlin.android'
+ }
+ 
+ android {
+     namespace 'com.example.meshwave'
+     compileSdk 34
+ 
+     defaultConfig {
+         applicationId "com.example.meshwave"
+         minSdk 24
+         targetSdk 34
+         versionCode 1
+         versionName "1.0"
+ 
+         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+     }
+ 
+     buildTypes {
+         release {
+             minifyEnabled false
+             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+         }
+     }
+     compileOptions {
+         sourceCompatibility JavaVersion.VERSION_1_8
+         targetCompatibility JavaVersion.VERSION_1_8
+     }
+     kotlinOptions {
+         jvmTarget = '1.8'
+     }
+ }
+ 
+ dependencies {
+ 
+     implementation 'androidx.core:core-ktx:1.9.0'
+     implementation 'androidx.appcompat:appcompat:1.6.1'
+     implementation 'com.google.android.material:material:1.10.0'
+     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
++    implementation project(':meshwave-sdk')
+     testImplementation 'junit:junit:4.13.2'
+     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
+     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
+ }
+diff --git a/app/proguard-rules.pro b/app/proguard-rules.pro
+rename from app/proguard-rules.pro
+rename to code/1_Aplicacao/Fase_1/Modulo_App_MeshWave/Prototipo/Versao_1_0/android/app/proguard-rules.pro
+--- a/app/proguard-rules.pro
++++ b/code/1_Aplicacao/Fase_1/Modulo_App_MeshWave/Prototipo/Versao_1_0/android/app/proguard-rules.pro
+@@ -1,10 +1,10 @@
+ # Add project specific ProGuard rules here.
+ # By default, the flags in this file are appended to flags specified in
+ # /Users/meshwave/Library/Android/sdk/proguard-rules.pro
+ # You can add more rules here, e.g.:
+ # -dontwarn com.example.app.**
+ 
+ # If your project uses WebView with JS, uncomment the following
+ # and specify the fully qualified class name to the JavaScript interface class:
+ # -keepclassmembers class fqcn.of.javascript.interface.for.webview {
+ #    public *;
+ # }
+diff --git a/app/src/main/AndroidManifest.xml b/app/src/main/AndroidManifest.xml
+rename from app/src/main/AndroidManifest.xml
+rename to code/1_Aplicacao/Fase_1/Modulo_App_MeshWave/Prototipo/Versao_1_0/android/app/src/main/AndroidManifest.xml
+--- a/app/src/main/AndroidManifest.xml
++++ b/code/1_Aplicacao/Fase_1/Modulo_App_MeshWave/Prototipo/Versao_1_0/android/app/src/main/AndroidManifest.xml
+@@ -1,34 +1,34 @@
+ <?xml version="1.0" encoding="utf-8"?>
+ <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+     xmlns:tools="http://schemas.android.com/tools">
+ 
+-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+-    <uses-permission android:name="android.permission.BLUETOOTH" />
+-    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+-    <uses-permission android:name="android.permission.BLUETOOTH_SCAN" />
+-    <uses-permission android:name="android.permission.BLUETOOTH_ADVERTISE" />
+-    <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
+-    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+-    <uses-permission android:name="android.permission.INTERNET" />
+-    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
+-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+-    <uses-permission android:name="android.permission.NEARBY_WIFI_DEVICES" />
+-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+-    <uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE" />
+-    <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
+-    <uses-permission android:name="android.permission.READ_MEDIA_VIDEO" />
+-    <uses-permission android:name="android.permission.READ_MEDIA_AUDIO" />
++    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
++    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
++    <uses-permission android:name="android.permission.BLUETOOTH" />
++    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
++    <uses-permission android:name="android.permission.BLUETOOTH_SCAN" />
++    <uses-permission android:name="android.permission.BLUETOOTH_ADVERTISE" />
++    <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
++    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
++    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
++    <uses-permission android:name="android.permission.INTERNET" />
++    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
++    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
++    <uses-permission android:name="android.permission.NEARBY_WIFI_DEVICES" />
++    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
++    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
++    <uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE" />
++    <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
++    <uses-permission android:name="android.permission.READ_MEDIA_VIDEO" />
++    <uses-permission android:name="android.permission.READ_MEDIA_AUDIO" />
+ 
+     <application
+         android:allowBackup="true"
+         android:dataExtractionRules="@xml/data_extraction_rules"
+         android:fullBackupContent="@xml/backup_rules"
+         android:icon="@mipmap/ic_launcher"
+         android:label="@string/app_name"
+         android:roundIcon="@mipmap/ic_launcher_round"
+         android:supportsRtl="true"
+         android:theme="@style/Theme.MeshWave"
+         tools:targetApi="31">
+         <activity
+             android:name=".MainActivity"
+             android:exported="true">
+             <intent-filter>
+                 <action android:name="android.intent.action.MAIN" />
+ 
+                 <category android:name="android.intent.category.LAUNCHER" />
+             </intent-filter>
+         </activity>
+     </application>
+ 
+ </manifest>
+diff --git a/app/src/main/java/com/example/meshwave/MainActivity.java b/app/src/main/java/com/example/meshwave/MainActivity.java
+rename from app/src/main/java/com/example/meshwave/MainActivity.java
+rename to code/1_Aplicacao/Fase_1/Modulo_App_MeshWave/Prototipo/Versao_1_0/android/app/src/main/java/com/example/meshwave/MainActivity.java
+--- a/app/src/main/java/com/example/meshwave/MainActivity.java
++++ b/code/1_Aplicacao/Fase_1/Modulo_App_MeshWave/Prototipo/Versao_1_0/android/app/src/main/java/com/example/meshwave/MainActivity.java
+@@ -1,135 +1,141 @@
+ package com.example.meshwave;
+ 
+ import android.Manifest;
+ import android.bluetooth.BluetoothAdapter;
+ import android.bluetooth.BluetoothDevice;
+ import android.bluetooth.BluetoothManager;
+ import android.content.BroadcastReceiver;
+ import android.content.Context;
+ import android.content.Intent;
+ import android.content.IntentFilter;
+ import android.content.pm.PackageManager;
+ import android.net.ConnectivityManager;
+ import android.net.Network;
+ import android.net.NetworkCapabilities;
+ import android.net.NetworkRequest;
+ import android.net.wifi.WifiManager;
+ import android.net.wifi.p2p.WifiP2pDevice;
+ import android.net.wifi.p2p.WifiP2pDeviceList;
+ import android.net.wifi.p2p.WifiP2pManager;
+ import android.os.Build;
+ import android.os.Bundle;
+ import android.os.Handler;
+ import android.os.Looper;
+ import android.util.Log;
+ import android.widget.ArrayAdapter;
+ import android.widget.Button;
+ import android.widget.ListView;
+ import android.widget.Toast;
+ 
+ import androidx.annotation.NonNull;
+ import androidx.appcompat.app.AppCompatActivity;
+ import androidx.core.app.ActivityCompat;
+ import androidx.core.content.ContextCompat;
+ 
+ import java.util.ArrayList;
+ import java.util.List;
+ 
++import com.meshwave.sdk.MeshWaveManager;
++import com.meshwave.sdk.P2PSendReceiveThread;
++import com.meshwave.sdk.BluetoothSendReceiveThread;
++import com.meshwave.sdk.TcpSendReceiveThread;
++import com.meshwave.sdk.WiFiDirectBroadcastReceiver;
++
+ public class MainActivity extends AppCompatActivity {
+ 
+     private static final String TAG = "MeshWaveApp";
+     private static final int REQUEST_PERMISSIONS = 1;
+ 
+     private WifiP2pManager wifiP2pManager;
+     private WifiP2pManager.Channel wifiP2pChannel;
+     private BroadcastReceiver wifiScanReceiver;
+     private IntentFilter wifiScanIntentFilter;
+ 
+     private BluetoothAdapter bluetoothAdapter;
+     private BroadcastReceiver bluetoothReceiver;
+     private IntentFilter bluetoothIntentFilter;
+ 
+     private List<String> deviceList = new ArrayList<>( );
+     private ArrayAdapter<String> deviceAdapter;
+     private ListView listViewDevices;
+     private Button btnScan;
+ 
++    private MeshWaveManager meshWaveManager;
++
+     @Override
+     protected void onCreate(Bundle savedInstanceState) {
+         super.onCreate(savedInstanceState);
+         setContentView(R.layout.activity_main);
+ 
+         listViewDevices = findViewById(R.id.listViewDevices);
+         btnScan = findViewById(R.id.btnScan);
+         deviceAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, deviceList);
+         listViewDevices.setAdapter(deviceAdapter);
+ 
++        meshWaveManager = new MeshWaveManager(this);
++
+         // Initialize Wi-Fi Direct
+         wifiP2pManager = (WifiP2pManager) getSystemService(Context.WIFI_P2P_SERVICE);
+         wifiP2pChannel = wifiP2pManager.initialize(this, getMainLooper(), null);
+ 
+         wifiScanReceiver = new WiFiDirectBroadcastReceiver(wifiP2pManager, wifiP2pChannel, this) {
+             @Override
+             public void onPeersAvailable(WifiP2pDeviceList peers) {
+                 deviceList.clear();
+                 for (WifiP2pDevice device : peers.getDeviceList()) {
+                     deviceList.add(device.deviceName + " (" + device.deviceAddress + ")");
+                 }
+                 deviceAdapter.notifyDataSetChanged();
+                 log("Wi-Fi Direct peers found: " + deviceList.size());
+             }
+         };
+         wifiScanIntentFilter = new IntentFilter();
+         wifiScanIntentFilter.addAction(WifiP2pManager.WIFI_P2P_STATE_CHANGED_ACTION);
+         wifiScanIntentFilter.addAction(WifiP2pManager.WIFI_P2P_PEERS_CHANGED_ACTION);
+         wifiScanIntentFilter.addAction(WifiP2pManager.WIFI_P2P_CONNECTION_CHANGED_ACTION);
+         wifiScanIntentFilter.addAction(WifiP2pManager.WIFI_P2P_THIS_DEVICE_CHANGED_ACTION);
+ 
+         // Initialize Bluetooth
+         BluetoothManager bluetoothManager = (BluetoothManager) getSystemService(Context.BLUETOOTH_SERVICE);
+         if (bluetoothManager != null) {
+             bluetoothAdapter = bluetoothManager.getAdapter();
+         }
+ 
+         bluetoothReceiver = new BroadcastReceiver() {
+             @Override
+             public void onReceive(Context context, Intent intent) {
+                 String action = intent.getAction();
+                 if (BluetoothDevice.ACTION_FOUND.equals(action)) {
+                     BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
+                     if (device != null && device.getName() != null) {
+                         deviceList.add(device.getName() + " (" + device.getAddress() + ")");
+                         deviceAdapter.notifyDataSetChanged();
+                         log("Bluetooth device found: " + device.getName());
+                     }
+                 } else if (BluetoothAdapter.ACTION_DISCOVERY_FINISHED.equals(action)) {
+                     log("Bluetooth discovery finished.");
+                 }
+             }
+         };
+         bluetoothIntentFilter = new IntentFilter(BluetoothDevice.ACTION_FOUND);
+         bluetoothIntentFilter.addAction(BluetoothAdapter.ACTION_DISCOVERY_FINISHED);
+ 
+         btnScan.setOnClickListener(v -> requestPermissionsAndScan());
+ 
+         requestPermissionsAndScan(); // Initial scan on app start
+     }
+ 
+     private void requestPermissionsAndScan() {
+         String[] permissions;
+         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+             permissions = new String[]{
+                     Manifest.permission.ACCESS_FINE_LOCATION,
+                     Manifest.permission.BLUETOOTH_SCAN,
+                     Manifest.permission.BLUETOOTH_ADVERTISE,
+                     Manifest.permission.BLUETOOTH_CONNECT,
+                     Manifest.permission.NEARBY_WIFI_DEVICES
+             };
+         } else {
+             permissions = new String[]{
+                     Manifest.permission.ACCESS_FINE_LOCATION,
+                     Manifest.permission.BLUETOOTH,
+                     Manifest.permission.BLUETOOTH_ADMIN
+             };
+         }
+ 
+         List<String> permissionsToRequest = new ArrayList<>();
+         for (String permission : permissions) {
+             if (ContextCompat.checkSelfPermission(this, permission) != PackageManager.PERMISSION_GRANTED) {
+                 permissionsToRequest.add(permission);
+             }
+         }
+ 
+         if (!permissionsToRequest.isEmpty()) {
+             ActivityCompat.requestPermissions(this, permissionsToRequest.toArray(new String[0]), REQUEST_PERMISSIONS);
+         } else {
+             startScanning();
+         }
+     }
+ 
+     @Override
+     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+         if (requestCode == REQUEST_PERMISSIONS) {
+             boolean allPermissionsGranted = true;
+             for (int result : grantResults) {
+                 if (result != PackageManager.PERMISSION_GRANTED) {
+                     allPermissionsGranted = false;
+                     break;
+                 }
+             }
+             if (allPermissionsGranted) {
+                 startScanning();
+             } else {
+                 Toast.makeText(this, "Permissions not granted. Some features may not work.", Toast.LENGTH_LONG).show();
+             }
+         }
+     }
+ 
+     private void startScanning() {
+         deviceList.clear();
+         deviceAdapter.notifyDataSetChanged();
+         log("Starting scan...");
+ 
+         // Start Wi-Fi Direct discovery
+         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                 // Use NetworkRequest for Wi-Fi scanning on Android 10 (API 29) and above
+                 ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+                 NetworkRequest request = new NetworkRequest.Builder()
+                         .addTransportType(NetworkCapabilities.TRANSPORT_WIFI)
+                         .build();
+ 
+                 connectivityManager.requestNetwork(request, new ConnectivityManager.NetworkCallback() {
+                     @Override
+                     public void onAvailable(@NonNull Network network) {
+                         super.onAvailable(network);
+                         log("Network available for Wi-Fi scan.");
+                         // Perform Wi-Fi P2P discovery here
+                         if (wifiP2pManager != null && wifiP2pChannel != null) {
+                             if (ActivityCompat.checkSelfPermission(MainActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED || ActivityCompat.checkSelfPermission(MainActivity.this, Manifest.permission.NEARBY_WIFI_DEVICES) != PackageManager.PERMISSION_GRANTED) {
+                                 // TODO: Consider calling
+                                 //    ActivityCompat#requestPermissions
+                                 // here to request the missing permissions, and then overriding
+                                 //   public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults)
+                                 // to handle the case where the user grants the permission. See the documentation
+                                 // for ActivityCompat#requestPermissions for more details.
+                                 return;
+                             }
+                             wifiP2pManager.discoverPeers(wifiP2pChannel, new WifiP2pManager.ActionListener() {
+                                 @Override
+                                 public void onSuccess() {
+                                     log("Wi-Fi Direct discovery initiated.");
+                                 }
+ 
+                                 @Override
+                                 public void onFailure(int reasonCode) {
+                                     log("Wi-Fi Direct discovery failed: " + reasonCode);
+                                 }
+                             });
+                         }
+                     }
+ 
+                     @Override
+                     public void onLost(@NonNull Network network) {
+                         super.onLost(network);
+                         log("Network lost for Wi-Fi scan.");
+                     }
+                 });
+             } else {
+                 // For older Android versions, use discoverPeers directly
+                 if (wifiP2pManager != null && wifiP2pChannel != null) {
+                     wifiP2pManager.discoverPeers(wifiP2pChannel, new WifiP2pManager.ActionListener() {
+                         @Override
+                         public void onSuccess() {
+                             log("Wi-Fi Direct discovery initiated.");
+                         }
+ 
+                         @Override
+                         public void onFailure(int reasonCode) {
+                             log("Wi-Fi Direct discovery failed: " + reasonCode);
+                         }
+                     });
+                 }
+             }
+         } else {
+             log("Location permission not granted for Wi-Fi Direct.");
+         }
+ 
+         // Start Bluetooth discovery
+         if (bluetoothAdapter != null) {
+             if (ActivityCompat.checkSelfPermission(this, Manifest.permission.BLUETOOTH_SCAN) != PackageManager.PERMISSION_GRANTED) {
+                 // TODO: Consider calling
+                 //    ActivityCompat#requestPermissions
+                 // here to request the missing permissions, and then overriding
+                 //   public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults)
+                 // to handle the case where the user grants the permission. See the documentation
+                 // for ActivityCompat#requestPermissions for more details.
+                 return;
+             }
+             if (bluetoothAdapter.isDiscovering()) {
+                 bluetoothAdapter.cancelDiscovery();
+             }
+             bluetoothAdapter.startDiscovery();
+             log("Bluetooth discovery initiated.");
+         } else {
+             log("Bluetooth adapter not available.");
+         }
+     }
+ 
+     @Override
+     protected void onResume() {
+         super.onResume();
+         registerReceiver(wifiScanReceiver, wifiScanIntentFilter);
+         registerReceiver(bluetoothReceiver, bluetoothIntentFilter);
+     }
+ 
+     @Override
+     protected void onPause() {
+         super.onPause();
+         unregisterReceiver(wifiScanReceiver);
+         unregisterReceiver(bluetoothReceiver);
+     }
+ 
+     protected void log(String message) {
+         Log.d(TAG, message);
+         runOnUiThread(() -> Toast.makeText(this, message, Toast.LENGTH_SHORT).show());
+     }
+ }
+diff --git a/app/src/main/java/com/example/meshwave/P2PSendReceiveThread.java b/app/src/main/java/com/example/meshwave/P2PSendReceiveThread.java
+rename from app/src/main/java/com/example/meshwave/P2PSendReceiveThread.java
+rename to code/1_Aplicacao/Fase_1/Modulo_App_MeshWave/Prototipo/Versao_1_0/android/meshwave-sdk/src/main/java/com/meshwave/sdk/P2PSendReceiveThread.java
+--- a/app/src/main/java/com/example/meshwave/P2PSendReceiveThread.java
++++ b/code/1_Aplicacao/Fase_1/Modulo_App_MeshWave/Prototipo/Versao_1_0/android/meshwave-sdk/src/main/java/com/meshwave/sdk/P2PSendReceiveThread.java
+@@ -1,30 +1,30 @@
+-package com.example.meshwave;
++package com.meshwave.sdk;
+ 
+ import android.util.Log;
+ 
+ import java.io.IOException;
+ import java.io.InputStream;
+ import java.io.OutputStream;
+ import java.net.Socket;
+ 
+ public class P2PSendReceiveThread extends Thread {
+     private static final String TAG = "P2PSendReceiveThread";
+     private final Socket socket;
+     private final InputStream inputStream;
+     private final OutputStream outputStream;
+ 
+     public P2PSendReceiveThread(Socket socket) {
+         this.socket = socket;
+         InputStream tmpIn = null;
+         OutputStream tmpOut = null;
+ 
+         try {
+             tmpIn = socket.getInputStream();
+             tmpOut = socket.getOutputStream();
+         } catch (IOException e) {
+             Log.e(TAG, "Error getting streams", e);
+         }
+ 
+         inputStream = tmpIn;
+         outputStream = tmpOut;
+     }
+ 
+     @Override
+     public void run() {
+         byte[] buffer = new byte[1024];
+         int bytes;
+ 
+         while (true) {
+             try {
+                 bytes = inputStream.read(buffer);
+                 if (bytes > 0) {
+                     String receivedMessage = new String(buffer, 0, bytes);
+                     Log.d(TAG, "Received: " + receivedMessage);
+                     // Process received message (e.g., update UI, pass to higher layer)
+                 }
+             } catch (IOException e) {
+                 Log.e(TAG, "Error reading from InputStream", e);
+                 break;
+             }
+         }
+     }
+ 
+     public void write(byte[] bytes) {
+         try {
+             outputStream.write(bytes);
+             Log.d(TAG, "Sent: " + new String(bytes));
+         } catch (IOException e) {
+             Log.e(TAG, "Error writing to OutputStream", e);
+         }
+     }
+ 
+     public void cancel() {
+         try {
+             socket.close();
+         } catch (IOException e) {
+             Log.e(TAG, "Error closing socket", e);
+         }
+     }
+ }
+diff --git a/app/src/main/java/com/example/meshwave/TcpSendReceiveThread.java b/app/src/main/java/com/example/meshwave/TcpSendReceiveThread.java
+rename from app/src/main/java/com/example/meshwave/TcpSendReceiveThread.java
+rename to code/1_Aplicacao/Fase_1/Modulo_App_MeshWave/Prototipo/Versao_1_0/android/meshwave-sdk/src/main/java/com/meshwave/sdk/TcpSendReceiveThread.java
+--- a/app/src/main/java/com/example/meshwave/TcpSendReceiveThread.java
++++ b/code/1_Aplicacao/Fase_1/Modulo_App_MeshWave/Prototipo/Versao_1_0/android/meshwave-sdk/src/main/java/com/meshwave/sdk/TcpSendReceiveThread.java
+@@ -1,30 +1,30 @@
+-package com.example.meshwave;
++package com.meshwave.sdk;
+ 
+ import android.util.Log;
+ 
+ import java.io.IOException;
+ import java.io.InputStream;
+ import java.io.OutputStream;
+ import java.net.Socket;
+ 
+ public class TcpSendReceiveThread extends Thread {
+     private static final String TAG = "TcpSendReceiveThread";
+     private final Socket socket;
+     private final InputStream inputStream;
+     private final OutputStream outputStream;
+ 
+     public TcpSendReceiveThread(Socket socket) {
+         this.socket = socket;
+         InputStream tmpIn = null;
+         OutputStream tmpOut = null;
+ 
+         try {
+             tmpIn = socket.getInputStream();
+             tmpOut = socket.getOutputStream();
+         } catch (IOException e) {
+             Log.e(TAG, "Error getting streams", e);
+         }
+ 
+         inputStream = tmpIn;
+         outputStream = tmpOut;
+     }
+ 
+     @Override
+     public void run() {
+         byte[] buffer = new byte[1024];
+         int bytes;
+ 
+         while (true) {
+             try {
+                 bytes = inputStream.read(buffer);
+                 if (bytes > 0) {
+                     String receivedMessage = new String(buffer, 0, bytes);
+                     Log.d(TAG, "Received: " + receivedMessage);
+                     // Process received message (e.g., update UI, pass to higher layer)
+                 }
+             } catch (IOException e) {
+                 Log.e(TAG, "Error reading from InputStream", e);
+                 break;
+             }
+         }
+     }
+ 
+     public void write(byte[] bytes) {
+         try {
+             outputStream.write(bytes);
+             Log.d(TAG, "Sent: " + new String(bytes));
+         } catch (IOException e) {
+             Log.e(TAG, "Error writing to OutputStream", e);
+         }
+     }
+ 
+     public void cancel() {
+         try {
+             socket.close();
+         } catch (IOException e) {
+             Log.e(TAG, "Error closing socket", e);
+         }
+     }
+ }
+diff --git a/app/src/main/java/com/example/meshwave/WiFiDirectBroadcastReceiver.java b/app/src/main/java/com/example/meshwave/WiFiDirectBroadcastReceiver.java
+rename from app/src/main/java/com/example/meshwave/WiFiDirectBroadcastReceiver.java
+rename to code/1_Aplicacao/Fase_1/Modulo_App_MeshWave/Prototipo/Versao_1_0/android/meshwave-sdk/src/main/java/com/meshwave/sdk/WiFiDirectBroadcastReceiver.java
+--- a/app/src/main/java/com/example/meshwave/WiFiDirectBroadcastReceiver.java
++++ b/code/1_Aplicacao/Fase_1/Modulo_App_MeshWave/Prototipo/Versao_1_0/android/meshwave-sdk/src/main/java/com/meshwave/sdk/WiFiDirectBroadcastReceiver.java
+@@ -1,45 +1,45 @@
+-package com.example.meshwave;
++package com.meshwave.sdk;
+ 
+ import android.content.BroadcastReceiver;
+ import android.content.Context;
+ import android.content.Intent;
+ import android.net.wifi.p2p.WifiP2pDeviceList;
+ import android.net.wifi.p2p.WifiP2pManager;
+ import android.util.Log;
+ 
+ public abstract class WiFiDirectBroadcastReceiver extends BroadcastReceiver {
+     private static final String TAG = "WiFiDirectReceiver";
+ 
+     private WifiP2pManager manager;
+     private WifiP2pManager.Channel channel;
+     private MainActivity activity;
+ 
+     public WiFiDirectBroadcastReceiver(WifiP2pManager manager, WifiP2pManager.Channel channel, MainActivity activity) {
+         this.manager = manager;
+         this.channel = channel;
+         this.activity = activity;
+     }
+ 
+     public abstract void onPeersAvailable(WifiP2pDeviceList peers);
+ 
+     @Override
+     public void onReceive(Context context, Intent intent) {
+         String action = intent.getAction();
+ 
+         if (WifiP2pManager.WIFI_P2P_STATE_CHANGED_ACTION.equals(action)) {
+             int state = intent.getIntExtra(WifiP2pManager.EXTRA_WIFI_STATE, -1);
+             if (state == WifiP2pManager.WIFI_P2P_STATE_ENABLED) {
+                 activity.log("Wi-Fi Direct is enabled");
+             } else {
+                 activity.log("Wi-Fi Direct is not enabled");
+             }
+         } else if (WifiP2pManager.WIFI_P2P_PEERS_CHANGED_ACTION.equals(action)) {
+             if (manager != null) {
+                 manager.requestPeers(channel, this::onPeersAvailable);
+             }
+             activity.log("Wi-Fi Direct peers changed");
+         } else if (WifiP2pManager.WIFI_P2P_CONNECTION_CHANGED_ACTION.equals(action)) {
+             activity.log("Wi-Fi Direct connection changed");
+         } else if (WifiP2pManager.WIFI_P2P_THIS_DEVICE_CHANGED_ACTION.equals(action)) {
+             activity.log("Status deste dispositivo Wi-Fi Direct alterado");
+         }
+     }
+ }
+diff --git a/build.gradle b/build.gradle
+rename from build.gradle
+rename to code/1_Aplicacao/Fase_1/Modulo_App_MeshWave/Prototipo/Versao_1_0/android/build.gradle
+--- a/build.gradle
++++ b/code/1_Aplicacao/Fase_1/Modulo_App_MeshWave/Prototipo/Versao_1_0/android/build.gradle
+@@ -1,23 +1,23 @@
+ // Top-level build file where you can add configuration options common to all sub-projects/modules.
+ plugins {
+     id 'com.android.application' version '8.1.1' apply false
+     id 'com.android.library' version '8.1.1' apply false
+     id 'org.jetbrains.kotlin.android' version '1.8.10' apply false
+ }
+ 
+ buildscript {
+     ext {
+         compileSdk = 34
+         minSdk = 24
+         targetSdk = 34
+         versionCode = 1
+         versionName = "1.0"
+     }
+ }
+ 
+ task clean(type: Delete) {
+     delete rootProject.buildDir
+ }
+diff --git a/gradle/wrapper/gradle-wrapper.jar b/gradle/wrapper/gradle-wrapper.jar
+rename from gradle/wrapper/gradle-wrapper.jar
+rename to code/1_Aplicacao/Fase_1/Modulo_App_MeshWave/Prototipo/Versao_1_0/android/gradle/wrapper/gradle-wrapper.jar
+Binary files differ
+diff --git a/gradle/wrapper/gradle-wrapper.properties b/gradle/wrapper/gradle-wrapper.properties
+rename from gradle/wrapper/gradle-wrapper.properties
+rename to code/1_Aplicacao/Fase_1/Modulo_App_MeshWave/Prototipo/Versao_1_0/android/gradle/wrapper/gradle-wrapper.properties
+--- a/gradle/wrapper/gradle-wrapper.properties
++++ b/code/1_Aplicacao/Fase_1/Modulo_App_MeshWave/Prototipo/Versao_1_0/android/gradle/wrapper/gradle-wrapper.properties
+@@ -1,6 +1,6 @@
+ #Mon Sep 18 16:34:06 BRT 2023
+distributionBase=GRADLE_USER_HOME
+distributionUrl=https\://services.gradle.org/distributions/gradle-8.1.1-bin.zip
+incremental=false
+keepWrapperJar=true
+-wrapperVersion=8.1.1
++wrapperVersion=8.1.1
+diff --git a/gradlew b/gradlew
+rename from gradlew
+rename to code/1_Aplicacao/Fase_1/Modulo_App_MeshWave/Prototipo/Versao_1_0/android/gradlew
+--- a/gradlew
++++ b/code/1_Aplicacao/Fase_1/Modulo_App_MeshWave/Prototipo/Versao_1_0/android/gradlew
+@@ -1,4 +1,4 @@
+ #!/usr/bin/env sh
+ 
+ ##############################################################################
+ ##
+@@ -62,4 +62,4 @@
+ 
+ # Add default JVM options here. You can also use JAVA_OPTS and GRADLE_OPTS to pass JVM options to this script.
+ DEFAULT_JVM_OPTS="\"-Xmx64m\" \"-Xms64m\""
+ 
+-APP_NAME="gradlew"
++APP_NAME="gradlew"
+diff --git a/gradlew.bat b/gradlew.bat
+rename from gradlew.bat
+rename to code/1_Aplicacao/Fase_1/Modulo_App_MeshWave/Prototipo/Versao_1_0/android/gradlew.bat
+--- a/gradlew.bat
++++ b/code/1_Aplicacao/Fase_1/Modulo_App_MeshWave/Prototipo/Versao_1_0/android/gradlew.bat
+@@ -1,4 +1,4 @@
+ @rem
+ @rem Copyright 2015 the original author or authors.
+ @rem
+ @rem Licensed under the Apache License, Version 2.0 (the "License" );
+@@ -62,4 +62,4 @@
+ 
+ @rem Add default JVM options here. You can also use JAVA_OPTS and GRADLE_OPTS to pass JVM options to this script.
+ set DEFAULT_JVM_OPTS="-Xmx64m" "-Xms64m"
+ 
+-set APP_NAME="gradlew.bat"
++set APP_NAME="gradlew.bat"
+diff --git a/settings.gradle b/settings.gradle
+rename from settings.gradle
+rename to code/1_Aplicacao/Fase_1/Modulo_App_MeshWave/Prototipo/Versao_1_0/android/settings.gradle
+--- a/settings.gradle
++++ b/code/1_Aplicacao/Fase_1/Modulo_App_MeshWave/Prototipo/Versao_1_0/android/settings.gradle
+@@ -1,4 +1,5 @@
+ pluginManagement {
+     repositories {
+         google()
+         mavenCentral()
+     }
+ }
+ dependencyResolutionManagement {
+     repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+     repositories {
+         google()
+         mavenCentral()
+     }
+ }
+ rootProject.name = "MeshWave"
+-include ':app'
++include ':app', ':meshwave-sdk'
+\ No newline at end of file
+diff --git a/meshwave-sdk/.gitignore b/code/1_Aplicacao/Fase_1/Modulo_App_MeshWave/Prototipo/Versao_1_0/android/meshwave-sdk/.gitignore
+new file mode 100644
+index 0000000..0d07261
+--- /dev/null
++++ b/code/1_Aplicacao/Fase_1/Modulo_App_MeshWave/Prototipo/Versao_1_0/android/meshwave-sdk/.gitignore
+@@ -0,0 +1,12 @@
++/build
++/.cxx
++/.externalNativeBuild
++/.gradle
++/.idea
++/.kotlin
++/local.properties
++/captures
++/generated
++/src/main/assets/backups
++/src/main/res/raw/backups
++/src/test/assets/backups
+diff --git a/meshwave-sdk/build.gradle b/code/1_Aplicacao/Fase_1/Modulo_App_MeshWave/Prototipo/Versao_1_0/android/meshwave-sdk/build.gradle
+new file mode 100644
+index 0000000..6030991
+--- /dev/null
++++ b/code/1_Aplicacao/Fase_1/Modulo_App_MeshWave/Prototipo/Versao_1_0/android/meshwave-sdk/build.gradle
+@@ -0,0 +1,34 @@
++plugins {
++    id 'com.android.library'
++    id 'org.jetbrains.kotlin.android'
++}
++
++android {
++    namespace 'com.meshwave.sdk'
++    compileSdk 34
++
++    defaultConfig {
++        minSdk 24
++        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
++        consumerProguardFiles "proguard-rules.pro"
++    }
++
++    buildTypes {
++        release {
++            minifyEnabled false
++            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
++        }
++    }
++    compileOptions {
++        sourceCompatibility JavaVersion.VERSION_1_8
++        targetCompatibility JavaVersion.VERSION_1_8
++    }
++    kotlinOptions {
++        jvmTarget = '1.8'
++    }
++}
++
++dependencies {
++    implementation 'androidx.core:core-ktx:1.9.0'
++    implementation 'androidx.appcompat:appcompat:1.6.1'
++    testImplementation 'junit:junit:4.13.2'
++    androidTestImplementation 'androidx.test.ext:junit:1.1.5'
++    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
++}
+diff --git a/meshwave-sdk/proguard-rules.pro b/code/1_Aplicacao/Fase_1/Modulo_App_MeshWave/Prototipo/Versao_1_0/android/meshwave-sdk/proguard-rules.pro
+new file mode 100644
+index 0000000..d49372f
+--- /dev/null
++++ b/code/1_Aplicacao/Fase_1/Modulo_App_MeshWave/Prototipo/Versao_1_0/android/meshwave-sdk/proguard-rules.pro
+@@ -0,0 +1,10 @@
++# Add project specific ProGuard rules here.
++# By default, the flags in this file are appended to flags specified in
++# /Users/meshwave/Library/Android/sdk/proguard-rules.pro
++# You can add more rules here, e.g.:
++# -dontwarn com.example.app.**
++
++# If your project uses WebView with JS, uncomment the following
++# and specify the fully qualified class name to the JavaScript interface class:
++# -keepclassmembers class fqcn.of.javascript.interface.for.webview {
++#    public *;
++# }
+diff --git a/meshwave-sdk/src/main/AndroidManifest.xml b/code/1_Aplicacao/Fase_1/Modulo_App_MeshWave/Prototipo/Versao_1_0/android/meshwave-sdk/src/main/AndroidManifest.xml
+new file mode 100644
+index 0000000..7461979
+--- /dev/null
++++ b/code/1_Aplicacao/Fase_1/Modulo_App_MeshWave/Prototipo/Versao_1_0/android/meshwave-sdk/src/main/AndroidManifest.xml
+@@ -0,0 +1,10 @@
++<?xml version="1.0" encoding="utf-8"?>
++<manifest xmlns:android="http://schemas.android.com/apk/res/android">
++
++</manifest>
+diff --git a/meshwave-sdk/src/main/java/com/meshwave/sdk/BluetoothSendReceiveThread.java b/code/1_Aplicacao/Fase_1/Modulo_App_MeshWave/Prototipo/Versao_1_0/android/meshwave-sdk/src/main/java/com/meshwave/sdk/BluetoothSendReceiveThread.java
+new file mode 100644
+index 0000000..1840003
+--- /dev/null
++++ b/code/1_Aplicacao/Fase_1/Modulo_App_MeshWave/Prototipo/Versao_1_0/android/meshwave-sdk/src/main/java/com/meshwave/sdk/BluetoothSendReceiveThread.java
+@@ -0,0 +1,65 @@
++package com.meshwave.sdk;
++
++import android.bluetooth.BluetoothSocket;
++import android.util.Log;
++
++import java.io.IOException;
++import java.io.InputStream;
++import java.io.OutputStream;
++
++public class BluetoothSendReceiveThread extends Thread {
++    private static final String TAG = "BluetoothSendReceiveThread";
++    private final BluetoothSocket bluetoothSocket;
++    private final InputStream inputStream;
++    private final OutputStream outputStream;
++
++    public BluetoothSendReceiveThread(BluetoothSocket socket ) {
++        bluetoothSocket = socket;
++        InputStream tmpIn = null;
++        OutputStream tmpOut = null;
++
++        try {
++            tmpIn = socket.getInputStream();
++            tmpOut = socket.getOutputStream();
++        } catch (IOException e) {
++            Log.e(TAG, "Error getting streams", e);
++        }
++
++        inputStream = tmpIn;
++        outputStream = tmpOut;
++    }
++
++    @Override
++    public void run() {
++        byte[] buffer = new byte[1024];
++        int bytes;
++
++        while (true) {
++            try {
++                bytes = inputStream.read(buffer);
++                if (bytes > 0) {
++                    String receivedMessage = new String(buffer, 0, bytes);
++                    Log.d(TAG, "Received: " + receivedMessage);
++                    // Process received message (e.g., update UI, pass to higher layer)
++                }
++            } catch (IOException e) {
++                Log.e(TAG, "Error reading from InputStream", e);
++                break;
++            }
++        }
++    }
++
++    public void write(byte[] bytes) {
++        try {
++            outputStream.write(bytes);
++            Log.d(TAG, "Sent: " + new String(bytes));
++        } catch (IOException e) {
++            Log.e(TAG, "Error writing to OutputStream", e);
++        }
++    }
++
++    public void cancel() {
++        try {
++            bluetoothSocket.close();
++        } catch (IOException e) {
++            Log.e(TAG, "Error closing socket", e);
++        }
++    }
++}
+diff --git a/meshwave-sdk/src/main/java/com/meshwave/sdk/MeshWaveManager.java b/code/1_Aplicacao/Fase_1/Modulo_App_MeshWave/Prototipo/Versao_1_0/android/meshwave-sdk/src/main/java/com/meshwave/sdk/MeshWaveManager.java
+new file mode 100644
+index 0000000..7461979
+--- /dev/null
++++ b/code/1_Aplicacao/Fase_1/Modulo_App_MeshWave/Prototipo/Versao_1_0/android/meshwave-sdk/src/main/java/com/meshwave/sdk/MeshWaveManager.java
+@@ -0,0 +1,13 @@
++package com.meshwave.sdk;
++
++import android.content.Context;
++import android.util.Log;
++
++public class MeshWaveManager {
++    private static final String TAG = "MeshWaveSDK";
++    private Context context;
++
++    public MeshWaveManager(Context context) {
++        this.context = context;
++        Log.d(TAG, "MeshWaveManager initialized.");
++    }
++}
+
