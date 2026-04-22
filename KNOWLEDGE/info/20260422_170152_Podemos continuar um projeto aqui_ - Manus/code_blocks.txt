@@ -1,0 +1,1291 @@
+
+
+================================================================================BUILD FAILED
+
+No value passed for parameter 'identityModule'
+
+MainActivity
+
+statusFragment.updateCacheView
+
+uiHandler
+
+cache
+
+identityModule
+
+MainActivity.kt
+
+identityModule
+
+app/src/main/java/com/meshwave/core/MainActivity.kt
+
+package com.meshwave.core
+
+import android.Manifest
+import android.content.pm.PackageManager
+import android.os.Build
+import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
+import android.os.Message
+import android.widget.TextView
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
+import androidx.fragment.app.Fragment
+import com.google.android.material.bottomnavigation.BottomNavigationView
+
+class MainActivity : AppCompatActivity() {
+
+    private lateinit var identityModule: IdentityModule
+    private lateinit var locationModule: LocationModule
+    private lateinit var wifiDirectModule: WiFiDirectModule
+
+    private val statusFragment = StatusFragment()
+    private var activeFragment: Fragment = statusFragment
+
+    private val uiHandler = object : Handler(Looper.getMainLooper()) {
+        override fun handleMessage(msg: Message) {
+            when (msg.what) {
+                AppConstants.WHAT_LOG -> statusFragment.addLog(msg.obj as String)
+                // CORREÇÃO: Passando o identityModule como segundo argumento
+                AppConstants.WHAT_CACHE_UPDATE -> statusFragment.updateCacheView(msg.obj as SituationalCache, identityModule)
+                AppConstants.WHAT_WIFI_STATUS_UPDATE -> statusFragment.updateWifiStatusView(msg.obj as String)
+                AppConstants.WHAT_LOCATION_UPDATE -> statusFragment.updateLocationView(msg.obj as LocationData)
+            }
+        }
+    }
+
+    private val requestPermissionsLauncher =
+        registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permissions ->
+            if (permissions.entries.all { it.value }) {
+                startModules()
+            } else {
+                // Lidar com a falha na obtenção de permissões
+            }
+        }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main)
+
+        setupAppVersion()
+        setupBottomNavigation()
+
+        if (savedInstanceState == null) {
+            supportFragmentManager.beginTransaction()
+                .add(R.id.fragment_container, statusFragment, "1")
+                .commit()
+        }
+
+        checkPermissionsAndStart()
+    }
+
+    private fun setupBottomNavigation() {
+        val bottomNav = findViewById<BottomNavigationView>(R.id.bottom_navigation)
+        bottomNav.setOnItemSelectedListener { item ->
+            when (item.itemId) {
+                R.id.nav_status -> true
+                R.id.nav_chat -> false
+                else -> false
+            }
+        }
+    }
+
+    private fun setupAppVersion() {
+        try {
+            val versionName = packageManager.getPackageInfo(packageName, 0).versionName
+            findViewById<TextView>(R.id.text_app_version).text = "v$versionName"
+        } catch (e: PackageManager.NameNotFoundException) {
+            e.printStackTrace()
+        }
+    }
+
+    private fun checkPermissionsAndStart() {
+        val requiredPermissions = mutableListOf(
+            Manifest.permission.ACCESS_FINE_LOCATION,
+            Manifest.permission.ACCESS_WIFI_STATE,
+            Manifest.permission.CHANGE_WIFI_STATE,
+            Manifest.permission.INTERNET
+        )
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            requiredPermissions.add(Manifest.permission.NEARBY_WIFI_DEVICES)
+        }
+
+        val permissionsToRequest = requiredPermissions.filter {
+            ContextCompat.checkSelfPermission(this, it) != PackageManager.PERMISSION_GRANTED
+        }
+
+        if (permissionsToRequest.isEmpty()) {
+            startModules()
+        } else {
+            requestPermissionsLauncher.launch(permissionsToRequest.toTypedArray())
+        }
+    }
+
+    private fun startModules() {
+        identityModule = IdentityModule(this, uiHandler)
+        locationModule = LocationModule(this, uiHandler, identityModule)
+        wifiDirectModule = WiFiDirectModule(this, uiHandler, identityModule)
+        
+        locationModule.start()
+        wifiDirectModule.start()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        locationModule.stop()
+        wifiDirectModule.stop()
+    }
+}
+
+package com.meshwave.core
+
+import android.Manifest
+import android.content.pm.PackageManager
+import android.os.Build
+import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
+import android.os.Message
+import android.widget.TextView
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
+import androidx.fragment.app.Fragment
+import com.google.android.material.bottomnavigation.BottomNavigationView
+
+class MainActivity : AppCompatActivity() {
+
+    private lateinit var identityModule: IdentityModule
+    private lateinit var locationModule: LocationModule
+    private lateinit var wifiDirectModule: WiFiDirectModule
+
+    private val statusFragment = StatusFragment()
+    private var activeFragment: Fragment = statusFragment
+
+    private val uiHandler = object : Handler(Looper.getMainLooper()) {
+        override fun handleMessage(msg: Message) {
+            when (msg.what) {
+                AppConstants.WHAT_LOG -> statusFragment.addLog(msg.obj as String)
+                // CORREÇÃO: Passando o identityModule como segundo argumento
+                AppConstants.WHAT_CACHE_UPDATE -> statusFragment.updateCacheView(msg.obj as SituationalCache, identityModule)
+                AppConstants.WHAT_WIFI_STATUS_UPDATE -> statusFragment.updateWifiStatusView(msg.obj as String)
+                AppConstants.WHAT_LOCATION_UPDATE -> statusFragment.updateLocationView(msg.obj as LocationData)
+            }
+        }
+    }
+
+    private val requestPermissionsLauncher =
+        registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permissions ->
+            if (permissions.entries.all { it.value }) {
+                startModules()
+            } else {
+                // Lidar com a falha na obtenção de permissões
+            }
+        }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main)
+
+        setupAppVersion()
+        setupBottomNavigation()
+
+        if (savedInstanceState == null) {
+            supportFragmentManager.beginTransaction()
+                .add(R.id.fragment_container, statusFragment, "1")
+                .commit()
+        }
+
+        checkPermissionsAndStart()
+    }
+
+    private fun setupBottomNavigation() {
+        val bottomNav = findViewById<BottomNavigationView>(R.id.bottom_navigation)
+        bottomNav.setOnItemSelectedListener { item ->
+            when (item.itemId) {
+                R.id.nav_status -> true
+                R.id.nav_chat -> false
+                else -> false
+            }
+        }
+    }
+
+    private fun setupAppVersion() {
+        try {
+            val versionName = packageManager.getPackageInfo(packageName, 0).versionName
+            findViewById<TextView>(R.id.text_app_version).text = "v$versionName"
+        } catch (e: PackageManager.NameNotFoundException) {
+            e.printStackTrace()
+        }
+    }
+
+    private fun checkPermissionsAndStart() {
+        val requiredPermissions = mutableListOf(
+            Manifest.permission.ACCESS_FINE_LOCATION,
+            Manifest.permission.ACCESS_WIFI_STATE,
+            Manifest.permission.CHANGE_WIFI_STATE,
+            Manifest.permission.INTERNET
+        )
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            requiredPermissions.add(Manifest.permission.NEARBY_WIFI_DEVICES)
+        }
+
+        val permissionsToRequest = requiredPermissions.filter {
+            ContextCompat.checkSelfPermission(this, it) != PackageManager.PERMISSION_GRANTED
+        }
+
+        if (permissionsToRequest.isEmpty()) {
+            startModules()
+        } else {
+            requestPermissionsLauncher.launch(permissionsToRequest.toTypedArray())
+        }
+    }
+
+    private fun startModules() {
+        identityModule = IdentityModule(this, uiHandler)
+        locationModule = LocationModule(this, uiHandler, identityModule)
+        wifiDirectModule = WiFiDirectModule(this, uiHandler, identityModule)
+        
+        locationModule.start()
+        wifiDirectModule.start()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        locationModule.stop()
+        wifiDirectModule.stop()
+    }
+}
+
+BUILD SUCCESSFUL
+
+NsdManager
+
+WifiP2pManager
+
+delay
+
+LocationModule
+
+LocationModule
+
+IdentityModule
+
+WiFiDirectModule
+
+WiFiDirectModule
+
+delay
+
+NsdManager
+
+IdentityModule
+
+LocationModule
+
+IdentityModule
+
+LocationModule
+
+identityModule.initializeWithDefault()
+
+IdentityModule
+
+NodeProfile
+
+cpaGeohash
+
+g9fail
+
+WiFiDirectModule
+
+g9fail
+
+IdentityModule
+
+app/src/main/java/com/meshwave/core/IdentityModule.kt
+
+initializeWithDefault
+
+package com.meshwave.core
+
+import android.content.Context
+import android.os.Handler
+import android.provider.Settings
+import java.io.Serializable
+import java.util.concurrent.ConcurrentHashMap
+import kotlin.random.Random
+
+class NodeProfile(
+    val did: String,
+    val username: String,
+    var cpaGeohash: String, // Agora mutável para permitir atualização
+    val creationTimestamp: Long = System.currentTimeMillis(),
+    var currentClaGeohash: String, // Agora mutável
+    var status: String = "1"
+) : Serializable
+
+class DiscoveredPeer(
+    val macAddress: String,
+    var deviceName: String,
+    var status: Int = 1, // 1: Ativo, 2: Desatualizado, 3: Expirado, 0: Inativo
+    var lastSeenTimestamp: Long = System.currentTimeMillis()
+) : Serializable
+
+class SituationalCache(
+    val nodes: ConcurrentHashMap<String, NodeProfile> = ConcurrentHashMap(),
+    val discoveredPeers: ConcurrentHashMap<String, DiscoveredPeer> = ConcurrentHashMap()
+) : Serializable
+
+class IdentityModule(
+    private val context: Context,
+    private val uiHandler: Handler
+) {
+    private var situationalCache = SituationalCache()
+    private var myProfile: NodeProfile? = null
+    private var isInitialized = false
+
+    companion object {
+        private const val TTL1_STALE_MS = 30 * 1000 // 30 segundos
+        private const val TTL2_EXPIRED_MS = 60 * 1000 // 60 segundos
+    }
+
+    fun isInitialized(): Boolean = isInitialized
+
+    fun getMyProfile(): NodeProfile? = myProfile
+
+    fun getSituationalCache(): SituationalCache = situationalCache
+
+    @SuppressLint("HardwareIds")
+    private fun generateDid(): String {
+        val androidId = Settings.Secure.getString(context.contentResolver, Settings.Secure.ANDROID_ID)
+        return "did:mesh:${androidId}"
+    }
+
+    private fun generateUsername(): String {
+        val randomSuffix = Random.nextInt(100, 999)
+        return "User-$randomSuffix"
+    }
+
+    fun initialize(cpaGeohash: String) {
+        if (isInitialized) return
+        val did = generateDid()
+        myProfile = NodeProfile(
+            did = did,
+            username = generateUsername(),
+            cpaGeohash = cpaGeohash,
+            currentClaGeohash = cpaGeohash
+        )
+        situationalCache.nodes[did] = myProfile!!
+        isInitialized = true
+        logToUi("[Identity] Módulo inicializado. DID: $did")
+        sendCacheUpdate()
+    }
+
+    fun initializeWithDefault() {
+        if (isInitialized) return
+        initialize("g9fail") // Usa o geohash de falha
+    }
+
+    fun updateNodeLocation(nodeGeohash: String) {
+        if (!isInitialized) {
+            initialize(nodeGeohash.take(6))
+        } else {
+            myProfile?.let {
+                it.currentClaGeohash = nodeGeohash.take(6)
+                // Se a identidade foi criada com falha, atualiza a CPA de origem na primeira localização bem-sucedida
+                if (it.cpaGeohash == "g9fail") {
+                    it.cpaGeohash = nodeGeohash.take(6)
+                }
+            }
+            sendCacheUpdate()
+        }
+    }
+
+    fun updateDiscoveredPeers(newPeers: List<String>) {
+        val now = System.currentTimeMillis()
+        val currentPeerMacs = situationalCache.discoveredPeers.keys.toMutableSet()
+
+        newPeers.forEach { deviceName ->
+            // Extrai o MAC do nome do dispositivo (ex: "moto e5 play_f34b")
+            val macAddress = deviceName.substringAfterLast("_", deviceName)
+            currentPeerMacs.remove(macAddress)
+            val existingPeer = situationalCache.discoveredPeers[macAddress]
+            if (existingPeer != null) {
+                existingPeer.status = 1
+                existingPeer.lastSeenTimestamp = now
+            } else {
+                situationalCache.discoveredPeers[macAddress] = DiscoveredPeer(macAddress, deviceName)
+            }
+        }
+
+        currentPeerMacs.forEach { macAddress ->
+            situationalCache.discoveredPeers.remove(macAddress)
+        }
+
+        sendCacheUpdate()
+    }
+
+    fun purgeExpiredPeers() {
+        val now = System.currentTimeMillis()
+        var changed = false
+        situationalCache.discoveredPeers.values.forEach { peer ->
+            val age = now - peer.lastSeenTimestamp
+            val oldStatus = peer.status
+            peer.status = when {
+                age > TTL2_EXPIRED_MS -> 0
+                age > TTL1_STALE_MS -> 2
+                else -> 1
+            }
+            if (oldStatus != peer.status) {
+                changed = true
+            }
+        }
+        if (changed) {
+            sendCacheUpdate()
+        }
+    }
+
+    private fun sendCacheUpdate() {
+        val msg = uiHandler.obtainMessage(AppConstants.WHAT_CACHE_UPDATE, situationalCache)
+        uiHandler.sendMessage(msg)
+    }
+
+    private fun logToUi(message: String) {
+        val msg = uiHandler.obtainMessage(AppConstants.WHAT_LOG, message)
+        uiHandler.sendMessage(msg)
+    }
+}
+
+package com.meshwave.core
+
+import android.content.Context
+import android.os.Handler
+import android.provider.Settings
+import java.io.Serializable
+import java.util.concurrent.ConcurrentHashMap
+import kotlin.random.Random
+
+class NodeProfile(
+    val did: String,
+    val username: String,
+    var cpaGeohash: String, // Agora mutável para permitir atualização
+    val creationTimestamp: Long = System.currentTimeMillis(),
+    var currentClaGeohash: String, // Agora mutável
+    var status: String = "1"
+) : Serializable
+
+class DiscoveredPeer(
+    val macAddress: String,
+    var deviceName: String,
+    var status: Int = 1, // 1: Ativo, 2: Desatualizado, 3: Expirado, 0: Inativo
+    var lastSeenTimestamp: Long = System.currentTimeMillis()
+) : Serializable
+
+class SituationalCache(
+    val nodes: ConcurrentHashMap<String, NodeProfile> = ConcurrentHashMap(),
+    val discoveredPeers: ConcurrentHashMap<String, DiscoveredPeer> = ConcurrentHashMap()
+) : Serializable
+
+class IdentityModule(
+    private val context: Context,
+    private val uiHandler: Handler
+) {
+    private var situationalCache = SituationalCache()
+    private var myProfile: NodeProfile? = null
+    private var isInitialized = false
+
+    companion object {
+        private const val TTL1_STALE_MS = 30 * 1000 // 30 segundos
+        private const val TTL2_EXPIRED_MS = 60 * 1000 // 60 segundos
+    }
+
+    fun isInitialized(): Boolean = isInitialized
+
+    fun getMyProfile(): NodeProfile? = myProfile
+
+    fun getSituationalCache(): SituationalCache = situationalCache
+
+    @SuppressLint("HardwareIds")
+    private fun generateDid(): String {
+        val androidId = Settings.Secure.getString(context.contentResolver, Settings.Secure.ANDROID_ID)
+        return "did:mesh:${androidId}"
+    }
+
+    private fun generateUsername(): String {
+        val randomSuffix = Random.nextInt(100, 999)
+        return "User-$randomSuffix"
+    }
+
+    fun initialize(cpaGeohash: String) {
+        if (isInitialized) return
+        val did = generateDid()
+        myProfile = NodeProfile(
+            did = did,
+            username = generateUsername(),
+            cpaGeohash = cpaGeohash,
+            currentClaGeohash = cpaGeohash
+        )
+        situationalCache.nodes[did] = myProfile!!
+        isInitialized = true
+        logToUi("[Identity] Módulo inicializado. DID: $did")
+        sendCacheUpdate()
+    }
+
+    fun initializeWithDefault() {
+        if (isInitialized) return
+        initialize("g9fail") // Usa o geohash de falha
+    }
+
+    fun updateNodeLocation(nodeGeohash: String) {
+        if (!isInitialized) {
+            initialize(nodeGeohash.take(6))
+        } else {
+            myProfile?.let {
+                it.currentClaGeohash = nodeGeohash.take(6)
+                // Se a identidade foi criada com falha, atualiza a CPA de origem na primeira localização bem-sucedida
+                if (it.cpaGeohash == "g9fail") {
+                    it.cpaGeohash = nodeGeohash.take(6)
+                }
+            }
+            sendCacheUpdate()
+        }
+    }
+
+    fun updateDiscoveredPeers(newPeers: List<String>) {
+        val now = System.currentTimeMillis()
+        val currentPeerMacs = situationalCache.discoveredPeers.keys.toMutableSet()
+
+        newPeers.forEach { deviceName ->
+            // Extrai o MAC do nome do dispositivo (ex: "moto e5 play_f34b")
+            val macAddress = deviceName.substringAfterLast("_", deviceName)
+            currentPeerMacs.remove(macAddress)
+            val existingPeer = situationalCache.discoveredPeers[macAddress]
+            if (existingPeer != null) {
+                existingPeer.status = 1
+                existingPeer.lastSeenTimestamp = now
+            } else {
+                situationalCache.discoveredPeers[macAddress] = DiscoveredPeer(macAddress, deviceName)
+            }
+        }
+
+        currentPeerMacs.forEach { macAddress ->
+            situationalCache.discoveredPeers.remove(macAddress)
+        }
+
+        sendCacheUpdate()
+    }
+
+    fun purgeExpiredPeers() {
+        val now = System.currentTimeMillis()
+        var changed = false
+        situationalCache.discoveredPeers.values.forEach { peer ->
+            val age = now - peer.lastSeenTimestamp
+            val oldStatus = peer.status
+            peer.status = when {
+                age > TTL2_EXPIRED_MS -> 0
+                age > TTL1_STALE_MS -> 2
+                else -> 1
+            }
+            if (oldStatus != peer.status) {
+                changed = true
+            }
+        }
+        if (changed) {
+            sendCacheUpdate()
+        }
+    }
+
+    private fun sendCacheUpdate() {
+        val msg = uiHandler.obtainMessage(AppConstants.WHAT_CACHE_UPDATE, situationalCache)
+        uiHandler.sendMessage(msg)
+    }
+
+    private fun logToUi(message: String) {
+        val msg = uiHandler.obtainMessage(AppConstants.WHAT_LOG, message)
+        uiHandler.sendMessage(msg)
+    }
+}
+
+app/src/main/java/com/meshwave/core/LocationModule.kt
+
+identityModule.initializeWithDefault()
+
+package com.meshwave.core
+
+import android.Manifest
+import android.annotation.SuppressLint
+import android.content.Context
+import android.content.pm.PackageManager
+import android.os.Handler
+import androidx.core.content.ContextCompat
+import ch.hsr.geohash.GeoHash
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationServices
+import com.google.android.gms.location.Priority
+import java.util.Timer
+import java.util.TimerTask
+
+@SuppressLint("MissingPermission")
+class LocationModule(
+    private val context: Context,
+    private val uiHandler: Handler,
+    private val identityModule: IdentityModule
+) {
+    private lateinit var fusedLocationClient: FusedLocationProviderClient
+    private var locationTimer: Timer? = null
+    private var lastKnownGoodGeohash: String? = null
+
+    companion object {
+        private const val LOCATION_UPDATE_INTERVAL_MS = 15000L
+    }
+
+    fun start() {
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(context)
+        startLocationUpdates()
+    }
+
+    fun stop() {
+        locationTimer?.cancel()
+        locationTimer = null
+    }
+
+    private fun startLocationUpdates() {
+        if (locationTimer != null) return
+        locationTimer = Timer()
+        locationTimer?.scheduleAtFixedRate(object : TimerTask() {
+            override fun run() {
+                requestLocation()
+            }
+        }, 0, LOCATION_UPDATE_INTERVAL_MS)
+    }
+
+    private fun requestLocation() {
+        if (ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            handleLocationError("Permissão negada.")
+            return
+        }
+
+        fusedLocationClient.getCurrentLocation(Priority.PRIORITY_HIGH_ACCURACY, null)
+            .addOnSuccessListener { location ->
+                if (location != null) {
+                    val nodeGeohash = GeoHash.withCharacterPrecision(location.latitude, location.longitude, 9).toBase32()
+                    identityModule.updateNodeLocation(nodeGeohash)
+                    lastKnownGoodGeohash = nodeGeohash
+                    sendToUi(LocationData(nodeGeohash.take(6), LocationStatus.UPDATED))
+                } else {
+                    handleLocationError("Localização nula.")
+                }
+            }
+            .addOnFailureListener { e ->
+                handleLocationError("API error - ${e.message}")
+            }
+    }
+
+    private fun handleLocationError(reason: String) {
+        // CORREÇÃO: Garante a inicialização mesmo em falha
+        if (!identityModule.isInitialized()) {
+            identityModule.initializeWithDefault()
+        }
+
+        if (lastKnownGoodGeohash != null) {
+            sendToUi(LocationData(lastKnownGoodGeohash!!.take(6), LocationStatus.STALE))
+        } else {
+            sendToUi(LocationData("Falha", LocationStatus.FAILED))
+        }
+    }
+
+    private fun sendToUi(data: LocationData) {
+        val msg = uiHandler.obtainMessage(AppConstants.WHAT_LOCATION_UPDATE, data)
+        uiHandler.sendMessage(msg)
+    }
+}
+
+package com.meshwave.core
+
+import android.Manifest
+import android.annotation.SuppressLint
+import android.content.Context
+import android.content.pm.PackageManager
+import android.os.Handler
+import androidx.core.content.ContextCompat
+import ch.hsr.geohash.GeoHash
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationServices
+import com.google.android.gms.location.Priority
+import java.util.Timer
+import java.util.TimerTask
+
+@SuppressLint("MissingPermission")
+class LocationModule(
+    private val context: Context,
+    private val uiHandler: Handler,
+    private val identityModule: IdentityModule
+) {
+    private lateinit var fusedLocationClient: FusedLocationProviderClient
+    private var locationTimer: Timer? = null
+    private var lastKnownGoodGeohash: String? = null
+
+    companion object {
+        private const val LOCATION_UPDATE_INTERVAL_MS = 15000L
+    }
+
+    fun start() {
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(context)
+        startLocationUpdates()
+    }
+
+    fun stop() {
+        locationTimer?.cancel()
+        locationTimer = null
+    }
+
+    private fun startLocationUpdates() {
+        if (locationTimer != null) return
+        locationTimer = Timer()
+        locationTimer?.scheduleAtFixedRate(object : TimerTask() {
+            override fun run() {
+                requestLocation()
+            }
+        }, 0, LOCATION_UPDATE_INTERVAL_MS)
+    }
+
+    private fun requestLocation() {
+        if (ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            handleLocationError("Permissão negada.")
+            return
+        }
+
+        fusedLocationClient.getCurrentLocation(Priority.PRIORITY_HIGH_ACCURACY, null)
+            .addOnSuccessListener { location ->
+                if (location != null) {
+                    val nodeGeohash = GeoHash.withCharacterPrecision(location.latitude, location.longitude, 9).toBase32()
+                    identityModule.updateNodeLocation(nodeGeohash)
+                    lastKnownGoodGeohash = nodeGeohash
+                    sendToUi(LocationData(nodeGeohash.take(6), LocationStatus.UPDATED))
+                } else {
+                    handleLocationError("Localização nula.")
+                }
+            }
+            .addOnFailureListener { e ->
+                handleLocationError("API error - ${e.message}")
+            }
+    }
+
+    private fun handleLocationError(reason: String) {
+        // CORREÇÃO: Garante a inicialização mesmo em falha
+        if (!identityModule.isInitialized()) {
+            identityModule.initializeWithDefault()
+        }
+
+        if (lastKnownGoodGeohash != null) {
+            sendToUi(LocationData(lastKnownGoodGeohash!!.take(6), LocationStatus.STALE))
+        } else {
+            sendToUi(LocationData("Falha", LocationStatus.FAILED))
+        }
+    }
+
+    private fun sendToUi(data: LocationData) {
+        val msg = uiHandler.obtainMessage(AppConstants.WHAT_LOCATION_UPDATE, data)
+        uiHandler.sendMessage(msg)
+    }
+}
+
+app/src/main/java/com/meshwave/core/WiFiDirectModule.kt
+
+package com.meshwave.core
+
+import android.annotation.SuppressLint
+import android.content.BroadcastReceiver
+import android.content.Context
+import android.content.Intent
+import android.content.IntentFilter
+import android.net.nsd.NsdManager
+import android.net.nsd.NsdServiceInfo
+import android.net.wifi.p2p.WifiP2pConfig
+import android.net.wifi.p2p.WifiP2pDevice
+import android.net.wifi.p2p.WifiP2pInfo
+import android.net.wifi.p2p.WifiP2pManager
+import android.os.Handler
+import android.os.Looper
+import android.util.Log
+import kotlinx.coroutines.*
+import kotlinx.coroutines.channels.Channel
+import java.io.ObjectInputStream
+import java.io.ObjectOutputStream
+import java.net.InetSocketAddress
+import java.net.ServerSocket
+import java.net.Socket
+
+private sealed class NetworkEvent {
+    object P2pEnabled : NetworkEvent()
+    object P2pDisabled : NetworkEvent()
+    data class ConnectionEstablished(val info: WifiP2pInfo) : NetworkEvent()
+}
+
+@SuppressLint("MissingPermission")
+class WiFiDirectModule(
+    private val context: Context,
+    private val uiHandler: Handler,
+    private val identityModule: IdentityModule
+) {
+    private val wifiP2pManager: WifiP2pManager? by lazy {
+        context.getSystemService(Context.WIFI_P2P_SERVICE) as WifiP2pManager?
+    }
+    private val nsdManager: NsdManager by lazy {
+        context.getSystemService(Context.NSD_SERVICE) as NsdManager
+    }
+    private var channel: WifiP2pManager.Channel? = null
+    private val intentFilter = IntentFilter()
+    private val moduleScope = CoroutineScope(Job() + Dispatchers.IO)
+    private var stateMachineJob: Job? = null
+    private var serverSocket: ServerSocket? = null
+    private var registrationListener: NsdManager.RegistrationListener? = null
+
+    private val networkEvents = Channel<NetworkEvent>(Channel.UNLIMITED)
+
+    private var isP2pEnabled = false
+    private var isGroupFormed = false
+    private var isConnecting = false
+
+    companion object {
+        private const val TAG = "WiFiDirectModule"
+        private const val DISCOVERY_INTERVAL_MS = 10000L // Reduzido para 10s
+        private const val PORT = 8888
+        private const val SERVICE_TYPE = "_meshwave._tcp."
+    }
+
+    private val receiver = object : BroadcastReceiver() {
+        override fun onReceive(context: Context, intent: Intent) {
+            when (intent.action) {
+                WifiP2pManager.WIFI_P2P_STATE_CHANGED_ACTION -> {
+                    val state = intent.getIntExtra(WifiP2pManager.EXTRA_WIFI_STATE, -1)
+                    if (state == WifiP2pManager.WIFI_P2P_STATE_ENABLED) {
+                        networkEvents.trySend(NetworkEvent.P2pEnabled)
+                    } else {
+                        networkEvents.trySend(NetworkEvent.P2pDisabled)
+                    }
+                }
+                WifiP2pManager.WIFI_P2P_CONNECTION_CHANGED_ACTION -> {
+                    val p2pInfo: WifiP2pInfo? = intent.getParcelableExtraCompat(WifiP2pManager.EXTRA_WIFI_P2P_INFO, WifiP2pInfo::class.java)
+                    if (p2pInfo?.groupFormed == true) {
+                        networkEvents.trySend(NetworkEvent.ConnectionEstablished(p2pInfo))
+                    }
+                }
+            }
+        }
+    }
+
+    fun start() {
+        intentFilter.apply {
+            addAction(WifiP2pManager.WIFI_P2P_STATE_CHANGED_ACTION)
+            addAction(WifiP2pManager.WIFI_P2P_CONNECTION_CHANGED_ACTION)
+        }
+        channel = wifiP2pManager?.initialize(context, Looper.getMainLooper(), null)
+        context.registerReceiver(receiver, intentFilter)
+        stateMachineJob = moduleScope.launch { stateMachineLoop() }
+        logToUi("[WiFi] Módulo de Rede iniciando...")
+    }
+
+    fun stop() {
+        stateMachineJob?.cancel()
+        networkEvents.close()
+        try {
+            context.unregisterReceiver(receiver)
+        } catch (e: IllegalArgumentException) { /* Ignora */ }
+        unregisterService()
+        closeServer()
+        logToUi("[WiFi] Módulo de Rede parado.")
+    }
+
+    private suspend fun stateMachineLoop() = coroutineScope {
+        logToUi("[State] Máquina de estados iniciada.")
+        launch { startDiscoveryCycle() }
+
+        for (event in networkEvents) {
+            when (event) {
+                is NetworkEvent.P2pEnabled -> {
+                    isP2pEnabled = true
+                    logToUi("[Event] P2P Habilitado.")
+                }
+                is NetworkEvent.P2pDisabled -> {
+                    isP2pEnabled = false
+                    logToUi("[Event] P2P Desabilitado.")
+                }
+                is NetworkEvent.ConnectionEstablished -> {
+                    // Lógica de conexão será adicionada aqui no futuro
+                }
+            }
+        }
+    }
+
+    private suspend fun startDiscoveryCycle() {
+        while (moduleScope.isActive) {
+            if (isP2pEnabled && !isGroupFormed && !isConnecting) {
+                logToUi("[State] Ciclo de descoberta iniciado.")
+                updateWifiStatus("Buscando...")
+                registerService()
+                discoverServices()
+            }
+            delay(DISCOVERY_INTERVAL_MS)
+            if (moduleScope.isActive) {
+                logToUi("[State] Ciclo de descoberta finalizado. Pares encontrados: ${identityModule.getSituationalCache().discoveredPeers.size}")
+                identityModule.purgeExpiredPeers()
+                unregisterService()
+            }
+        }
+    }
+
+    private fun registerService() {
+        if (registrationListener != null) return
+        val myProfile = identityModule.getMyProfile() ?: return
+        val serviceInfo = NsdServiceInfo().apply {
+            serviceName = "MeshWave_${myProfile.did.takeLast(6)}"
+            serviceType = SERVICE_TYPE
+            port = PORT
+            setAttribute("did", myProfile.did)
+            setAttribute("username", myProfile.username)
+        }
+        registrationListener = object : NsdManager.RegistrationListener {
+            override fun onServiceRegistered(serviceInfo: NsdServiceInfo) {
+                logToUi("[NSD] Serviço anunciado: ${serviceInfo.serviceName}")
+            }
+            override fun onRegistrationFailed(serviceInfo: NsdServiceInfo, errorCode: Int) {
+                logToUi("[NSD] Falha ao anunciar serviço: $errorCode")
+                registrationListener = null
+            }
+            override fun onServiceUnregistered(serviceInfo: NsdServiceInfo) {
+                logToUi("[NSD] Anúncio parado: ${serviceInfo.serviceName}")
+            }
+            override fun onUnregistrationFailed(serviceInfo: NsdServiceInfo, errorCode: Int) {
+                logToUi("[NSD] Falha ao parar anúncio: $errorCode")
+                registrationListener = null
+            }
+        }
+        nsdManager.registerService(serviceInfo, NsdManager.PROTOCOL_DNS_SD, registrationListener)
+    }
+
+    private fun unregisterService() {
+        registrationListener?.let {
+            nsdManager.unregisterService(it)
+            registrationListener = null
+        }
+    }
+
+    private fun discoverServices() {
+        val discoveryListener = object : NsdManager.DiscoveryListener {
+            override fun onDiscoveryStarted(regType: String) {}
+            override fun onDiscoveryStopped(serviceType: String) {}
+            override fun onServiceFound(service: NsdServiceInfo) {
+                if (service.serviceName != identityModule.getMyProfile()?.did?.let { "MeshWave_${it.takeLast(6)}" }) {
+                    nsdManager.resolveService(service, createResolveListener())
+                }
+            }
+            override fun onServiceLost(service: NsdServiceInfo) {}
+            override fun onStartDiscoveryFailed(serviceType: String, errorCode: Int) {
+                nsdManager.stopServiceDiscovery(this)
+            }
+            override fun onStopDiscoveryFailed(serviceType: String, errorCode: Int) {}
+        }
+        nsdManager.discoverServices(SERVICE_TYPE, NsdManager.PROTOCOL_DNS_SD, discoveryListener)
+        moduleScope.launch {
+            delay(DISCOVERY_INTERVAL_MS / 2)
+            nsdManager.stopServiceDiscovery(discoveryListener)
+        }
+    }
+
+    private fun createResolveListener(): NsdManager.ResolveListener {
+        return object : NsdManager.ResolveListener {
+            override fun onResolveFailed(serviceInfo: NsdServiceInfo, errorCode: Int) {}
+            override fun onServiceResolved(serviceInfo: NsdServiceInfo) {
+                val deviceName = serviceInfo.attributes["username"]?.toString(Charsets.UTF_8) ?: serviceInfo.serviceName
+                logToUi("[NSD] Peer encontrado: $deviceName")
+                identityModule.updateDiscoveredPeers(listOf(deviceName))
+            }
+        }
+    }
+
+    private fun closeServer() {
+        try {
+            serverSocket?.close()
+            serverSocket = null
+        } catch (e: Exception) { /* Ignora */ }
+    }
+
+    private fun updateWifiStatus(status: String) {
+        val msg = uiHandler.obtainMessage(AppConstants.WHAT_WIFI_STATUS_UPDATE, status)
+        uiHandler.sendMessage(msg)
+    }
+
+    private fun logToUi(message: String) {
+        Log.d(TAG, message)
+        val msg = uiHandler.obtainMessage(AppConstants.WHAT_LOG, message)
+        uiHandler.sendMessage(msg)
+    }
+}
+
+fun <T> Intent.getParcelableExtraCompat(key: String, clazz: Class<T>): T? {
+    return if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU) {
+        this.getParcelableExtra(key, clazz)
+    } else {
+        @Suppress("DEPRECATION")
+        this.getParcelableExtra(key) as? T
+    }
+}
+
+package com.meshwave.core
+
+import android.annotation.SuppressLint
+import android.content.BroadcastReceiver
+import android.content.Context
+import android.content.Intent
+import android.content.IntentFilter
+import android.net.nsd.NsdManager
+import android.net.nsd.NsdServiceInfo
+import android.net.wifi.p2p.WifiP2pConfig
+import android.net.wifi.p2p.WifiP2pDevice
+import android.net.wifi.p2p.WifiP2pInfo
+import android.net.wifi.p2p.WifiP2pManager
+import android.os.Handler
+import android.os.Looper
+import android.util.Log
+import kotlinx.coroutines.*
+import kotlinx.coroutines.channels.Channel
+import java.io.ObjectInputStream
+import java.io.ObjectOutputStream
+import java.net.InetSocketAddress
+import java.net.ServerSocket
+import java.net.Socket
+
+private sealed class NetworkEvent {
+    object P2pEnabled : NetworkEvent()
+    object P2pDisabled : NetworkEvent()
+    data class ConnectionEstablished(val info: WifiP2pInfo) : NetworkEvent()
+}
+
+@SuppressLint("MissingPermission")
+class WiFiDirectModule(
+    private val context: Context,
+    private val uiHandler: Handler,
+    private val identityModule: IdentityModule
+) {
+    private val wifiP2pManager: WifiP2pManager? by lazy {
+        context.getSystemService(Context.WIFI_P2P_SERVICE) as WifiP2pManager?
+    }
+    private val nsdManager: NsdManager by lazy {
+        context.getSystemService(Context.NSD_SERVICE) as NsdManager
+    }
+    private var channel: WifiP2pManager.Channel? = null
+    private val intentFilter = IntentFilter()
+    private val moduleScope = CoroutineScope(Job() + Dispatchers.IO)
+    private var stateMachineJob: Job? = null
+    private var serverSocket: ServerSocket? = null
+    private var registrationListener: NsdManager.RegistrationListener? = null
+
+    private val networkEvents = Channel<NetworkEvent>(Channel.UNLIMITED)
+
+    private var isP2pEnabled = false
+    private var isGroupFormed = false
+    private var isConnecting = false
+
+    companion object {
+        private const val TAG = "WiFiDirectModule"
+        private const val DISCOVERY_INTERVAL_MS = 10000L // Reduzido para 10s
+        private const val PORT = 8888
+        private const val SERVICE_TYPE = "_meshwave._tcp."
+    }
+
+    private val receiver = object : BroadcastReceiver() {
+        override fun onReceive(context: Context, intent: Intent) {
+            when (intent.action) {
+                WifiP2pManager.WIFI_P2P_STATE_CHANGED_ACTION -> {
+                    val state = intent.getIntExtra(WifiP2pManager.EXTRA_WIFI_STATE, -1)
+                    if (state == WifiP2pManager.WIFI_P2P_STATE_ENABLED) {
+                        networkEvents.trySend(NetworkEvent.P2pEnabled)
+                    } else {
+                        networkEvents.trySend(NetworkEvent.P2pDisabled)
+                    }
+                }
+                WifiP2pManager.WIFI_P2P_CONNECTION_CHANGED_ACTION -> {
+                    val p2pInfo: WifiP2pInfo? = intent.getParcelableExtraCompat(WifiP2pManager.EXTRA_WIFI_P2P_INFO, WifiP2pInfo::class.java)
+                    if (p2pInfo?.groupFormed == true) {
+                        networkEvents.trySend(NetworkEvent.ConnectionEstablished(p2pInfo))
+                    }
+                }
+            }
+        }
+    }
+
+    fun start() {
+        intentFilter.apply {
+            addAction(WifiP2pManager.WIFI_P2P_STATE_CHANGED_ACTION)
+            addAction(WifiP2pManager.WIFI_P2P_CONNECTION_CHANGED_ACTION)
+        }
+        channel = wifiP2pManager?.initialize(context, Looper.getMainLooper(), null)
+        context.registerReceiver(receiver, intentFilter)
+        stateMachineJob = moduleScope.launch { stateMachineLoop() }
+        logToUi("[WiFi] Módulo de Rede iniciando...")
+    }
+
+    fun stop() {
+        stateMachineJob?.cancel()
+        networkEvents.close()
+        try {
+            context.unregisterReceiver(receiver)
+        } catch (e: IllegalArgumentException) { /* Ignora */ }
+        unregisterService()
+        closeServer()
+        logToUi("[WiFi] Módulo de Rede parado.")
+    }
+
+    private suspend fun stateMachineLoop() = coroutineScope {
+        logToUi("[State] Máquina de estados iniciada.")
+        launch { startDiscoveryCycle() }
+
+        for (event in networkEvents) {
+            when (event) {
+                is NetworkEvent.P2pEnabled -> {
+                    isP2pEnabled = true
+                    logToUi("[Event] P2P Habilitado.")
+                }
+                is NetworkEvent.P2pDisabled -> {
+                    isP2pEnabled = false
+                    logToUi("[Event] P2P Desabilitado.")
+                }
+                is NetworkEvent.ConnectionEstablished -> {
+                    // Lógica de conexão será adicionada aqui no futuro
+                }
+            }
+        }
+    }
+
+    private suspend fun startDiscoveryCycle() {
+        while (moduleScope.isActive) {
+            if (isP2pEnabled && !isGroupFormed && !isConnecting) {
+                logToUi("[State] Ciclo de descoberta iniciado.")
+                updateWifiStatus("Buscando...")
+                registerService()
+                discoverServices()
+            }
+            delay(DISCOVERY_INTERVAL_MS)
+            if (moduleScope.isActive) {
+                logToUi("[State] Ciclo de descoberta finalizado. Pares encontrados: ${identityModule.getSituationalCache().discoveredPeers.size}")
+                identityModule.purgeExpiredPeers()
+                unregisterService()
+            }
+        }
+    }
+
+    private fun registerService() {
+        if (registrationListener != null) return
+        val myProfile = identityModule.getMyProfile() ?: return
+        val serviceInfo = NsdServiceInfo().apply {
+            serviceName = "MeshWave_${myProfile.did.takeLast(6)}"
+            serviceType = SERVICE_TYPE
+            port = PORT
+            setAttribute("did", myProfile.did)
+            setAttribute("username", myProfile.username)
+        }
+        registrationListener = object : NsdManager.RegistrationListener {
+            override fun onServiceRegistered(serviceInfo: NsdServiceInfo) {
+                logToUi("[NSD] Serviço anunciado: ${serviceInfo.serviceName}")
+            }
+            override fun onRegistrationFailed(serviceInfo: NsdServiceInfo, errorCode: Int) {
+                logToUi("[NSD] Falha ao anunciar serviço: $errorCode")
+                registrationListener = null
+            }
+            override fun onServiceUnregistered(serviceInfo: NsdServiceInfo) {
+                logToUi("[NSD] Anúncio parado: ${serviceInfo.serviceName}")
+            }
+            override fun onUnregistrationFailed(serviceInfo: NsdServiceInfo, errorCode: Int) {
+                logToUi("[NSD] Falha ao parar anúncio: $errorCode")
+                registrationListener = null
+            }
+        }
+        nsdManager.registerService(serviceInfo, NsdManager.PROTOCOL_DNS_SD, registrationListener)
+    }
+
+    private fun unregisterService() {
+        registrationListener?.let {
+            nsdManager.unregisterService(it)
+            registrationListener = null
+        }
+    }
+
+    private fun discoverServices() {
+        val discoveryListener = object : NsdManager.DiscoveryListener {
+            override fun onDiscoveryStarted(regType: String) {}
+            override fun onDiscoveryStopped(serviceType: String) {}
+            override fun onServiceFound(service: NsdServiceInfo) {
+                if (service.serviceName != identityModule.getMyProfile()?.did?.let { "MeshWave_${it.takeLast(6)}" }) {
+                    nsdManager.resolveService(service, createResolveListener())
+                }
+            }
+            override fun onServiceLost(service: NsdServiceInfo) {}
+            override fun onStartDiscoveryFailed(serviceType: String, errorCode: Int) {
+                nsdManager.stopServiceDiscovery(this)
+            }
+            override fun onStopDiscoveryFailed(serviceType: String, errorCode: Int) {}
+        }
+        nsdManager.discoverServices(SERVICE_TYPE, NsdManager.PROTOCOL_DNS_SD, discoveryListener)
+        moduleScope.launch {
+            delay(DISCOVERY_INTERVAL_MS / 2)
+            nsdManager.stopServiceDiscovery(discoveryListener)
+        }
+    }
+
+    private fun createResolveListener(): NsdManager.ResolveListener {
+        return object : NsdManager.ResolveListener {
+            override fun onResolveFailed(serviceInfo: NsdServiceInfo, errorCode: Int) {}
+            override fun onServiceResolved(serviceInfo: NsdServiceInfo) {
+                val deviceName = serviceInfo.attributes["username"]?.toString(Charsets.UTF_8) ?: serviceInfo.serviceName
+                logToUi("[NSD] Peer encontrado: $deviceName")
+                identityModule.updateDiscoveredPeers(listOf(deviceName))
+            }
+        }
+    }
+
+    private fun closeServer() {
+        try {
+            serverSocket?.close()
+            serverSocket = null
+        } catch (e: Exception) { /* Ignora */ }
+    }
+
+    private fun updateWifiStatus(status: String) {
+        val msg = uiHandler.obtainMessage(AppConstants.WHAT_WIFI_STATUS_UPDATE, status)
+        uiHandler.sendMessage(msg)
+    }
+
+    private fun logToUi(message: String) {
+        Log.d(TAG, message)
+        val msg = uiHandler.obtainMessage(AppConstants.WHAT_LOG, message)
+        uiHandler.sendMessage(msg)
+    }
+}
+
+fun <T> Intent.getParcelableExtraCompat(key: String, clazz: Class<T>): T? {
+    return if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU) {
+        this.getParcelableExtra(key, clazz)
+    } else {
+        @Suppress("DEPRECATION")
+        this.getParcelableExtra(key) as? T
+    }
+}
+
+IdentityModule
+
+currentClaGeohash
+
+WiFiDirectModule
+
+IdentityModule.kt
+
+**Ação Adicional:**
+Limpe e recompile o projeto. Com esta mudança, o `IdentityModule` se torna mais robusto, eliminando a dependência de uma chamada de inicialização externa e garantindo que o `currentClaGeohash` nunca seja nulo.
+
+**Ação Adicional:**
+Limpe e recompile o projeto. Com esta mudança, o `IdentityModule` se torna mais robusto, eliminando a dependência de uma chamada de inicialização externa e garantindo que o `currentClaGeohash` nunca seja nulo.

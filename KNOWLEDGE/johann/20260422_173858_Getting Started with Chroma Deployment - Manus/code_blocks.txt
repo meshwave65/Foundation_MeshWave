@@ -1,0 +1,439 @@
+
+
+================================================================================MANUS-OP-MANUAL-20250914-V4
+
+whitepaper_artifacts
+
+ECOSYSTEM-KNOWLEDGE-BASE
+
+parent_id
+
+01_MESH_WAVE
+
+01_MESH_WAVE.index.md
+
+parent_id
+
+parent_id
+
+arc_bayes.md
+
+id
+
+parent_id
+
+id
+
+ECOSYSTEM-KNOWLEDGE-BASE.index.md
+
+parent_id = NULL
+
+import chromadb
+from chromadb.config import Settings
+
+# --- INÍCIO DO CÓDIGO DE CONEXÃO OBRIGATÓRIO ---
+client = chromadb.HttpClient(
+    host='https://chromadb.meshwave.com.br',
+    port=443,
+    ssl=True,
+    settings=Settings(ssl_verify=False ) # A diretiva essencial
+)
+
+try:
+    heartbeat = client.heartbeat()
+    print(f"✅ Conexão com o ChromaDB estabelecida. Heartbeat: {heartbeat}")
+    # Proceda com o uso do 'client'
+except Exception as e:
+    print(f"❌ Falha crítica ao conectar com o ChromaDB: {e}")
+# --- FIM DO CÓDIGO DE CONEXÃO OBRIGATÓRIO ---
+
+import chromadb
+from chromadb.config import Settings
+
+# --- INÍCIO DO CÓDIGO DE CONEXÃO OBRIGATÓRIO ---
+client = chromadb.HttpClient(
+    host='https://chromadb.meshwave.com.br',
+    port=443,
+    ssl=True,
+    settings=Settings(ssl_verify=False ) # A diretiva essencial
+)
+
+try:
+    heartbeat = client.heartbeat()
+    print(f"✅ Conexão com o ChromaDB estabelecida. Heartbeat: {heartbeat}")
+    # Proceda com o uso do 'client'
+except Exception as e:
+    print(f"❌ Falha crítica ao conectar com o ChromaDB: {e}")
+# --- FIM DO CÓDIGO DE CONEXÃO OBRIGATÓRIO ---
+
+.index.md
+
+parent_id
+
+.index.md
+
+chunks
+
+chunks
+
+00_Consolidated_Reports
+
+/git/commit
+
+MANUS-OP-MANUAL-20250914-V5
+
+chroma run --path /caminho/para/sua/base/chroma --port 8001
+
+chroma run --path /caminho/para/sua/base/chroma --port 8001
+
+/caminho/para/sua/base/chroma
+
+sofia.service
+
+sofia-dev
+
+cloudflared.service
+
+chromadb
+
+https://sofia-api.meshwave.com.br/api/v1/workspace
+
+/media/mesh/MYEBOOK1/ECOSYSTEM-KNOWLEDGE-BASE
+
+POST /list
+
+{"path": "caminho/relativo"}
+
+POST /read
+
+{"path": "caminho/do/arquivo"}
+
+POST /write
+
+{"file_path": "...", "content": "..."}
+
+POST /mkdir
+
+{"path": "caminho/do/diretorio"}
+
+POST https://sofia-api.meshwave.com.br/api/v1/workspace/git/commit
+
+{"commit_message": "Sua mensagem", "branch": "main"}
+
+whitepaper_artifacts
+
+POST /api/v1/db/whitepaper_artifacts
+
+https://chromadb.meshwave.com.br
+
+import chromadb
+from chromadb.config import Settings
+
+# --- INÍCIO DO CÓDIGO DE CONEXÃO OBRIGATÓRIO ---
+client = chromadb.HttpClient(
+    host='https://chromadb.meshwave.com.br',
+    port=443,
+    ssl=True,
+    settings=Settings(ssl_verify=False ) # Diretiva essencial para o túnel
+)
+# --- FIM DO CÓDIGO DE CONEXÃO OBRIGATÓRIO ---
+
+import chromadb
+from chromadb.config import Settings
+
+# --- INÍCIO DO CÓDIGO DE CONEXÃO OBRIGATÓRIO ---
+client = chromadb.HttpClient(
+    host='https://chromadb.meshwave.com.br',
+    port=443,
+    ssl=True,
+    settings=Settings(ssl_verify=False ) # Diretiva essencial para o túnel
+)
+# --- FIM DO CÓDIGO DE CONEXÃO OBRIGATÓRIO ---
+
+whitepaper_artifacts
+
+01_MESH_WAVE
+
+01_MESH_WAVE.index.md
+
+parent_id
+
+parent_id
+
+arc_bayes.md
+
+id
+
+parent_id
+
+id
+
+ECOSYSTEM-KNOWLEDGE-BASE.index.md
+
+parent_id = NULL
+
+.index.md
+
+parent_id
+
+.index.md
+
+chunks
+
+chunks
+
+00_Consolidated_Reports
+
+MANUS-BIBLE-20250914-V6
+
+ECOSYSTEM-KNOWLEDGE-BASE
+
+whitepaper_artifacts
+
+# Navegue para o diretório correto primeiro!
+cd /media/mesh/MYEBOOK1/ECOSYSTEM-KNOWLEDGE-BASE
+# Em seguida, execute o comando para iniciar o ChromaDB na porta 8001
+chroma run --path ./chroma --port 8001
+
+# Navegue para o diretório correto primeiro!
+cd /media/mesh/MYEBOOK1/ECOSYSTEM-KNOWLEDGE-BASE
+# Em seguida, execute o comando para iniciar o ChromaDB na porta 8001
+chroma run --path ./chroma --port 8001
+
+https://chromadb.meshwave.com.br
+
+# Bloco de código sagrado para conectar ao ChromaDB. Copie e use.
+import chromadb
+from chromadb.config import Settings
+
+try:
+    client = chromadb.HttpClient(
+        host='https://chromadb.meshwave.com.br',
+        port=443, # Use 443 para HTTPS, não 8001
+        ssl=True,
+        settings=Settings(ssl_verify=False ) # A linha que resolve o problema de SSL
+    )
+    heartbeat = client.heartbeat()
+    print(f"✅ SUCESSO: Conexão com o ChromaDB estabelecida. Heartbeat: {heartbeat}")
+except Exception as e:
+    print(f"❌ FALHA CRÍTICA: Não foi possível conectar ao ChromaDB. Erro: {e}")
+    # Se isso falhar, você não pode continuar a missão de vetorização.
+    # Pare e reporte a falha de conexão.
+
+# Bloco de código sagrado para conectar ao ChromaDB. Copie e use.
+import chromadb
+from chromadb.config import Settings
+
+try:
+    client = chromadb.HttpClient(
+        host='https://chromadb.meshwave.com.br',
+        port=443, # Use 443 para HTTPS, não 8001
+        ssl=True,
+        settings=Settings(ssl_verify=False ) # A linha que resolve o problema de SSL
+    )
+    heartbeat = client.heartbeat()
+    print(f"✅ SUCESSO: Conexão com o ChromaDB estabelecida. Heartbeat: {heartbeat}")
+except Exception as e:
+    print(f"❌ FALHA CRÍTICA: Não foi possível conectar ao ChromaDB. Erro: {e}")
+    # Se isso falhar, você não pode continuar a missão de vetorização.
+    # Pare e reporte a falha de conexão.
+
+https://sofia-api.meshwave.com.br/api/v1/workspace
+
+/list
+
+POST
+
+{"path": "caminho/relativo/aqui"}
+
+{"path": ""}
+
+/read
+
+POST
+
+{"path": "caminho/para/o/arquivo.md"}
+
+/write
+
+POST
+
+{"file_path": "onde/salvar/novo_arquivo.md", "content": "O texto que você quer escrever"}
+
+/mkdir
+
+POST
+
+{"path": "caminho/para/nova_pasta"}
+
+https://sofia-api.meshwave.com.br/api/v1/workspace/git/commit
+
+POST
+
+{"commit_message": "Descreve o que você fez", "branch": "main"}
+
+"feat(BCE ): Indexados 5 novos artefatos sobre ARC-Bayes."
+
+whitepaper_artifacts
+
+01_MESH_WAVE
+
+01_MESH_WAVE.index.md
+
+parent_id
+
+parent_id
+
+arc_bayes.md
+
+id
+
+parent_id
+
+sub_dir_seguranca.index.md
+
+id
+
+ECOSYSTEM-KNOWLEDGE-BASE.index.md
+
+parent_id = NULL
+
+id
+
+caminho_de_diretorio
+
+id_do_pai
+
+caminho_de_diretorio
+
+id_do_pai
+
+id
+
+id_do_pai
+
+id_do_pai
+
+.index.md
+
+chunks
+
+chunks
+
+sofia_knowledge_base
+
+{"source_file": "nome_do_arquivo.md"}
+
+chunks
+
+chunks
+
+00_Consolidated_Reports
+
+cd /media/mesh/MYEBOOK1/ECOSYSTEM-KNOWLEDGE-BASE
+
+chroma run --path ./chroma --port 8001
+
+# Bloco de Verificação de Conexão ChromaDB
+import chromadb
+from chromadb.config import Settings
+
+try:
+    client = chromadb.HttpClient(
+        host='https://chromadb.meshwave.com.br',
+        port=443,
+        ssl=True,
+        settings=Settings(ssl_verify=False )
+    )
+    heartbeat = client.heartbeat()
+    print("✅ SUCESSO: Ferramenta 'Cérebro' (ChromaDB) está online.")
+except Exception as e:
+    print(f"❌ FALHA CRÍTICA: Ferramenta 'Cérebro' (ChromaDB) está offline. Erro: {e}. ABORTE A MISSÃO E REPORTE.")
+    # Se este bloco falhar, não prossiga.
+
+# Bloco de Verificação de Conexão ChromaDB
+import chromadb
+from chromadb.config import Settings
+
+try:
+    client = chromadb.HttpClient(
+        host='https://chromadb.meshwave.com.br',
+        port=443,
+        ssl=True,
+        settings=Settings(ssl_verify=False )
+    )
+    heartbeat = client.heartbeat()
+    print("✅ SUCESSO: Ferramenta 'Cérebro' (ChromaDB) está online.")
+except Exception as e:
+    print(f"❌ FALHA CRÍTICA: Ferramenta 'Cérebro' (ChromaDB) está offline. Erro: {e}. ABORTE A MISSÃO E REPORTE.")
+    # Se este bloco falhar, não prossiga.
+
+whitepaper_artifacts
+
+01_MESH_WAVE
+
+01_MESH_WAVE.index.md
+
+indexar_diretorio(caminho_atual, id_do_pai)
+
+indexar_diretorio(caminho_raiz, NULL)
+
+caminho_raiz
+
+""
+
+caminho_atual
+
+caminho_atual.index.md
+
+POST https://sofia-api.meshwave.com.br/api/v1/workspace/write
+
+{"file_path": "caminho/atual.index.md", "content": ""}
+
+whitepaper_artifacts
+
+parent_id
+
+POST https://sofia-api.meshwave.com.br/api/v1/db/whitepaper_artifacts
+
+{"artifact_name": "caminho/atual.index.md", "parent_id": id_do_pai, ...}
+
+id
+
+novo_id_pai
+
+caminho_atual
+
+POST https://sofia-api.meshwave.com.br/api/v1/workspace/list
+
+{"path": "caminho_atual"}
+
+whitepaper_artifacts
+
+parent_id = novo_id_pai
+
+indexar_diretorio(caminho_do_subdiretorio, novo_id_pai)
+
+whitepaper_artifacts
+
+.index.md
+
+POST https://sofia-api.meshwave.com.br/api/v1/workspace/read
+
+{"path": "caminho/do/arquivo.md"}
+
+chunks
+
+chunks
+
+sofia_knowledge_base
+
+{"source_file": "nome_do_arquivo.md"}
+
+POST https://sofia-api.meshwave.com.br/api/v1/workspace/write
+
+00_Consolidated_Reports/nome_do_tema.md
+
+POST https://sofia-api.meshwave.com.br/api/v1/workspace/git/commit
+
+{"commit_message": "BCE-UPDATE: Vetorizados 10 artefatos do diretório 01_MESH_WAVE/Segurança."}

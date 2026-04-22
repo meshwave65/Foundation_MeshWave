@@ -1,0 +1,153 @@
+
+
+================================================================================leads
+
+results
+
+mce_
+
+create_mbp_triangle_tables.sql
+
+pull
+
+mce_
+
+results
+
+leads
+
+createMceLead
+
+leads
+
+server/db.ts
+
+leads
+
+leads
+
+results
+
+results
+
+leads
+
+createMceLead
+
+.insert({
+  nome: data.nome,
+  telefone: data.telefone,
+  email: data.email,
+})
+
+.insert({
+  nome: data.nome,
+  telefone: data.telefone,
+  email: data.email,
+})
+
+leads
+
+nome
+
+telefone
+
+email
+
+name
+
+phone
+
+const leadId = String(inserted[0].id)
+
+results
+
+leadId
+
+server/db.ts
+
+createMceLead
+
+export async function createMceLead(data: { nome: string; telefone: string; email: string }) {
+  console.log("Tentando gravar lead com dados:", data); // Ver o que está saindo
+  
+  const { data: inserted, error } = await supabase
+    .from('leads')
+    .insert({
+      nome: data.nome,
+      telefone: data.telefone,
+      email: data.email,
+    })
+    .select(); // Pega o objeto inteiro de volta
+
+  if (error) {
+    console.error("ERRO REAL DO SUPABASE NO LEAD:", error); // Isso vai brilhar no seu terminal
+    throw error;
+  }
+
+  return { id: String(inserted[0].id) };
+}
+
+export async function createMceLead(data: { nome: string; telefone: string; email: string }) {
+  console.log("Tentando gravar lead com dados:", data); // Ver o que está saindo
+  
+  const { data: inserted, error } = await supabase
+    .from('leads')
+    .insert({
+      nome: data.nome,
+      telefone: data.telefone,
+      email: data.email,
+    })
+    .select(); // Pega o objeto inteiro de volta
+
+  if (error) {
+    console.error("ERRO REAL DO SUPABASE NO LEAD:", error); // Isso vai brilhar no seu terminal
+    throw error;
+  }
+
+  return { id: String(inserted[0].id) };
+}
+
+console.error
+
+lead_id
+
+results
+
+results
+
+leads
+
+Teste.tsx
+
+Teste.tsx
+
+irParaSliders
+
+const leadResult = await submitLeadMutation.mutateAsync(...)
+
+leadId
+
+const resultSave = await submitResultMutation.mutateAsync({ leadId: leadResult.leadId, ... })
+
+irParaSliders
+
+results
+
+leads
+
+submitLead
+
+submitResult
+
+lead_id
+
+results
+
+lead_id
+
+server/routers.ts
+
+leadId
+
+leads

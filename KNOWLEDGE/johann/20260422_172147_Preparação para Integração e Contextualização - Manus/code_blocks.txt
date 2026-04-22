@@ -1,0 +1,163 @@
+
+
+================================================================================config.yml
+
+config.yml
+
+sentinel.py
+
+sentinel.py
+
+cloudflared tunnel list
+
+cloudflared tunnel list
+
+ID                                   NAME        CREATED              CONNECTIONS
+=====================================================================================
+a1b2c3d4-e5f6-7890-1234-567890abcdef  sofia-dev   2025-09-20T18:00:00Z 2xDFW, 2xLAX
+
+ID                                   NAME        CREATED              CONNECTIONS
+=====================================================================================
+a1b2c3d4-e5f6-7890-1234-567890abcdef  sofia-dev   2025-09-20T18:00:00Z 2xDFW, 2xLAX
+
+sofia-dev
+
+config.yml
+
+~/.cloudflared/
+
+cd ~/.cloudflared/
+
+cd ~/.cloudflared/
+
+mkdir ~/.cloudflared
+
+nano config.yml
+
+nano config.yml
+
+sofia-dev
+
+seudominio.com
+
+# Arquivo de configuração para o túnel 'sofia-dev'
+# Define as regras de entrada para múltiplos serviços locais.
+
+tunnel: sofia-dev  # <-- SUBSTITUA pelo NOME do seu túnel
+credentials-file: /home/mesh/.cloudflared/a1b2c3d4-e5f6-7890-1234-567890abcdef.json # <-- O cloudflared encontra isso sozinho, mas é bom saber que existe.
+
+# Regras de entrada (ingress rules)
+ingress:
+  # Regra 1: Frontend Principal (SOFIA)
+  - hostname: sofia.seudominio.com  # <-- SUBSTITUA pelo seu subdomínio desejado
+    service: http://localhost:5173
+
+  # Regra 2: Frontend do Agente Condensador
+  - hostname: condenser.seudominio.com # <-- SUBSTITUA pelo seu subdomínio desejado
+    service: http://localhost:5174
+
+  # Regra 3: Frontend do Aquômetro
+  - hostname: aquometro.seudominio.com # <-- SUBSTITUA pelo seu subdomínio desejado
+    service: http://localhost:5175
+
+  # Regra 4: Frontend do Condenser PRO (o novo )
+  - hostname: condenser-pro.seudominio.com # <-- SUBSTITUA pelo seu subdomínio desejado
+    service: http://localhost:5176
+
+  # Regra Final (Catch-all ): Deve ser a última regra.
+  # Qualquer tráfego que não corresponda às regras acima receberá um erro 404.
+  - service: http_status:404
+
+# Arquivo de configuração para o túnel 'sofia-dev'
+# Define as regras de entrada para múltiplos serviços locais.
+
+tunnel: sofia-dev  # <-- SUBSTITUA pelo NOME do seu túnel
+credentials-file: /home/mesh/.cloudflared/a1b2c3d4-e5f6-7890-1234-567890abcdef.json # <-- O cloudflared encontra isso sozinho, mas é bom saber que existe.
+
+# Regras de entrada (ingress rules)
+ingress:
+  # Regra 1: Frontend Principal (SOFIA)
+  - hostname: sofia.seudominio.com  # <-- SUBSTITUA pelo seu subdomínio desejado
+    service: http://localhost:5173
+
+  # Regra 2: Frontend do Agente Condensador
+  - hostname: condenser.seudominio.com # <-- SUBSTITUA pelo seu subdomínio desejado
+    service: http://localhost:5174
+
+  # Regra 3: Frontend do Aquômetro
+  - hostname: aquometro.seudominio.com # <-- SUBSTITUA pelo seu subdomínio desejado
+    service: http://localhost:5175
+
+  # Regra 4: Frontend do Condenser PRO (o novo )
+  - hostname: condenser-pro.seudominio.com # <-- SUBSTITUA pelo seu subdomínio desejado
+    service: http://localhost:5176
+
+  # Regra Final (Catch-all ): Deve ser a última regra.
+  # Qualquer tráfego que não corresponda às regras acima receberá um erro 404.
+  - service: http_status:404
+
+Ctrl + X
+
+Y
+
+Enter
+
+hostname
+
+sofia.seudominio.com
+
+CNAME
+
+CNAME
+
+sofia
+
+condenser
+
+aquometro
+
+a1b2c3d4-e5f6-7890-1234-567890abcdef.cfargotunnel.com
+
+.cfargotunnel.com
+
+sentinel.py
+
+sentinel.py
+
+sentinel.py
+
+"tunnel": [str(CLOUDFLARED_PATH), "tunnel", "--no-autoupdate", "run", "--token", str(CLOUDFLARE_TOKEN)],
+
+"tunnel": [str(CLOUDFLARED_PATH), "tunnel", "--no-autoupdate", "run", "--token", str(CLOUDFLARE_TOKEN)],
+
+# VERSÃO ATUALIZADA - Usa o arquivo de configuração padrão
+"tunnel": [str(CLOUDFLARED_PATH), "tunnel", "--no-autoupdate", "run"],
+
+# VERSÃO ATUALIZADA - Usa o arquivo de configuração padrão
+"tunnel": [str(CLOUDFLARED_PATH), "tunnel", "--no-autoupdate", "run"],
+
+cloudflared tunnel run
+
+config.yml
+
+~/.cloudflared/
+
+sentinel.py
+
+sudo systemctl restart sofia.service
+
+sudo systemctl restart sofia.service
+
+sentinel.py
+
+cloudflared
+
+config.yml
+
+5173
+
+5174
+
+5175
+
+5176

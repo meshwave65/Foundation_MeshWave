@@ -1,0 +1,831 @@
+
+
+================================================================================stabilize_query
+
+if/else
+
+stabilize_query
+
+orchestrator.py
+
+orchestrator.py
+
+# orchestrator.py (v6.1 - com Bypass e sem acoplamento)
+
+import sys
+import json
+import re
+from pathlib import Path
+from groq import Groq
+
+try:
+    from agent_final import run_query
+    from co_founder import run_co_founder
+except ImportError as e:
+    print(f"❌ ERRO: Verifique se 'agent_final.py' e 'co_founder.py' estão atualizados e no mesmo diretório. Detalhe: {e}")
+    sys.exit(1)
+
+SOFIA_ENGINE_PATH = '/home/mesh/home/sofia/engine'
+if SOFIA_ENGINE_PATH not in sys.path:
+    sys.path.append(SOFIA_ENGINE_PATH)
+try:
+    from architecture import GROQ_API_KEY, GROQ_MODEL_FAST
+except ImportError:
+    print(f"❌ ERRO CRÍTICO: Não foi possível importar 'architecture' de: {SOFIA_ENGINE_PATH}")
+    sys.exit(1)
+
+def is_input_valid_deterministic(user_question: str) -> bool:
+    # ... (função inalterada) ...
+    print("--- 🧐 Fase -1: Validando Input (O Guardião Determinístico) ---")
+    question = user_question.strip()
+    if len(question) < 5 or len(question) > 500:
+        print("  -> Veredito: INVÁLIDO (Comprimento suspeito)")
+        return False
+    words = re.findall(r'\b[a-zA-Z]{3,}\b', question.lower())
+    if not words:
+        print("  -> Veredito: INVÁLIDO (Nenhuma palavra reconhecível)")
+        return False
+    num_alpha = sum(c.isalpha() for c in question)
+    if num_alpha == 0:
+        print("  -> Veredito: INVÁLIDO (Nenhuma letra)")
+        return False
+    num_digits = sum(c.isdigit() for c in question)
+    num_spaces = sum(c.isspace() for c in question)
+    if (num_digits + num_spaces) / len(question) > 0.7:
+        print("  -> Veredito: INVÁLIDO (Alta proporção de números/espaços)")
+        return False
+    print("  -> Veredito: VÁLIDO")
+    return True
+
+def stabilize_query(user_question: str, client: Groq) -> str:
+    # ... (função inalterada) ...
+    print("--- ✍️ Fase 0: Estabilizando Query ---")
+    glossary = """- ARC: Autenticação Recessiva Contextual\n- PGC: Prova de Gênese Contextual\n- Q-CyPIA: Quantum Cyber Protect IA\n- SOFIA: Sistema Operacional Federado de Inteligência Artificial\n- MeshWave: Nome do projeto da rede descentralizada"""
+    prompt = f"Você é um especialista em otimização de buscas para o projeto SOFIA. Sua tarefa é reescrever a 'Pergunta Original' para torná-la ideal para uma busca vetorial.\n\n**Instruções:**\n1. Use o glossário abaixo para entender os termos técnicos.\n2. **Mantenha as siglas (como ARC, PGC, Q-CyPIA) na pergunta final.** Não as expanda para seus nomes completos.\n3. Torne a pergunta mais clara, focada e rica em contexto.\n\n--- GLOSSÁRIO ---\n{glossary}\n---\n\nPergunta Original: \"{user_question}\"\n\nRetorne apenas a pergunta otimizada."
+    try:
+        completion = client.chat.completions.create(messages=[{"role": "user", "content": prompt}], model=GROQ_MODEL_FAST, temperature=0.2)
+        stabilized = completion.choices[0].message.content.strip()
+        print(f"  -> Pergunta Estabilizada: \"{stabilized}\"")
+        return stabilized
+    except Exception as e:
+        print(f"  -> ⚠️ Aviso: Falha na estabilização. Usando a pergunta original. Erro: {e}")
+        return user_question
+
+def process_question_flow(user_question: str) -> dict:
+    print("\n=============================================")
+    print(f"🎶 INICIANDO ORQUESTRADOR PARA A PERGUNTA: \"{user_question}\"")
+    print("=============================================")
+
+    # --- [LÓGICA DE BYPASS FINAL E CORRIGIDA] ---
+    if not is_input_valid_deterministic(user_question):
+        # Se for inválido, pula direto para o fallback.
+        print("--- 🛑 FLUXO INTERROMPIDO PELO GUARDIÃO ---")
+        print("  -> Ativando fluxo de fallback (Bypass)...")
+        groq_client = Groq(api_key=GROQ_API_KEY)
+        try:
+            fallback_artifact_path = run_co_founder(user_question, [], groq_client)
+            return {"status": "fallback", "artifact_path": fallback_artifact_path}
+        except Exception as e:
+            return {"status": "error", "message": f"Falha crítica no fluxo de fallback: {e}"}
+    else:
+        # Se for válido, executa o fluxo normal.
+        groq_client = Groq(api_key=GROQ_API_KEY)
+        stabilized_question = stabilize_query(user_question, groq_client)
+        
+        try:
+            retrieved_chunks = run_query(stabilized_question)
+            if not retrieved_chunks:
+                print("--- 🟡 Nenhum contexto encontrado. Ativando fluxo de fallback... ---")
+                fallback_artifact_path = run_co_founder(user_question, [], groq_client)
+                return {"status": "fallback", "artifact_path": fallback_artifact_path}
+        except Exception as e:
+            return {"status": "error", "message": f"Falha na recuperação de contexto: {e}"}
+
+        try:
+            final_artifact_path = run_co_founder(user_question, retrieved_chunks, groq_client)
+        except Exception as e:
+            return {"status": "error", "message": f"Falha na síntese da resposta: {e}"}
+
+        print("--- ✅ FLUXO COMPLETO CONCLUÍDO COM SUCESSO ---")
+        return {"status": "success", "artifact_path": final_artifact_path}
+    # ---------------------------------------------------
+
+if __name__ == "__main__":
+    if len(sys.argv) > 1:
+        input_question = " ".join(sys.argv[1:])
+        result = process_question_flow(input_question)
+        print("\n--- RESULTADO FINAL DO ORQUESTRADOR ---")
+        print(json.dumps(result, indent=2))
+    else:
+        print("\nUso: python orchestrator.py \"Sua pergunta entre aspas\"")
+
+# orchestrator.py (v6.1 - com Bypass e sem acoplamento)
+
+import sys
+import json
+import re
+from pathlib import Path
+from groq import Groq
+
+try:
+    from agent_final import run_query
+    from co_founder import run_co_founder
+except ImportError as e:
+    print(f"❌ ERRO: Verifique se 'agent_final.py' e 'co_founder.py' estão atualizados e no mesmo diretório. Detalhe: {e}")
+    sys.exit(1)
+
+SOFIA_ENGINE_PATH = '/home/mesh/home/sofia/engine'
+if SOFIA_ENGINE_PATH not in sys.path:
+    sys.path.append(SOFIA_ENGINE_PATH)
+try:
+    from architecture import GROQ_API_KEY, GROQ_MODEL_FAST
+except ImportError:
+    print(f"❌ ERRO CRÍTICO: Não foi possível importar 'architecture' de: {SOFIA_ENGINE_PATH}")
+    sys.exit(1)
+
+def is_input_valid_deterministic(user_question: str) -> bool:
+    # ... (função inalterada) ...
+    print("--- 🧐 Fase -1: Validando Input (O Guardião Determinístico) ---")
+    question = user_question.strip()
+    if len(question) < 5 or len(question) > 500:
+        print("  -> Veredito: INVÁLIDO (Comprimento suspeito)")
+        return False
+    words = re.findall(r'\b[a-zA-Z]{3,}\b', question.lower())
+    if not words:
+        print("  -> Veredito: INVÁLIDO (Nenhuma palavra reconhecível)")
+        return False
+    num_alpha = sum(c.isalpha() for c in question)
+    if num_alpha == 0:
+        print("  -> Veredito: INVÁLIDO (Nenhuma letra)")
+        return False
+    num_digits = sum(c.isdigit() for c in question)
+    num_spaces = sum(c.isspace() for c in question)
+    if (num_digits + num_spaces) / len(question) > 0.7:
+        print("  -> Veredito: INVÁLIDO (Alta proporção de números/espaços)")
+        return False
+    print("  -> Veredito: VÁLIDO")
+    return True
+
+def stabilize_query(user_question: str, client: Groq) -> str:
+    # ... (função inalterada) ...
+    print("--- ✍️ Fase 0: Estabilizando Query ---")
+    glossary = """- ARC: Autenticação Recessiva Contextual\n- PGC: Prova de Gênese Contextual\n- Q-CyPIA: Quantum Cyber Protect IA\n- SOFIA: Sistema Operacional Federado de Inteligência Artificial\n- MeshWave: Nome do projeto da rede descentralizada"""
+    prompt = f"Você é um especialista em otimização de buscas para o projeto SOFIA. Sua tarefa é reescrever a 'Pergunta Original' para torná-la ideal para uma busca vetorial.\n\n**Instruções:**\n1. Use o glossário abaixo para entender os termos técnicos.\n2. **Mantenha as siglas (como ARC, PGC, Q-CyPIA) na pergunta final.** Não as expanda para seus nomes completos.\n3. Torne a pergunta mais clara, focada e rica em contexto.\n\n--- GLOSSÁRIO ---\n{glossary}\n---\n\nPergunta Original: \"{user_question}\"\n\nRetorne apenas a pergunta otimizada."
+    try:
+        completion = client.chat.completions.create(messages=[{"role": "user", "content": prompt}], model=GROQ_MODEL_FAST, temperature=0.2)
+        stabilized = completion.choices[0].message.content.strip()
+        print(f"  -> Pergunta Estabilizada: \"{stabilized}\"")
+        return stabilized
+    except Exception as e:
+        print(f"  -> ⚠️ Aviso: Falha na estabilização. Usando a pergunta original. Erro: {e}")
+        return user_question
+
+def process_question_flow(user_question: str) -> dict:
+    print("\n=============================================")
+    print(f"🎶 INICIANDO ORQUESTRADOR PARA A PERGUNTA: \"{user_question}\"")
+    print("=============================================")
+
+    # --- [LÓGICA DE BYPASS FINAL E CORRIGIDA] ---
+    if not is_input_valid_deterministic(user_question):
+        # Se for inválido, pula direto para o fallback.
+        print("--- 🛑 FLUXO INTERROMPIDO PELO GUARDIÃO ---")
+        print("  -> Ativando fluxo de fallback (Bypass)...")
+        groq_client = Groq(api_key=GROQ_API_KEY)
+        try:
+            fallback_artifact_path = run_co_founder(user_question, [], groq_client)
+            return {"status": "fallback", "artifact_path": fallback_artifact_path}
+        except Exception as e:
+            return {"status": "error", "message": f"Falha crítica no fluxo de fallback: {e}"}
+    else:
+        # Se for válido, executa o fluxo normal.
+        groq_client = Groq(api_key=GROQ_API_KEY)
+        stabilized_question = stabilize_query(user_question, groq_client)
+        
+        try:
+            retrieved_chunks = run_query(stabilized_question)
+            if not retrieved_chunks:
+                print("--- 🟡 Nenhum contexto encontrado. Ativando fluxo de fallback... ---")
+                fallback_artifact_path = run_co_founder(user_question, [], groq_client)
+                return {"status": "fallback", "artifact_path": fallback_artifact_path}
+        except Exception as e:
+            return {"status": "error", "message": f"Falha na recuperação de contexto: {e}"}
+
+        try:
+            final_artifact_path = run_co_founder(user_question, retrieved_chunks, groq_client)
+        except Exception as e:
+            return {"status": "error", "message": f"Falha na síntese da resposta: {e}"}
+
+        print("--- ✅ FLUXO COMPLETO CONCLUÍDO COM SUCESSO ---")
+        return {"status": "success", "artifact_path": final_artifact_path}
+    # ---------------------------------------------------
+
+if __name__ == "__main__":
+    if len(sys.argv) > 1:
+        input_question = " ".join(sys.argv[1:])
+        result = process_question_flow(input_question)
+        print("\n--- RESULTADO FINAL DO ORQUESTRADOR ---")
+        print(json.dumps(result, indent=2))
+    else:
+        print("\nUso: python orchestrator.py \"Sua pergunta entre aspas\"")
+
+orchestrator.py
+
+python orchestrator.py "neec2ryh 82 yy2fy72g77v bc c2y2h"
+
+python orchestrator.py "neec2ryh 82 yy2fy72g77v bc c2y2h"
+
+-> Veredito: INVÁLIDO
+
+if
+
+True
+
+if not False
+
+if
+
+--- 🛑 FLUXO INTERROMPIDO...
+
+-> Ativando fluxo de fallback (Bypass)...
+
+stabilize_query
+
+co_founder
+
+agent_final
+
+co_founder
+
+orchestrator
+
+agent_final
+
+orchestrator.py
+
+orchestrator.py
+
+# orchestrator.py (v6.2 - O Desacoplamento Final)
+
+import sys
+import json
+import re
+from pathlib import Path
+from groq import Groq
+
+try:
+    # Estes agentes agora são chamados condicionalmente
+    from agent_final import run_query
+    from co_founder import run_co_founder
+except ImportError as e:
+    print(f"❌ ERRO: Verifique se 'agent_final.py' e 'co_founder.py' estão atualizados e no mesmo diretório. Detalhe: {e}")
+    sys.exit(1)
+
+SOFIA_ENGINE_PATH = '/home/mesh/home/sofia/engine'
+if SOFIA_ENGINE_PATH not in sys.path:
+    sys.path.append(SOFIA_ENGINE_PATH)
+try:
+    from architecture import GROQ_API_KEY, GROQ_MODEL_FAST
+except ImportError:
+    print(f"❌ ERRO CRÍTICO: Não foi possível importar 'architecture' de: {SOFIA_ENGINE_PATH}")
+    sys.exit(1)
+
+def is_input_valid_deterministic(user_question: str) -> bool:
+    print("--- 🧐 Fase -1: Validando Input (O Guardião Determinístico) ---")
+    question = user_question.strip()
+    if len(question) < 5 or len(question) > 500:
+        print("  -> Veredito: INVÁLIDO (Comprimento suspeito)")
+        return False
+    words = re.findall(r'\b[a-zA-Z]{3,}\b', question.lower())
+    if not words:
+        print("  -> Veredito: INVÁLIDO (Nenhuma palavra reconhecível)")
+        return False
+    num_alpha = sum(c.isalpha() for c in question)
+    if num_alpha == 0:
+        print("  -> Veredito: INVÁLIDO (Nenhuma letra)")
+        return False
+    num_digits = sum(c.isdigit() for c in question)
+    num_spaces = sum(c.isspace() for c in question)
+    if len(question) > 0 and (num_digits + num_spaces) / len(question) > 0.7:
+        print("  -> Veredito: INVÁLIDO (Alta proporção de números/espaços)")
+        return False
+    print("  -> Veredito: VÁLIDO")
+    return True
+
+def stabilize_query(user_question: str, client: Groq) -> str:
+    print("--- ✍️ Fase 0: Estabilizando Query ---")
+    glossary = """- ARC: Autenticação Recessiva Contextual\n- PGC: Prova de Gênese Contextual\n- Q-CyPIA: Quantum Cyber Protect IA\n- SOFIA: Sistema Operacional Federado de Inteligência Artificial\n- MeshWave: Nome do projeto da rede descentralizada"""
+    prompt = f"Você é um especialista em otimização de buscas para o projeto SOFIA. Sua tarefa é reescrever a 'Pergunta Original' para torná-la ideal para uma busca vetorial.\n\n**Instruções:**\n1. Use o glossário abaixo para entender os termos técnicos.\n2. **Mantenha as siglas (como ARC, PGC, Q-CyPIA) na pergunta final.** Não as expanda para seus nomes completos.\n3. Torne a pergunta mais clara, focada e rica em contexto.\n\n--- GLOSSÁRIO ---\n{glossary}\n---\n\nPergunta Original: \"{user_question}\"\n\nRetorne apenas a pergunta otimizada."
+    try:
+        completion = client.chat.completions.create(messages=[{"role": "user", "content": prompt}], model=GROQ_MODEL_FAST, temperature=0.2)
+        stabilized = completion.choices[0].message.content.strip()
+        print(f"  -> Pergunta Estabilizada: \"{stabilized}\"")
+        return stabilized
+    except Exception as e:
+        print(f"  -> ⚠️ Aviso: Falha na estabilização. Usando a pergunta original. Erro: {e}")
+        return user_question
+
+def process_question_flow(user_question: str) -> dict:
+    print("\n=============================================")
+    print(f"🎶 INICIANDO ORQUESTRADOR PARA A PERGUNTA: \"{user_question}\"")
+    print("=============================================")
+
+    # --- [FLUXO FINAL E CORRETO] ---
+    if not is_input_valid_deterministic(user_question):
+        # Se for inválido, o fluxo é interrompido e vai direto para o fallback.
+        print("--- 🛑 FLUXO INTERROMPIDO PELO GUARDIÃO ---")
+        print("  -> Ativando fluxo de fallback...")
+        groq_client = Groq(api_key=GROQ_API_KEY)
+        try:
+            # O co_founder é chamado com a lista de chunks vazia.
+            # O agent_final NUNCA é chamado.
+            fallback_artifact_path = run_co_founder(user_question, [], groq_client)
+            return {"status": "fallback", "artifact_path": fallback_artifact_path}
+        except Exception as e:
+            return {"status": "error", "message": f"Falha crítica no fluxo de fallback: {e}"}
+
+    # Se a pergunta for válida, o fluxo normal continua.
+    groq_client = Groq(api_key=GROQ_API_KEY)
+    
+    # Fase 0: Estabilização
+    stabilized_question = stabilize_query(user_question, groq_client)
+    
+    # Fase 1: Recuperação
+    try:
+        print("--- 📚 Agente Recuperador Ativado ---")
+        retrieved_chunks = run_query(stabilized_question)
+        if not retrieved_chunks:
+            print("--- 🟡 Nenhum contexto encontrado. Ativando fluxo de fallback... ---")
+            fallback_artifact_path = run_co_founder(user_question, [], groq_client)
+            return {"status": "fallback", "artifact_path": fallback_artifact_path}
+    except Exception as e:
+        return {"status": "error", "message": f"Falha na recuperação de contexto: {e}"}
+
+    # Fase 2: Síntese
+    try:
+        final_artifact_path = run_co_founder(user_question, retrieved_chunks, groq_client)
+    except Exception as e:
+        return {"status": "error", "message": f"Falha na síntese da resposta: {e}"}
+
+    print("--- ✅ FLUXO COMPLETO CONCLUÍDO COM SUCESSO ---")
+    return {"status": "success", "artifact_path": final_artifact_path}
+    # ---------------------------------------------------
+
+if __name__ == "__main__":
+    if len(sys.argv) > 1:
+        input_question = " ".join(sys.argv[1:])
+        result = process_question_flow(input_question)
+        print("\n--- RESULTADO FINAL DO ORQUESTRADOR ---")
+        print(json.dumps(result, indent=2))
+    else:
+        print("\nUso: python orchestrator.py \"Sua pergunta entre aspas\"")
+
+# orchestrator.py (v6.2 - O Desacoplamento Final)
+
+import sys
+import json
+import re
+from pathlib import Path
+from groq import Groq
+
+try:
+    # Estes agentes agora são chamados condicionalmente
+    from agent_final import run_query
+    from co_founder import run_co_founder
+except ImportError as e:
+    print(f"❌ ERRO: Verifique se 'agent_final.py' e 'co_founder.py' estão atualizados e no mesmo diretório. Detalhe: {e}")
+    sys.exit(1)
+
+SOFIA_ENGINE_PATH = '/home/mesh/home/sofia/engine'
+if SOFIA_ENGINE_PATH not in sys.path:
+    sys.path.append(SOFIA_ENGINE_PATH)
+try:
+    from architecture import GROQ_API_KEY, GROQ_MODEL_FAST
+except ImportError:
+    print(f"❌ ERRO CRÍTICO: Não foi possível importar 'architecture' de: {SOFIA_ENGINE_PATH}")
+    sys.exit(1)
+
+def is_input_valid_deterministic(user_question: str) -> bool:
+    print("--- 🧐 Fase -1: Validando Input (O Guardião Determinístico) ---")
+    question = user_question.strip()
+    if len(question) < 5 or len(question) > 500:
+        print("  -> Veredito: INVÁLIDO (Comprimento suspeito)")
+        return False
+    words = re.findall(r'\b[a-zA-Z]{3,}\b', question.lower())
+    if not words:
+        print("  -> Veredito: INVÁLIDO (Nenhuma palavra reconhecível)")
+        return False
+    num_alpha = sum(c.isalpha() for c in question)
+    if num_alpha == 0:
+        print("  -> Veredito: INVÁLIDO (Nenhuma letra)")
+        return False
+    num_digits = sum(c.isdigit() for c in question)
+    num_spaces = sum(c.isspace() for c in question)
+    if len(question) > 0 and (num_digits + num_spaces) / len(question) > 0.7:
+        print("  -> Veredito: INVÁLIDO (Alta proporção de números/espaços)")
+        return False
+    print("  -> Veredito: VÁLIDO")
+    return True
+
+def stabilize_query(user_question: str, client: Groq) -> str:
+    print("--- ✍️ Fase 0: Estabilizando Query ---")
+    glossary = """- ARC: Autenticação Recessiva Contextual\n- PGC: Prova de Gênese Contextual\n- Q-CyPIA: Quantum Cyber Protect IA\n- SOFIA: Sistema Operacional Federado de Inteligência Artificial\n- MeshWave: Nome do projeto da rede descentralizada"""
+    prompt = f"Você é um especialista em otimização de buscas para o projeto SOFIA. Sua tarefa é reescrever a 'Pergunta Original' para torná-la ideal para uma busca vetorial.\n\n**Instruções:**\n1. Use o glossário abaixo para entender os termos técnicos.\n2. **Mantenha as siglas (como ARC, PGC, Q-CyPIA) na pergunta final.** Não as expanda para seus nomes completos.\n3. Torne a pergunta mais clara, focada e rica em contexto.\n\n--- GLOSSÁRIO ---\n{glossary}\n---\n\nPergunta Original: \"{user_question}\"\n\nRetorne apenas a pergunta otimizada."
+    try:
+        completion = client.chat.completions.create(messages=[{"role": "user", "content": prompt}], model=GROQ_MODEL_FAST, temperature=0.2)
+        stabilized = completion.choices[0].message.content.strip()
+        print(f"  -> Pergunta Estabilizada: \"{stabilized}\"")
+        return stabilized
+    except Exception as e:
+        print(f"  -> ⚠️ Aviso: Falha na estabilização. Usando a pergunta original. Erro: {e}")
+        return user_question
+
+def process_question_flow(user_question: str) -> dict:
+    print("\n=============================================")
+    print(f"🎶 INICIANDO ORQUESTRADOR PARA A PERGUNTA: \"{user_question}\"")
+    print("=============================================")
+
+    # --- [FLUXO FINAL E CORRETO] ---
+    if not is_input_valid_deterministic(user_question):
+        # Se for inválido, o fluxo é interrompido e vai direto para o fallback.
+        print("--- 🛑 FLUXO INTERROMPIDO PELO GUARDIÃO ---")
+        print("  -> Ativando fluxo de fallback...")
+        groq_client = Groq(api_key=GROQ_API_KEY)
+        try:
+            # O co_founder é chamado com a lista de chunks vazia.
+            # O agent_final NUNCA é chamado.
+            fallback_artifact_path = run_co_founder(user_question, [], groq_client)
+            return {"status": "fallback", "artifact_path": fallback_artifact_path}
+        except Exception as e:
+            return {"status": "error", "message": f"Falha crítica no fluxo de fallback: {e}"}
+
+    # Se a pergunta for válida, o fluxo normal continua.
+    groq_client = Groq(api_key=GROQ_API_KEY)
+    
+    # Fase 0: Estabilização
+    stabilized_question = stabilize_query(user_question, groq_client)
+    
+    # Fase 1: Recuperação
+    try:
+        print("--- 📚 Agente Recuperador Ativado ---")
+        retrieved_chunks = run_query(stabilized_question)
+        if not retrieved_chunks:
+            print("--- 🟡 Nenhum contexto encontrado. Ativando fluxo de fallback... ---")
+            fallback_artifact_path = run_co_founder(user_question, [], groq_client)
+            return {"status": "fallback", "artifact_path": fallback_artifact_path}
+    except Exception as e:
+        return {"status": "error", "message": f"Falha na recuperação de contexto: {e}"}
+
+    # Fase 2: Síntese
+    try:
+        final_artifact_path = run_co_founder(user_question, retrieved_chunks, groq_client)
+    except Exception as e:
+        return {"status": "error", "message": f"Falha na síntese da resposta: {e}"}
+
+    print("--- ✅ FLUXO COMPLETO CONCLUÍDO COM SUCESSO ---")
+    return {"status": "success", "artifact_path": final_artifact_path}
+    # ---------------------------------------------------
+
+if __name__ == "__main__":
+    if len(sys.argv) > 1:
+        input_question = " ".join(sys.argv[1:])
+        result = process_question_flow(input_question)
+        print("\n--- RESULTADO FINAL DO ORQUESTRADOR ---")
+        print(json.dumps(result, indent=2))
+    else:
+        print("\nUso: python orchestrator.py \"Sua pergunta entre aspas\"")
+
+orchestrator.py
+
+python orchestrator.py "neec2ryh 82 yy2fy72g77v bc c2y2h"
+
+python orchestrator.py "neec2ryh 82 yy2fy72g77v bc c2y2h"
+
+-> Veredito: INVÁLIDO
+
+if
+
+True
+
+if
+
+--- 🛑 FLUXO INTERROMPIDO...
+
+stabilize_query
+
+run_query
+
+run_co_founder
+
+{"status": "fallback", ...}
+
+co_founder
+
+orchestrator.py
+
+# orchestrator.py (v6.3 - O Fallback Imediato e Eficiente)
+
+import sys
+import json
+import re
+from pathlib import Path
+from groq import Groq
+from datetime import datetime # Importa datetime para o fallback
+
+try:
+    from agent_final import run_query
+    from co_founder import run_co_founder
+except ImportError as e:
+    print(f"❌ ERRO: Verifique se 'agent_final.py' e 'co_founder.py' estão atualizados e no mesmo diretório. Detalhe: {e}")
+    sys.exit(1)
+
+SOFIA_ENGINE_PATH = '/home/mesh/home/sofia/engine'
+if SOFIA_ENGINE_PATH not in sys.path:
+    sys.path.append(SOFIA_ENGINE_PATH)
+try:
+    from architecture import GROQ_API_KEY, GROQ_MODEL_FAST
+except ImportError:
+    print(f"❌ ERRO CRÍTICO: Não foi possível importar 'architecture' de: {SOFIA_ENGINE_PATH}")
+    sys.exit(1)
+
+# --- Diretório de Artefatos ---
+# Precisamos dele aqui para o caso de fallback
+ARTIFACTS_DIR = Path("/media/mesh/MYEBOOK1/manus_extractor/artifacts")
+ARTIFACTS_DIR.mkdir(exist_ok=True)
+
+
+def is_input_valid_deterministic(user_question: str) -> bool:
+    # ... (função inalterada) ...
+    print("--- 🧐 Fase -1: Validando Input (O Guardião Determinístico) ---")
+    question = user_question.strip()
+    if len(question) < 5 or len(question) > 500:
+        print("  -> Veredito: INVÁLIDO (Comprimento suspeito)")
+        return False
+    words = re.findall(r'\b[a-zA-Z]{3,}\b', question.lower())
+    if not words:
+        print("  -> Veredito: INVÁLIDO (Nenhuma palavra reconhecível)")
+        return False
+    num_alpha = sum(c.isalpha() for c in question)
+    if num_alpha == 0:
+        print("  -> Veredito: INVÁLIDO (Nenhuma letra)")
+        return False
+    num_digits = sum(c.isdigit() for c in question)
+    num_spaces = sum(c.isspace() for c in question)
+    if len(question) > 0 and (num_digits + num_spaces) / len(question) > 0.7:
+        print("  -> Veredito: INVÁLIDO (Alta proporção de números/espaços)")
+        return False
+    print("  -> Veredito: VÁLIDO")
+    return True
+
+def stabilize_query(user_question: str, client: Groq) -> str:
+    # ... (função inalterada) ...
+    print("--- ✍️ Fase 0: Estabilizando Query ---")
+    glossary = """- ARC: Autenticação Recessiva Contextual\n- PGC: Prova de Gênese Contextual\n- Q-CyPIA: Quantum Cyber Protect IA\n- SOFIA: Sistema Operacional Federado de Inteligência Artificial\n- MeshWave: Nome do projeto da rede descentralizada"""
+    prompt = f"Você é um especialista em otimização de buscas para o projeto SOFIA. Sua tarefa é reescrever a 'Pergunta Original' para torná-la ideal para uma busca vetorial.\n\n**Instruções:**\n1. Use o glossário abaixo para entender os termos técnicos.\n2. **Mantenha as siglas (como ARC, PGC, Q-CyPIA) na pergunta final.** Não as expanda para seus nomes completos.\n3. Torne a pergunta mais clara, focada e rica em contexto.\n\n--- GLOSSÁRIO ---\n{glossary}\n---\n\nPergunta Original: \"{user_question}\"\n\nRetorne apenas a pergunta otimizada."
+    try:
+        completion = client.chat.completions.create(messages=[{"role": "user", "content": prompt}], model=GROQ_MODEL_FAST, temperature=0.2)
+        stabilized = completion.choices[0].message.content.strip()
+        print(f"  -> Pergunta Estabilizada: \"{stabilized}\"")
+        return stabilized
+    except Exception as e:
+        print(f"  -> ⚠️ Aviso: Falha na estabilização. Usando a pergunta original. Erro: {e}")
+        return user_question
+
+def process_question_flow(user_question: str) -> dict:
+    print("\n=============================================")
+    print(f"🎶 INICIANDO ORQUESTRADOR PARA A PERGUNTA: \"{user_question}\"")
+    print("=============================================")
+
+    # --- [LÓGICA DE FALLBACK IMEDIATO - VERSÃO FINAL] ---
+    if not is_input_valid_deterministic(user_question):
+        print("--- 🛑 FLUXO INTERROMPIDO PELO GUARDIÃO ---")
+        print("  -> Gerando resposta de fallback imediato (sem IA)...")
+        
+        # Mensagem amigável e pré-definida
+        fallback_response = "Não consegui compreender sua pergunta. Poderia, por favor, reformulá-la?"
+        
+        # Criamos um artefato de interação mesmo para a falha, para registro.
+        interaction_data = {
+            "user_question": user_question,
+            "final_response": fallback_response,
+            "timestamp_utc": datetime.utcnow().isoformat(),
+            "summarized_context_used": "N/A (Input Inválido)",
+            "original_chunks_count": 0
+        }
+        timestamp_str = datetime.now().strftime("%Y%m%d_%H%M%S")
+        output_filename = f"interaction_fallback_{timestamp_str}.json"
+        output_path = ARTIFACTS_DIR / output_filename
+        try:
+            with open(output_path, 'w', encoding='utf-8') as f:
+                json.dump(interaction_data, f, ensure_ascii=False, indent=4)
+            print(f"  -> ✅ Log de fallback salvo em: {output_path}")
+            # Retorna o status e o caminho do artefato, que contém a resposta amigável.
+            return {"status": "invalid_input", "artifact_path": str(output_path)}
+        except Exception as e:
+            return {"status": "error", "message": f"Falha crítica ao salvar log de fallback: {e}"}
+    # ---------------------------------------------------
+
+    # O fluxo normal continua apenas se a pergunta for válida.
+    groq_client = Groq(api_key=GROQ_API_KEY)
+    
+    stabilized_question = stabilize_query(user_question, groq_client)
+    
+    try:
+        print("--- 📚 Agente Recuperador Ativado ---")
+        retrieved_chunks = run_query(stabilized_question)
+        if not retrieved_chunks:
+            print("--- 🟡 Nenhum contexto encontrado. Ativando fluxo de fallback... ---")
+            fallback_artifact_path = run_co_founder(user_question, [], groq_client)
+            return {"status": "no_context_found", "artifact_path": fallback_artifact_path}
+    except Exception as e:
+        return {"status": "error", "message": f"Falha na recuperação de contexto: {e}"}
+
+    try:
+        final_artifact_path = run_co_founder(user_question, retrieved_chunks, groq_client)
+    except Exception as e:
+        return {"status": "error", "message": f"Falha na síntese da resposta: {e}"}
+
+    print("--- ✅ FLUXO COMPLETO CONCLUÍDO COM SUCESSO ---")
+    return {"status": "success", "artifact_path": final_artifact_path}
+
+if __name__ == "__main__":
+    if len(sys.argv) > 1:
+        input_question = " ".join(sys.argv[1:])
+        result = process_question_flow(input_question)
+        print("\n--- RESULTADO FINAL DO ORQUESTRADOR ---")
+        print(json.dumps(result, indent=2))
+    else:
+        print("\nUso: python orchestrator.py \"Sua pergunta entre aspas\"")
+
+# orchestrator.py (v6.3 - O Fallback Imediato e Eficiente)
+
+import sys
+import json
+import re
+from pathlib import Path
+from groq import Groq
+from datetime import datetime # Importa datetime para o fallback
+
+try:
+    from agent_final import run_query
+    from co_founder import run_co_founder
+except ImportError as e:
+    print(f"❌ ERRO: Verifique se 'agent_final.py' e 'co_founder.py' estão atualizados e no mesmo diretório. Detalhe: {e}")
+    sys.exit(1)
+
+SOFIA_ENGINE_PATH = '/home/mesh/home/sofia/engine'
+if SOFIA_ENGINE_PATH not in sys.path:
+    sys.path.append(SOFIA_ENGINE_PATH)
+try:
+    from architecture import GROQ_API_KEY, GROQ_MODEL_FAST
+except ImportError:
+    print(f"❌ ERRO CRÍTICO: Não foi possível importar 'architecture' de: {SOFIA_ENGINE_PATH}")
+    sys.exit(1)
+
+# --- Diretório de Artefatos ---
+# Precisamos dele aqui para o caso de fallback
+ARTIFACTS_DIR = Path("/media/mesh/MYEBOOK1/manus_extractor/artifacts")
+ARTIFACTS_DIR.mkdir(exist_ok=True)
+
+
+def is_input_valid_deterministic(user_question: str) -> bool:
+    # ... (função inalterada) ...
+    print("--- 🧐 Fase -1: Validando Input (O Guardião Determinístico) ---")
+    question = user_question.strip()
+    if len(question) < 5 or len(question) > 500:
+        print("  -> Veredito: INVÁLIDO (Comprimento suspeito)")
+        return False
+    words = re.findall(r'\b[a-zA-Z]{3,}\b', question.lower())
+    if not words:
+        print("  -> Veredito: INVÁLIDO (Nenhuma palavra reconhecível)")
+        return False
+    num_alpha = sum(c.isalpha() for c in question)
+    if num_alpha == 0:
+        print("  -> Veredito: INVÁLIDO (Nenhuma letra)")
+        return False
+    num_digits = sum(c.isdigit() for c in question)
+    num_spaces = sum(c.isspace() for c in question)
+    if len(question) > 0 and (num_digits + num_spaces) / len(question) > 0.7:
+        print("  -> Veredito: INVÁLIDO (Alta proporção de números/espaços)")
+        return False
+    print("  -> Veredito: VÁLIDO")
+    return True
+
+def stabilize_query(user_question: str, client: Groq) -> str:
+    # ... (função inalterada) ...
+    print("--- ✍️ Fase 0: Estabilizando Query ---")
+    glossary = """- ARC: Autenticação Recessiva Contextual\n- PGC: Prova de Gênese Contextual\n- Q-CyPIA: Quantum Cyber Protect IA\n- SOFIA: Sistema Operacional Federado de Inteligência Artificial\n- MeshWave: Nome do projeto da rede descentralizada"""
+    prompt = f"Você é um especialista em otimização de buscas para o projeto SOFIA. Sua tarefa é reescrever a 'Pergunta Original' para torná-la ideal para uma busca vetorial.\n\n**Instruções:**\n1. Use o glossário abaixo para entender os termos técnicos.\n2. **Mantenha as siglas (como ARC, PGC, Q-CyPIA) na pergunta final.** Não as expanda para seus nomes completos.\n3. Torne a pergunta mais clara, focada e rica em contexto.\n\n--- GLOSSÁRIO ---\n{glossary}\n---\n\nPergunta Original: \"{user_question}\"\n\nRetorne apenas a pergunta otimizada."
+    try:
+        completion = client.chat.completions.create(messages=[{"role": "user", "content": prompt}], model=GROQ_MODEL_FAST, temperature=0.2)
+        stabilized = completion.choices[0].message.content.strip()
+        print(f"  -> Pergunta Estabilizada: \"{stabilized}\"")
+        return stabilized
+    except Exception as e:
+        print(f"  -> ⚠️ Aviso: Falha na estabilização. Usando a pergunta original. Erro: {e}")
+        return user_question
+
+def process_question_flow(user_question: str) -> dict:
+    print("\n=============================================")
+    print(f"🎶 INICIANDO ORQUESTRADOR PARA A PERGUNTA: \"{user_question}\"")
+    print("=============================================")
+
+    # --- [LÓGICA DE FALLBACK IMEDIATO - VERSÃO FINAL] ---
+    if not is_input_valid_deterministic(user_question):
+        print("--- 🛑 FLUXO INTERROMPIDO PELO GUARDIÃO ---")
+        print("  -> Gerando resposta de fallback imediato (sem IA)...")
+        
+        # Mensagem amigável e pré-definida
+        fallback_response = "Não consegui compreender sua pergunta. Poderia, por favor, reformulá-la?"
+        
+        # Criamos um artefato de interação mesmo para a falha, para registro.
+        interaction_data = {
+            "user_question": user_question,
+            "final_response": fallback_response,
+            "timestamp_utc": datetime.utcnow().isoformat(),
+            "summarized_context_used": "N/A (Input Inválido)",
+            "original_chunks_count": 0
+        }
+        timestamp_str = datetime.now().strftime("%Y%m%d_%H%M%S")
+        output_filename = f"interaction_fallback_{timestamp_str}.json"
+        output_path = ARTIFACTS_DIR / output_filename
+        try:
+            with open(output_path, 'w', encoding='utf-8') as f:
+                json.dump(interaction_data, f, ensure_ascii=False, indent=4)
+            print(f"  -> ✅ Log de fallback salvo em: {output_path}")
+            # Retorna o status e o caminho do artefato, que contém a resposta amigável.
+            return {"status": "invalid_input", "artifact_path": str(output_path)}
+        except Exception as e:
+            return {"status": "error", "message": f"Falha crítica ao salvar log de fallback: {e}"}
+    # ---------------------------------------------------
+
+    # O fluxo normal continua apenas se a pergunta for válida.
+    groq_client = Groq(api_key=GROQ_API_KEY)
+    
+    stabilized_question = stabilize_query(user_question, groq_client)
+    
+    try:
+        print("--- 📚 Agente Recuperador Ativado ---")
+        retrieved_chunks = run_query(stabilized_question)
+        if not retrieved_chunks:
+            print("--- 🟡 Nenhum contexto encontrado. Ativando fluxo de fallback... ---")
+            fallback_artifact_path = run_co_founder(user_question, [], groq_client)
+            return {"status": "no_context_found", "artifact_path": fallback_artifact_path}
+    except Exception as e:
+        return {"status": "error", "message": f"Falha na recuperação de contexto: {e}"}
+
+    try:
+        final_artifact_path = run_co_founder(user_question, retrieved_chunks, groq_client)
+    except Exception as e:
+        return {"status": "error", "message": f"Falha na síntese da resposta: {e}"}
+
+    print("--- ✅ FLUXO COMPLETO CONCLUÍDO COM SUCESSO ---")
+    return {"status": "success", "artifact_path": final_artifact_path}
+
+if __name__ == "__main__":
+    if len(sys.argv) > 1:
+        input_question = " ".join(sys.argv[1:])
+        result = process_question_flow(input_question)
+        print("\n--- RESULTADO FINAL DO ORQUESTRADOR ---")
+        print(json.dumps(result, indent=2))
+    else:
+        print("\nUso: python orchestrator.py \"Sua pergunta entre aspas\"")
+
+orchestrator.py
+
+python orchestrator.py "neec2ryh 82 yy2fy72g77v bc c2y2h"
+
+python orchestrator.py "neec2ryh 82 yy2fy72g77v bc c2y2h"
+
+-> Veredito: INVÁLIDO
+
+if
+
+True
+
+if
+
+--- 🛑 FLUXO INTERROMPIDO...
+
+{"status": "invalid_input", ...}
+
+Guardião Determinístico
+
+INVÁLIDO
+
+stabilize_query
+
+run_query
+
+run_co_founder
+
+status: "invalid_input"
+
+orchestrator.py
+
+/api/v1/ask
+
+AppSofia
+
+co_founder
+
+/api/v1/ask

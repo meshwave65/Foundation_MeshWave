@@ -1,0 +1,20 @@
+Relatório de Metodologia 1: O Princípio da Refatoração Proativa
+ID do Documento: M-20250715-01
+Status: Diretriz Estratégica Ativa
+Autor da Visão: Usuário
+Documentado por: Manus
+1. Sumário Executivo
+Este documento formaliza a adoção do princípio de Refatoração Proativa como uma diretriz fundamental no ciclo de desenvolvimento do MeshWave. Em resposta aos desafios de depuração e à crescente complexidade no gerenciamento de múltiplos canais de comunicação, o projeto priorizará a clareza arquitetônica sobre a correção tática de bugs. Quando um problema de implementação for sintoma de uma complexidade excessiva ou de uma falha estrutural, a solução primária será refatorar a arquitetura para isolar o problema, e não apenas aplicar uma correção superficial.
+2. A Diretriz: "Conserte a Fundação, Não Apenas a Rachadura"
+A premissa central é que a dificuldade em diagnosticar e corrigir bugs é, frequentemente, um indicador de que a arquitetura subjacente acumulou "dívida técnica". Tentar corrigir o bug diretamente em um ambiente complexo e monolítico é ineficiente e arriscado, podendo introduzir novos problemas.
+Processo de Decisão:
+Análise da Causa Raiz: Ao encontrar um bug (ex: falha de conexão), a primeira pergunta não será "Como consertamos este bug?", mas sim "Por que é difícil encontrar a causa deste bug?".
+Avaliação da Complexidade: Se a resposta indicar que a dificuldade reside na alta concentração de responsabilidades em uma única classe (alto acoplamento, baixa coesão), a refatoração se torna a tarefa prioritária.
+Ação: A equipe irá pausar a caça ao bug específico e investir tempo na modularização e no encapsulamento da lógica relevante. O objetivo é criar um ambiente onde o bug se torne mais fácil de isolar, diagnosticar e corrigir de forma segura.
+3. Benefícios Esperados
+Diagnóstico Cirúrgico: Módulos especializados tornam óbvio onde um problema pode estar.
+Redução de Efeitos Colaterais: Alterações em um módulo encapsulado têm um risco muito menor de quebrar funcionalidades em outro.
+Manutenibilidade de Longo Prazo: O código se torna mais fácil de entender, modificar e estender.
+Aceleração Futura: Investir tempo em uma arquitetura limpa agora economiza um tempo exponencial em depuração e desenvolvimento no futuro.
+4. Contextualização
+Esta política é a aplicação prática da nossa filosofia "inspirada no Briar". Ela se torna a principal ferramenta para manter nosso código alinhado com o princípio de "Sem Esqueletos no Armário" em um nível arquitetônico, não apenas de sintaxe.

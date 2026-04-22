@@ -1,0 +1,2533 @@
+
+
+================================================================================log
+
+private
+
+MainActivity.java
+
+MainActivity.java
+
+log
+
+public
+
+MainActivity.java
+
+log
+
+public
+
+package com.example.meshwave;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+
+import android.Manifest;
+import android.annotation.SuppressLint;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.IntentFilter;
+import android.content.pm.PackageManager;
+import android.net.wifi.p2p.WifiP2pConfig;
+import android.net.wifi.p2p.WifiP2pDevice;
+import android.net.wifi.p2p.WifiP2pDeviceList;
+import android.net.wifi.p2p.WifiP2pInfo;
+import android.net.wifi.p2p.WifiP2pManager;
+import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message; // Import Message
+import android.util.Log; // Import Log
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
+import android.widget.ScrollView;
+import android.widget.TextView;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Toast;
+
+import java.io.IOException;
+import java.net.InetAddress;
+import java.net.InetSocketAddress;
+import java.net.ServerSocket;
+import java.net.Socket;
+import java.util.ArrayList;
+import java.util.List;
+
+public class MainActivity extends AppCompatActivity implements WifiP2pManager.ConnectionInfoListener, WifiP2pManager.PeerListListener {
+
+    // UI Elements
+    private TextView logTextView;
+    private ScrollView logScrollView;
+    private RadioGroup nodeRoleRadioGroup;
+    private EditText peerGatewayIpEditText;
+    private Button setRoleButton;
+    private Button discoverPeersButton;
+    private EditText recipientIdEditText;
+    private EditText messageEditText;
+    private Button sendButton;
+
+    // Wi-Fi P2P related
+    private WifiP2pManager manager;
+    private WifiP2pManager.Channel channel;
+    private BroadcastReceiver receiver;
+    private IntentFilter intentFilter;
+    private List<WifiP2pDevice> peers = new ArrayList<>();
+
+    // Communication Threads
+    private P2PSendReceiveThread p2pSendReceiveThread;
+    private TcpSendReceiveThread tcpSendReceiveThread;
+
+    // Node Roles
+    private enum NodeRole { NODE_A, NODE_X, NODE_Y, NODE_Z, NODE_B }
+    private NodeRole currentNodeRole = NodeRole.NODE_A; // Default role
+
+    // Node IDs (for routing simulation)
+    private static final String nodeA_ID = "NODE_A";
+    private static final String nodeX_ID = "NODE_X";
+    private static final String nodeY_ID = "NODE_Y";
+    private static final String nodeZ_ID = "NODE_Z";
+    private static final String nodeB_ID = "NODE_B";
+
+    // Message types for Handler
+    public static final int MESSAGE_READ = 1;
+    public static final int MESSAGE_TOAST = 2;
+
+    // Handler for updating UI from communication threads
+    private Handler handler = new Handler(Looper.getMainLooper()) {
+        @Override
+        public void handleMessage(@NonNull Message msg) {
+            switch (msg.what) {
+                case MESSAGE_READ:
+                    byte[] readBuf = (byte[]) msg.obj;
+                    String readMessage = new String(readBuf, 0, msg.arg1);
+                    log("Received: " + readMessage);
+                    break;
+                case MESSAGE_TOAST:
+                    Toast.makeText(MainActivity.this, msg.obj.toString(), Toast.LENGTH_SHORT).show();
+                    break;
+            }
+        }
+    };
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        // Initialize UI elements
+        logTextView = findViewById(R.id.logTextView);
+        logScrollView = findViewById(R.id.logScrollView);
+        nodeRoleRadioGroup = findViewById(R.id.nodeRoleRadioGroup);
+        peerGatewayIpEditText = findViewById(R.id.peerGatewayIpEditText);
+        setRoleButton = findViewById(R.id.setRoleButton);
+        discoverPeersButton = findViewById(R.id.discoverPeersButton);
+        recipientIdEditText = findViewById(R.id.recipientIdEditText);
+        messageEditText = findViewById(R.id.messageEditText);
+        sendButton = findViewById(R.id.sendButton);
+
+        // Initialize Wi-Fi P2P
+        manager = (WifiP2pManager) getSystemService(Context.WIFI_P2P_SERVICE);
+        channel = manager.initialize(this, getMainLooper(), null);
+        receiver = new WiFiDirectBroadcastReceiver(manager, channel, this);
+
+        intentFilter = new IntentFilter();
+        intentFilter.addAction(WifiP2pManager.WIFI_P2P_STATE_CHANGED_ACTION);
+        intentFilter.addAction(WifiP2pManager.WIFI_P2P_PEERS_CHANGED_ACTION);
+        intentFilter.addAction(WifiP2pManager.WIFI_P2P_CONNECTION_CHANGED_ACTION);
+        intentFilter.addAction(WifiP2pManager.WIFI_P2P_THIS_DEVICE_CHANGED_ACTION);
+
+        // Request permissions
+        checkAndRequestPermissions();
+
+        // Set up listeners
+        setRoleButton.setOnClickListener(v -> setNodeRole());
+        discoverPeersButton.setOnClickListener(v -> discoverPeers());
+        sendButton.setOnClickListener(v -> sendMessage());
+
+        // Initialize communication threads (they will be started/connected based on role)
+        p2pSendReceiveThread = new P2PSendReceiveThread(handler);
+        tcpSendReceiveThread = new TcpSendReceiveThread(handler);
+
+        // Initial log
+        log("MeshWave App Started.");
+    }
+
+    private void checkAndRequestPermissions() {
+        String[] permissions = {
+                Manifest.permission.ACCESS_FINE_LOCATION,
+                Manifest.permission.ACCESS_COARSE_LOCATION,
+                Manifest.permission.ACCESS_WIFI_STATE,
+                Manifest.permission.CHANGE_WIFI_STATE,
+                Manifest.permission.INTERNET,
+                Manifest.permission.ACCESS_NETWORK_STATE,
+                Manifest.permission.CHANGE_NETWORK_STATE
+        };
+
+        List<String> permissionsToRequest = new ArrayList<>();
+        for (String permission : permissions) {
+            if (ContextCompat.checkSelfPermission(this, permission) != PackageManager.PERMISSION_GRANTED) {
+                permissionsToRequest.add(permission);
+            }
+        }
+
+        if (!permissionsToRequest.isEmpty()) {
+            ActivityCompat.requestPermissions(this, permissionsToRequest.toArray(new String[0]), 1);
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == 1) {
+            for (int i = 0; i < permissions.length; i++) {
+                if (grantResults[i] == PackageManager.PERMISSION_GRANTED) {
+                    log(permissions[i] + " granted.");
+                } else {
+                    log(permissions[i] + " denied.");
+                }
+            }
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        registerReceiver(receiver, intentFilter);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        unregisterReceiver(receiver);
+    }
+
+    private void setNodeRole() {
+        int selectedId = nodeRoleRadioGroup.getCheckedRadioButtonId();
+        RadioButton selectedRadioButton = findViewById(selectedId);
+        if (selectedRadioButton != null) {
+            String role = selectedRadioButton.getText().toString();
+            switch (role) {
+                case "Node A": currentNodeRole = NodeRole.NODE_A; break;
+                case "Node X": currentNodeRole = NodeRole.NODE_X; break;
+                case "Node Y": currentNodeRole = NodeRole.NODE_Y; break;
+                case "Node Z": currentNodeRole = NodeRole.NODE_Z; break;
+                case "Node B": currentNodeRole = NodeRole.NODE_B; break;
+            }
+            log("Node role set to: " + currentNodeRole.name());
+
+            // Start server threads based on role
+            if (currentNodeRole == NodeRole.NODE_Y || currentNodeRole == NodeRole.NODE_Z) {
+                // These nodes act as gateways, so they should listen for TCP connections
+                // For simplicity in prototype, we'll assume a fixed port
+                new Thread(() -> {
+                    try {
+                        ServerSocket serverSocket = new ServerSocket(8888);
+                        log("Listening for TCP connections on port 8888...");
+                        Socket socket = serverSocket.accept();
+                        log("TCP connection established with: " + socket.getInetAddress().getHostAddress());
+                        tcpSendReceiveThread.setSocket(socket);
+                        tcpSendReceiveThread.start();
+                    } catch (IOException e) {
+                        log("TCP Server Error: " + e.getMessage());
+                    }
+                }).start();
+            }
+        }
+    }
+
+    private void discoverPeers() {
+        if (manager != null && channel != null) {
+            manager.discoverPeers(channel, new WifiP2pManager.ActionListener() {
+                @Override
+                public void onSuccess() {
+                    log("Peer discovery initiated.");
+                }
+
+                @Override
+                public void onFailure(int reasonCode) {
+                    log("Peer discovery failed: " + reasonCode);
+                }
+            });
+        }
+    }
+
+    @Override
+    public void onPeersAvailable(WifiP2pDeviceList peerList) {
+        peers.clear();
+        peers.addAll(peerList.getDeviceList());
+        log("Peers discovered: " + peers.size());
+        for (WifiP2pDevice device : peers) {
+            log("  - " + device.deviceName + " (" + device.deviceAddress + ")");
+        }
+
+        // For prototype, connect to the first available peer if we are Node A or B
+        if ((currentNodeRole == NodeRole.NODE_A || currentNodeRole == NodeRole.NODE_B) && !peers.isEmpty()) {
+            WifiP2pDevice device = peers.get(0);
+            WifiP2pConfig config = new WifiP2pConfig();
+            config.deviceAddress = device.deviceAddress;
+
+            manager.connect(channel, config, new WifiP2pManager.ActionListener() {
+                @Override
+                public void onSuccess() {
+                    log("Connecting to peer: " + device.deviceName);
+                }
+
+                @Override
+                public void onFailure(int reasonCode) {
+                    log("Failed to connect to peer: " + reasonCode);
+                }
+            });
+        }
+    }
+
+    @Override
+    public void onConnectionInfoAvailable(WifiP2pInfo info) {
+        log("Connection info available. Group Formed: " + info.groupFormed);
+        if (info.groupFormed) {
+            if (info.isGroupOwner) {
+                log("I am the Group Owner.");
+                // Group owner acts as a server for P2P connections
+                new Thread(() -> {
+                    try {
+                        ServerSocket serverSocket = new ServerSocket(8888);
+                        log("Listening for P2P connections on port 8888...");
+                        Socket socket = serverSocket.accept();
+                        log("P2P connection established with: " + socket.getInetAddress().getHostAddress());
+                        p2pSendReceiveThread.setSocket(socket);
+                        p2pSendReceiveThread.start();
+                    } catch (IOException e) {
+                        log("P2P Server Error: " + e.getMessage());
+                    }
+                }).start();
+            } else {
+                log("I am a client. Group Owner Address: " + info.groupOwnerAddress.getHostAddress());
+                // Client connects to group owner for P2P communication
+                p2pSendReceiveThread.connect(info.groupOwnerAddress.getHostAddress(), 8888);
+            }
+        }
+    }
+
+    private void sendMessage() {
+        String recipientId = recipientIdEditText.getText().toString().trim();
+        String messageContent = messageEditText.getText().toString().trim();
+
+        if (recipientId.isEmpty() || messageContent.isEmpty()) {
+            log("Recipient ID and Message cannot be empty.");
+            return;
+        }
+
+        String fullMessage = getCurrentNodeId() + ":" + recipientId + ":" + messageContent;
+        log("Attempting to send: " + fullMessage);
+
+        // Simplified routing logic based on the provided table
+        switch (getCurrentNodeId()) {
+            case nodeA_ID:
+                if (recipientId.equals(nodeY_ID)) {
+                    if (p2pSendReceiveThread != null && p2pSendReceiveThread.isConnected()) {
+                        p2pSendReceiveThread.send(fullMessage.getBytes());
+                    } else {
+                        log("P2P connection to Y not established.");
+                    }
+                } else if (recipientId.equals(nodeZ_ID) || recipientId.equals(nodeB_ID)) {
+                    // Route A -> Y (P2P) -> Z (TCP) -> B (P2P)
+                    // For prototype, we'll just log the intent to send via Y
+                    log("Routing via Y for Z/B. (P2P to Y, then Y to Z/B via TCP/P2P)");
+                    if (p2pSendReceiveThread != null && p2pSendReceiveThread.isConnected()) {
+                        p2pSendReceiveThread.send(fullMessage.getBytes());
+                    } else {
+                        log("P2P connection to Y not established for routing.");
+                    }
+                } else {
+                    log("Invalid recipient for Node A.");
+                }
+                break;
+            case nodeX_ID:
+                // Node X can only talk to Node Y via P2P in this simplified setup
+                if (recipientId.equals(nodeY_ID)) {
+                    if (p2pSendReceiveThread != null && p2pSendReceiveThread.isConnected()) {
+                        p2pSendReceiveThread.send(fullMessage.getBytes());
+                    } else {
+                        log("P2P connection to Y not established.");
+                    }
+                } else {
+                    log("Invalid recipient for Node X.");
+                }
+                break;
+            case nodeY_ID:
+                if (recipientId.equals(nodeA_ID) || recipientId.equals(nodeX_ID)) {
+                    if (p2pSendReceiveThread != null && p2pSendReceiveThread.isConnected()) {
+                        p2pSendReceiveThread.send(fullMessage.getBytes());
+                    } else {
+                        log("P2P connection to A/X not established.");
+                    }
+                } else if (recipientId.equals(nodeZ_ID) || recipientId.equals(nodeB_ID)) {
+                    // Route Y -> Z (TCP)
+                    if (tcpSendReceiveThread != null && tcpSendReceiveThread.isConnected()) {
+                        tcpSendReceiveThread.send(fullMessage.getBytes());
+                    } else {
+                        log("TCP connection to Z not established.");
+                    }
+                } else {
+                    log("Invalid recipient for Node Y.");
+                }
+                break;
+            case nodeZ_ID:
+                if (recipientId.equals(nodeB_ID)) {
+                    if (p2pSendReceiveThread != null && p2pSendReceiveThread.isConnected()) {
+                        p2pSendReceiveThread.send(fullMessage.getBytes());
+                    } else {
+                        log("P2P connection to B not established.");
+                    }
+                } else if (recipientId.equals(nodeY_ID) || recipientId.equals(nodeA_ID) || recipientId.equals(nodeX_ID)) {
+                    // Route Z -> Y (TCP)
+                    if (tcpSendReceiveThread != null && tcpSendReceiveThread.isConnected()) {
+                        tcpSendReceiveThread.send(fullMessage.getBytes());
+                    } else {
+                        log("TCP connection to Y not established.");
+                    }
+                } else {
+                    log("Invalid recipient for Node Z.");
+                }
+                break;
+            case nodeB_ID:
+                if (recipientId.equals(nodeZ_ID)) {
+                    if (p2pSendReceiveThread != null && p2pSendReceiveThread.isConnected()) {
+                        p2pSendReceiveThread.send(fullMessage.getBytes());
+                    } else {
+                        log("P2P connection to Z not established.");
+                    }
+                } else if (recipientId.equals(nodeY_ID) || recipientId.equals(nodeA_ID) || recipientId.equals(nodeX_ID)) {
+                    // Route B -> Z (P2P) -> Y (TCP) -> A/X (P2P)
+                    // For prototype, we'll just log the intent to send via Z
+                    log("Routing via Z for Y/A/X. (P2P to Z, then Z to Y/A/X via TCP/P2P)");
+                    if (p2pSendReceiveThread != null && p2pSendReceiveThread.isConnected()) {
+                        p2pSendReceiveThread.send(fullMessage.getBytes());
+                    } else {
+                        log("P2P connection to Z not established for routing.");
+                    }
+                } else {
+                    log("Invalid recipient for Node B.");
+                }
+                break;
+            default:
+                log("Unknown node role.");
+                break;
+        }
+    }
+
+    // --- Utility Method ---
+    public void log(String message) { // Changed to public
+        runOnUiThread(() -> {
+            logTextView.append(message + "\n");
+            logScrollView.post(() -> logScrollView.fullScroll(ScrollView.FOCUS_DOWN));
+        });
+    }
+
+    private String getCurrentNodeId() {
+        switch (currentNodeRole) {
+            case NODE_A: return nodeA_ID;
+            case NODE_X: return nodeX_ID;
+            case NODE_Y: return nodeY_ID;
+            case NODE_Z: return nodeZ_ID;
+            case NODE_B: return nodeB_ID;
+            default: return "UNKNOWN";
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        // Disconnect P2P and TCP threads if they are running
+        if (p2pSendReceiveThread != null) {
+            p2pSendReceiveThread.cancel();
+        }
+        if (tcpSendReceiveThread != null) {
+            tcpSendReceiveThread.cancel();
+        }
+    }
+}
+
+package com.example.meshwave;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+
+import android.Manifest;
+import android.annotation.SuppressLint;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.IntentFilter;
+import android.content.pm.PackageManager;
+import android.net.wifi.p2p.WifiP2pConfig;
+import android.net.wifi.p2p.WifiP2pDevice;
+import android.net.wifi.p2p.WifiP2pDeviceList;
+import android.net.wifi.p2p.WifiP2pInfo;
+import android.net.wifi.p2p.WifiP2pManager;
+import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message; // Import Message
+import android.util.Log; // Import Log
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
+import android.widget.ScrollView;
+import android.widget.TextView;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Toast;
+
+import java.io.IOException;
+import java.net.InetAddress;
+import java.net.InetSocketAddress;
+import java.net.ServerSocket;
+import java.net.Socket;
+import java.util.ArrayList;
+import java.util.List;
+
+public class MainActivity extends AppCompatActivity implements WifiP2pManager.ConnectionInfoListener, WifiP2pManager.PeerListListener {
+
+    // UI Elements
+    private TextView logTextView;
+    private ScrollView logScrollView;
+    private RadioGroup nodeRoleRadioGroup;
+    private EditText peerGatewayIpEditText;
+    private Button setRoleButton;
+    private Button discoverPeersButton;
+    private EditText recipientIdEditText;
+    private EditText messageEditText;
+    private Button sendButton;
+
+    // Wi-Fi P2P related
+    private WifiP2pManager manager;
+    private WifiP2pManager.Channel channel;
+    private BroadcastReceiver receiver;
+    private IntentFilter intentFilter;
+    private List<WifiP2pDevice> peers = new ArrayList<>();
+
+    // Communication Threads
+    private P2PSendReceiveThread p2pSendReceiveThread;
+    private TcpSendReceiveThread tcpSendReceiveThread;
+
+    // Node Roles
+    private enum NodeRole { NODE_A, NODE_X, NODE_Y, NODE_Z, NODE_B }
+    private NodeRole currentNodeRole = NodeRole.NODE_A; // Default role
+
+    // Node IDs (for routing simulation)
+    private static final String nodeA_ID = "NODE_A";
+    private static final String nodeX_ID = "NODE_X";
+    private static final String nodeY_ID = "NODE_Y";
+    private static final String nodeZ_ID = "NODE_Z";
+    private static final String nodeB_ID = "NODE_B";
+
+    // Message types for Handler
+    public static final int MESSAGE_READ = 1;
+    public static final int MESSAGE_TOAST = 2;
+
+    // Handler for updating UI from communication threads
+    private Handler handler = new Handler(Looper.getMainLooper()) {
+        @Override
+        public void handleMessage(@NonNull Message msg) {
+            switch (msg.what) {
+                case MESSAGE_READ:
+                    byte[] readBuf = (byte[]) msg.obj;
+                    String readMessage = new String(readBuf, 0, msg.arg1);
+                    log("Received: " + readMessage);
+                    break;
+                case MESSAGE_TOAST:
+                    Toast.makeText(MainActivity.this, msg.obj.toString(), Toast.LENGTH_SHORT).show();
+                    break;
+            }
+        }
+    };
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        // Initialize UI elements
+        logTextView = findViewById(R.id.logTextView);
+        logScrollView = findViewById(R.id.logScrollView);
+        nodeRoleRadioGroup = findViewById(R.id.nodeRoleRadioGroup);
+        peerGatewayIpEditText = findViewById(R.id.peerGatewayIpEditText);
+        setRoleButton = findViewById(R.id.setRoleButton);
+        discoverPeersButton = findViewById(R.id.discoverPeersButton);
+        recipientIdEditText = findViewById(R.id.recipientIdEditText);
+        messageEditText = findViewById(R.id.messageEditText);
+        sendButton = findViewById(R.id.sendButton);
+
+        // Initialize Wi-Fi P2P
+        manager = (WifiP2pManager) getSystemService(Context.WIFI_P2P_SERVICE);
+        channel = manager.initialize(this, getMainLooper(), null);
+        receiver = new WiFiDirectBroadcastReceiver(manager, channel, this);
+
+        intentFilter = new IntentFilter();
+        intentFilter.addAction(WifiP2pManager.WIFI_P2P_STATE_CHANGED_ACTION);
+        intentFilter.addAction(WifiP2pManager.WIFI_P2P_PEERS_CHANGED_ACTION);
+        intentFilter.addAction(WifiP2pManager.WIFI_P2P_CONNECTION_CHANGED_ACTION);
+        intentFilter.addAction(WifiP2pManager.WIFI_P2P_THIS_DEVICE_CHANGED_ACTION);
+
+        // Request permissions
+        checkAndRequestPermissions();
+
+        // Set up listeners
+        setRoleButton.setOnClickListener(v -> setNodeRole());
+        discoverPeersButton.setOnClickListener(v -> discoverPeers());
+        sendButton.setOnClickListener(v -> sendMessage());
+
+        // Initialize communication threads (they will be started/connected based on role)
+        p2pSendReceiveThread = new P2PSendReceiveThread(handler);
+        tcpSendReceiveThread = new TcpSendReceiveThread(handler);
+
+        // Initial log
+        log("MeshWave App Started.");
+    }
+
+    private void checkAndRequestPermissions() {
+        String[] permissions = {
+                Manifest.permission.ACCESS_FINE_LOCATION,
+                Manifest.permission.ACCESS_COARSE_LOCATION,
+                Manifest.permission.ACCESS_WIFI_STATE,
+                Manifest.permission.CHANGE_WIFI_STATE,
+                Manifest.permission.INTERNET,
+                Manifest.permission.ACCESS_NETWORK_STATE,
+                Manifest.permission.CHANGE_NETWORK_STATE
+        };
+
+        List<String> permissionsToRequest = new ArrayList<>();
+        for (String permission : permissions) {
+            if (ContextCompat.checkSelfPermission(this, permission) != PackageManager.PERMISSION_GRANTED) {
+                permissionsToRequest.add(permission);
+            }
+        }
+
+        if (!permissionsToRequest.isEmpty()) {
+            ActivityCompat.requestPermissions(this, permissionsToRequest.toArray(new String[0]), 1);
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == 1) {
+            for (int i = 0; i < permissions.length; i++) {
+                if (grantResults[i] == PackageManager.PERMISSION_GRANTED) {
+                    log(permissions[i] + " granted.");
+                } else {
+                    log(permissions[i] + " denied.");
+                }
+            }
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        registerReceiver(receiver, intentFilter);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        unregisterReceiver(receiver);
+    }
+
+    private void setNodeRole() {
+        int selectedId = nodeRoleRadioGroup.getCheckedRadioButtonId();
+        RadioButton selectedRadioButton = findViewById(selectedId);
+        if (selectedRadioButton != null) {
+            String role = selectedRadioButton.getText().toString();
+            switch (role) {
+                case "Node A": currentNodeRole = NodeRole.NODE_A; break;
+                case "Node X": currentNodeRole = NodeRole.NODE_X; break;
+                case "Node Y": currentNodeRole = NodeRole.NODE_Y; break;
+                case "Node Z": currentNodeRole = NodeRole.NODE_Z; break;
+                case "Node B": currentNodeRole = NodeRole.NODE_B; break;
+            }
+            log("Node role set to: " + currentNodeRole.name());
+
+            // Start server threads based on role
+            if (currentNodeRole == NodeRole.NODE_Y || currentNodeRole == NodeRole.NODE_Z) {
+                // These nodes act as gateways, so they should listen for TCP connections
+                // For simplicity in prototype, we'll assume a fixed port
+                new Thread(() -> {
+                    try {
+                        ServerSocket serverSocket = new ServerSocket(8888);
+                        log("Listening for TCP connections on port 8888...");
+                        Socket socket = serverSocket.accept();
+                        log("TCP connection established with: " + socket.getInetAddress().getHostAddress());
+                        tcpSendReceiveThread.setSocket(socket);
+                        tcpSendReceiveThread.start();
+                    } catch (IOException e) {
+                        log("TCP Server Error: " + e.getMessage());
+                    }
+                }).start();
+            }
+        }
+    }
+
+    private void discoverPeers() {
+        if (manager != null && channel != null) {
+            manager.discoverPeers(channel, new WifiP2pManager.ActionListener() {
+                @Override
+                public void onSuccess() {
+                    log("Peer discovery initiated.");
+                }
+
+                @Override
+                public void onFailure(int reasonCode) {
+                    log("Peer discovery failed: " + reasonCode);
+                }
+            });
+        }
+    }
+
+    @Override
+    public void onPeersAvailable(WifiP2pDeviceList peerList) {
+        peers.clear();
+        peers.addAll(peerList.getDeviceList());
+        log("Peers discovered: " + peers.size());
+        for (WifiP2pDevice device : peers) {
+            log("  - " + device.deviceName + " (" + device.deviceAddress + ")");
+        }
+
+        // For prototype, connect to the first available peer if we are Node A or B
+        if ((currentNodeRole == NodeRole.NODE_A || currentNodeRole == NodeRole.NODE_B) && !peers.isEmpty()) {
+            WifiP2pDevice device = peers.get(0);
+            WifiP2pConfig config = new WifiP2pConfig();
+            config.deviceAddress = device.deviceAddress;
+
+            manager.connect(channel, config, new WifiP2pManager.ActionListener() {
+                @Override
+                public void onSuccess() {
+                    log("Connecting to peer: " + device.deviceName);
+                }
+
+                @Override
+                public void onFailure(int reasonCode) {
+                    log("Failed to connect to peer: " + reasonCode);
+                }
+            });
+        }
+    }
+
+    @Override
+    public void onConnectionInfoAvailable(WifiP2pInfo info) {
+        log("Connection info available. Group Formed: " + info.groupFormed);
+        if (info.groupFormed) {
+            if (info.isGroupOwner) {
+                log("I am the Group Owner.");
+                // Group owner acts as a server for P2P connections
+                new Thread(() -> {
+                    try {
+                        ServerSocket serverSocket = new ServerSocket(8888);
+                        log("Listening for P2P connections on port 8888...");
+                        Socket socket = serverSocket.accept();
+                        log("P2P connection established with: " + socket.getInetAddress().getHostAddress());
+                        p2pSendReceiveThread.setSocket(socket);
+                        p2pSendReceiveThread.start();
+                    } catch (IOException e) {
+                        log("P2P Server Error: " + e.getMessage());
+                    }
+                }).start();
+            } else {
+                log("I am a client. Group Owner Address: " + info.groupOwnerAddress.getHostAddress());
+                // Client connects to group owner for P2P communication
+                p2pSendReceiveThread.connect(info.groupOwnerAddress.getHostAddress(), 8888);
+            }
+        }
+    }
+
+    private void sendMessage() {
+        String recipientId = recipientIdEditText.getText().toString().trim();
+        String messageContent = messageEditText.getText().toString().trim();
+
+        if (recipientId.isEmpty() || messageContent.isEmpty()) {
+            log("Recipient ID and Message cannot be empty.");
+            return;
+        }
+
+        String fullMessage = getCurrentNodeId() + ":" + recipientId + ":" + messageContent;
+        log("Attempting to send: " + fullMessage);
+
+        // Simplified routing logic based on the provided table
+        switch (getCurrentNodeId()) {
+            case nodeA_ID:
+                if (recipientId.equals(nodeY_ID)) {
+                    if (p2pSendReceiveThread != null && p2pSendReceiveThread.isConnected()) {
+                        p2pSendReceiveThread.send(fullMessage.getBytes());
+                    } else {
+                        log("P2P connection to Y not established.");
+                    }
+                } else if (recipientId.equals(nodeZ_ID) || recipientId.equals(nodeB_ID)) {
+                    // Route A -> Y (P2P) -> Z (TCP) -> B (P2P)
+                    // For prototype, we'll just log the intent to send via Y
+                    log("Routing via Y for Z/B. (P2P to Y, then Y to Z/B via TCP/P2P)");
+                    if (p2pSendReceiveThread != null && p2pSendReceiveThread.isConnected()) {
+                        p2pSendReceiveThread.send(fullMessage.getBytes());
+                    } else {
+                        log("P2P connection to Y not established for routing.");
+                    }
+                } else {
+                    log("Invalid recipient for Node A.");
+                }
+                break;
+            case nodeX_ID:
+                // Node X can only talk to Node Y via P2P in this simplified setup
+                if (recipientId.equals(nodeY_ID)) {
+                    if (p2pSendReceiveThread != null && p2pSendReceiveThread.isConnected()) {
+                        p2pSendReceiveThread.send(fullMessage.getBytes());
+                    } else {
+                        log("P2P connection to Y not established.");
+                    }
+                } else {
+                    log("Invalid recipient for Node X.");
+                }
+                break;
+            case nodeY_ID:
+                if (recipientId.equals(nodeA_ID) || recipientId.equals(nodeX_ID)) {
+                    if (p2pSendReceiveThread != null && p2pSendReceiveThread.isConnected()) {
+                        p2pSendReceiveThread.send(fullMessage.getBytes());
+                    } else {
+                        log("P2P connection to A/X not established.");
+                    }
+                } else if (recipientId.equals(nodeZ_ID) || recipientId.equals(nodeB_ID)) {
+                    // Route Y -> Z (TCP)
+                    if (tcpSendReceiveThread != null && tcpSendReceiveThread.isConnected()) {
+                        tcpSendReceiveThread.send(fullMessage.getBytes());
+                    } else {
+                        log("TCP connection to Z not established.");
+                    }
+                } else {
+                    log("Invalid recipient for Node Y.");
+                }
+                break;
+            case nodeZ_ID:
+                if (recipientId.equals(nodeB_ID)) {
+                    if (p2pSendReceiveThread != null && p2pSendReceiveThread.isConnected()) {
+                        p2pSendReceiveThread.send(fullMessage.getBytes());
+                    } else {
+                        log("P2P connection to B not established.");
+                    }
+                } else if (recipientId.equals(nodeY_ID) || recipientId.equals(nodeA_ID) || recipientId.equals(nodeX_ID)) {
+                    // Route Z -> Y (TCP)
+                    if (tcpSendReceiveThread != null && tcpSendReceiveThread.isConnected()) {
+                        tcpSendReceiveThread.send(fullMessage.getBytes());
+                    } else {
+                        log("TCP connection to Y not established.");
+                    }
+                } else {
+                    log("Invalid recipient for Node Z.");
+                }
+                break;
+            case nodeB_ID:
+                if (recipientId.equals(nodeZ_ID)) {
+                    if (p2pSendReceiveThread != null && p2pSendReceiveThread.isConnected()) {
+                        p2pSendReceiveThread.send(fullMessage.getBytes());
+                    } else {
+                        log("P2P connection to Z not established.");
+                    }
+                } else if (recipientId.equals(nodeY_ID) || recipientId.equals(nodeA_ID) || recipientId.equals(nodeX_ID)) {
+                    // Route B -> Z (P2P) -> Y (TCP) -> A/X (P2P)
+                    // For prototype, we'll just log the intent to send via Z
+                    log("Routing via Z for Y/A/X. (P2P to Z, then Z to Y/A/X via TCP/P2P)");
+                    if (p2pSendReceiveThread != null && p2pSendReceiveThread.isConnected()) {
+                        p2pSendReceiveThread.send(fullMessage.getBytes());
+                    } else {
+                        log("P2P connection to Z not established for routing.");
+                    }
+                } else {
+                    log("Invalid recipient for Node B.");
+                }
+                break;
+            default:
+                log("Unknown node role.");
+                break;
+        }
+    }
+
+    // --- Utility Method ---
+    public void log(String message) { // Changed to public
+        runOnUiThread(() -> {
+            logTextView.append(message + "\n");
+            logScrollView.post(() -> logScrollView.fullScroll(ScrollView.FOCUS_DOWN));
+        });
+    }
+
+    private String getCurrentNodeId() {
+        switch (currentNodeRole) {
+            case NODE_A: return nodeA_ID;
+            case NODE_X: return nodeX_ID;
+            case NODE_Y: return nodeY_ID;
+            case NODE_Z: return nodeZ_ID;
+            case NODE_B: return nodeB_ID;
+            default: return "UNKNOWN";
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        // Disconnect P2P and TCP threads if they are running
+        if (p2pSendReceiveThread != null) {
+            p2pSendReceiveThread.cancel();
+        }
+        if (tcpSendReceiveThread != null) {
+            tcpSendReceiveThread.cancel();
+        }
+    }
+}
+
+MainActivity.java
+
+File
+
+Sync Project with Gradle Files
+
+Build
+
+Clean Project
+
+Build
+
+Rebuild Project
+
+log(String) has private access in MainActivity
+
+log
+
+MainActivity.java
+
+private
+
+MainActivity.java
+
+log
+
+public
+
+MainActivity.java
+
+log
+
+public void log(String message) { // DEVE SER PUBLIC
+
+public void log(String message) { // DEVE SER PUBLIC
+
+WiFiDirectBroadcastReceiver.java
+
+File
+
+Sync Project with Gradle Files
+
+Build
+
+Clean Project
+
+Build
+
+Rebuild Project
+
+nodeRoleRadioGroup
+
+peerGatewayIpEditText
+
+activity_main.xml
+
+activity_main.xml
+
+P2PSendReceiveThread
+
+TcpSendReceiveThread
+
+activity_main.xml
+
+app/src/main/res/layout/activity_main.xml
+
+P2PSendReceiveThread.java
+
+TcpSendReceiveThread.java
+
+activity_main.xml
+
+activity_main.xml
+
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp"
+    tools:context=".MainActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="MeshWave"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="16dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Node Role:"
+            android:textSize="18sp"
+            android:layout_marginBottom="8dp"/>
+
+        <RadioGroup
+            android:id="@+id/nodeRoleRadioGroup"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginBottom="16dp">
+
+            <RadioButton
+                android:id="@+id/radioNodeA"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Node A"
+                android:checked="true"/>
+
+            <RadioButton
+                android:id="@+id/radioNodeX"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Node X"/>
+
+            <RadioButton
+                android:id="@+id/radioNodeY"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Node Y"/>
+
+            <RadioButton
+                android:id="@+id/radioNodeZ"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Node Z"/>
+
+            <RadioButton
+                android:id="@+id/radioNodeB"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Node B"/>
+
+        </RadioGroup>
+
+        <EditText
+            android:id="@+id/peerGatewayIpEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Peer Gateway IP (for X/Y )"
+            android:inputType="text"/>
+
+        <Button
+            android:id="@+id/setRoleButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Set Role"
+            android:layout_gravity="end"
+            android:layout_marginBottom="16dp"/>
+
+        <Button
+            android:id="@+id/discoverPeersButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Discover Peers"
+            android:layout_marginBottom="16dp"/>
+
+        <EditText
+            android:id="@+id/recipientIdEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Recipient ID (e.g., NODE_Z)"
+            android:inputType="text"/>
+
+        <EditText
+            android:id="@+id/messageEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Message"
+            android:inputType="textMultiLine"
+            android:lines="3"
+            android:gravity="top"/>
+
+        <Button
+            android:id="@+id/sendButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Send"
+            android:layout_gravity="end"
+            android:layout_marginBottom="16dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Logs:"
+            android:textSize="18sp"
+            android:layout_marginBottom="8dp"/>
+
+        <ScrollView
+            android:id="@+id/logScrollView"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:background="@android:color/darker_gray"
+            android:padding="8dp">
+
+            <TextView
+                android:id="@+id/logTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@android:color/white"/>
+
+        </ScrollView>
+
+    </LinearLayout>
+
+</ScrollView>
+
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp"
+    tools:context=".MainActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="MeshWave"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="16dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Node Role:"
+            android:textSize="18sp"
+            android:layout_marginBottom="8dp"/>
+
+        <RadioGroup
+            android:id="@+id/nodeRoleRadioGroup"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginBottom="16dp">
+
+            <RadioButton
+                android:id="@+id/radioNodeA"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Node A"
+                android:checked="true"/>
+
+            <RadioButton
+                android:id="@+id/radioNodeX"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Node X"/>
+
+            <RadioButton
+                android:id="@+id/radioNodeY"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Node Y"/>
+
+            <RadioButton
+                android:id="@+id/radioNodeZ"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Node Z"/>
+
+            <RadioButton
+                android:id="@+id/radioNodeB"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Node B"/>
+
+        </RadioGroup>
+
+        <EditText
+            android:id="@+id/peerGatewayIpEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Peer Gateway IP (for X/Y )"
+            android:inputType="text"/>
+
+        <Button
+            android:id="@+id/setRoleButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Set Role"
+            android:layout_gravity="end"
+            android:layout_marginBottom="16dp"/>
+
+        <Button
+            android:id="@+id/discoverPeersButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Discover Peers"
+            android:layout_marginBottom="16dp"/>
+
+        <EditText
+            android:id="@+id/recipientIdEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Recipient ID (e.g., NODE_Z)"
+            android:inputType="text"/>
+
+        <EditText
+            android:id="@+id/messageEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Message"
+            android:inputType="textMultiLine"
+            android:lines="3"
+            android:gravity="top"/>
+
+        <Button
+            android:id="@+id/sendButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Send"
+            android:layout_gravity="end"
+            android:layout_marginBottom="16dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Logs:"
+            android:textSize="18sp"
+            android:layout_marginBottom="8dp"/>
+
+        <ScrollView
+            android:id="@+id/logScrollView"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:background="@android:color/darker_gray"
+            android:padding="8dp">
+
+            <TextView
+                android:id="@+id/logTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@android:color/white"/>
+
+        </ScrollView>
+
+    </LinearLayout>
+
+</ScrollView>
+
+app/src/main/res/layout/activity_main.xml
+
+P2PSendReceiveThread.java
+
+TcpSendReceiveThread.java
+
+P2PSendReceiveThread.java
+
+package com.example.meshwave;
+
+import android.os.Handler;
+import android.os.Message;
+import android.util.Log;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.net.Socket;
+
+public class P2PSendReceiveThread extends Thread {
+
+    private static final String TAG = "P2PSendReceiveThread";
+    private Handler handler;
+    private Socket socket;
+    private BufferedReader bufferedReader;
+    private PrintWriter printWriter;
+    private boolean isConnected = false;
+
+    public P2PSendReceiveThread(Handler handler) {
+        this.handler = handler;
+    }
+
+    // For client side (initiating connection)
+    public void connect(final String peerAddress, final int port) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    // Simulate P2P connection for prototype
+                    // In a real scenario, this would involve Wi-Fi Direct or Bluetooth LE APIs
+                    socket = new Socket(peerAddress, port);
+                    bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+                    printWriter = new PrintWriter(socket.getOutputStream(), true);
+                    isConnected = true;
+                    handler.obtainMessage(MainActivity.MESSAGE_TOAST, "P2P Conectado a: " + peerAddress).sendToTarget();
+                    Log.d(TAG, "P2P Connected to: " + peerAddress);
+
+                    String message;
+                    while ((message = bufferedReader.readLine()) != null) {
+                        handler.obtainMessage(MainActivity.MESSAGE_READ, message.getBytes().length, -1, message.getBytes()).sendToTarget();
+                        Log.d(TAG, "P2P Received: " + message);
+                    }
+                } catch (IOException e) {
+                    Log.e(TAG, "P2P Connection Error: " + e.getMessage());
+                    handler.obtainMessage(MainActivity.MESSAGE_TOAST, "P2P Erro de Conexão: " + e.getMessage()).sendToTarget();
+                    isConnected = false;
+                }
+            }
+        }).start();
+    }
+
+    // For server side (accepting connection)
+    public void setSocket(Socket socket) {
+        this.socket = socket;
+        try {
+            bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+            printWriter = new PrintWriter(socket.getOutputStream(), true);
+            isConnected = true;
+            handler.obtainMessage(MainActivity.MESSAGE_TOAST, "P2P Conexão Aceita.").sendToTarget();
+            Log.d(TAG, "P2P Connection Accepted.");
+        } catch (IOException e) {
+            Log.e(TAG, "P2P Socket Setup Error: " + e.getMessage());
+            handler.obtainMessage(MainActivity.MESSAGE_TOAST, "P2P Erro ao configurar Socket: " + e.getMessage()).sendToTarget();
+            isConnected = false;
+        }
+    }
+
+    public void send(byte[] bytes) {
+        if (printWriter != null && isConnected) {
+            String message = new String(bytes);
+            printWriter.println(message);
+            Log.d(TAG, "P2P Sent: " + message);
+        } else {
+            handler.obtainMessage(MainActivity.MESSAGE_TOAST, "P2P Não conectado para enviar mensagem.").sendToTarget();
+            Log.e(TAG, "P2P Not connected to send message.");
+        }
+    }
+
+    @Override
+    public void run() {
+        try {
+            String message;
+            while (isConnected && (message = bufferedReader.readLine()) != null) {
+                handler.obtainMessage(MainActivity.MESSAGE_READ, message.getBytes().length, -1, message.getBytes()).sendToTarget();
+                Log.d(TAG, "P2P Received: " + message);
+            }
+        } catch (IOException e) {
+            Log.e(TAG, "P2P Read Error: " + e.getMessage());
+            handler.obtainMessage(MainActivity.MESSAGE_TOAST, "P2P Erro de Leitura: " + e.getMessage()).sendToTarget();
+            isConnected = false;
+        }
+    }
+
+    public void disconnect() {
+        try {
+            if (socket != null) {
+                socket.close();
+            }
+            if (bufferedReader != null) {
+                bufferedReader.close();
+            }
+            if (printWriter != null) {
+                printWriter.close();
+            }
+            isConnected = false;
+            Log.d(TAG, "P2P Disconnected.");
+            handler.obtainMessage(MainActivity.MESSAGE_TOAST, "P2P Desconectado.").sendToTarget();
+        } catch (IOException e) {
+            Log.e(TAG, "P2P Error during disconnect: " + e.getMessage());
+            handler.obtainMessage(MainActivity.MESSAGE_TOAST, "P2P Erro ao desconectar: " + e.getMessage()).sendToTarget();
+        }
+    }
+
+    public void cancel() {
+        disconnect();
+    }
+
+    public boolean isConnected() {
+        return isConnected;
+    }
+}
+
+package com.example.meshwave;
+
+import android.os.Handler;
+import android.os.Message;
+import android.util.Log;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.net.Socket;
+
+public class P2PSendReceiveThread extends Thread {
+
+    private static final String TAG = "P2PSendReceiveThread";
+    private Handler handler;
+    private Socket socket;
+    private BufferedReader bufferedReader;
+    private PrintWriter printWriter;
+    private boolean isConnected = false;
+
+    public P2PSendReceiveThread(Handler handler) {
+        this.handler = handler;
+    }
+
+    // For client side (initiating connection)
+    public void connect(final String peerAddress, final int port) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    // Simulate P2P connection for prototype
+                    // In a real scenario, this would involve Wi-Fi Direct or Bluetooth LE APIs
+                    socket = new Socket(peerAddress, port);
+                    bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+                    printWriter = new PrintWriter(socket.getOutputStream(), true);
+                    isConnected = true;
+                    handler.obtainMessage(MainActivity.MESSAGE_TOAST, "P2P Conectado a: " + peerAddress).sendToTarget();
+                    Log.d(TAG, "P2P Connected to: " + peerAddress);
+
+                    String message;
+                    while ((message = bufferedReader.readLine()) != null) {
+                        handler.obtainMessage(MainActivity.MESSAGE_READ, message.getBytes().length, -1, message.getBytes()).sendToTarget();
+                        Log.d(TAG, "P2P Received: " + message);
+                    }
+                } catch (IOException e) {
+                    Log.e(TAG, "P2P Connection Error: " + e.getMessage());
+                    handler.obtainMessage(MainActivity.MESSAGE_TOAST, "P2P Erro de Conexão: " + e.getMessage()).sendToTarget();
+                    isConnected = false;
+                }
+            }
+        }).start();
+    }
+
+    // For server side (accepting connection)
+    public void setSocket(Socket socket) {
+        this.socket = socket;
+        try {
+            bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+            printWriter = new PrintWriter(socket.getOutputStream(), true);
+            isConnected = true;
+            handler.obtainMessage(MainActivity.MESSAGE_TOAST, "P2P Conexão Aceita.").sendToTarget();
+            Log.d(TAG, "P2P Connection Accepted.");
+        } catch (IOException e) {
+            Log.e(TAG, "P2P Socket Setup Error: " + e.getMessage());
+            handler.obtainMessage(MainActivity.MESSAGE_TOAST, "P2P Erro ao configurar Socket: " + e.getMessage()).sendToTarget();
+            isConnected = false;
+        }
+    }
+
+    public void send(byte[] bytes) {
+        if (printWriter != null && isConnected) {
+            String message = new String(bytes);
+            printWriter.println(message);
+            Log.d(TAG, "P2P Sent: " + message);
+        } else {
+            handler.obtainMessage(MainActivity.MESSAGE_TOAST, "P2P Não conectado para enviar mensagem.").sendToTarget();
+            Log.e(TAG, "P2P Not connected to send message.");
+        }
+    }
+
+    @Override
+    public void run() {
+        try {
+            String message;
+            while (isConnected && (message = bufferedReader.readLine()) != null) {
+                handler.obtainMessage(MainActivity.MESSAGE_READ, message.getBytes().length, -1, message.getBytes()).sendToTarget();
+                Log.d(TAG, "P2P Received: " + message);
+            }
+        } catch (IOException e) {
+            Log.e(TAG, "P2P Read Error: " + e.getMessage());
+            handler.obtainMessage(MainActivity.MESSAGE_TOAST, "P2P Erro de Leitura: " + e.getMessage()).sendToTarget();
+            isConnected = false;
+        }
+    }
+
+    public void disconnect() {
+        try {
+            if (socket != null) {
+                socket.close();
+            }
+            if (bufferedReader != null) {
+                bufferedReader.close();
+            }
+            if (printWriter != null) {
+                printWriter.close();
+            }
+            isConnected = false;
+            Log.d(TAG, "P2P Disconnected.");
+            handler.obtainMessage(MainActivity.MESSAGE_TOAST, "P2P Desconectado.").sendToTarget();
+        } catch (IOException e) {
+            Log.e(TAG, "P2P Error during disconnect: " + e.getMessage());
+            handler.obtainMessage(MainActivity.MESSAGE_TOAST, "P2P Erro ao desconectar: " + e.getMessage()).sendToTarget();
+        }
+    }
+
+    public void cancel() {
+        disconnect();
+    }
+
+    public boolean isConnected() {
+        return isConnected;
+    }
+}
+
+TcpSendReceiveThread.java
+
+package com.example.meshwave;
+
+import android.os.Handler;
+import android.util.Log;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.net.Socket;
+
+public class TcpSendReceiveThread extends Thread {
+
+    private static final String TAG = "TcpSendReceiveThread";
+    private Handler handler;
+    private Socket socket;
+    private BufferedReader bufferedReader;
+    private PrintWriter printWriter;
+    private boolean isConnected = false;
+
+    public TcpSendReceiveThread(Handler handler) {
+        this.handler = handler;
+    }
+
+    public void connect(final String serverAddress, final int port) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    socket = new Socket(serverAddress, port);
+                    bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+                    printWriter = new PrintWriter(socket.getOutputStream(), true);
+                    isConnected = true;
+                    handler.obtainMessage(MainActivity.MESSAGE_TOAST, "TCP Conectado a: " + serverAddress).sendToTarget();
+                    Log.d(TAG, "TCP Connected to: " + serverAddress);
+
+                    String message;
+                    while ((message = bufferedReader.readLine()) != null) {
+                        handler.obtainMessage(MainActivity.MESSAGE_READ, message.getBytes().length, -1, message.getBytes()).sendToTarget();
+                        Log.d(TAG, "TCP Received: " + message);
+                    }
+                } catch (IOException e) {
+                    Log.e(TAG, "TCP Connection Error: " + e.getMessage());
+                    handler.obtainMessage(MainActivity.MESSAGE_TOAST, "TCP Erro de Conexão: " + e.getMessage()).sendToTarget();
+                    isConnected = false;
+                }
+            }
+        }).start();
+    }
+
+    public void setSocket(Socket socket) {
+        this.socket = socket;
+        try {
+            bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+            printWriter = new PrintWriter(socket.getOutputStream(), true);
+            isConnected = true;
+            handler.obtainMessage(MainActivity.MESSAGE_TOAST, "TCP Conexão Aceita.").sendToTarget();
+            Log.d(TAG, "TCP Connection Accepted.");
+        } catch (IOException e) {
+            Log.e(TAG, "TCP Socket Setup Error: " + e.getMessage());
+            handler.obtainMessage(MainActivity.MESSAGE_TOAST, "TCP Erro ao configurar Socket: " + e.getMessage()).sendToTarget();
+            isConnected = false;
+        }
+    }
+
+    public void send(byte[] bytes) {
+        if (printWriter != null && isConnected) {
+            String message = new String(bytes);
+            printWriter.println(message);
+            Log.d(TAG, "TCP Sent: " + message);
+        } else {
+            handler.obtainMessage(MainActivity.MESSAGE_TOAST, "TCP Não conectado para enviar mensagem.").sendToTarget();
+            Log.e(TAG, "TCP Not connected to send message.");
+        }
+    }
+
+    @Override
+    public void run() {
+        try {
+            String message;
+            while (isConnected && (message = bufferedReader.readLine()) != null) {
+                handler.obtainMessage(MainActivity.MESSAGE_READ, message.getBytes().length, -1, message.getBytes()).sendToTarget();
+                Log.d(TAG, "TCP Received: " + message);
+            }
+        } catch (IOException e) {
+            Log.e(TAG, "TCP Read Error: " + e.getMessage());
+            handler.obtainMessage(MainActivity.MESSAGE_TOAST, "TCP Erro de Leitura: " + e.getMessage()).sendToTarget();
+            isConnected = false;
+        }
+    }
+
+    public void cancel() {
+        disconnect();
+    }
+
+    public boolean isConnected() {
+        return isConnected;
+    }
+}
+
+package com.example.meshwave;
+
+import android.os.Handler;
+import android.util.Log;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.net.Socket;
+
+public class TcpSendReceiveThread extends Thread {
+
+    private static final String TAG = "TcpSendReceiveThread";
+    private Handler handler;
+    private Socket socket;
+    private BufferedReader bufferedReader;
+    private PrintWriter printWriter;
+    private boolean isConnected = false;
+
+    public TcpSendReceiveThread(Handler handler) {
+        this.handler = handler;
+    }
+
+    public void connect(final String serverAddress, final int port) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    socket = new Socket(serverAddress, port);
+                    bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+                    printWriter = new PrintWriter(socket.getOutputStream(), true);
+                    isConnected = true;
+                    handler.obtainMessage(MainActivity.MESSAGE_TOAST, "TCP Conectado a: " + serverAddress).sendToTarget();
+                    Log.d(TAG, "TCP Connected to: " + serverAddress);
+
+                    String message;
+                    while ((message = bufferedReader.readLine()) != null) {
+                        handler.obtainMessage(MainActivity.MESSAGE_READ, message.getBytes().length, -1, message.getBytes()).sendToTarget();
+                        Log.d(TAG, "TCP Received: " + message);
+                    }
+                } catch (IOException e) {
+                    Log.e(TAG, "TCP Connection Error: " + e.getMessage());
+                    handler.obtainMessage(MainActivity.MESSAGE_TOAST, "TCP Erro de Conexão: " + e.getMessage()).sendToTarget();
+                    isConnected = false;
+                }
+            }
+        }).start();
+    }
+
+    public void setSocket(Socket socket) {
+        this.socket = socket;
+        try {
+            bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+            printWriter = new PrintWriter(socket.getOutputStream(), true);
+            isConnected = true;
+            handler.obtainMessage(MainActivity.MESSAGE_TOAST, "TCP Conexão Aceita.").sendToTarget();
+            Log.d(TAG, "TCP Connection Accepted.");
+        } catch (IOException e) {
+            Log.e(TAG, "TCP Socket Setup Error: " + e.getMessage());
+            handler.obtainMessage(MainActivity.MESSAGE_TOAST, "TCP Erro ao configurar Socket: " + e.getMessage()).sendToTarget();
+            isConnected = false;
+        }
+    }
+
+    public void send(byte[] bytes) {
+        if (printWriter != null && isConnected) {
+            String message = new String(bytes);
+            printWriter.println(message);
+            Log.d(TAG, "TCP Sent: " + message);
+        } else {
+            handler.obtainMessage(MainActivity.MESSAGE_TOAST, "TCP Não conectado para enviar mensagem.").sendToTarget();
+            Log.e(TAG, "TCP Not connected to send message.");
+        }
+    }
+
+    @Override
+    public void run() {
+        try {
+            String message;
+            while (isConnected && (message = bufferedReader.readLine()) != null) {
+                handler.obtainMessage(MainActivity.MESSAGE_READ, message.getBytes().length, -1, message.getBytes()).sendToTarget();
+                Log.d(TAG, "TCP Received: " + message);
+            }
+        } catch (IOException e) {
+            Log.e(TAG, "TCP Read Error: " + e.getMessage());
+            handler.obtainMessage(MainActivity.MESSAGE_TOAST, "TCP Erro de Leitura: " + e.getMessage()).sendToTarget();
+            isConnected = false;
+        }
+    }
+
+    public void cancel() {
+        disconnect();
+    }
+
+    public boolean isConnected() {
+        return isConnected;
+    }
+}
+
+File
+
+Sync Project with Gradle Files
+
+Build
+
+Clean Project
+
+Build
+
+Rebuild Project
+
+nodeRoleRadioGroup
+
+peerGatewayIpEditText
+
+activity_main.xml
+
+activity_main.xml
+
+P2PSendReceiveThread
+
+TcpSendReceiveThread
+
+activity_main.xml
+
+app/src/main/res/layout/activity_main.xml
+
+P2PSendReceiveThread.java
+
+TcpSendReceiveThread.java
+
+activity_main.xml
+
+activity_main.xml
+
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp"
+    tools:context=".MainActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="MeshWave"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="16dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Node Role:"
+            android:textSize="18sp"
+            android:layout_marginBottom="8dp"/>
+
+        <RadioGroup
+            android:id="@+id/nodeRoleRadioGroup"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginBottom="16dp">
+
+            <RadioButton
+                android:id="@+id/radioNodeA"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Node A"
+                android:checked="true"/>
+
+            <RadioButton
+                android:id="@+id/radioNodeX"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Node X"/>
+
+            <RadioButton
+                android:id="@+id/radioNodeY"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Node Y"/>
+
+            <RadioButton
+                android:id="@+id/radioNodeZ"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Node Z"/>
+
+            <RadioButton
+                android:id="@+id/radioNodeB"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Node B"/>
+
+        </RadioGroup>
+
+        <EditText
+            android:id="@+id/peerGatewayIpEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Peer Gateway IP (for X/Y )"
+            android:inputType="text"/>
+
+        <Button
+            android:id="@+id/setRoleButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Set Role"
+            android:layout_gravity="end"
+            android:layout_marginBottom="16dp"/>
+
+        <Button
+            android:id="@+id/discoverPeersButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Discover Peers"
+            android:layout_marginBottom="16dp"/>
+
+        <EditText
+            android:id="@+id/recipientIdEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Recipient ID (e.g., NODE_Z)"
+            android:inputType="text"/>
+
+        <EditText
+            android:id="@+id/messageEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Message"
+            android:inputType="textMultiLine"
+            android:lines="3"
+            android:gravity="top"/>
+
+        <Button
+            android:id="@+id/sendButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Send"
+            android:layout_gravity="end"
+            android:layout_marginBottom="16dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Logs:"
+            android:textSize="18sp"
+            android:layout_marginBottom="8dp"/>
+
+        <ScrollView
+            android:id="@+id/logScrollView"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:background="@android:color/darker_gray"
+            android:padding="8dp">
+
+            <TextView
+                android:id="@+id/logTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@android:color/white"/>
+
+        </ScrollView>
+
+    </LinearLayout>
+
+</ScrollView>
+
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp"
+    tools:context=".MainActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="MeshWave"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="16dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Node Role:"
+            android:textSize="18sp"
+            android:layout_marginBottom="8dp"/>
+
+        <RadioGroup
+            android:id="@+id/nodeRoleRadioGroup"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginBottom="16dp">
+
+            <RadioButton
+                android:id="@+id/radioNodeA"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Node A"
+                android:checked="true"/>
+
+            <RadioButton
+                android:id="@+id/radioNodeX"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Node X"/>
+
+            <RadioButton
+                android:id="@+id/radioNodeY"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Node Y"/>
+
+            <RadioButton
+                android:id="@+id/radioNodeZ"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Node Z"/>
+
+            <RadioButton
+                android:id="@+id/radioNodeB"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Node B"/>
+
+        </RadioGroup>
+
+        <EditText
+            android:id="@+id/peerGatewayIpEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Peer Gateway IP (for X/Y )"
+            android:inputType="text"/>
+
+        <Button
+            android:id="@+id/setRoleButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Set Role"
+            android:layout_gravity="end"
+            android:layout_marginBottom="16dp"/>
+
+        <Button
+            android:id="@+id/discoverPeersButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Discover Peers"
+            android:layout_marginBottom="16dp"/>
+
+        <EditText
+            android:id="@+id/recipientIdEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Recipient ID (e.g., NODE_Z)"
+            android:inputType="text"/>
+
+        <EditText
+            android:id="@+id/messageEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Message"
+            android:inputType="textMultiLine"
+            android:lines="3"
+            android:gravity="top"/>
+
+        <Button
+            android:id="@+id/sendButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Send"
+            android:layout_gravity="end"
+            android:layout_marginBottom="16dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Logs:"
+            android:textSize="18sp"
+            android:layout_marginBottom="8dp"/>
+
+        <ScrollView
+            android:id="@+id/logScrollView"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:background="@android:color/darker_gray"
+            android:padding="8dp">
+
+            <TextView
+                android:id="@+id/logTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@android:color/white"/>
+
+        </ScrollView>
+
+    </LinearLayout>
+
+</ScrollView>
+
+app/src/main/res/layout/activity_main.xml
+
+P2PSendReceiveThread.java
+
+TcpSendReceiveThread.java
+
+P2PSendReceiveThread.java
+
+package com.example.meshwave;
+
+import android.os.Handler;
+import android.os.Message;
+import android.util.Log;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.net.Socket;
+
+public class P2PSendReceiveThread extends Thread {
+
+    private static final String TAG = "P2PSendReceiveThread";
+    private Handler handler;
+    private Socket socket;
+    private BufferedReader bufferedReader;
+    private PrintWriter printWriter;
+    private boolean isConnected = false;
+
+    public P2PSendReceiveThread(Handler handler) {
+        this.handler = handler;
+    }
+
+    // For client side (initiating connection)
+    public void connect(final String peerAddress, final int port) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    // Simulate P2P connection for prototype
+                    // In a real scenario, this would involve Wi-Fi Direct or Bluetooth LE APIs
+                    socket = new Socket(peerAddress, port);
+                    bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+                    printWriter = new PrintWriter(socket.getOutputStream(), true);
+                    isConnected = true;
+                    handler.obtainMessage(MainActivity.MESSAGE_TOAST, "P2P Conectado a: " + peerAddress).sendToTarget();
+                    Log.d(TAG, "P2P Connected to: " + peerAddress);
+
+                    String message;
+                    while ((message = bufferedReader.readLine()) != null) {
+                        handler.obtainMessage(MainActivity.MESSAGE_READ, message.getBytes().length, -1, message.getBytes()).sendToTarget();
+                        Log.d(TAG, "P2P Received: " + message);
+                    }
+                } catch (IOException e) {
+                    Log.e(TAG, "P2P Connection Error: " + e.getMessage());
+                    handler.obtainMessage(MainActivity.MESSAGE_TOAST, "P2P Erro de Conexão: " + e.getMessage()).sendToTarget();
+                    isConnected = false;
+                }
+            }
+        }).start();
+    }
+
+    // For server side (accepting connection)
+    public void setSocket(Socket socket) {
+        this.socket = socket;
+        try {
+            bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+            printWriter = new PrintWriter(socket.getOutputStream(), true);
+            isConnected = true;
+            handler.obtainMessage(MainActivity.MESSAGE_TOAST, "P2P Conexão Aceita.").sendToTarget();
+            Log.d(TAG, "P2P Connection Accepted.");
+        } catch (IOException e) {
+            Log.e(TAG, "P2P Socket Setup Error: " + e.getMessage());
+            handler.obtainMessage(MainActivity.MESSAGE_TOAST, "P2P Erro ao configurar Socket: " + e.getMessage()).sendToTarget();
+            isConnected = false;
+        }
+    }
+
+    public void send(byte[] bytes) {
+        if (printWriter != null && isConnected) {
+            String message = new String(bytes);
+            printWriter.println(message);
+            Log.d(TAG, "P2P Sent: " + message);
+        } else {
+            handler.obtainMessage(MainActivity.MESSAGE_TOAST, "P2P Não conectado para enviar mensagem.").sendToTarget();
+            Log.e(TAG, "P2P Not connected to send message.");
+        }
+    }
+
+    @Override
+    public void run() {
+        try {
+            String message;
+            while (isConnected && (message = bufferedReader.readLine()) != null) {
+                handler.obtainMessage(MainActivity.MESSAGE_READ, message.getBytes().length, -1, message.getBytes()).sendToTarget();
+                Log.d(TAG, "P2P Received: " + message);
+            }
+        } catch (IOException e) {
+            Log.e(TAG, "P2P Read Error: " + e.getMessage());
+            handler.obtainMessage(MainActivity.MESSAGE_TOAST, "P2P Erro de Leitura: " + e.getMessage()).sendToTarget();
+            isConnected = false;
+        }
+    }
+
+    public void disconnect() {
+        try {
+            if (socket != null) {
+                socket.close();
+            }
+            if (bufferedReader != null) {
+                bufferedReader.close();
+            }
+            if (printWriter != null) {
+                printWriter.close();
+            }
+            isConnected = false;
+            Log.d(TAG, "P2P Disconnected.");
+            handler.obtainMessage(MainActivity.MESSAGE_TOAST, "P2P Desconectado.").sendToTarget();
+        } catch (IOException e) {
+            Log.e(TAG, "P2P Error during disconnect: " + e.getMessage());
+            handler.obtainMessage(MainActivity.MESSAGE_TOAST, "P2P Erro ao desconectar: " + e.getMessage()).sendToTarget();
+        }
+    }
+
+    public void cancel() {
+        disconnect();
+    }
+
+    public boolean isConnected() {
+        return isConnected;
+    }
+}
+
+package com.example.meshwave;
+
+import android.os.Handler;
+import android.os.Message;
+import android.util.Log;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.net.Socket;
+
+public class P2PSendReceiveThread extends Thread {
+
+    private static final String TAG = "P2PSendReceiveThread";
+    private Handler handler;
+    private Socket socket;
+    private BufferedReader bufferedReader;
+    private PrintWriter printWriter;
+    private boolean isConnected = false;
+
+    public P2PSendReceiveThread(Handler handler) {
+        this.handler = handler;
+    }
+
+    // For client side (initiating connection)
+    public void connect(final String peerAddress, final int port) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    // Simulate P2P connection for prototype
+                    // In a real scenario, this would involve Wi-Fi Direct or Bluetooth LE APIs
+                    socket = new Socket(peerAddress, port);
+                    bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+                    printWriter = new PrintWriter(socket.getOutputStream(), true);
+                    isConnected = true;
+                    handler.obtainMessage(MainActivity.MESSAGE_TOAST, "P2P Conectado a: " + peerAddress).sendToTarget();
+                    Log.d(TAG, "P2P Connected to: " + peerAddress);
+
+                    String message;
+                    while ((message = bufferedReader.readLine()) != null) {
+                        handler.obtainMessage(MainActivity.MESSAGE_READ, message.getBytes().length, -1, message.getBytes()).sendToTarget();
+                        Log.d(TAG, "P2P Received: " + message);
+                    }
+                } catch (IOException e) {
+                    Log.e(TAG, "P2P Connection Error: " + e.getMessage());
+                    handler.obtainMessage(MainActivity.MESSAGE_TOAST, "P2P Erro de Conexão: " + e.getMessage()).sendToTarget();
+                    isConnected = false;
+                }
+            }
+        }).start();
+    }
+
+    // For server side (accepting connection)
+    public void setSocket(Socket socket) {
+        this.socket = socket;
+        try {
+            bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+            printWriter = new PrintWriter(socket.getOutputStream(), true);
+            isConnected = true;
+            handler.obtainMessage(MainActivity.MESSAGE_TOAST, "P2P Conexão Aceita.").sendToTarget();
+            Log.d(TAG, "P2P Connection Accepted.");
+        } catch (IOException e) {
+            Log.e(TAG, "P2P Socket Setup Error: " + e.getMessage());
+            handler.obtainMessage(MainActivity.MESSAGE_TOAST, "P2P Erro ao configurar Socket: " + e.getMessage()).sendToTarget();
+            isConnected = false;
+        }
+    }
+
+    public void send(byte[] bytes) {
+        if (printWriter != null && isConnected) {
+            String message = new String(bytes);
+            printWriter.println(message);
+            Log.d(TAG, "P2P Sent: " + message);
+        } else {
+            handler.obtainMessage(MainActivity.MESSAGE_TOAST, "P2P Não conectado para enviar mensagem.").sendToTarget();
+            Log.e(TAG, "P2P Not connected to send message.");
+        }
+    }
+
+    @Override
+    public void run() {
+        try {
+            String message;
+            while (isConnected && (message = bufferedReader.readLine()) != null) {
+                handler.obtainMessage(MainActivity.MESSAGE_READ, message.getBytes().length, -1, message.getBytes()).sendToTarget();
+                Log.d(TAG, "P2P Received: " + message);
+            }
+        } catch (IOException e) {
+            Log.e(TAG, "P2P Read Error: " + e.getMessage());
+            handler.obtainMessage(MainActivity.MESSAGE_TOAST, "P2P Erro de Leitura: " + e.getMessage()).sendToTarget();
+            isConnected = false;
+        }
+    }
+
+    public void disconnect() {
+        try {
+            if (socket != null) {
+                socket.close();
+            }
+            if (bufferedReader != null) {
+                bufferedReader.close();
+            }
+            if (printWriter != null) {
+                printWriter.close();
+            }
+            isConnected = false;
+            Log.d(TAG, "P2P Disconnected.");
+            handler.obtainMessage(MainActivity.MESSAGE_TOAST, "P2P Desconectado.").sendToTarget();
+        } catch (IOException e) {
+            Log.e(TAG, "P2P Error during disconnect: " + e.getMessage());
+            handler.obtainMessage(MainActivity.MESSAGE_TOAST, "P2P Erro ao desconectar: " + e.getMessage()).sendToTarget();
+        }
+    }
+
+    public void cancel() {
+        disconnect();
+    }
+
+    public boolean isConnected() {
+        return isConnected;
+    }
+}
+
+TcpSendReceiveThread.java
+
+package com.example.meshwave;
+
+import android.os.Handler;
+import android.util.Log;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.net.Socket;
+
+public class TcpSendReceiveThread extends Thread {
+
+    private static final String TAG = "TcpSendReceiveThread";
+    private Handler handler;
+    private Socket socket;
+    private BufferedReader bufferedReader;
+    private PrintWriter printWriter;
+    private boolean isConnected = false;
+
+    public TcpSendReceiveThread(Handler handler) {
+        this.handler = handler;
+    }
+
+    public void connect(final String serverAddress, final int port) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    socket = new Socket(serverAddress, port);
+                    bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+                    printWriter = new PrintWriter(socket.getOutputStream(), true);
+                    isConnected = true;
+                    handler.obtainMessage(MainActivity.MESSAGE_TOAST, "TCP Conectado a: " + serverAddress).sendToTarget();
+                    Log.d(TAG, "TCP Connected to: " + serverAddress);
+
+                    String message;
+                    while ((message = bufferedReader.readLine()) != null) {
+                        handler.obtainMessage(MainActivity.MESSAGE_READ, message.getBytes().length, -1, message.getBytes()).sendToTarget();
+                        Log.d(TAG, "TCP Received: " + message);
+                    }
+                } catch (IOException e) {
+                    Log.e(TAG, "TCP Connection Error: " + e.getMessage());
+                    handler.obtainMessage(MainActivity.MESSAGE_TOAST, "TCP Erro de Conexão: " + e.getMessage()).sendToTarget();
+                    isConnected = false;
+                }
+            }
+        }).start();
+    }
+
+    public void setSocket(Socket socket) {
+        this.socket = socket;
+        try {
+            bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+            printWriter = new PrintWriter(socket.getOutputStream(), true);
+            isConnected = true;
+            handler.obtainMessage(MainActivity.MESSAGE_TOAST, "TCP Conexão Aceita.").sendToTarget();
+            Log.d(TAG, "TCP Connection Accepted.");
+        } catch (IOException e) {
+            Log.e(TAG, "TCP Socket Setup Error: " + e.getMessage());
+            handler.obtainMessage(MainActivity.MESSAGE_TOAST, "TCP Erro ao configurar Socket: " + e.getMessage()).sendToTarget();
+            isConnected = false;
+        }
+    }
+
+    public void send(byte[] bytes) {
+        if (printWriter != null && isConnected) {
+            String message = new String(bytes);
+            printWriter.println(message);
+            Log.d(TAG, "TCP Sent: " + message);
+        } else {
+            handler.obtainMessage(MainActivity.MESSAGE_TOAST, "TCP Não conectado para enviar mensagem.").sendToTarget();
+            Log.e(TAG, "TCP Not connected to send message.");
+        }
+    }
+
+    @Override
+    public void run() {
+        try {
+            String message;
+            while (isConnected && (message = bufferedReader.readLine()) != null) {
+                handler.obtainMessage(MainActivity.MESSAGE_READ, message.getBytes().length, -1, message.getBytes()).sendToTarget();
+                Log.d(TAG, "TCP Received: " + message);
+            }
+        } catch (IOException e) {
+            Log.e(TAG, "TCP Read Error: " + e.getMessage());
+            handler.obtainMessage(MainActivity.MESSAGE_TOAST, "TCP Erro de Leitura: " + e.getMessage()).sendToTarget();
+            isConnected = false;
+        }
+    }
+
+    public void cancel() {
+        disconnect();
+    }
+
+    public boolean isConnected() {
+        return isConnected;
+    }
+}
+
+package com.example.meshwave;
+
+import android.os.Handler;
+import android.util.Log;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.net.Socket;
+
+public class TcpSendReceiveThread extends Thread {
+
+    private static final String TAG = "TcpSendReceiveThread";
+    private Handler handler;
+    private Socket socket;
+    private BufferedReader bufferedReader;
+    private PrintWriter printWriter;
+    private boolean isConnected = false;
+
+    public TcpSendReceiveThread(Handler handler) {
+        this.handler = handler;
+    }
+
+    public void connect(final String serverAddress, final int port) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    socket = new Socket(serverAddress, port);
+                    bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+                    printWriter = new PrintWriter(socket.getOutputStream(), true);
+                    isConnected = true;
+                    handler.obtainMessage(MainActivity.MESSAGE_TOAST, "TCP Conectado a: " + serverAddress).sendToTarget();
+                    Log.d(TAG, "TCP Connected to: " + serverAddress);
+
+                    String message;
+                    while ((message = bufferedReader.readLine()) != null) {
+                        handler.obtainMessage(MainActivity.MESSAGE_READ, message.getBytes().length, -1, message.getBytes()).sendToTarget();
+                        Log.d(TAG, "TCP Received: " + message);
+                    }
+                } catch (IOException e) {
+                    Log.e(TAG, "TCP Connection Error: " + e.getMessage());
+                    handler.obtainMessage(MainActivity.MESSAGE_TOAST, "TCP Erro de Conexão: " + e.getMessage()).sendToTarget();
+                    isConnected = false;
+                }
+            }
+        }).start();
+    }
+
+    public void setSocket(Socket socket) {
+        this.socket = socket;
+        try {
+            bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+            printWriter = new PrintWriter(socket.getOutputStream(), true);
+            isConnected = true;
+            handler.obtainMessage(MainActivity.MESSAGE_TOAST, "TCP Conexão Aceita.").sendToTarget();
+            Log.d(TAG, "TCP Connection Accepted.");
+        } catch (IOException e) {
+            Log.e(TAG, "TCP Socket Setup Error: " + e.getMessage());
+            handler.obtainMessage(MainActivity.MESSAGE_TOAST, "TCP Erro ao configurar Socket: " + e.getMessage()).sendToTarget();
+            isConnected = false;
+        }
+    }
+
+    public void send(byte[] bytes) {
+        if (printWriter != null && isConnected) {
+            String message = new String(bytes);
+            printWriter.println(message);
+            Log.d(TAG, "TCP Sent: " + message);
+        } else {
+            handler.obtainMessage(MainActivity.MESSAGE_TOAST, "TCP Não conectado para enviar mensagem.").sendToTarget();
+            Log.e(TAG, "TCP Not connected to send message.");
+        }
+    }
+
+    @Override
+    public void run() {
+        try {
+            String message;
+            while (isConnected && (message = bufferedReader.readLine()) != null) {
+                handler.obtainMessage(MainActivity.MESSAGE_READ, message.getBytes().length, -1, message.getBytes()).sendToTarget();
+                Log.d(TAG, "TCP Received: " + message);
+            }
+        } catch (IOException e) {
+            Log.e(TAG, "TCP Read Error: " + e.getMessage());
+            handler.obtainMessage(MainActivity.MESSAGE_TOAST, "TCP Erro de Leitura: " + e.getMessage()).sendToTarget();
+            isConnected = false;
+        }
+    }
+
+    public void cancel() {
+        disconnect();
+    }
+
+    public boolean isConnected() {
+        return isConnected;
+    }
+}
+
+File
+
+Sync Project with Gradle Files
+
+Build
+
+Clean Project
+
+Build
+
+Rebuild Project
+
+Build
+
+Rebuild Project
+
+app/src/main/res/layout/activity_main.xml
+
+app/src/main/java/com/example/meshwave/MainActivity.java
+
+app/src/main/java/com/example/meshwave/P2PSendReceiveThread.java
+
+app/src/main/java/com/example/meshwave/TcpSendReceiveThread.java
+
+app/src/main/java/com/example/meshwave/WiFiDirectBroadcastReceiver.java
+
+File
+
+Sync Project with Gradle Files
+
+Build
+
+Clean Project
+
+Build
+
+Rebuild Project
+
+clientTcpThread.connect();
+                    clientTcpThread.send(messageString);
+                } else {
+                    log("Invalid recipient for Node Y: " + recipientId);
+                }
+           
+(Content truncated due to size limit. Use line ranges to read in chunks)
+
+clientTcpThread.connect();
+                    clientTcpThread.send(messageString);
+                } else {
+                    log("Invalid recipient for Node Y: " + recipientId);
+                }
+           
+(Content truncated due to size limit. Use line ranges to read in chunks)

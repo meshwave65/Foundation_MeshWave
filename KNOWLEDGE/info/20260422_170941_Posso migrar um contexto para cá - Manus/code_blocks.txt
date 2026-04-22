@@ -1,0 +1,611 @@
+
+
+================================================================================MainActivity.java
+
+Fragments
+
+BottomNavigationView
+
+MainActivity.java
+
+BluetoothChatService.java
+
+activity_main.xml
+
+BUILD SUCCESSFUL
+
+v0.3.24-alpha
+
+StatusFragment
+
+requestAllPermissions()
+
+MainActivity
+
+private
+
+requestAllPermissions()
+
+private
+
+MainActivity
+
+StatusFragment
+
+MainActivity
+
+private
+
+public
+
+MainActivity.java
+
+MainActivity
+
+MainActivity.java
+
+private
+
+public
+
+// v0.3.24-alpha (Corrige Modificadores de Acesso)
+package com.example.meshwave;
+
+import android.Manifest;
+import android.annotation.SuppressLint;
+import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothDevice;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.content.pm.PackageManager;
+import android.os.Build;
+import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
+import android.telephony.TelephonyManager;
+import android.util.Log;
+import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+
+import java.util.ArrayList;
+
+@SuppressLint("MissingPermission")
+public class MainActivity extends AppCompatActivity implements ChatFragmentListener {
+
+    private static final String TAG = "MainActivity_Final";
+    private static final int PERMISSION_REQUEST_CODE = 101;
+
+    public interface MessageConstants {
+        int MESSAGE_READ = 0;
+        int MESSAGE_STATUS_CHANGE = 3;
+    }
+
+    private StatusFragment statusFragment;
+    private ChatFragment chatFragment;
+    private FragmentManager fragmentManager;
+
+    private BluetoothAdapter bluetoothAdapter;
+    private BluetoothChatService mChatService = null;
+    private ArrayList<BluetoothDevice> discoveredDevices = new ArrayList<>();
+
+    private final Handler uiHandler = new Handler(Looper.getMainLooper(), msg -> {
+        if (statusFragment != null && statusFragment.isAdded()) {
+            statusFragment.handleMessage(msg);
+        }
+        if (chatFragment != null && chatFragment.isAdded()) {
+            chatFragment.handleMessage(msg);
+        }
+        return true;
+    });
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+        if (bluetoothAdapter == null) {
+            Toast.makeText(this, "Bluetooth não suportado", Toast.LENGTH_LONG).show();
+            finish();
+            return;
+        }
+        setupFragments();
+    }
+
+    @Override
+    public synchronized void onResume() {
+        super.onResume();
+        if (mChatService != null && mChatService.getState() == BluetoothChatService.STATE_NONE) {
+            mChatService.start();
+        }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (mChatService != null) {
+            mChatService.stop();
+        }
+        try {
+            unregisterReceiver(discoveryReceiver);
+        } catch (IllegalArgumentException e) { /* Ignorar */ }
+    }
+
+    private void setupFragments() {
+        fragmentManager = getSupportFragmentManager();
+        statusFragment = new StatusFragment();
+        chatFragment = new ChatFragment();
+
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
+        bottomNavigationView.setOnItemSelectedListener(item -> {
+            Fragment selectedFragment = null;
+            if (item.getItemId() == R.id.nav_status) {
+                selectedFragment = statusFragment;
+            } else if (item.getItemId() == R.id.nav_chat) {
+                selectedFragment = chatFragment;
+            }
+            if (selectedFragment != null) {
+                fragmentManager.beginTransaction().replace(R.id.fragment_container, selectedFragment).commit();
+            }
+            return true;
+        });
+
+        if (fragmentManager.findFragmentById(R.id.fragment_container) == null) {
+            fragmentManager.beginTransaction().add(R.id.fragment_container, statusFragment).commit();
+        }
+    }
+
+    // MUDANÇA: de private para public
+    public void requestAllPermissions() {
+        ArrayList<String> permissionsToRequest = new ArrayList<>();
+        permissionsToRequest.add(Manifest.permission.READ_PHONE_STATE);
+        permissionsToRequest.add(Manifest.permission.ACCESS_FINE_LOCATION);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            permissionsToRequest.add(Manifest.permission.BLUETOOTH_SCAN);
+            permissionsToRequest.add(Manifest.permission.BLUETOOTH_CONNECT);
+            permissionsToRequest.add(Manifest.permission.BLUETOOTH_ADVERTISE);
+        } else {
+            permissionsToRequest.add(Manifest.permission.BLUETOOTH);
+            permissionsToRequest.add(Manifest.permission.BLUETOOTH_ADMIN);
+        }
+        
+        ActivityCompat.requestPermissions(this, permissionsToRequest.toArray(new String[0]), PERMISSION_REQUEST_CODE);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == PERMISSION_REQUEST_CODE) {
+            boolean allGranted = true;
+            for (int result : grantResults) {
+                if (result != PackageManager.PERMISSION_GRANTED) {
+                    allGranted = false;
+                    break;
+                }
+            }
+            if (allGranted) {
+                Toast.makeText(this, "Permissões concedidas!", Toast.LENGTH_SHORT).show();
+                initializeIdentityAndChatService();
+                if (statusFragment != null && statusFragment.isAdded()) {
+                    statusFragment.onPermissionsGranted();
+                }
+            } else {
+                Toast.makeText(this, "Todas as permissões são essenciais.", Toast.LENGTH_LONG).show();
+            }
+        }
+    }
+    
+    private void initializeIdentityAndChatService() {
+        TelephonyManager tm = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
+        String myDid;
+        try {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                myDid = tm.getImei();
+            } else {
+                myDid = tm.getDeviceId();
+            }
+            if (myDid == null) throw new SecurityException("IMEI is null");
+        } catch (SecurityException e) {
+            Log.e(TAG, "Não foi possível obter o IMEI. Usando fallback.", e);
+            myDid = "fallback_" + Build.SERIAL;
+        }
+
+        String myUsername = "User" + (myDid.hashCode() % 1000);
+        if (statusFragment != null && statusFragment.isAdded()) {
+            statusFragment.setDid(myDid);
+        }
+
+        mChatService = new BluetoothChatService(uiHandler);
+        bluetoothAdapter.setName(myUsername);
+    }
+
+    // MUDANÇA: de private para public
+    public void ensureDiscoverableAndListen() {
+        if (mChatService == null) {
+            Toast.makeText(this, "Serviço de Chat não iniciado. Peça as permissões primeiro.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        Intent discoverableIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_DISCOVERABLE);
+        discoverableIntent.putExtra(BluetoothAdapter.EXTRA_DISCOVERABLE_DURATION, 300);
+        startActivity(discoverableIntent);
+        mChatService.start();
+    }
+
+    // MUDANÇA: de private para public
+    public void startDiscovery() {
+        if (mChatService == null) {
+            Toast.makeText(this, "Serviço de Chat não iniciado. Peça as permissões primeiro.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if (bluetoothAdapter.isDiscovering()) {
+            bluetoothAdapter.cancelDiscovery();
+        }
+        discoveredDevices.clear();
+        if (statusFragment != null && statusFragment.isAdded()) {
+            statusFragment.clearDiscoveredDevices();
+        }
+        bluetoothAdapter.startDiscovery();
+        IntentFilter intentFilter = new IntentFilter(BluetoothDevice.ACTION_FOUND);
+        registerReceiver(discoveryReceiver, intentFilter);
+    }
+
+    private final BroadcastReceiver discoveryReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (BluetoothDevice.ACTION_FOUND.equals(intent.getAction())) {
+                BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
+                if (device != null && device.getName() != null && !discoveredDevices.contains(device)) {
+                    discoveredDevices.add(device);
+                    if (statusFragment != null && statusFragment.isAdded()) {
+                        statusFragment.addDiscoveredDevice(device.getName() + "\n" + device.getAddress());
+                    }
+                }
+            }
+        }
+    };
+
+    // MUDANÇA: de private para public
+    public void connectToDevice(int position) {
+        if (position < discoveredDevices.size()) {
+            if (bluetoothAdapter.isDiscovering()) {
+                bluetoothAdapter.cancelDiscovery();
+            }
+            BluetoothDevice device = discoveredDevices.get(position);
+            if (mChatService != null) {
+                mChatService.connect(device);
+            }
+        }
+    }
+
+    @Override
+    public void onSendMessage(String message) {
+        if (mChatService != null && !message.isEmpty() && mChatService.getState() == BluetoothChatService.STATE_CONNECTED) {
+            byte[] send = message.getBytes();
+            mChatService.write(send);
+            if (chatFragment != null && chatFragment.isAdded()) {
+                chatFragment.onMessageSent(message);
+            }
+        }
+    }
+}
+
+// v0.3.24-alpha (Corrige Modificadores de Acesso)
+package com.example.meshwave;
+
+import android.Manifest;
+import android.annotation.SuppressLint;
+import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothDevice;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.content.pm.PackageManager;
+import android.os.Build;
+import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
+import android.telephony.TelephonyManager;
+import android.util.Log;
+import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+
+import java.util.ArrayList;
+
+@SuppressLint("MissingPermission")
+public class MainActivity extends AppCompatActivity implements ChatFragmentListener {
+
+    private static final String TAG = "MainActivity_Final";
+    private static final int PERMISSION_REQUEST_CODE = 101;
+
+    public interface MessageConstants {
+        int MESSAGE_READ = 0;
+        int MESSAGE_STATUS_CHANGE = 3;
+    }
+
+    private StatusFragment statusFragment;
+    private ChatFragment chatFragment;
+    private FragmentManager fragmentManager;
+
+    private BluetoothAdapter bluetoothAdapter;
+    private BluetoothChatService mChatService = null;
+    private ArrayList<BluetoothDevice> discoveredDevices = new ArrayList<>();
+
+    private final Handler uiHandler = new Handler(Looper.getMainLooper(), msg -> {
+        if (statusFragment != null && statusFragment.isAdded()) {
+            statusFragment.handleMessage(msg);
+        }
+        if (chatFragment != null && chatFragment.isAdded()) {
+            chatFragment.handleMessage(msg);
+        }
+        return true;
+    });
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+        if (bluetoothAdapter == null) {
+            Toast.makeText(this, "Bluetooth não suportado", Toast.LENGTH_LONG).show();
+            finish();
+            return;
+        }
+        setupFragments();
+    }
+
+    @Override
+    public synchronized void onResume() {
+        super.onResume();
+        if (mChatService != null && mChatService.getState() == BluetoothChatService.STATE_NONE) {
+            mChatService.start();
+        }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (mChatService != null) {
+            mChatService.stop();
+        }
+        try {
+            unregisterReceiver(discoveryReceiver);
+        } catch (IllegalArgumentException e) { /* Ignorar */ }
+    }
+
+    private void setupFragments() {
+        fragmentManager = getSupportFragmentManager();
+        statusFragment = new StatusFragment();
+        chatFragment = new ChatFragment();
+
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
+        bottomNavigationView.setOnItemSelectedListener(item -> {
+            Fragment selectedFragment = null;
+            if (item.getItemId() == R.id.nav_status) {
+                selectedFragment = statusFragment;
+            } else if (item.getItemId() == R.id.nav_chat) {
+                selectedFragment = chatFragment;
+            }
+            if (selectedFragment != null) {
+                fragmentManager.beginTransaction().replace(R.id.fragment_container, selectedFragment).commit();
+            }
+            return true;
+        });
+
+        if (fragmentManager.findFragmentById(R.id.fragment_container) == null) {
+            fragmentManager.beginTransaction().add(R.id.fragment_container, statusFragment).commit();
+        }
+    }
+
+    // MUDANÇA: de private para public
+    public void requestAllPermissions() {
+        ArrayList<String> permissionsToRequest = new ArrayList<>();
+        permissionsToRequest.add(Manifest.permission.READ_PHONE_STATE);
+        permissionsToRequest.add(Manifest.permission.ACCESS_FINE_LOCATION);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            permissionsToRequest.add(Manifest.permission.BLUETOOTH_SCAN);
+            permissionsToRequest.add(Manifest.permission.BLUETOOTH_CONNECT);
+            permissionsToRequest.add(Manifest.permission.BLUETOOTH_ADVERTISE);
+        } else {
+            permissionsToRequest.add(Manifest.permission.BLUETOOTH);
+            permissionsToRequest.add(Manifest.permission.BLUETOOTH_ADMIN);
+        }
+        
+        ActivityCompat.requestPermissions(this, permissionsToRequest.toArray(new String[0]), PERMISSION_REQUEST_CODE);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == PERMISSION_REQUEST_CODE) {
+            boolean allGranted = true;
+            for (int result : grantResults) {
+                if (result != PackageManager.PERMISSION_GRANTED) {
+                    allGranted = false;
+                    break;
+                }
+            }
+            if (allGranted) {
+                Toast.makeText(this, "Permissões concedidas!", Toast.LENGTH_SHORT).show();
+                initializeIdentityAndChatService();
+                if (statusFragment != null && statusFragment.isAdded()) {
+                    statusFragment.onPermissionsGranted();
+                }
+            } else {
+                Toast.makeText(this, "Todas as permissões são essenciais.", Toast.LENGTH_LONG).show();
+            }
+        }
+    }
+    
+    private void initializeIdentityAndChatService() {
+        TelephonyManager tm = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
+        String myDid;
+        try {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                myDid = tm.getImei();
+            } else {
+                myDid = tm.getDeviceId();
+            }
+            if (myDid == null) throw new SecurityException("IMEI is null");
+        } catch (SecurityException e) {
+            Log.e(TAG, "Não foi possível obter o IMEI. Usando fallback.", e);
+            myDid = "fallback_" + Build.SERIAL;
+        }
+
+        String myUsername = "User" + (myDid.hashCode() % 1000);
+        if (statusFragment != null && statusFragment.isAdded()) {
+            statusFragment.setDid(myDid);
+        }
+
+        mChatService = new BluetoothChatService(uiHandler);
+        bluetoothAdapter.setName(myUsername);
+    }
+
+    // MUDANÇA: de private para public
+    public void ensureDiscoverableAndListen() {
+        if (mChatService == null) {
+            Toast.makeText(this, "Serviço de Chat não iniciado. Peça as permissões primeiro.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        Intent discoverableIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_DISCOVERABLE);
+        discoverableIntent.putExtra(BluetoothAdapter.EXTRA_DISCOVERABLE_DURATION, 300);
+        startActivity(discoverableIntent);
+        mChatService.start();
+    }
+
+    // MUDANÇA: de private para public
+    public void startDiscovery() {
+        if (mChatService == null) {
+            Toast.makeText(this, "Serviço de Chat não iniciado. Peça as permissões primeiro.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if (bluetoothAdapter.isDiscovering()) {
+            bluetoothAdapter.cancelDiscovery();
+        }
+        discoveredDevices.clear();
+        if (statusFragment != null && statusFragment.isAdded()) {
+            statusFragment.clearDiscoveredDevices();
+        }
+        bluetoothAdapter.startDiscovery();
+        IntentFilter intentFilter = new IntentFilter(BluetoothDevice.ACTION_FOUND);
+        registerReceiver(discoveryReceiver, intentFilter);
+    }
+
+    private final BroadcastReceiver discoveryReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (BluetoothDevice.ACTION_FOUND.equals(intent.getAction())) {
+                BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
+                if (device != null && device.getName() != null && !discoveredDevices.contains(device)) {
+                    discoveredDevices.add(device);
+                    if (statusFragment != null && statusFragment.isAdded()) {
+                        statusFragment.addDiscoveredDevice(device.getName() + "\n" + device.getAddress());
+                    }
+                }
+            }
+        }
+    };
+
+    // MUDANÇA: de private para public
+    public void connectToDevice(int position) {
+        if (position < discoveredDevices.size()) {
+            if (bluetoothAdapter.isDiscovering()) {
+                bluetoothAdapter.cancelDiscovery();
+            }
+            BluetoothDevice device = discoveredDevices.get(position);
+            if (mChatService != null) {
+                mChatService.connect(device);
+            }
+        }
+    }
+
+    @Override
+    public void onSendMessage(String message) {
+        if (mChatService != null && !message.isEmpty() && mChatService.getState() == BluetoothChatService.STATE_CONNECTED) {
+            byte[] send = message.getBytes();
+            mChatService.write(send);
+            if (chatFragment != null && chatFragment.isAdded()) {
+                chatFragment.onMessageSent(message);
+            }
+        }
+    }
+}
+
+MainActivity.java
+
+MainActivity
+
+StatusFragment
+
+v0.3.24-alpha
+
+cannot find symbol: variable bottom_navigation
+
+v0.3.x
+
+BluetoothChatService
+
+MainActivity
+
+v0.3.x
+
+did
+
+cpaGeohash
+
+cpaGeohash
+
+username
+
+did
+
+did
+
+username
+
+User001
+
+User002
+
+creationTimestamp
+
+creationTimestamp
+
+long
+
+System.currentTimeMillis()
+
+lastUpdateTimestamp
+
+lastUpdateTimestamp
+
+batteryLevel
+
+deviceModel
+
+networkFunctions
+
+StorageNode
+
+isGateway

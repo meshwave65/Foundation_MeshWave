@@ -1,0 +1,229 @@
+
+
+================================================================================engine/backend/app/routers/workspace_router.py
+
+# engine/backend/app/routers/workspace_router.py
+
+class PathRequest(BaseModel):  # <-- Herda de BaseModel do Pydantic
+    path: str                  # <-- A REGRA: "Deve haver uma chave chamada 'path', e seu valor deve ser uma string."
+
+# engine/backend/app/routers/workspace_router.py
+
+class PathRequest(BaseModel):  # <-- Herda de BaseModel do Pydantic
+    path: str                  # <-- A REGRA: "Deve haver uma chave chamada 'path', e seu valor deve ser uma string."
+
+class PathRequest(BaseModel)
+
+PathRequest
+
+BaseModel
+
+path: str
+
+'path'
+
+# engine/backend/app/routers/workspace_router.py
+
+@router.post("/list")
+async def list_directory_contents(request: PathRequest): # <-- AQUI!
+    # ... lógica da função ...
+
+# engine/backend/app/routers/workspace_router.py
+
+@router.post("/list")
+async def list_directory_contents(request: PathRequest): # <-- AQUI!
+    # ... lógica da função ...
+
+request: PathRequest
+
+PathRequest
+
+request
+
+422
+
+400
+
+/api/v1/workspace/list
+
+{"path": "/caminho/qualquer"}
+
+'path'
+
+PathRequest
+
+list_directory_contents
+
+requests
+
+{"payload": {"path": "..."}}
+
+PathRequest
+
+'path'
+
+422 Unprocessable Entity
+
+400 Bad Request
+
+PathRequest
+
+400
+
+422
+
+access-control-allow-credentials: true
+
+access-control-allow-origin: *
+
+{"detail": "O caminho especificado não é um diretório."}
+
+venv
+
+manus_extractor
+
+chmod -R 755 /media/mesh/MYEBOOK1/manus_extractor
+
+chmod -R 755 /media/mesh/MYEBOOK1/manus_extractor
+
+chmod
+
+-R
+
+755
+
+7
+
+5
+
+5
+
+chmod
+
+http://localhost:8000/docs
+
+POST /api/v1/workspace/list
+
+{
+  "path": "/media/mesh/MYEBOOK1/manus_extractor/output/Johann/"
+}
+
+{
+  "path": "/media/mesh/MYEBOOK1/manus_extractor/output/Johann/"
+}
+
+400
+
+200 OK
+
+workspace_router.py
+
+/final-report
+
+/workspace/list
+
+final-report
+
+/final-report
+
+GET /api/v1/tasks/{task_id}/final-report
+
+/workspace/list
+
+task_id
+
+120
+
+tasks_router.py
+
+/home/mesh/home/sofia/docs/artifacts
+
+# Dentro do tasks_router.py (exemplo)
+
+# 1. Pega o diretório base de um lugar seguro (como o architecture.py)
+DIRETORIO_BASE_DOS_RELATORIOS = "/home/mesh/home/sofia/docs/artifacts"
+
+# 2. Recebe o task_id do URL
+task_id = 120 
+
+# 3. Constrói o caminho completo do arquivo que ele precisa ler
+caminho_do_arquivo = f"{DIRETORIO_BASE_DOS_RELATORIOS}/TSK_{task_id}/FinalReport_{task_id}.md"
+
+# 4. Lê o arquivo diretamente deste caminho construído
+conteudo = ler_arquivo(caminho_do_arquivo)
+
+# Dentro do tasks_router.py (exemplo)
+
+# 1. Pega o diretório base de um lugar seguro (como o architecture.py)
+DIRETORIO_BASE_DOS_RELATORIOS = "/home/mesh/home/sofia/docs/artifacts"
+
+# 2. Recebe o task_id do URL
+task_id = 120 
+
+# 3. Constrói o caminho completo do arquivo que ele precisa ler
+caminho_do_arquivo = f"{DIRETORIO_BASE_DOS_RELATORIOS}/TSK_{task_id}/FinalReport_{task_id}.md"
+
+# 4. Lê o arquivo diretamente deste caminho construído
+conteudo = ler_arquivo(caminho_do_arquivo)
+
+/home/mesh/home/sofia/docs/artifacts
+
+get_safe_path
+
+workspace_router
+
+/workspace/list
+
+workspace_router
+
+/etc/passwd
+
+# No seu workspace_router.py atual
+BASE_WORKSPACE_PATH = Path("/media/mesh/MYEBOOK1/ECOSYSTEM-KNOWLEDGE-BASE").resolve()
+
+# No seu workspace_router.py atual
+BASE_WORKSPACE_PATH = Path("/media/mesh/MYEBOOK1/ECOSYSTEM-KNOWLEDGE-BASE").resolve()
+
+/workspace/list
+
+{"path": "/media/mesh/MYEBOOK1/manus_extractor/output/Johann/"}
+
+get_safe_path
+
+BASE_WORKSPACE_PATH
+
+/media/mesh/MYEBOOK1/ECOSYSTEM-KNOWLEDGE-BASE
+
+/media/mesh/MYEBOOK1/manus_extractor/output/Johann/
+
+/media/mesh/MYEBOOK1/manus_extractor/...
+
+BASE_WORKSPACE_PATH
+
+workspace_router
+
+ECOSYSTEM-KNOWLEDGE-BASE
+
+manus_extractor
+
+workspace_router.py
+
+architecture.py
+
+LEGACY_KNOWLEDGE_DIR = "/media/mesh/MYEBOOK1/ECOSYSTEM-KNOWLEDGE-BASE"
+KNOWLEDGE_BASE_DIR = "/media/mesh/MYEBOOK1/manus_extractor"
+
+LEGACY_KNOWLEDGE_DIR = "/media/mesh/MYEBOOK1/ECOSYSTEM-KNOWLEDGE-BASE"
+KNOWLEDGE_BASE_DIR = "/media/mesh/MYEBOOK1/manus_extractor"
+
+workspace_router.py
+
+{
+  "path": "output/Johann"
+}
+
+{
+  "path": "output/Johann"
+}
+
+final-report

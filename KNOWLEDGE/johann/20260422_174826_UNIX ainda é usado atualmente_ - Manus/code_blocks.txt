@@ -1,0 +1,221 @@
+
+
+================================================================================mesh.start()
+
+mesh.getStatus()
+
+ioctl
+
+mesh0
+
+mesh0
+
+.ko
+
+ioctl
+
+ioctl
+
+mesh0
+
+DIAG
+
+Serial
+
+Modem
+
+QC HS-USB Diagnostics
+
+COM3
+
+/dev/ttyUSB0
+
+Wireshark
+
+usbmon
+
+scapy
+
+QCAT
+
+QPST
+
+*#*#4636#*#*
+
+0x5B 0x08 0x...
+
+[Start Byte] [Command ID] [Payload] [CRC] [End Byte]
+
+rild
+
+Frida
+
+Ghidra
+
+libril.so
+
+rild
+
+hooking
+
+ioctl
+
+/dev
+
+/dev/smd
+
+/dev/diag
+
+/dev/qc_ipc_router
+
+strace
+
+rild
+
+ioctl
+
+.ko
+
+Ghidra
+
+IDA Pro
+
+ioctl
+
+QEMU
+
+Ghidra
+
+IDA Pro
+
+transmit_raw_bytes(frequency, power, bytes)
+
+transmit_raw_bytes
+
+mesh_net.ko
+
+mesh_net.ko
+
+insmod mesh_net.ko
+
+mesh_init
+
+tun
+
+mesh0
+
+alloc_netdev
+
+net_device
+
+net_device_ops
+
+ndo_start_xmit
+
+mesh0
+
+mesh_net_start_xmit
+
+ioctl
+
+sysfs
+
+ioctl
+
+/dev/mesh_ctrl
+
+ioctl
+
+SET_FREQ
+
+SET_POWER
+
+GET_NEIGHBOR_RSSI
+
+0A:1B:2C...
+
+sysfs
+
+sysfs
+
+/sys/class/net/mesh0/
+
+/sys/.../mesh0/tx_packets
+
+/sys/.../mesh0/current_mcs
+
+ndo_start_xmit
+
+sk_buff_head
+
+SENSING
+
+SENSING
+
+netif_rx
+
+mhal_set_rx_mode(freq)
+
+mhal_set_tx_mode(freq, power)
+
+mhal_write_tx_fifo(bytes, len)
+
+mhal_read_rx_fifo(buffer)
+
+ioctl
+
+mhal_set_rx_mode(freq)
+
+Command ID
+
+ioctl
+
+/dev/qc_ipc_router
+
+mhal_set_rx_mode(freq)
+
+/dev/ttyACM0
+
+[ User Space ]    <-- App de Chat --> [ Daemon de Gerenciamento ]
+            ^                                          |
+            | (Pacote IP)                              | (Comandos ioctl)
+            v                                          v
++-----------+------------------------------------------+-------------------+
+| [ Kernel Space - Módulo mesh_net.ko ]                                    |
+|                                                                          |
+|  +-----------------------+      +------------------------------------+   |
+|  | Interface "Para Cima" |      |          Núcleo Lógico             |   |
+|  | (Interface mesh0)     | <--> | (Fila Tx, Máquina de Estados MAC)  |   |
+|  +-----------------------+      +------------------------------------+   |
+|                                                  |                       |
+|                                                  v                       |
+|                                     +--------------------------+         |
+|                                     | Interface "Para Baixo"   |         |
+|                                     | (Abstração MHAL)         |         |
+|                                     +--------------------------+         |
+|                                                                          |
++--------------------------------------------------+-----------------------+
+                                                   v
+                                     [ Firmware do Modem / Hardware ]
+
+[ User Space ]    <-- App de Chat --> [ Daemon de Gerenciamento ]
+            ^                                          |
+            | (Pacote IP)                              | (Comandos ioctl)
+            v                                          v
++-----------+------------------------------------------+-------------------+
+| [ Kernel Space - Módulo mesh_net.ko ]                                    |
+|                                                                          |
+|  +-----------------------+      +------------------------------------+   |
+|  | Interface "Para Cima" |      |          Núcleo Lógico             |   |
+|  | (Interface mesh0)     | <--> | (Fila Tx, Máquina de Estados MAC)  |   |
+|  +-----------------------+      +------------------------------------+   |
+|                                                  |                       |
+|                                                  v                       |
+|                                     +--------------------------+         |
+|                                     | Interface "Para Baixo"   |         |
+|                                     | (Abstração MHAL)         |         |
+|                                     +--------------------------+         |
+|                                                                          |
++--------------------------------------------------+-----------------------+
+                                                   v
+                                     [ Firmware do Modem / Hardware ]

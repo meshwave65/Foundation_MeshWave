@@ -1,0 +1,219 @@
+
+
+================================================================================PROCESS STARTED (10315) for package com.example.meshwave
+
+Bootstrap Híbrido
+
+17.0.0
+
+Choreographer: I Skipped 63 frames! The application may be doing too much work on its main thread.
+
+MeshWaveService
+
+startWifiP2pDiscovery
+
+startBluetoothDiscovery
+
+MeshWaveService
+
+backgroundExecutor.execute()
+
+app/src/main/java/com/example/meshwave/MeshWaveService.java
+
+// v0.3.21-alpha (Arquitetura Carrossel Anti-ANR)
+package com.example.meshwave;
+
+import android.annotation.SuppressLint;
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.Service;
+import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothDevice;
+import android.bluetooth.BluetoothManager;
+import android.bluetooth.BluetoothSocket;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.content.pm.ServiceInfo;
+import android.location.Location;
+import android.net.wifi.p2p.WifiP2pConfig;
+import android.net.wifi.p2p.WifiP2pDevice;
+import android.net.wifi.p2p.WifiP2pInfo;
+import android.net.wifi.p2p.WifiP2pManager;
+import android.net.wifi.p2p.nsd.WifiP2pDnsSdServiceInfo;
+import android.net.wifi.p2p.nsd.WifiP2pDnsSdServiceRequest;
+import android.os.Build;
+import android.os.Bundle;
+import android.os.IBinder;
+import android.os.Looper;
+import android.provider.Settings;
+import android.util.Log;
+import android.os.Handler;
+
+import androidx.annotation.Nullable;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.ServiceCompat;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.atomic.AtomicBoolean;
+
+@SuppressLint("MissingPermission")
+public class MeshWaveService extends Service {
+    private static final String TAG = "MeshWaveService_v0.3.21";
+    private static final String CHANNEL_ID = "MeshWaveChannel";
+    private static final int NOTIFICATION_ID = 1;
+
+    public static final String ACTION_START_SERVICE = "com.example.meshwave.START_SERVICE";
+    public static final String ACTION_SEND_MESSAGE = "com.example.meshwave.SEND_MESSAGE";
+    public static final String ACTION_CONNECTION_INFO_WIFI = "com.example.meshwave.CONNECTION_INFO_WIFI";
+    public static final String ACTION_UPDATE_UI = "com.example.meshwave.UPDATE_UI";
+    public static final String EXTRA_SESSID = "sessid";
+    public static final String EXTRA_STATUS_TEXT = "status_text";
+    public static final String EXTRA_USER_TEXT = "user_text";
+    public static final String EXTRA_CACHE_CONTENT = "cache_content";
+    public static final String EXTRA_CONNECTION_INFO = "connection_info";
+    public static final String EXTRA_MESSAGE = "message";
+    public static final String EXTRA_P2P_INFO = "p2p_info";
+
+    private final ExecutorService backgroundExecutor = Executors.newSingleThreadExecutor();
+    private final Handler mainHandler = new Handler(Looper.getMainLooper());
+
+    private WifiP2pManager wifiP2pManager;
+    private WifiP2pManager.Channel wifiChannel;
+    private BluetoothAdapter bluetoothAdapter;
+    private CommunicationThread communicationThread;
+    private BluetoothCommunicationThread bluetoothCommunicationThread;
+
+    private final AtomicBoolean isConnected = new AtomicBoolean(false);
+
+// v0.3.21-alpha (Arquitetura Carrossel Anti-ANR)
+package com.example.meshwave;
+
+import android.annotation.SuppressLint;
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.Service;
+import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothDevice;
+import android.bluetooth.BluetoothManager;
+import android.bluetooth.BluetoothSocket;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.content.pm.ServiceInfo;
+import android.location.Location;
+import android.net.wifi.p2p.WifiP2pConfig;
+import android.net.wifi.p2p.WifiP2pDevice;
+import android.net.wifi.p2p.WifiP2pInfo;
+import android.net.wifi.p2p.WifiP2pManager;
+import android.net.wifi.p2p.nsd.WifiP2pDnsSdServiceInfo;
+import android.net.wifi.p2p.nsd.WifiP2pDnsSdServiceRequest;
+import android.os.Build;
+import android.os.Bundle;
+import android.os.IBinder;
+import android.os.Looper;
+import android.provider.Settings;
+import android.util.Log;
+import android.os.Handler;
+
+import androidx.annotation.Nullable;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.ServiceCompat;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.atomic.AtomicBoolean;
+
+@SuppressLint("MissingPermission")
+public class MeshWaveService extends Service {
+    private static final String TAG = "MeshWaveService_v0.3.21";
+    private static final String CHANNEL_ID = "MeshWaveChannel";
+    private static final int NOTIFICATION_ID = 1;
+
+    public static final String ACTION_START_SERVICE = "com.example.meshwave.START_SERVICE";
+    public static final String ACTION_SEND_MESSAGE = "com.example.meshwave.SEND_MESSAGE";
+    public static final String ACTION_CONNECTION_INFO_WIFI = "com.example.meshwave.CONNECTION_INFO_WIFI";
+    public static final String ACTION_UPDATE_UI = "com.example.meshwave.UPDATE_UI";
+    public static final String EXTRA_SESSID = "sessid";
+    public static final String EXTRA_STATUS_TEXT = "status_text";
+    public static final String EXTRA_USER_TEXT = "user_text";
+    public static final String EXTRA_CACHE_CONTENT = "cache_content";
+    public static final String EXTRA_CONNECTION_INFO = "connection_info";
+    public static final String EXTRA_MESSAGE = "message";
+    public static final String EXTRA_P2P_INFO = "p2p_info";
+
+    private final ExecutorService backgroundExecutor = Executors.newSingleThreadExecutor();
+    private final Handler mainHandler = new Handler(Looper.getMainLooper());
+
+    private WifiP2pManager wifiP2pManager;
+    private WifiP2pManager.Channel wifiChannel;
+    private BluetoothAdapter bluetoothAdapter;
+    private CommunicationThread communicationThread;
+    private BluetoothCommunicationThread bluetoothCommunicationThread;
+
+    private final AtomicBoolean isConnected = new AtomicBoolean(false);
+
+v0.3.21-alpha
+
+v0.3.x
+
+MainActivity
+
+MeshWaveService
+
+MeshWaveService
+
+Activity
+
+Service
+
+MeshWaveService
+
+Handlers
+
+backgroundExecutor
+
+ANR (Application Not Responding)
+
+v0.3.21-alpha
+
+BUILD SUCCESSFUL
+
+MainActivity
+
+MeshWaveService
+
+v0.3.21-alpha
+
+0.3.x
+
+0.4.x
+
+0.3.20
+
+0.3.21
+
+ANDROID_ID
+
+MainActivity.java
+
+MeshWaveService.java
+
+build.gradle
+
+v0.3.21-alpha
+
+v0.3.21-alpha

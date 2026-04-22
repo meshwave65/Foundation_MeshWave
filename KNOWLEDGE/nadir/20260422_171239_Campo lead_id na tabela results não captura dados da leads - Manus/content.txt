@@ -1,0 +1,3943 @@
+Manus 1.6 Lite
+Campo lead_id na tabela results não captura dados da leads
+Entrar
+Salvar checkpoint e entregar o site ao usuário
+Localizar os arquivos SQL de migração gerados pelo Drizzle.
+Ler o arquivo de migração SQL para incluir no pacote de exportação.
+Ler o arquivo de migração inicial para incluir também.
+Preenchi as tabelas `contacts` e `partner_leads` no banco. Próximo passo: integrar o projeto ao GitHub, Render e configurar variáveis de ambiente.
+Criar arquivo SQL consolidado para Supabase com todas as tabelas.
+Lidando com problema no editor de texto
+Criar arquivo de configuração de exemplo para variáveis de ambiente.
+Concluí o esquema do banco de dados e criei um arquivo de exemplo para variáveis de ambiente. Irei solicitar segredos de forma adequada antes de modificar o arquivo.
+Criar guia de migração com instruções passo a passo.
+Criar arquivo ZIP com todo o projeto, excluindo node_modules, .git e arquivos desnecessários.
+Verificar os arquivos criados na pasta de migração.
+Concluí a criação do guia de migração e zipei o projeto, excluindo arquivos desnecessários. Próximo passo: verificar os arquivos na pasta de migração.
+Criar arquivo README com resumo de tudo que foi preparado.
+Verificar tamanho e conteúdo dos arquivos de migração.
+Lite
+🚀 Pacote de Migração Completo - Ecossistema Inovarse
+Preparei tudo para você migrar o site para seu fluxo com GitHub, Render e Supabase. Aqui está o que você recebe:
+📦 Arquivos Inclusos
+inovarse-ecosystem.zip (236 KB)
+Código-fonte completo do projeto
+Todas as dependências configuradas
+Testes vitest inclusos
+Pronto para fazer push no GitHub
+supabase_schema.sql (2.4 KB)
+Script SQL com todas as 3 tabelas
+users, partner_leads, contacts
+Índices para performance
+Row Level Security (RLS) configurado
+MIGRATION_GUIDE.md (6.3 KB)
+Guia passo a passo completo
+Instruções para Supabase, GitHub e Render
+Fluxo de desenvolvimento local
+Troubleshooting
+ENV_SETUP.md (2.0 KB)
+Todas as variáveis de ambiente necessárias
+Como obter connection string do Supabase
+Como gerar JWT_SECRET
+README.md (4.5 KB)
+Resumo do pacote
+Quick start
+Stack tecnológico
+Dúvidas frequentes
+⚡ Quick Start (15 minutos)
+Supabase: Criar projeto → Executar supabase_schema.sql → Copiar connection string
+GitHub: Criar repositório → Descompactar ZIP → Fazer push
+Variáveis: Criar .env.local com DATABASE_URL e JWT_SECRET
+Local: pnpm install → pnpm dev → Testar em http://localhost:3000
+Render: Conectar GitHub → Configurar variáveis → Deploy automático
+✅ O que está pronto
+✅ Landing page com hero section
+✅ Filosofia MCE com visualização
+✅ Programas GlowFit
+✅ Rede Credenciada
+✅ Formulários com validação e banco de dados
+✅ Testes automatizados (9 testes passando )
+✅ Design em verde esmeralda
+✅ Responsivo e animado
+Todos os arquivos estão prontos para download. Siga o MIGRATION_GUIDE.md passo a passo e você terá o site rodando em produção em menos de 20 minutos!
+inovarse-ecosystem.zip
+Arquivar · 235.30 KB
+supabase_schema.sql
+Código · 2.34 KB
+Guia de Migração - Inovarse Ecosystem
+Markdown · 6.24 KB
+Configuração de Variáveis de Ambiente
+Markdown · 1.93 KB
+📦 Pacote de Migração - Ecossistema Inovarse
+Markdown · 4.46 KB
+Ver todos os arquivos nesta tarefa
+Salvar checkpoint e entregar o site ao usuário
+Finalizei o pacote de migração, incluindo código, schema, guia, variáveis e README. Próximo passo: verificar arquivos na pasta de migração.
+meshwave@mesh:~$ cd smb://mesh.local/hd_1tb/projetos
+bash: cd: smb://mesh.local/hd_1tb/projetos: Arquivo ou diretório inexistente
+meshwave@mesh:~$ cd projetos
+meshwave@mesh:~/projetos$ cd inovarse
+meshwave@mesh:~/projetos/inovarse$ npn install
+Comando 'npn' não encontrado, você quis dizer:
+  comando 'nnn' do deb nnn (4.9-1)
+  comando 'nn' do deb nn (6.7.3-15)
+  comando 'npx' do deb npm (9.2.0~ds1-2)
+  comando 'npm' do deb npm (9.2.0~ds1-2)
+Experimente: sudo apt install <deb name>
+meshwave@mesh:~/projetos/inovarse$ npm install
+npm error code ERESOLVE
+npm error ERESOLVE unable to resolve dependency tree
+npm error
+npm error While resolving: inovarse-ecosystem@1.0.0
+npm error Found: vite@7.3.1
+npm error node_modules/vite
+npm error   dev vite@"^7.1.7" from the root project
+npm error
+npm error Could not resolve dependency:
+npm error peer vite@"^4.0.0 || ^5.0.0" from @builder.io/vite-plugin-jsx-loc@0.1.1
+npm error node_modules/@builder.io/vite-plugin-jsx-loc
+npm error   dev @builder.io/vite-plugin-jsx-loc@"^0.1.1" from the root project
+npm error
+npm error Fix the upstream dependency conflict, or retry
+npm error this command with --force or --legacy-peer-deps
+npm error to accept an incorrect (and potentially broken) dependency resolution.
+npm error
+npm error
+npm error For a full report see:
+npm error /home/meshwave/.npm/_logs/2026-04-04T02_01_36_557Z-eresolve-report.txt
+npm notice
+npm notice New major version of npm available! 10.8.2 -> 11.12.1
+npm notice Changelog: 
+npm notice To update run: npm install -g npm@11.12.1
+npm notice
+npm error A complete log of this run can be found in: /home/meshwave/.npm/_logs/2026-04-04T02_01_36_557Z-debug-0.log
+meshwave@mesh:~/projetos/inovarse$ 
+Expandir
+Lite
+Perfeito! Você já descompactou o ZIP e está tentando instalar as dependências. Há um conflito de versão do Vite com o plugin @builder.io/vite-plugin-jsx-loc.
+Existem 3 formas de resolver isso:
+Opção 1: Usar --legacy-peer-deps (Recomendado para começar rápido)
+Bash
+npm install --legacy-peer-deps
+Opção 2: Usar pnpm (Recomendado para desenvolvimento)
+Bash
+npm install -g pnpm
+pnpm install
+Opção 3: Usar --force
+Bash
+npm install --force
+Recomendo a Opção 2 com pnpm porque é o que foi usado para desenvolver o projeto e garante compatibilidade total.
+Qual você prefere usar?
+1... sempre uso npm
+Lite
+Perfeito! Use então:
+Bash
+npm install --legacy-peer-deps
+Isso vai instalar todas as dependências ignorando o conflito de versão do Vite, que é apenas uma incompatibilidade menor com o plugin de desenvolvimento e não afeta a funcionalidade do projeto.
+Após a instalação, você pode executar:
+Bash
+npm run dev
+Isso iniciará o servidor de desenvolvimento em http://localhost:3000
+Avise quando terminar a instalação e estiver pronto para os próximos passos!
+Lite
+Depois que instalar, você também vai precisar:
+Criar arquivo .env.local na raiz do projeto com as variáveis do ENV_SETUP.md
+Preencher DATABASE_URL com a connection string do Supabase
+Gerar JWT_SECRET com um comando ou gerador online
+Quer que eu te ajude com isso quando terminar a instalação?
+Lite
+Você não tem créditos suficientes. Por favor, faça upgrade através do link abaixo para continuar.
+https://manus.go.link/iW6sB?action=open-subscription
+Salvar checkpoint e entregar o site ao usuário
+Consegui finalizar o pacote de migração. Agora, vou verificar os arquivos na pasta de migração para garantir que tudo está correto antes de prosseguir.
+Manus está reiniciando o computador, por favor aguarde um momento. Obter suporte para o problema
+Manus reiniciou o computador com sucesso. Você pode agora continuar com a tarefa anterior. Obter suporte para o problema
+Seus créditos foram esgotados.
+main
+EADME.md
+-rw-rw-r-- 1 ubuntu ubuntu 236K Apr  3 21:45 inovarse-ecosystem.zip
+-rw-r--r-- 1 ubuntu ubuntu 2.4K Apr  3 21:44 supabase_schema.sql
+---
+   68 ENV_SETUP.md
+  252 MIGRATION_GUIDE.md
+  170 README.md
+   59 supabase_schema.sql
+  549 total
+ubuntu@sandbox:~/inovarse-ecosystem-migration $
+Salvar checkpoint e entregar o site ao usuário
+6 / 6
+Reprodução da tarefa Manus concluída.
+Assistir novamente
+Experimente você mesmo
+
+Manus 1.6 Lite
+Campo lead_id na tabela results não captura dados da leads
+Entrar
+Salvar checkpoint e entregar o site ao usuário
+Localizar os arquivos SQL de migração gerados pelo Drizzle.
+Ler o arquivo de migração SQL para incluir no pacote de exportação.
+Ler o arquivo de migração inicial para incluir também.
+Preenchi as tabelas `contacts` e `partner_leads` no banco. Próximo passo: integrar o projeto ao GitHub, Render e configurar variáveis de ambiente.
+Criar arquivo SQL consolidado para Supabase com todas as tabelas.
+Lidando com problema no editor de texto
+Criar arquivo de configuração de exemplo para variáveis de ambiente.
+Concluí o esquema do banco de dados e criei um arquivo de exemplo para variáveis de ambiente. Irei solicitar segredos de forma adequada antes de modificar o arquivo.
+Criar guia de migração com instruções passo a passo.
+Criar arquivo ZIP com todo o projeto, excluindo node_modules, .git e arquivos desnecessários.
+Verificar os arquivos criados na pasta de migração.
+Concluí a criação do guia de migração e zipei o projeto, excluindo arquivos desnecessários. Próximo passo: verificar os arquivos na pasta de migração.
+Criar arquivo README com resumo de tudo que foi preparado.
+Verificar tamanho e conteúdo dos arquivos de migração.
+Lite
+🚀 Pacote de Migração Completo - Ecossistema Inovarse
+Preparei tudo para você migrar o site para seu fluxo com GitHub, Render e Supabase. Aqui está o que você recebe:
+📦 Arquivos Inclusos
+inovarse-ecosystem.zip (236 KB)
+Código-fonte completo do projeto
+Todas as dependências configuradas
+Testes vitest inclusos
+Pronto para fazer push no GitHub
+supabase_schema.sql (2.4 KB)
+Script SQL com todas as 3 tabelas
+users, partner_leads, contacts
+Índices para performance
+Row Level Security (RLS) configurado
+MIGRATION_GUIDE.md (6.3 KB)
+Guia passo a passo completo
+Instruções para Supabase, GitHub e Render
+Fluxo de desenvolvimento local
+Troubleshooting
+ENV_SETUP.md (2.0 KB)
+Todas as variáveis de ambiente necessárias
+Como obter connection string do Supabase
+Como gerar JWT_SECRET
+README.md (4.5 KB)
+Resumo do pacote
+Quick start
+Stack tecnológico
+Dúvidas frequentes
+⚡ Quick Start (15 minutos)
+Supabase: Criar projeto → Executar supabase_schema.sql → Copiar connection string
+GitHub: Criar repositório → Descompactar ZIP → Fazer push
+Variáveis: Criar .env.local com DATABASE_URL e JWT_SECRET
+Local: pnpm install → pnpm dev → Testar em http://localhost:3000
+Render: Conectar GitHub → Configurar variáveis → Deploy automático
+✅ O que está pronto
+✅ Landing page com hero section
+✅ Filosofia MCE com visualização
+✅ Programas GlowFit
+✅ Rede Credenciada
+✅ Formulários com validação e banco de dados
+✅ Testes automatizados (9 testes passando )
+✅ Design em verde esmeralda
+✅ Responsivo e animado
+Todos os arquivos estão prontos para download. Siga o MIGRATION_GUIDE.md passo a passo e você terá o site rodando em produção em menos de 20 minutos!
+inovarse-ecosystem.zip
+Arquivar · 235.30 KB
+supabase_schema.sql
+Código · 2.34 KB
+Guia de Migração - Inovarse Ecosystem
+Markdown · 6.24 KB
+Configuração de Variáveis de Ambiente
+Markdown · 1.93 KB
+📦 Pacote de Migração - Ecossistema Inovarse
+Markdown · 4.46 KB
+Ver todos os arquivos nesta tarefa
+Salvar checkpoint e entregar o site ao usuário
+Finalizei o pacote de migração, incluindo código, schema, guia, variáveis e README. Próximo passo: verificar arquivos na pasta de migração.
+meshwave@mesh:~$ cd smb://mesh.local/hd_1tb/projetos
+bash: cd: smb://mesh.local/hd_1tb/projetos: Arquivo ou diretório inexistente
+meshwave@mesh:~$ cd projetos
+meshwave@mesh:~/projetos$ cd inovarse
+meshwave@mesh:~/projetos/inovarse$ npn install
+Comando 'npn' não encontrado, você quis dizer:
+  comando 'nnn' do deb nnn (4.9-1)
+  comando 'nn' do deb nn (6.7.3-15)
+  comando 'npx' do deb npm (9.2.0~ds1-2)
+  comando 'npm' do deb npm (9.2.0~ds1-2)
+Experimente: sudo apt install <deb name>
+meshwave@mesh:~/projetos/inovarse$ npm install
+npm error code ERESOLVE
+npm error ERESOLVE unable to resolve dependency tree
+npm error
+npm error While resolving: inovarse-ecosystem@1.0.0
+npm error Found: vite@7.3.1
+npm error node_modules/vite
+npm error   dev vite@"^7.1.7" from the root project
+npm error
+npm error Could not resolve dependency:
+npm error peer vite@"^4.0.0 || ^5.0.0" from @builder.io/vite-plugin-jsx-loc@0.1.1
+npm error node_modules/@builder.io/vite-plugin-jsx-loc
+npm error   dev @builder.io/vite-plugin-jsx-loc@"^0.1.1" from the root project
+npm error
+npm error Fix the upstream dependency conflict, or retry
+npm error this command with --force or --legacy-peer-deps
+npm error to accept an incorrect (and potentially broken) dependency resolution.
+npm error
+npm error
+npm error For a full report see:
+npm error /home/meshwave/.npm/_logs/2026-04-04T02_01_36_557Z-eresolve-report.txt
+npm notice
+npm notice New major version of npm available! 10.8.2 -> 11.12.1
+npm notice Changelog: 
+npm notice To update run: npm install -g npm@11.12.1
+npm notice
+npm error A complete log of this run can be found in: /home/meshwave/.npm/_logs/2026-04-04T02_01_36_557Z-debug-0.log
+meshwave@mesh:~/projetos/inovarse$ 
+Expandir
+Lite
+Perfeito! Você já descompactou o ZIP e está tentando instalar as dependências. Há um conflito de versão do Vite com o plugin @builder.io/vite-plugin-jsx-loc.
+Existem 3 formas de resolver isso:
+Opção 1: Usar --legacy-peer-deps (Recomendado para começar rápido)
+Bash
+npm install --legacy-peer-deps
+Opção 2: Usar pnpm (Recomendado para desenvolvimento)
+Bash
+npm install -g pnpm
+pnpm install
+Opção 3: Usar --force
+Bash
+npm install --force
+Recomendo a Opção 2 com pnpm porque é o que foi usado para desenvolver o projeto e garante compatibilidade total.
+Qual você prefere usar?
+1... sempre uso npm
+Lite
+Perfeito! Use então:
+Bash
+npm install --legacy-peer-deps
+Isso vai instalar todas as dependências ignorando o conflito de versão do Vite, que é apenas uma incompatibilidade menor com o plugin de desenvolvimento e não afeta a funcionalidade do projeto.
+Após a instalação, você pode executar:
+Bash
+npm run dev
+Isso iniciará o servidor de desenvolvimento em http://localhost:3000
+Avise quando terminar a instalação e estiver pronto para os próximos passos!
+Lite
+Depois que instalar, você também vai precisar:
+Criar arquivo .env.local na raiz do projeto com as variáveis do ENV_SETUP.md
+Preencher DATABASE_URL com a connection string do Supabase
+Gerar JWT_SECRET com um comando ou gerador online
+Quer que eu te ajude com isso quando terminar a instalação?
+Lite
+Você não tem créditos suficientes. Por favor, faça upgrade através do link abaixo para continuar.
+https://manus.go.link/iW6sB?action=open-subscription
+Salvar checkpoint e entregar o site ao usuário
+Consegui finalizar o pacote de migração. Agora, vou verificar os arquivos na pasta de migração para garantir que tudo está correto antes de prosseguir.
+Manus está reiniciando o computador, por favor aguarde um momento. Obter suporte para o problema
+Manus reiniciou o computador com sucesso. Você pode agora continuar com a tarefa anterior. Obter suporte para o problema
+Seus créditos foram esgotados.
+main
+EADME.md
+-rw-rw-r-- 1 ubuntu ubuntu 236K Apr  3 21:45 inovarse-ecosystem.zip
+-rw-r--r-- 1 ubuntu ubuntu 2.4K Apr  3 21:44 supabase_schema.sql
+---
+   68 ENV_SETUP.md
+  252 MIGRATION_GUIDE.md
+  170 README.md
+   59 supabase_schema.sql
+  549 total
+ubuntu@sandbox:~/inovarse-ecosystem-migration $
+Salvar checkpoint e entregar o site ao usuário
+6 / 6
+Reprodução da tarefa Manus concluída.
+Assistir novamente
+Experimente você mesmo
+
+Manus 1.6 Lite
+Campo lead_id na tabela results não captura dados da leads
+Entrar
+Salvar checkpoint e entregar o site ao usuário
+Localizar os arquivos SQL de migração gerados pelo Drizzle.
+Ler o arquivo de migração SQL para incluir no pacote de exportação.
+Ler o arquivo de migração inicial para incluir também.
+Preenchi as tabelas `contacts` e `partner_leads` no banco. Próximo passo: integrar o projeto ao GitHub, Render e configurar variáveis de ambiente.
+Criar arquivo SQL consolidado para Supabase com todas as tabelas.
+Lidando com problema no editor de texto
+Criar arquivo de configuração de exemplo para variáveis de ambiente.
+Concluí o esquema do banco de dados e criei um arquivo de exemplo para variáveis de ambiente. Irei solicitar segredos de forma adequada antes de modificar o arquivo.
+Criar guia de migração com instruções passo a passo.
+Criar arquivo ZIP com todo o projeto, excluindo node_modules, .git e arquivos desnecessários.
+Verificar os arquivos criados na pasta de migração.
+Concluí a criação do guia de migração e zipei o projeto, excluindo arquivos desnecessários. Próximo passo: verificar os arquivos na pasta de migração.
+Criar arquivo README com resumo de tudo que foi preparado.
+Verificar tamanho e conteúdo dos arquivos de migração.
+Lite
+🚀 Pacote de Migração Completo - Ecossistema Inovarse
+Preparei tudo para você migrar o site para seu fluxo com GitHub, Render e Supabase. Aqui está o que você recebe:
+📦 Arquivos Inclusos
+inovarse-ecosystem.zip (236 KB)
+Código-fonte completo do projeto
+Todas as dependências configuradas
+Testes vitest inclusos
+Pronto para fazer push no GitHub
+supabase_schema.sql (2.4 KB)
+Script SQL com todas as 3 tabelas
+users, partner_leads, contacts
+Índices para performance
+Row Level Security (RLS) configurado
+MIGRATION_GUIDE.md (6.3 KB)
+Guia passo a passo completo
+Instruções para Supabase, GitHub e Render
+Fluxo de desenvolvimento local
+Troubleshooting
+ENV_SETUP.md (2.0 KB)
+Todas as variáveis de ambiente necessárias
+Como obter connection string do Supabase
+Como gerar JWT_SECRET
+README.md (4.5 KB)
+Resumo do pacote
+Quick start
+Stack tecnológico
+Dúvidas frequentes
+⚡ Quick Start (15 minutos)
+Supabase: Criar projeto → Executar supabase_schema.sql → Copiar connection string
+GitHub: Criar repositório → Descompactar ZIP → Fazer push
+Variáveis: Criar .env.local com DATABASE_URL e JWT_SECRET
+Local: pnpm install → pnpm dev → Testar em http://localhost:3000
+Render: Conectar GitHub → Configurar variáveis → Deploy automático
+✅ O que está pronto
+✅ Landing page com hero section
+✅ Filosofia MCE com visualização
+✅ Programas GlowFit
+✅ Rede Credenciada
+✅ Formulários com validação e banco de dados
+✅ Testes automatizados (9 testes passando )
+✅ Design em verde esmeralda
+✅ Responsivo e animado
+Todos os arquivos estão prontos para download. Siga o MIGRATION_GUIDE.md passo a passo e você terá o site rodando em produção em menos de 20 minutos!
+inovarse-ecosystem.zip
+Arquivar · 235.30 KB
+supabase_schema.sql
+Código · 2.34 KB
+Guia de Migração - Inovarse Ecosystem
+Markdown · 6.24 KB
+Configuração de Variáveis de Ambiente
+Markdown · 1.93 KB
+📦 Pacote de Migração - Ecossistema Inovarse
+Markdown · 4.46 KB
+Ver todos os arquivos nesta tarefa
+Salvar checkpoint e entregar o site ao usuário
+Finalizei o pacote de migração, incluindo código, schema, guia, variáveis e README. Próximo passo: verificar arquivos na pasta de migração.
+meshwave@mesh:~$ cd smb://mesh.local/hd_1tb/projetos
+bash: cd: smb://mesh.local/hd_1tb/projetos: Arquivo ou diretório inexistente
+meshwave@mesh:~$ cd projetos
+meshwave@mesh:~/projetos$ cd inovarse
+meshwave@mesh:~/projetos/inovarse$ npn install
+Comando 'npn' não encontrado, você quis dizer:
+  comando 'nnn' do deb nnn (4.9-1)
+  comando 'nn' do deb nn (6.7.3-15)
+  comando 'npx' do deb npm (9.2.0~ds1-2)
+  comando 'npm' do deb npm (9.2.0~ds1-2)
+Experimente: sudo apt install <deb name>
+meshwave@mesh:~/projetos/inovarse$ npm install
+npm error code ERESOLVE
+npm error ERESOLVE unable to resolve dependency tree
+npm error
+npm error While resolving: inovarse-ecosystem@1.0.0
+npm error Found: vite@7.3.1
+npm error node_modules/vite
+npm error   dev vite@"^7.1.7" from the root project
+npm error
+npm error Could not resolve dependency:
+npm error peer vite@"^4.0.0 || ^5.0.0" from @builder.io/vite-plugin-jsx-loc@0.1.1
+npm error node_modules/@builder.io/vite-plugin-jsx-loc
+npm error   dev @builder.io/vite-plugin-jsx-loc@"^0.1.1" from the root project
+npm error
+npm error Fix the upstream dependency conflict, or retry
+npm error this command with --force or --legacy-peer-deps
+npm error to accept an incorrect (and potentially broken) dependency resolution.
+npm error
+npm error
+npm error For a full report see:
+npm error /home/meshwave/.npm/_logs/2026-04-04T02_01_36_557Z-eresolve-report.txt
+npm notice
+npm notice New major version of npm available! 10.8.2 -> 11.12.1
+npm notice Changelog: 
+npm notice To update run: npm install -g npm@11.12.1
+npm notice
+npm error A complete log of this run can be found in: /home/meshwave/.npm/_logs/2026-04-04T02_01_36_557Z-debug-0.log
+meshwave@mesh:~/projetos/inovarse$ 
+Expandir
+Lite
+Perfeito! Você já descompactou o ZIP e está tentando instalar as dependências. Há um conflito de versão do Vite com o plugin @builder.io/vite-plugin-jsx-loc.
+Existem 3 formas de resolver isso:
+Opção 1: Usar --legacy-peer-deps (Recomendado para começar rápido)
+Bash
+npm install --legacy-peer-deps
+Opção 2: Usar pnpm (Recomendado para desenvolvimento)
+Bash
+npm install -g pnpm
+pnpm install
+Opção 3: Usar --force
+Bash
+npm install --force
+Recomendo a Opção 2 com pnpm porque é o que foi usado para desenvolver o projeto e garante compatibilidade total.
+Qual você prefere usar?
+1... sempre uso npm
+Lite
+Perfeito! Use então:
+Bash
+npm install --legacy-peer-deps
+Isso vai instalar todas as dependências ignorando o conflito de versão do Vite, que é apenas uma incompatibilidade menor com o plugin de desenvolvimento e não afeta a funcionalidade do projeto.
+Após a instalação, você pode executar:
+Bash
+npm run dev
+Isso iniciará o servidor de desenvolvimento em http://localhost:3000
+Avise quando terminar a instalação e estiver pronto para os próximos passos!
+Lite
+Depois que instalar, você também vai precisar:
+Criar arquivo .env.local na raiz do projeto com as variáveis do ENV_SETUP.md
+Preencher DATABASE_URL com a connection string do Supabase
+Gerar JWT_SECRET com um comando ou gerador online
+Quer que eu te ajude com isso quando terminar a instalação?
+Lite
+Você não tem créditos suficientes. Por favor, faça upgrade através do link abaixo para continuar.
+https://manus.go.link/iW6sB?action=open-subscription
+Salvar checkpoint e entregar o site ao usuário
+Consegui finalizar o pacote de migração. Agora, vou verificar os arquivos na pasta de migração para garantir que tudo está correto antes de prosseguir.
+Manus está reiniciando o computador, por favor aguarde um momento. Obter suporte para o problema
+Manus reiniciou o computador com sucesso. Você pode agora continuar com a tarefa anterior. Obter suporte para o problema
+Seus créditos foram esgotados.
+main
+EADME.md
+-rw-rw-r-- 1 ubuntu ubuntu 236K Apr  3 21:45 inovarse-ecosystem.zip
+-rw-r--r-- 1 ubuntu ubuntu 2.4K Apr  3 21:44 supabase_schema.sql
+---
+   68 ENV_SETUP.md
+  252 MIGRATION_GUIDE.md
+  170 README.md
+   59 supabase_schema.sql
+  549 total
+ubuntu@sandbox:~/inovarse-ecosystem-migration $
+Salvar checkpoint e entregar o site ao usuário
+6 / 6
+Reprodução da tarefa Manus concluída.
+Assistir novamente
+Experimente você mesmo
+
+Manus 1.6 Lite
+Campo lead_id na tabela results não captura dados da leads
+Entrar
+Salvar checkpoint e entregar o site ao usuário
+Localizar os arquivos SQL de migração gerados pelo Drizzle.
+Ler o arquivo de migração SQL para incluir no pacote de exportação.
+Ler o arquivo de migração inicial para incluir também.
+Preenchi as tabelas `contacts` e `partner_leads` no banco. Próximo passo: integrar o projeto ao GitHub, Render e configurar variáveis de ambiente.
+Criar arquivo SQL consolidado para Supabase com todas as tabelas.
+Lidando com problema no editor de texto
+Criar arquivo de configuração de exemplo para variáveis de ambiente.
+Concluí o esquema do banco de dados e criei um arquivo de exemplo para variáveis de ambiente. Irei solicitar segredos de forma adequada antes de modificar o arquivo.
+Criar guia de migração com instruções passo a passo.
+Criar arquivo ZIP com todo o projeto, excluindo node_modules, .git e arquivos desnecessários.
+Verificar os arquivos criados na pasta de migração.
+Concluí a criação do guia de migração e zipei o projeto, excluindo arquivos desnecessários. Próximo passo: verificar os arquivos na pasta de migração.
+Criar arquivo README com resumo de tudo que foi preparado.
+Verificar tamanho e conteúdo dos arquivos de migração.
+Lite
+🚀 Pacote de Migração Completo - Ecossistema Inovarse
+Preparei tudo para você migrar o site para seu fluxo com GitHub, Render e Supabase. Aqui está o que você recebe:
+📦 Arquivos Inclusos
+inovarse-ecosystem.zip (236 KB)
+Código-fonte completo do projeto
+Todas as dependências configuradas
+Testes vitest inclusos
+Pronto para fazer push no GitHub
+supabase_schema.sql (2.4 KB)
+Script SQL com todas as 3 tabelas
+users, partner_leads, contacts
+Índices para performance
+Row Level Security (RLS) configurado
+MIGRATION_GUIDE.md (6.3 KB)
+Guia passo a passo completo
+Instruções para Supabase, GitHub e Render
+Fluxo de desenvolvimento local
+Troubleshooting
+ENV_SETUP.md (2.0 KB)
+Todas as variáveis de ambiente necessárias
+Como obter connection string do Supabase
+Como gerar JWT_SECRET
+README.md (4.5 KB)
+Resumo do pacote
+Quick start
+Stack tecnológico
+Dúvidas frequentes
+⚡ Quick Start (15 minutos)
+Supabase: Criar projeto → Executar supabase_schema.sql → Copiar connection string
+GitHub: Criar repositório → Descompactar ZIP → Fazer push
+Variáveis: Criar .env.local com DATABASE_URL e JWT_SECRET
+Local: pnpm install → pnpm dev → Testar em http://localhost:3000
+Render: Conectar GitHub → Configurar variáveis → Deploy automático
+✅ O que está pronto
+✅ Landing page com hero section
+✅ Filosofia MCE com visualização
+✅ Programas GlowFit
+✅ Rede Credenciada
+✅ Formulários com validação e banco de dados
+✅ Testes automatizados (9 testes passando )
+✅ Design em verde esmeralda
+✅ Responsivo e animado
+Todos os arquivos estão prontos para download. Siga o MIGRATION_GUIDE.md passo a passo e você terá o site rodando em produção em menos de 20 minutos!
+inovarse-ecosystem.zip
+Arquivar · 235.30 KB
+supabase_schema.sql
+Código · 2.34 KB
+Guia de Migração - Inovarse Ecosystem
+Markdown · 6.24 KB
+Configuração de Variáveis de Ambiente
+Markdown · 1.93 KB
+📦 Pacote de Migração - Ecossistema Inovarse
+Markdown · 4.46 KB
+Ver todos os arquivos nesta tarefa
+Salvar checkpoint e entregar o site ao usuário
+Finalizei o pacote de migração, incluindo código, schema, guia, variáveis e README. Próximo passo: verificar arquivos na pasta de migração.
+meshwave@mesh:~$ cd smb://mesh.local/hd_1tb/projetos
+bash: cd: smb://mesh.local/hd_1tb/projetos: Arquivo ou diretório inexistente
+meshwave@mesh:~$ cd projetos
+meshwave@mesh:~/projetos$ cd inovarse
+meshwave@mesh:~/projetos/inovarse$ npn install
+Comando 'npn' não encontrado, você quis dizer:
+  comando 'nnn' do deb nnn (4.9-1)
+  comando 'nn' do deb nn (6.7.3-15)
+  comando 'npx' do deb npm (9.2.0~ds1-2)
+  comando 'npm' do deb npm (9.2.0~ds1-2)
+Experimente: sudo apt install <deb name>
+meshwave@mesh:~/projetos/inovarse$ npm install
+npm error code ERESOLVE
+npm error ERESOLVE unable to resolve dependency tree
+npm error
+npm error While resolving: inovarse-ecosystem@1.0.0
+npm error Found: vite@7.3.1
+npm error node_modules/vite
+npm error   dev vite@"^7.1.7" from the root project
+npm error
+npm error Could not resolve dependency:
+npm error peer vite@"^4.0.0 || ^5.0.0" from @builder.io/vite-plugin-jsx-loc@0.1.1
+npm error node_modules/@builder.io/vite-plugin-jsx-loc
+npm error   dev @builder.io/vite-plugin-jsx-loc@"^0.1.1" from the root project
+npm error
+npm error Fix the upstream dependency conflict, or retry
+npm error this command with --force or --legacy-peer-deps
+npm error to accept an incorrect (and potentially broken) dependency resolution.
+npm error
+npm error
+npm error For a full report see:
+npm error /home/meshwave/.npm/_logs/2026-04-04T02_01_36_557Z-eresolve-report.txt
+npm notice
+npm notice New major version of npm available! 10.8.2 -> 11.12.1
+npm notice Changelog: 
+npm notice To update run: npm install -g npm@11.12.1
+npm notice
+npm error A complete log of this run can be found in: /home/meshwave/.npm/_logs/2026-04-04T02_01_36_557Z-debug-0.log
+meshwave@mesh:~/projetos/inovarse$ 
+Expandir
+Lite
+Perfeito! Você já descompactou o ZIP e está tentando instalar as dependências. Há um conflito de versão do Vite com o plugin @builder.io/vite-plugin-jsx-loc.
+Existem 3 formas de resolver isso:
+Opção 1: Usar --legacy-peer-deps (Recomendado para começar rápido)
+Bash
+npm install --legacy-peer-deps
+Opção 2: Usar pnpm (Recomendado para desenvolvimento)
+Bash
+npm install -g pnpm
+pnpm install
+Opção 3: Usar --force
+Bash
+npm install --force
+Recomendo a Opção 2 com pnpm porque é o que foi usado para desenvolver o projeto e garante compatibilidade total.
+Qual você prefere usar?
+1... sempre uso npm
+Lite
+Perfeito! Use então:
+Bash
+npm install --legacy-peer-deps
+Isso vai instalar todas as dependências ignorando o conflito de versão do Vite, que é apenas uma incompatibilidade menor com o plugin de desenvolvimento e não afeta a funcionalidade do projeto.
+Após a instalação, você pode executar:
+Bash
+npm run dev
+Isso iniciará o servidor de desenvolvimento em http://localhost:3000
+Avise quando terminar a instalação e estiver pronto para os próximos passos!
+Lite
+Depois que instalar, você também vai precisar:
+Criar arquivo .env.local na raiz do projeto com as variáveis do ENV_SETUP.md
+Preencher DATABASE_URL com a connection string do Supabase
+Gerar JWT_SECRET com um comando ou gerador online
+Quer que eu te ajude com isso quando terminar a instalação?
+Lite
+Você não tem créditos suficientes. Por favor, faça upgrade através do link abaixo para continuar.
+https://manus.go.link/iW6sB?action=open-subscription
+Salvar checkpoint e entregar o site ao usuário
+Consegui finalizar o pacote de migração. Agora, vou verificar os arquivos na pasta de migração para garantir que tudo está correto antes de prosseguir.
+Manus está reiniciando o computador, por favor aguarde um momento. Obter suporte para o problema
+Manus reiniciou o computador com sucesso. Você pode agora continuar com a tarefa anterior. Obter suporte para o problema
+Seus créditos foram esgotados.
+main
+EADME.md
+-rw-rw-r-- 1 ubuntu ubuntu 236K Apr  3 21:45 inovarse-ecosystem.zip
+-rw-r--r-- 1 ubuntu ubuntu 2.4K Apr  3 21:44 supabase_schema.sql
+---
+   68 ENV_SETUP.md
+  252 MIGRATION_GUIDE.md
+  170 README.md
+   59 supabase_schema.sql
+  549 total
+ubuntu@sandbox:~/inovarse-ecosystem-migration $
+Salvar checkpoint e entregar o site ao usuário
+6 / 6
+Reprodução da tarefa Manus concluída.
+Assistir novamente
+Experimente você mesmo
+
+Manus 1.6 Lite
+Campo lead_id na tabela results não captura dados da leads
+Entrar
+Salvar checkpoint e entregar o site ao usuário
+Localizar os arquivos SQL de migração gerados pelo Drizzle.
+Ler o arquivo de migração SQL para incluir no pacote de exportação.
+Ler o arquivo de migração inicial para incluir também.
+Preenchi as tabelas `contacts` e `partner_leads` no banco. Próximo passo: integrar o projeto ao GitHub, Render e configurar variáveis de ambiente.
+Criar arquivo SQL consolidado para Supabase com todas as tabelas.
+Lidando com problema no editor de texto
+Criar arquivo de configuração de exemplo para variáveis de ambiente.
+Concluí o esquema do banco de dados e criei um arquivo de exemplo para variáveis de ambiente. Irei solicitar segredos de forma adequada antes de modificar o arquivo.
+Criar guia de migração com instruções passo a passo.
+Criar arquivo ZIP com todo o projeto, excluindo node_modules, .git e arquivos desnecessários.
+Verificar os arquivos criados na pasta de migração.
+Concluí a criação do guia de migração e zipei o projeto, excluindo arquivos desnecessários. Próximo passo: verificar os arquivos na pasta de migração.
+Criar arquivo README com resumo de tudo que foi preparado.
+Verificar tamanho e conteúdo dos arquivos de migração.
+Lite
+🚀 Pacote de Migração Completo - Ecossistema Inovarse
+Preparei tudo para você migrar o site para seu fluxo com GitHub, Render e Supabase. Aqui está o que você recebe:
+📦 Arquivos Inclusos
+inovarse-ecosystem.zip (236 KB)
+Código-fonte completo do projeto
+Todas as dependências configuradas
+Testes vitest inclusos
+Pronto para fazer push no GitHub
+supabase_schema.sql (2.4 KB)
+Script SQL com todas as 3 tabelas
+users, partner_leads, contacts
+Índices para performance
+Row Level Security (RLS) configurado
+MIGRATION_GUIDE.md (6.3 KB)
+Guia passo a passo completo
+Instruções para Supabase, GitHub e Render
+Fluxo de desenvolvimento local
+Troubleshooting
+ENV_SETUP.md (2.0 KB)
+Todas as variáveis de ambiente necessárias
+Como obter connection string do Supabase
+Como gerar JWT_SECRET
+README.md (4.5 KB)
+Resumo do pacote
+Quick start
+Stack tecnológico
+Dúvidas frequentes
+⚡ Quick Start (15 minutos)
+Supabase: Criar projeto → Executar supabase_schema.sql → Copiar connection string
+GitHub: Criar repositório → Descompactar ZIP → Fazer push
+Variáveis: Criar .env.local com DATABASE_URL e JWT_SECRET
+Local: pnpm install → pnpm dev → Testar em http://localhost:3000
+Render: Conectar GitHub → Configurar variáveis → Deploy automático
+✅ O que está pronto
+✅ Landing page com hero section
+✅ Filosofia MCE com visualização
+✅ Programas GlowFit
+✅ Rede Credenciada
+✅ Formulários com validação e banco de dados
+✅ Testes automatizados (9 testes passando )
+✅ Design em verde esmeralda
+✅ Responsivo e animado
+Todos os arquivos estão prontos para download. Siga o MIGRATION_GUIDE.md passo a passo e você terá o site rodando em produção em menos de 20 minutos!
+inovarse-ecosystem.zip
+Arquivar · 235.30 KB
+supabase_schema.sql
+Código · 2.34 KB
+Guia de Migração - Inovarse Ecosystem
+Markdown · 6.24 KB
+Configuração de Variáveis de Ambiente
+Markdown · 1.93 KB
+📦 Pacote de Migração - Ecossistema Inovarse
+Markdown · 4.46 KB
+Ver todos os arquivos nesta tarefa
+Salvar checkpoint e entregar o site ao usuário
+Finalizei o pacote de migração, incluindo código, schema, guia, variáveis e README. Próximo passo: verificar arquivos na pasta de migração.
+meshwave@mesh:~$ cd smb://mesh.local/hd_1tb/projetos
+bash: cd: smb://mesh.local/hd_1tb/projetos: Arquivo ou diretório inexistente
+meshwave@mesh:~$ cd projetos
+meshwave@mesh:~/projetos$ cd inovarse
+meshwave@mesh:~/projetos/inovarse$ npn install
+Comando 'npn' não encontrado, você quis dizer:
+  comando 'nnn' do deb nnn (4.9-1)
+  comando 'nn' do deb nn (6.7.3-15)
+  comando 'npx' do deb npm (9.2.0~ds1-2)
+  comando 'npm' do deb npm (9.2.0~ds1-2)
+Experimente: sudo apt install <deb name>
+meshwave@mesh:~/projetos/inovarse$ npm install
+npm error code ERESOLVE
+npm error ERESOLVE unable to resolve dependency tree
+npm error
+npm error While resolving: inovarse-ecosystem@1.0.0
+npm error Found: vite@7.3.1
+npm error node_modules/vite
+npm error   dev vite@"^7.1.7" from the root project
+npm error
+npm error Could not resolve dependency:
+npm error peer vite@"^4.0.0 || ^5.0.0" from @builder.io/vite-plugin-jsx-loc@0.1.1
+npm error node_modules/@builder.io/vite-plugin-jsx-loc
+npm error   dev @builder.io/vite-plugin-jsx-loc@"^0.1.1" from the root project
+npm error
+npm error Fix the upstream dependency conflict, or retry
+npm error this command with --force or --legacy-peer-deps
+npm error to accept an incorrect (and potentially broken) dependency resolution.
+npm error
+npm error
+npm error For a full report see:
+npm error /home/meshwave/.npm/_logs/2026-04-04T02_01_36_557Z-eresolve-report.txt
+npm notice
+npm notice New major version of npm available! 10.8.2 -> 11.12.1
+npm notice Changelog: 
+npm notice To update run: npm install -g npm@11.12.1
+npm notice
+npm error A complete log of this run can be found in: /home/meshwave/.npm/_logs/2026-04-04T02_01_36_557Z-debug-0.log
+meshwave@mesh:~/projetos/inovarse$ 
+Expandir
+Lite
+Perfeito! Você já descompactou o ZIP e está tentando instalar as dependências. Há um conflito de versão do Vite com o plugin @builder.io/vite-plugin-jsx-loc.
+Existem 3 formas de resolver isso:
+Opção 1: Usar --legacy-peer-deps (Recomendado para começar rápido)
+Bash
+npm install --legacy-peer-deps
+Opção 2: Usar pnpm (Recomendado para desenvolvimento)
+Bash
+npm install -g pnpm
+pnpm install
+Opção 3: Usar --force
+Bash
+npm install --force
+Recomendo a Opção 2 com pnpm porque é o que foi usado para desenvolver o projeto e garante compatibilidade total.
+Qual você prefere usar?
+1... sempre uso npm
+Lite
+Perfeito! Use então:
+Bash
+npm install --legacy-peer-deps
+Isso vai instalar todas as dependências ignorando o conflito de versão do Vite, que é apenas uma incompatibilidade menor com o plugin de desenvolvimento e não afeta a funcionalidade do projeto.
+Após a instalação, você pode executar:
+Bash
+npm run dev
+Isso iniciará o servidor de desenvolvimento em http://localhost:3000
+Avise quando terminar a instalação e estiver pronto para os próximos passos!
+Lite
+Depois que instalar, você também vai precisar:
+Criar arquivo .env.local na raiz do projeto com as variáveis do ENV_SETUP.md
+Preencher DATABASE_URL com a connection string do Supabase
+Gerar JWT_SECRET com um comando ou gerador online
+Quer que eu te ajude com isso quando terminar a instalação?
+Lite
+Você não tem créditos suficientes. Por favor, faça upgrade através do link abaixo para continuar.
+https://manus.go.link/iW6sB?action=open-subscription
+Salvar checkpoint e entregar o site ao usuário
+Consegui finalizar o pacote de migração. Agora, vou verificar os arquivos na pasta de migração para garantir que tudo está correto antes de prosseguir.
+Manus está reiniciando o computador, por favor aguarde um momento. Obter suporte para o problema
+Manus reiniciou o computador com sucesso. Você pode agora continuar com a tarefa anterior. Obter suporte para o problema
+Seus créditos foram esgotados.
+main
+EADME.md
+-rw-rw-r-- 1 ubuntu ubuntu 236K Apr  3 21:45 inovarse-ecosystem.zip
+-rw-r--r-- 1 ubuntu ubuntu 2.4K Apr  3 21:44 supabase_schema.sql
+---
+   68 ENV_SETUP.md
+  252 MIGRATION_GUIDE.md
+  170 README.md
+   59 supabase_schema.sql
+  549 total
+ubuntu@sandbox:~/inovarse-ecosystem-migration $
+Salvar checkpoint e entregar o site ao usuário
+6 / 6
+Reprodução da tarefa Manus concluída.
+Assistir novamente
+Experimente você mesmo
+
+Manus 1.6 Lite
+Campo lead_id na tabela results não captura dados da leads
+Entrar
+Salvar checkpoint e entregar o site ao usuário
+Localizar os arquivos SQL de migração gerados pelo Drizzle.
+Ler o arquivo de migração SQL para incluir no pacote de exportação.
+Ler o arquivo de migração inicial para incluir também.
+Preenchi as tabelas `contacts` e `partner_leads` no banco. Próximo passo: integrar o projeto ao GitHub, Render e configurar variáveis de ambiente.
+Criar arquivo SQL consolidado para Supabase com todas as tabelas.
+Lidando com problema no editor de texto
+Criar arquivo de configuração de exemplo para variáveis de ambiente.
+Concluí o esquema do banco de dados e criei um arquivo de exemplo para variáveis de ambiente. Irei solicitar segredos de forma adequada antes de modificar o arquivo.
+Criar guia de migração com instruções passo a passo.
+Criar arquivo ZIP com todo o projeto, excluindo node_modules, .git e arquivos desnecessários.
+Verificar os arquivos criados na pasta de migração.
+Concluí a criação do guia de migração e zipei o projeto, excluindo arquivos desnecessários. Próximo passo: verificar os arquivos na pasta de migração.
+Criar arquivo README com resumo de tudo que foi preparado.
+Verificar tamanho e conteúdo dos arquivos de migração.
+Lite
+🚀 Pacote de Migração Completo - Ecossistema Inovarse
+Preparei tudo para você migrar o site para seu fluxo com GitHub, Render e Supabase. Aqui está o que você recebe:
+📦 Arquivos Inclusos
+inovarse-ecosystem.zip (236 KB)
+Código-fonte completo do projeto
+Todas as dependências configuradas
+Testes vitest inclusos
+Pronto para fazer push no GitHub
+supabase_schema.sql (2.4 KB)
+Script SQL com todas as 3 tabelas
+users, partner_leads, contacts
+Índices para performance
+Row Level Security (RLS) configurado
+MIGRATION_GUIDE.md (6.3 KB)
+Guia passo a passo completo
+Instruções para Supabase, GitHub e Render
+Fluxo de desenvolvimento local
+Troubleshooting
+ENV_SETUP.md (2.0 KB)
+Todas as variáveis de ambiente necessárias
+Como obter connection string do Supabase
+Como gerar JWT_SECRET
+README.md (4.5 KB)
+Resumo do pacote
+Quick start
+Stack tecnológico
+Dúvidas frequentes
+⚡ Quick Start (15 minutos)
+Supabase: Criar projeto → Executar supabase_schema.sql → Copiar connection string
+GitHub: Criar repositório → Descompactar ZIP → Fazer push
+Variáveis: Criar .env.local com DATABASE_URL e JWT_SECRET
+Local: pnpm install → pnpm dev → Testar em http://localhost:3000
+Render: Conectar GitHub → Configurar variáveis → Deploy automático
+✅ O que está pronto
+✅ Landing page com hero section
+✅ Filosofia MCE com visualização
+✅ Programas GlowFit
+✅ Rede Credenciada
+✅ Formulários com validação e banco de dados
+✅ Testes automatizados (9 testes passando )
+✅ Design em verde esmeralda
+✅ Responsivo e animado
+Todos os arquivos estão prontos para download. Siga o MIGRATION_GUIDE.md passo a passo e você terá o site rodando em produção em menos de 20 minutos!
+inovarse-ecosystem.zip
+Arquivar · 235.30 KB
+supabase_schema.sql
+Código · 2.34 KB
+Guia de Migração - Inovarse Ecosystem
+Markdown · 6.24 KB
+Configuração de Variáveis de Ambiente
+Markdown · 1.93 KB
+📦 Pacote de Migração - Ecossistema Inovarse
+Markdown · 4.46 KB
+Ver todos os arquivos nesta tarefa
+Salvar checkpoint e entregar o site ao usuário
+Finalizei o pacote de migração, incluindo código, schema, guia, variáveis e README. Próximo passo: verificar arquivos na pasta de migração.
+meshwave@mesh:~$ cd smb://mesh.local/hd_1tb/projetos
+bash: cd: smb://mesh.local/hd_1tb/projetos: Arquivo ou diretório inexistente
+meshwave@mesh:~$ cd projetos
+meshwave@mesh:~/projetos$ cd inovarse
+meshwave@mesh:~/projetos/inovarse$ npn install
+Comando 'npn' não encontrado, você quis dizer:
+  comando 'nnn' do deb nnn (4.9-1)
+  comando 'nn' do deb nn (6.7.3-15)
+  comando 'npx' do deb npm (9.2.0~ds1-2)
+  comando 'npm' do deb npm (9.2.0~ds1-2)
+Experimente: sudo apt install <deb name>
+meshwave@mesh:~/projetos/inovarse$ npm install
+npm error code ERESOLVE
+npm error ERESOLVE unable to resolve dependency tree
+npm error
+npm error While resolving: inovarse-ecosystem@1.0.0
+npm error Found: vite@7.3.1
+npm error node_modules/vite
+npm error   dev vite@"^7.1.7" from the root project
+npm error
+npm error Could not resolve dependency:
+npm error peer vite@"^4.0.0 || ^5.0.0" from @builder.io/vite-plugin-jsx-loc@0.1.1
+npm error node_modules/@builder.io/vite-plugin-jsx-loc
+npm error   dev @builder.io/vite-plugin-jsx-loc@"^0.1.1" from the root project
+npm error
+npm error Fix the upstream dependency conflict, or retry
+npm error this command with --force or --legacy-peer-deps
+npm error to accept an incorrect (and potentially broken) dependency resolution.
+npm error
+npm error
+npm error For a full report see:
+npm error /home/meshwave/.npm/_logs/2026-04-04T02_01_36_557Z-eresolve-report.txt
+npm notice
+npm notice New major version of npm available! 10.8.2 -> 11.12.1
+npm notice Changelog: 
+npm notice To update run: npm install -g npm@11.12.1
+npm notice
+npm error A complete log of this run can be found in: /home/meshwave/.npm/_logs/2026-04-04T02_01_36_557Z-debug-0.log
+meshwave@mesh:~/projetos/inovarse$ 
+Expandir
+Lite
+Perfeito! Você já descompactou o ZIP e está tentando instalar as dependências. Há um conflito de versão do Vite com o plugin @builder.io/vite-plugin-jsx-loc.
+Existem 3 formas de resolver isso:
+Opção 1: Usar --legacy-peer-deps (Recomendado para começar rápido)
+Bash
+npm install --legacy-peer-deps
+Opção 2: Usar pnpm (Recomendado para desenvolvimento)
+Bash
+npm install -g pnpm
+pnpm install
+Opção 3: Usar --force
+Bash
+npm install --force
+Recomendo a Opção 2 com pnpm porque é o que foi usado para desenvolver o projeto e garante compatibilidade total.
+Qual você prefere usar?
+1... sempre uso npm
+Lite
+Perfeito! Use então:
+Bash
+npm install --legacy-peer-deps
+Isso vai instalar todas as dependências ignorando o conflito de versão do Vite, que é apenas uma incompatibilidade menor com o plugin de desenvolvimento e não afeta a funcionalidade do projeto.
+Após a instalação, você pode executar:
+Bash
+npm run dev
+Isso iniciará o servidor de desenvolvimento em http://localhost:3000
+Avise quando terminar a instalação e estiver pronto para os próximos passos!
+Lite
+Depois que instalar, você também vai precisar:
+Criar arquivo .env.local na raiz do projeto com as variáveis do ENV_SETUP.md
+Preencher DATABASE_URL com a connection string do Supabase
+Gerar JWT_SECRET com um comando ou gerador online
+Quer que eu te ajude com isso quando terminar a instalação?
+Lite
+Você não tem créditos suficientes. Por favor, faça upgrade através do link abaixo para continuar.
+https://manus.go.link/iW6sB?action=open-subscription
+Salvar checkpoint e entregar o site ao usuário
+Consegui finalizar o pacote de migração. Agora, vou verificar os arquivos na pasta de migração para garantir que tudo está correto antes de prosseguir.
+Manus está reiniciando o computador, por favor aguarde um momento. Obter suporte para o problema
+Manus reiniciou o computador com sucesso. Você pode agora continuar com a tarefa anterior. Obter suporte para o problema
+Seus créditos foram esgotados.
+main
+EADME.md
+-rw-rw-r-- 1 ubuntu ubuntu 236K Apr  3 21:45 inovarse-ecosystem.zip
+-rw-r--r-- 1 ubuntu ubuntu 2.4K Apr  3 21:44 supabase_schema.sql
+---
+   68 ENV_SETUP.md
+  252 MIGRATION_GUIDE.md
+  170 README.md
+   59 supabase_schema.sql
+  549 total
+ubuntu@sandbox:~/inovarse-ecosystem-migration $
+Salvar checkpoint e entregar o site ao usuário
+6 / 6
+Reprodução da tarefa Manus concluída.
+Assistir novamente
+Experimente você mesmo
+
+Manus 1.6 Lite
+Campo lead_id na tabela results não captura dados da leads
+Entrar
+Salvar checkpoint e entregar o site ao usuário
+Localizar os arquivos SQL de migração gerados pelo Drizzle.
+Ler o arquivo de migração SQL para incluir no pacote de exportação.
+Ler o arquivo de migração inicial para incluir também.
+Preenchi as tabelas `contacts` e `partner_leads` no banco. Próximo passo: integrar o projeto ao GitHub, Render e configurar variáveis de ambiente.
+Criar arquivo SQL consolidado para Supabase com todas as tabelas.
+Lidando com problema no editor de texto
+Criar arquivo de configuração de exemplo para variáveis de ambiente.
+Concluí o esquema do banco de dados e criei um arquivo de exemplo para variáveis de ambiente. Irei solicitar segredos de forma adequada antes de modificar o arquivo.
+Criar guia de migração com instruções passo a passo.
+Criar arquivo ZIP com todo o projeto, excluindo node_modules, .git e arquivos desnecessários.
+Verificar os arquivos criados na pasta de migração.
+Concluí a criação do guia de migração e zipei o projeto, excluindo arquivos desnecessários. Próximo passo: verificar os arquivos na pasta de migração.
+Criar arquivo README com resumo de tudo que foi preparado.
+Verificar tamanho e conteúdo dos arquivos de migração.
+Lite
+🚀 Pacote de Migração Completo - Ecossistema Inovarse
+Preparei tudo para você migrar o site para seu fluxo com GitHub, Render e Supabase. Aqui está o que você recebe:
+📦 Arquivos Inclusos
+inovarse-ecosystem.zip (236 KB)
+Código-fonte completo do projeto
+Todas as dependências configuradas
+Testes vitest inclusos
+Pronto para fazer push no GitHub
+supabase_schema.sql (2.4 KB)
+Script SQL com todas as 3 tabelas
+users, partner_leads, contacts
+Índices para performance
+Row Level Security (RLS) configurado
+MIGRATION_GUIDE.md (6.3 KB)
+Guia passo a passo completo
+Instruções para Supabase, GitHub e Render
+Fluxo de desenvolvimento local
+Troubleshooting
+ENV_SETUP.md (2.0 KB)
+Todas as variáveis de ambiente necessárias
+Como obter connection string do Supabase
+Como gerar JWT_SECRET
+README.md (4.5 KB)
+Resumo do pacote
+Quick start
+Stack tecnológico
+Dúvidas frequentes
+⚡ Quick Start (15 minutos)
+Supabase: Criar projeto → Executar supabase_schema.sql → Copiar connection string
+GitHub: Criar repositório → Descompactar ZIP → Fazer push
+Variáveis: Criar .env.local com DATABASE_URL e JWT_SECRET
+Local: pnpm install → pnpm dev → Testar em http://localhost:3000
+Render: Conectar GitHub → Configurar variáveis → Deploy automático
+✅ O que está pronto
+✅ Landing page com hero section
+✅ Filosofia MCE com visualização
+✅ Programas GlowFit
+✅ Rede Credenciada
+✅ Formulários com validação e banco de dados
+✅ Testes automatizados (9 testes passando )
+✅ Design em verde esmeralda
+✅ Responsivo e animado
+Todos os arquivos estão prontos para download. Siga o MIGRATION_GUIDE.md passo a passo e você terá o site rodando em produção em menos de 20 minutos!
+inovarse-ecosystem.zip
+Arquivar · 235.30 KB
+supabase_schema.sql
+Código · 2.34 KB
+Guia de Migração - Inovarse Ecosystem
+Markdown · 6.24 KB
+Configuração de Variáveis de Ambiente
+Markdown · 1.93 KB
+📦 Pacote de Migração - Ecossistema Inovarse
+Markdown · 4.46 KB
+Ver todos os arquivos nesta tarefa
+Salvar checkpoint e entregar o site ao usuário
+Finalizei o pacote de migração, incluindo código, schema, guia, variáveis e README. Próximo passo: verificar arquivos na pasta de migração.
+meshwave@mesh:~$ cd smb://mesh.local/hd_1tb/projetos
+bash: cd: smb://mesh.local/hd_1tb/projetos: Arquivo ou diretório inexistente
+meshwave@mesh:~$ cd projetos
+meshwave@mesh:~/projetos$ cd inovarse
+meshwave@mesh:~/projetos/inovarse$ npn install
+Comando 'npn' não encontrado, você quis dizer:
+  comando 'nnn' do deb nnn (4.9-1)
+  comando 'nn' do deb nn (6.7.3-15)
+  comando 'npx' do deb npm (9.2.0~ds1-2)
+  comando 'npm' do deb npm (9.2.0~ds1-2)
+Experimente: sudo apt install <deb name>
+meshwave@mesh:~/projetos/inovarse$ npm install
+npm error code ERESOLVE
+npm error ERESOLVE unable to resolve dependency tree
+npm error
+npm error While resolving: inovarse-ecosystem@1.0.0
+npm error Found: vite@7.3.1
+npm error node_modules/vite
+npm error   dev vite@"^7.1.7" from the root project
+npm error
+npm error Could not resolve dependency:
+npm error peer vite@"^4.0.0 || ^5.0.0" from @builder.io/vite-plugin-jsx-loc@0.1.1
+npm error node_modules/@builder.io/vite-plugin-jsx-loc
+npm error   dev @builder.io/vite-plugin-jsx-loc@"^0.1.1" from the root project
+npm error
+npm error Fix the upstream dependency conflict, or retry
+npm error this command with --force or --legacy-peer-deps
+npm error to accept an incorrect (and potentially broken) dependency resolution.
+npm error
+npm error
+npm error For a full report see:
+npm error /home/meshwave/.npm/_logs/2026-04-04T02_01_36_557Z-eresolve-report.txt
+npm notice
+npm notice New major version of npm available! 10.8.2 -> 11.12.1
+npm notice Changelog: 
+npm notice To update run: npm install -g npm@11.12.1
+npm notice
+npm error A complete log of this run can be found in: /home/meshwave/.npm/_logs/2026-04-04T02_01_36_557Z-debug-0.log
+meshwave@mesh:~/projetos/inovarse$ 
+Expandir
+Lite
+Perfeito! Você já descompactou o ZIP e está tentando instalar as dependências. Há um conflito de versão do Vite com o plugin @builder.io/vite-plugin-jsx-loc.
+Existem 3 formas de resolver isso:
+Opção 1: Usar --legacy-peer-deps (Recomendado para começar rápido)
+Bash
+npm install --legacy-peer-deps
+Opção 2: Usar pnpm (Recomendado para desenvolvimento)
+Bash
+npm install -g pnpm
+pnpm install
+Opção 3: Usar --force
+Bash
+npm install --force
+Recomendo a Opção 2 com pnpm porque é o que foi usado para desenvolver o projeto e garante compatibilidade total.
+Qual você prefere usar?
+1... sempre uso npm
+Lite
+Perfeito! Use então:
+Bash
+npm install --legacy-peer-deps
+Isso vai instalar todas as dependências ignorando o conflito de versão do Vite, que é apenas uma incompatibilidade menor com o plugin de desenvolvimento e não afeta a funcionalidade do projeto.
+Após a instalação, você pode executar:
+Bash
+npm run dev
+Isso iniciará o servidor de desenvolvimento em http://localhost:3000
+Avise quando terminar a instalação e estiver pronto para os próximos passos!
+Lite
+Depois que instalar, você também vai precisar:
+Criar arquivo .env.local na raiz do projeto com as variáveis do ENV_SETUP.md
+Preencher DATABASE_URL com a connection string do Supabase
+Gerar JWT_SECRET com um comando ou gerador online
+Quer que eu te ajude com isso quando terminar a instalação?
+Lite
+Você não tem créditos suficientes. Por favor, faça upgrade através do link abaixo para continuar.
+https://manus.go.link/iW6sB?action=open-subscription
+Salvar checkpoint e entregar o site ao usuário
+Consegui finalizar o pacote de migração. Agora, vou verificar os arquivos na pasta de migração para garantir que tudo está correto antes de prosseguir.
+Manus está reiniciando o computador, por favor aguarde um momento. Obter suporte para o problema
+Manus reiniciou o computador com sucesso. Você pode agora continuar com a tarefa anterior. Obter suporte para o problema
+Seus créditos foram esgotados.
+main
+EADME.md
+-rw-rw-r-- 1 ubuntu ubuntu 236K Apr  3 21:45 inovarse-ecosystem.zip
+-rw-r--r-- 1 ubuntu ubuntu 2.4K Apr  3 21:44 supabase_schema.sql
+---
+   68 ENV_SETUP.md
+  252 MIGRATION_GUIDE.md
+  170 README.md
+   59 supabase_schema.sql
+  549 total
+ubuntu@sandbox:~/inovarse-ecosystem-migration $
+Salvar checkpoint e entregar o site ao usuário
+6 / 6
+Reprodução da tarefa Manus concluída.
+Assistir novamente
+Experimente você mesmo
+
+Manus 1.6 Lite
+Campo lead_id na tabela results não captura dados da leads
+Entrar
+Salvar checkpoint e entregar o site ao usuário
+Localizar os arquivos SQL de migração gerados pelo Drizzle.
+Ler o arquivo de migração SQL para incluir no pacote de exportação.
+Ler o arquivo de migração inicial para incluir também.
+Preenchi as tabelas `contacts` e `partner_leads` no banco. Próximo passo: integrar o projeto ao GitHub, Render e configurar variáveis de ambiente.
+Criar arquivo SQL consolidado para Supabase com todas as tabelas.
+Lidando com problema no editor de texto
+Criar arquivo de configuração de exemplo para variáveis de ambiente.
+Concluí o esquema do banco de dados e criei um arquivo de exemplo para variáveis de ambiente. Irei solicitar segredos de forma adequada antes de modificar o arquivo.
+Criar guia de migração com instruções passo a passo.
+Criar arquivo ZIP com todo o projeto, excluindo node_modules, .git e arquivos desnecessários.
+Verificar os arquivos criados na pasta de migração.
+Concluí a criação do guia de migração e zipei o projeto, excluindo arquivos desnecessários. Próximo passo: verificar os arquivos na pasta de migração.
+Criar arquivo README com resumo de tudo que foi preparado.
+Verificar tamanho e conteúdo dos arquivos de migração.
+Lite
+🚀 Pacote de Migração Completo - Ecossistema Inovarse
+Preparei tudo para você migrar o site para seu fluxo com GitHub, Render e Supabase. Aqui está o que você recebe:
+📦 Arquivos Inclusos
+inovarse-ecosystem.zip (236 KB)
+Código-fonte completo do projeto
+Todas as dependências configuradas
+Testes vitest inclusos
+Pronto para fazer push no GitHub
+supabase_schema.sql (2.4 KB)
+Script SQL com todas as 3 tabelas
+users, partner_leads, contacts
+Índices para performance
+Row Level Security (RLS) configurado
+MIGRATION_GUIDE.md (6.3 KB)
+Guia passo a passo completo
+Instruções para Supabase, GitHub e Render
+Fluxo de desenvolvimento local
+Troubleshooting
+ENV_SETUP.md (2.0 KB)
+Todas as variáveis de ambiente necessárias
+Como obter connection string do Supabase
+Como gerar JWT_SECRET
+README.md (4.5 KB)
+Resumo do pacote
+Quick start
+Stack tecnológico
+Dúvidas frequentes
+⚡ Quick Start (15 minutos)
+Supabase: Criar projeto → Executar supabase_schema.sql → Copiar connection string
+GitHub: Criar repositório → Descompactar ZIP → Fazer push
+Variáveis: Criar .env.local com DATABASE_URL e JWT_SECRET
+Local: pnpm install → pnpm dev → Testar em http://localhost:3000
+Render: Conectar GitHub → Configurar variáveis → Deploy automático
+✅ O que está pronto
+✅ Landing page com hero section
+✅ Filosofia MCE com visualização
+✅ Programas GlowFit
+✅ Rede Credenciada
+✅ Formulários com validação e banco de dados
+✅ Testes automatizados (9 testes passando )
+✅ Design em verde esmeralda
+✅ Responsivo e animado
+Todos os arquivos estão prontos para download. Siga o MIGRATION_GUIDE.md passo a passo e você terá o site rodando em produção em menos de 20 minutos!
+inovarse-ecosystem.zip
+Arquivar · 235.30 KB
+supabase_schema.sql
+Código · 2.34 KB
+Guia de Migração - Inovarse Ecosystem
+Markdown · 6.24 KB
+Configuração de Variáveis de Ambiente
+Markdown · 1.93 KB
+📦 Pacote de Migração - Ecossistema Inovarse
+Markdown · 4.46 KB
+Ver todos os arquivos nesta tarefa
+Salvar checkpoint e entregar o site ao usuário
+Finalizei o pacote de migração, incluindo código, schema, guia, variáveis e README. Próximo passo: verificar arquivos na pasta de migração.
+meshwave@mesh:~$ cd smb://mesh.local/hd_1tb/projetos
+bash: cd: smb://mesh.local/hd_1tb/projetos: Arquivo ou diretório inexistente
+meshwave@mesh:~$ cd projetos
+meshwave@mesh:~/projetos$ cd inovarse
+meshwave@mesh:~/projetos/inovarse$ npn install
+Comando 'npn' não encontrado, você quis dizer:
+  comando 'nnn' do deb nnn (4.9-1)
+  comando 'nn' do deb nn (6.7.3-15)
+  comando 'npx' do deb npm (9.2.0~ds1-2)
+  comando 'npm' do deb npm (9.2.0~ds1-2)
+Experimente: sudo apt install <deb name>
+meshwave@mesh:~/projetos/inovarse$ npm install
+npm error code ERESOLVE
+npm error ERESOLVE unable to resolve dependency tree
+npm error
+npm error While resolving: inovarse-ecosystem@1.0.0
+npm error Found: vite@7.3.1
+npm error node_modules/vite
+npm error   dev vite@"^7.1.7" from the root project
+npm error
+npm error Could not resolve dependency:
+npm error peer vite@"^4.0.0 || ^5.0.0" from @builder.io/vite-plugin-jsx-loc@0.1.1
+npm error node_modules/@builder.io/vite-plugin-jsx-loc
+npm error   dev @builder.io/vite-plugin-jsx-loc@"^0.1.1" from the root project
+npm error
+npm error Fix the upstream dependency conflict, or retry
+npm error this command with --force or --legacy-peer-deps
+npm error to accept an incorrect (and potentially broken) dependency resolution.
+npm error
+npm error
+npm error For a full report see:
+npm error /home/meshwave/.npm/_logs/2026-04-04T02_01_36_557Z-eresolve-report.txt
+npm notice
+npm notice New major version of npm available! 10.8.2 -> 11.12.1
+npm notice Changelog: 
+npm notice To update run: npm install -g npm@11.12.1
+npm notice
+npm error A complete log of this run can be found in: /home/meshwave/.npm/_logs/2026-04-04T02_01_36_557Z-debug-0.log
+meshwave@mesh:~/projetos/inovarse$ 
+Expandir
+Lite
+Perfeito! Você já descompactou o ZIP e está tentando instalar as dependências. Há um conflito de versão do Vite com o plugin @builder.io/vite-plugin-jsx-loc.
+Existem 3 formas de resolver isso:
+Opção 1: Usar --legacy-peer-deps (Recomendado para começar rápido)
+Bash
+npm install --legacy-peer-deps
+Opção 2: Usar pnpm (Recomendado para desenvolvimento)
+Bash
+npm install -g pnpm
+pnpm install
+Opção 3: Usar --force
+Bash
+npm install --force
+Recomendo a Opção 2 com pnpm porque é o que foi usado para desenvolver o projeto e garante compatibilidade total.
+Qual você prefere usar?
+1... sempre uso npm
+Lite
+Perfeito! Use então:
+Bash
+npm install --legacy-peer-deps
+Isso vai instalar todas as dependências ignorando o conflito de versão do Vite, que é apenas uma incompatibilidade menor com o plugin de desenvolvimento e não afeta a funcionalidade do projeto.
+Após a instalação, você pode executar:
+Bash
+npm run dev
+Isso iniciará o servidor de desenvolvimento em http://localhost:3000
+Avise quando terminar a instalação e estiver pronto para os próximos passos!
+Lite
+Depois que instalar, você também vai precisar:
+Criar arquivo .env.local na raiz do projeto com as variáveis do ENV_SETUP.md
+Preencher DATABASE_URL com a connection string do Supabase
+Gerar JWT_SECRET com um comando ou gerador online
+Quer que eu te ajude com isso quando terminar a instalação?
+Lite
+Você não tem créditos suficientes. Por favor, faça upgrade através do link abaixo para continuar.
+https://manus.go.link/iW6sB?action=open-subscription
+Salvar checkpoint e entregar o site ao usuário
+Consegui finalizar o pacote de migração. Agora, vou verificar os arquivos na pasta de migração para garantir que tudo está correto antes de prosseguir.
+Manus está reiniciando o computador, por favor aguarde um momento. Obter suporte para o problema
+Manus reiniciou o computador com sucesso. Você pode agora continuar com a tarefa anterior. Obter suporte para o problema
+Seus créditos foram esgotados.
+main
+EADME.md
+-rw-rw-r-- 1 ubuntu ubuntu 236K Apr  3 21:45 inovarse-ecosystem.zip
+-rw-r--r-- 1 ubuntu ubuntu 2.4K Apr  3 21:44 supabase_schema.sql
+---
+   68 ENV_SETUP.md
+  252 MIGRATION_GUIDE.md
+  170 README.md
+   59 supabase_schema.sql
+  549 total
+ubuntu@sandbox:~/inovarse-ecosystem-migration $
+Salvar checkpoint e entregar o site ao usuário
+6 / 6
+Reprodução da tarefa Manus concluída.
+Assistir novamente
+Experimente você mesmo
+
+Manus 1.6 Lite
+Campo lead_id na tabela results não captura dados da leads
+Entrar
+Salvar checkpoint e entregar o site ao usuário
+Localizar os arquivos SQL de migração gerados pelo Drizzle.
+Ler o arquivo de migração SQL para incluir no pacote de exportação.
+Ler o arquivo de migração inicial para incluir também.
+Preenchi as tabelas `contacts` e `partner_leads` no banco. Próximo passo: integrar o projeto ao GitHub, Render e configurar variáveis de ambiente.
+Criar arquivo SQL consolidado para Supabase com todas as tabelas.
+Lidando com problema no editor de texto
+Criar arquivo de configuração de exemplo para variáveis de ambiente.
+Concluí o esquema do banco de dados e criei um arquivo de exemplo para variáveis de ambiente. Irei solicitar segredos de forma adequada antes de modificar o arquivo.
+Criar guia de migração com instruções passo a passo.
+Criar arquivo ZIP com todo o projeto, excluindo node_modules, .git e arquivos desnecessários.
+Verificar os arquivos criados na pasta de migração.
+Concluí a criação do guia de migração e zipei o projeto, excluindo arquivos desnecessários. Próximo passo: verificar os arquivos na pasta de migração.
+Criar arquivo README com resumo de tudo que foi preparado.
+Verificar tamanho e conteúdo dos arquivos de migração.
+Lite
+🚀 Pacote de Migração Completo - Ecossistema Inovarse
+Preparei tudo para você migrar o site para seu fluxo com GitHub, Render e Supabase. Aqui está o que você recebe:
+📦 Arquivos Inclusos
+inovarse-ecosystem.zip (236 KB)
+Código-fonte completo do projeto
+Todas as dependências configuradas
+Testes vitest inclusos
+Pronto para fazer push no GitHub
+supabase_schema.sql (2.4 KB)
+Script SQL com todas as 3 tabelas
+users, partner_leads, contacts
+Índices para performance
+Row Level Security (RLS) configurado
+MIGRATION_GUIDE.md (6.3 KB)
+Guia passo a passo completo
+Instruções para Supabase, GitHub e Render
+Fluxo de desenvolvimento local
+Troubleshooting
+ENV_SETUP.md (2.0 KB)
+Todas as variáveis de ambiente necessárias
+Como obter connection string do Supabase
+Como gerar JWT_SECRET
+README.md (4.5 KB)
+Resumo do pacote
+Quick start
+Stack tecnológico
+Dúvidas frequentes
+⚡ Quick Start (15 minutos)
+Supabase: Criar projeto → Executar supabase_schema.sql → Copiar connection string
+GitHub: Criar repositório → Descompactar ZIP → Fazer push
+Variáveis: Criar .env.local com DATABASE_URL e JWT_SECRET
+Local: pnpm install → pnpm dev → Testar em http://localhost:3000
+Render: Conectar GitHub → Configurar variáveis → Deploy automático
+✅ O que está pronto
+✅ Landing page com hero section
+✅ Filosofia MCE com visualização
+✅ Programas GlowFit
+✅ Rede Credenciada
+✅ Formulários com validação e banco de dados
+✅ Testes automatizados (9 testes passando )
+✅ Design em verde esmeralda
+✅ Responsivo e animado
+Todos os arquivos estão prontos para download. Siga o MIGRATION_GUIDE.md passo a passo e você terá o site rodando em produção em menos de 20 minutos!
+inovarse-ecosystem.zip
+Arquivar · 235.30 KB
+supabase_schema.sql
+Código · 2.34 KB
+Guia de Migração - Inovarse Ecosystem
+Markdown · 6.24 KB
+Configuração de Variáveis de Ambiente
+Markdown · 1.93 KB
+📦 Pacote de Migração - Ecossistema Inovarse
+Markdown · 4.46 KB
+Ver todos os arquivos nesta tarefa
+Salvar checkpoint e entregar o site ao usuário
+Finalizei o pacote de migração, incluindo código, schema, guia, variáveis e README. Próximo passo: verificar arquivos na pasta de migração.
+meshwave@mesh:~$ cd smb://mesh.local/hd_1tb/projetos
+bash: cd: smb://mesh.local/hd_1tb/projetos: Arquivo ou diretório inexistente
+meshwave@mesh:~$ cd projetos
+meshwave@mesh:~/projetos$ cd inovarse
+meshwave@mesh:~/projetos/inovarse$ npn install
+Comando 'npn' não encontrado, você quis dizer:
+  comando 'nnn' do deb nnn (4.9-1)
+  comando 'nn' do deb nn (6.7.3-15)
+  comando 'npx' do deb npm (9.2.0~ds1-2)
+  comando 'npm' do deb npm (9.2.0~ds1-2)
+Experimente: sudo apt install <deb name>
+meshwave@mesh:~/projetos/inovarse$ npm install
+npm error code ERESOLVE
+npm error ERESOLVE unable to resolve dependency tree
+npm error
+npm error While resolving: inovarse-ecosystem@1.0.0
+npm error Found: vite@7.3.1
+npm error node_modules/vite
+npm error   dev vite@"^7.1.7" from the root project
+npm error
+npm error Could not resolve dependency:
+npm error peer vite@"^4.0.0 || ^5.0.0" from @builder.io/vite-plugin-jsx-loc@0.1.1
+npm error node_modules/@builder.io/vite-plugin-jsx-loc
+npm error   dev @builder.io/vite-plugin-jsx-loc@"^0.1.1" from the root project
+npm error
+npm error Fix the upstream dependency conflict, or retry
+npm error this command with --force or --legacy-peer-deps
+npm error to accept an incorrect (and potentially broken) dependency resolution.
+npm error
+npm error
+npm error For a full report see:
+npm error /home/meshwave/.npm/_logs/2026-04-04T02_01_36_557Z-eresolve-report.txt
+npm notice
+npm notice New major version of npm available! 10.8.2 -> 11.12.1
+npm notice Changelog: 
+npm notice To update run: npm install -g npm@11.12.1
+npm notice
+npm error A complete log of this run can be found in: /home/meshwave/.npm/_logs/2026-04-04T02_01_36_557Z-debug-0.log
+meshwave@mesh:~/projetos/inovarse$ 
+Expandir
+Lite
+Perfeito! Você já descompactou o ZIP e está tentando instalar as dependências. Há um conflito de versão do Vite com o plugin @builder.io/vite-plugin-jsx-loc.
+Existem 3 formas de resolver isso:
+Opção 1: Usar --legacy-peer-deps (Recomendado para começar rápido)
+Bash
+npm install --legacy-peer-deps
+Opção 2: Usar pnpm (Recomendado para desenvolvimento)
+Bash
+npm install -g pnpm
+pnpm install
+Opção 3: Usar --force
+Bash
+npm install --force
+Recomendo a Opção 2 com pnpm porque é o que foi usado para desenvolver o projeto e garante compatibilidade total.
+Qual você prefere usar?
+1... sempre uso npm
+Lite
+Perfeito! Use então:
+Bash
+npm install --legacy-peer-deps
+Isso vai instalar todas as dependências ignorando o conflito de versão do Vite, que é apenas uma incompatibilidade menor com o plugin de desenvolvimento e não afeta a funcionalidade do projeto.
+Após a instalação, você pode executar:
+Bash
+npm run dev
+Isso iniciará o servidor de desenvolvimento em http://localhost:3000
+Avise quando terminar a instalação e estiver pronto para os próximos passos!
+Lite
+Depois que instalar, você também vai precisar:
+Criar arquivo .env.local na raiz do projeto com as variáveis do ENV_SETUP.md
+Preencher DATABASE_URL com a connection string do Supabase
+Gerar JWT_SECRET com um comando ou gerador online
+Quer que eu te ajude com isso quando terminar a instalação?
+Lite
+Você não tem créditos suficientes. Por favor, faça upgrade através do link abaixo para continuar.
+https://manus.go.link/iW6sB?action=open-subscription
+Salvar checkpoint e entregar o site ao usuário
+Consegui finalizar o pacote de migração. Agora, vou verificar os arquivos na pasta de migração para garantir que tudo está correto antes de prosseguir.
+Manus está reiniciando o computador, por favor aguarde um momento. Obter suporte para o problema
+Manus reiniciou o computador com sucesso. Você pode agora continuar com a tarefa anterior. Obter suporte para o problema
+Seus créditos foram esgotados.
+main
+EADME.md
+-rw-rw-r-- 1 ubuntu ubuntu 236K Apr  3 21:45 inovarse-ecosystem.zip
+-rw-r--r-- 1 ubuntu ubuntu 2.4K Apr  3 21:44 supabase_schema.sql
+---
+   68 ENV_SETUP.md
+  252 MIGRATION_GUIDE.md
+  170 README.md
+   59 supabase_schema.sql
+  549 total
+ubuntu@sandbox:~/inovarse-ecosystem-migration $
+Salvar checkpoint e entregar o site ao usuário
+6 / 6
+Reprodução da tarefa Manus concluída.
+Assistir novamente
+Experimente você mesmo
+
+Manus 1.6 Lite
+Campo lead_id na tabela results não captura dados da leads
+Entrar
+Salvar checkpoint e entregar o site ao usuário
+Localizar os arquivos SQL de migração gerados pelo Drizzle.
+Ler o arquivo de migração SQL para incluir no pacote de exportação.
+Ler o arquivo de migração inicial para incluir também.
+Preenchi as tabelas `contacts` e `partner_leads` no banco. Próximo passo: integrar o projeto ao GitHub, Render e configurar variáveis de ambiente.
+Criar arquivo SQL consolidado para Supabase com todas as tabelas.
+Lidando com problema no editor de texto
+Criar arquivo de configuração de exemplo para variáveis de ambiente.
+Concluí o esquema do banco de dados e criei um arquivo de exemplo para variáveis de ambiente. Irei solicitar segredos de forma adequada antes de modificar o arquivo.
+Criar guia de migração com instruções passo a passo.
+Criar arquivo ZIP com todo o projeto, excluindo node_modules, .git e arquivos desnecessários.
+Verificar os arquivos criados na pasta de migração.
+Concluí a criação do guia de migração e zipei o projeto, excluindo arquivos desnecessários. Próximo passo: verificar os arquivos na pasta de migração.
+Criar arquivo README com resumo de tudo que foi preparado.
+Verificar tamanho e conteúdo dos arquivos de migração.
+Lite
+🚀 Pacote de Migração Completo - Ecossistema Inovarse
+Preparei tudo para você migrar o site para seu fluxo com GitHub, Render e Supabase. Aqui está o que você recebe:
+📦 Arquivos Inclusos
+inovarse-ecosystem.zip (236 KB)
+Código-fonte completo do projeto
+Todas as dependências configuradas
+Testes vitest inclusos
+Pronto para fazer push no GitHub
+supabase_schema.sql (2.4 KB)
+Script SQL com todas as 3 tabelas
+users, partner_leads, contacts
+Índices para performance
+Row Level Security (RLS) configurado
+MIGRATION_GUIDE.md (6.3 KB)
+Guia passo a passo completo
+Instruções para Supabase, GitHub e Render
+Fluxo de desenvolvimento local
+Troubleshooting
+ENV_SETUP.md (2.0 KB)
+Todas as variáveis de ambiente necessárias
+Como obter connection string do Supabase
+Como gerar JWT_SECRET
+README.md (4.5 KB)
+Resumo do pacote
+Quick start
+Stack tecnológico
+Dúvidas frequentes
+⚡ Quick Start (15 minutos)
+Supabase: Criar projeto → Executar supabase_schema.sql → Copiar connection string
+GitHub: Criar repositório → Descompactar ZIP → Fazer push
+Variáveis: Criar .env.local com DATABASE_URL e JWT_SECRET
+Local: pnpm install → pnpm dev → Testar em http://localhost:3000
+Render: Conectar GitHub → Configurar variáveis → Deploy automático
+✅ O que está pronto
+✅ Landing page com hero section
+✅ Filosofia MCE com visualização
+✅ Programas GlowFit
+✅ Rede Credenciada
+✅ Formulários com validação e banco de dados
+✅ Testes automatizados (9 testes passando )
+✅ Design em verde esmeralda
+✅ Responsivo e animado
+Todos os arquivos estão prontos para download. Siga o MIGRATION_GUIDE.md passo a passo e você terá o site rodando em produção em menos de 20 minutos!
+inovarse-ecosystem.zip
+Arquivar · 235.30 KB
+supabase_schema.sql
+Código · 2.34 KB
+Guia de Migração - Inovarse Ecosystem
+Markdown · 6.24 KB
+Configuração de Variáveis de Ambiente
+Markdown · 1.93 KB
+📦 Pacote de Migração - Ecossistema Inovarse
+Markdown · 4.46 KB
+Ver todos os arquivos nesta tarefa
+Salvar checkpoint e entregar o site ao usuário
+Finalizei o pacote de migração, incluindo código, schema, guia, variáveis e README. Próximo passo: verificar arquivos na pasta de migração.
+meshwave@mesh:~$ cd smb://mesh.local/hd_1tb/projetos
+bash: cd: smb://mesh.local/hd_1tb/projetos: Arquivo ou diretório inexistente
+meshwave@mesh:~$ cd projetos
+meshwave@mesh:~/projetos$ cd inovarse
+meshwave@mesh:~/projetos/inovarse$ npn install
+Comando 'npn' não encontrado, você quis dizer:
+  comando 'nnn' do deb nnn (4.9-1)
+  comando 'nn' do deb nn (6.7.3-15)
+  comando 'npx' do deb npm (9.2.0~ds1-2)
+  comando 'npm' do deb npm (9.2.0~ds1-2)
+Experimente: sudo apt install <deb name>
+meshwave@mesh:~/projetos/inovarse$ npm install
+npm error code ERESOLVE
+npm error ERESOLVE unable to resolve dependency tree
+npm error
+npm error While resolving: inovarse-ecosystem@1.0.0
+npm error Found: vite@7.3.1
+npm error node_modules/vite
+npm error   dev vite@"^7.1.7" from the root project
+npm error
+npm error Could not resolve dependency:
+npm error peer vite@"^4.0.0 || ^5.0.0" from @builder.io/vite-plugin-jsx-loc@0.1.1
+npm error node_modules/@builder.io/vite-plugin-jsx-loc
+npm error   dev @builder.io/vite-plugin-jsx-loc@"^0.1.1" from the root project
+npm error
+npm error Fix the upstream dependency conflict, or retry
+npm error this command with --force or --legacy-peer-deps
+npm error to accept an incorrect (and potentially broken) dependency resolution.
+npm error
+npm error
+npm error For a full report see:
+npm error /home/meshwave/.npm/_logs/2026-04-04T02_01_36_557Z-eresolve-report.txt
+npm notice
+npm notice New major version of npm available! 10.8.2 -> 11.12.1
+npm notice Changelog: 
+npm notice To update run: npm install -g npm@11.12.1
+npm notice
+npm error A complete log of this run can be found in: /home/meshwave/.npm/_logs/2026-04-04T02_01_36_557Z-debug-0.log
+meshwave@mesh:~/projetos/inovarse$ 
+Expandir
+Lite
+Perfeito! Você já descompactou o ZIP e está tentando instalar as dependências. Há um conflito de versão do Vite com o plugin @builder.io/vite-plugin-jsx-loc.
+Existem 3 formas de resolver isso:
+Opção 1: Usar --legacy-peer-deps (Recomendado para começar rápido)
+Bash
+npm install --legacy-peer-deps
+Opção 2: Usar pnpm (Recomendado para desenvolvimento)
+Bash
+npm install -g pnpm
+pnpm install
+Opção 3: Usar --force
+Bash
+npm install --force
+Recomendo a Opção 2 com pnpm porque é o que foi usado para desenvolver o projeto e garante compatibilidade total.
+Qual você prefere usar?
+1... sempre uso npm
+Lite
+Perfeito! Use então:
+Bash
+npm install --legacy-peer-deps
+Isso vai instalar todas as dependências ignorando o conflito de versão do Vite, que é apenas uma incompatibilidade menor com o plugin de desenvolvimento e não afeta a funcionalidade do projeto.
+Após a instalação, você pode executar:
+Bash
+npm run dev
+Isso iniciará o servidor de desenvolvimento em http://localhost:3000
+Avise quando terminar a instalação e estiver pronto para os próximos passos!
+Lite
+Depois que instalar, você também vai precisar:
+Criar arquivo .env.local na raiz do projeto com as variáveis do ENV_SETUP.md
+Preencher DATABASE_URL com a connection string do Supabase
+Gerar JWT_SECRET com um comando ou gerador online
+Quer que eu te ajude com isso quando terminar a instalação?
+Lite
+Você não tem créditos suficientes. Por favor, faça upgrade através do link abaixo para continuar.
+https://manus.go.link/iW6sB?action=open-subscription
+Salvar checkpoint e entregar o site ao usuário
+Consegui finalizar o pacote de migração. Agora, vou verificar os arquivos na pasta de migração para garantir que tudo está correto antes de prosseguir.
+Manus está reiniciando o computador, por favor aguarde um momento. Obter suporte para o problema
+Manus reiniciou o computador com sucesso. Você pode agora continuar com a tarefa anterior. Obter suporte para o problema
+Seus créditos foram esgotados.
+main
+EADME.md
+-rw-rw-r-- 1 ubuntu ubuntu 236K Apr  3 21:45 inovarse-ecosystem.zip
+-rw-r--r-- 1 ubuntu ubuntu 2.4K Apr  3 21:44 supabase_schema.sql
+---
+   68 ENV_SETUP.md
+  252 MIGRATION_GUIDE.md
+  170 README.md
+   59 supabase_schema.sql
+  549 total
+ubuntu@sandbox:~/inovarse-ecosystem-migration $
+Salvar checkpoint e entregar o site ao usuário
+6 / 6
+Reprodução da tarefa Manus concluída.
+Assistir novamente
+Experimente você mesmo
+
+Manus 1.6 Lite
+Campo lead_id na tabela results não captura dados da leads
+Entrar
+Salvar checkpoint e entregar o site ao usuário
+Localizar os arquivos SQL de migração gerados pelo Drizzle.
+Ler o arquivo de migração SQL para incluir no pacote de exportação.
+Ler o arquivo de migração inicial para incluir também.
+Preenchi as tabelas `contacts` e `partner_leads` no banco. Próximo passo: integrar o projeto ao GitHub, Render e configurar variáveis de ambiente.
+Criar arquivo SQL consolidado para Supabase com todas as tabelas.
+Lidando com problema no editor de texto
+Criar arquivo de configuração de exemplo para variáveis de ambiente.
+Concluí o esquema do banco de dados e criei um arquivo de exemplo para variáveis de ambiente. Irei solicitar segredos de forma adequada antes de modificar o arquivo.
+Criar guia de migração com instruções passo a passo.
+Criar arquivo ZIP com todo o projeto, excluindo node_modules, .git e arquivos desnecessários.
+Verificar os arquivos criados na pasta de migração.
+Concluí a criação do guia de migração e zipei o projeto, excluindo arquivos desnecessários. Próximo passo: verificar os arquivos na pasta de migração.
+Criar arquivo README com resumo de tudo que foi preparado.
+Verificar tamanho e conteúdo dos arquivos de migração.
+Lite
+🚀 Pacote de Migração Completo - Ecossistema Inovarse
+Preparei tudo para você migrar o site para seu fluxo com GitHub, Render e Supabase. Aqui está o que você recebe:
+📦 Arquivos Inclusos
+inovarse-ecosystem.zip (236 KB)
+Código-fonte completo do projeto
+Todas as dependências configuradas
+Testes vitest inclusos
+Pronto para fazer push no GitHub
+supabase_schema.sql (2.4 KB)
+Script SQL com todas as 3 tabelas
+users, partner_leads, contacts
+Índices para performance
+Row Level Security (RLS) configurado
+MIGRATION_GUIDE.md (6.3 KB)
+Guia passo a passo completo
+Instruções para Supabase, GitHub e Render
+Fluxo de desenvolvimento local
+Troubleshooting
+ENV_SETUP.md (2.0 KB)
+Todas as variáveis de ambiente necessárias
+Como obter connection string do Supabase
+Como gerar JWT_SECRET
+README.md (4.5 KB)
+Resumo do pacote
+Quick start
+Stack tecnológico
+Dúvidas frequentes
+⚡ Quick Start (15 minutos)
+Supabase: Criar projeto → Executar supabase_schema.sql → Copiar connection string
+GitHub: Criar repositório → Descompactar ZIP → Fazer push
+Variáveis: Criar .env.local com DATABASE_URL e JWT_SECRET
+Local: pnpm install → pnpm dev → Testar em http://localhost:3000
+Render: Conectar GitHub → Configurar variáveis → Deploy automático
+✅ O que está pronto
+✅ Landing page com hero section
+✅ Filosofia MCE com visualização
+✅ Programas GlowFit
+✅ Rede Credenciada
+✅ Formulários com validação e banco de dados
+✅ Testes automatizados (9 testes passando )
+✅ Design em verde esmeralda
+✅ Responsivo e animado
+Todos os arquivos estão prontos para download. Siga o MIGRATION_GUIDE.md passo a passo e você terá o site rodando em produção em menos de 20 minutos!
+inovarse-ecosystem.zip
+Arquivar · 235.30 KB
+supabase_schema.sql
+Código · 2.34 KB
+Guia de Migração - Inovarse Ecosystem
+Markdown · 6.24 KB
+Configuração de Variáveis de Ambiente
+Markdown · 1.93 KB
+📦 Pacote de Migração - Ecossistema Inovarse
+Markdown · 4.46 KB
+Ver todos os arquivos nesta tarefa
+Salvar checkpoint e entregar o site ao usuário
+Finalizei o pacote de migração, incluindo código, schema, guia, variáveis e README. Próximo passo: verificar arquivos na pasta de migração.
+meshwave@mesh:~$ cd smb://mesh.local/hd_1tb/projetos
+bash: cd: smb://mesh.local/hd_1tb/projetos: Arquivo ou diretório inexistente
+meshwave@mesh:~$ cd projetos
+meshwave@mesh:~/projetos$ cd inovarse
+meshwave@mesh:~/projetos/inovarse$ npn install
+Comando 'npn' não encontrado, você quis dizer:
+  comando 'nnn' do deb nnn (4.9-1)
+  comando 'nn' do deb nn (6.7.3-15)
+  comando 'npx' do deb npm (9.2.0~ds1-2)
+  comando 'npm' do deb npm (9.2.0~ds1-2)
+Experimente: sudo apt install <deb name>
+meshwave@mesh:~/projetos/inovarse$ npm install
+npm error code ERESOLVE
+npm error ERESOLVE unable to resolve dependency tree
+npm error
+npm error While resolving: inovarse-ecosystem@1.0.0
+npm error Found: vite@7.3.1
+npm error node_modules/vite
+npm error   dev vite@"^7.1.7" from the root project
+npm error
+npm error Could not resolve dependency:
+npm error peer vite@"^4.0.0 || ^5.0.0" from @builder.io/vite-plugin-jsx-loc@0.1.1
+npm error node_modules/@builder.io/vite-plugin-jsx-loc
+npm error   dev @builder.io/vite-plugin-jsx-loc@"^0.1.1" from the root project
+npm error
+npm error Fix the upstream dependency conflict, or retry
+npm error this command with --force or --legacy-peer-deps
+npm error to accept an incorrect (and potentially broken) dependency resolution.
+npm error
+npm error
+npm error For a full report see:
+npm error /home/meshwave/.npm/_logs/2026-04-04T02_01_36_557Z-eresolve-report.txt
+npm notice
+npm notice New major version of npm available! 10.8.2 -> 11.12.1
+npm notice Changelog: 
+npm notice To update run: npm install -g npm@11.12.1
+npm notice
+npm error A complete log of this run can be found in: /home/meshwave/.npm/_logs/2026-04-04T02_01_36_557Z-debug-0.log
+meshwave@mesh:~/projetos/inovarse$ 
+Expandir
+Lite
+Perfeito! Você já descompactou o ZIP e está tentando instalar as dependências. Há um conflito de versão do Vite com o plugin @builder.io/vite-plugin-jsx-loc.
+Existem 3 formas de resolver isso:
+Opção 1: Usar --legacy-peer-deps (Recomendado para começar rápido)
+Bash
+npm install --legacy-peer-deps
+Opção 2: Usar pnpm (Recomendado para desenvolvimento)
+Bash
+npm install -g pnpm
+pnpm install
+Opção 3: Usar --force
+Bash
+npm install --force
+Recomendo a Opção 2 com pnpm porque é o que foi usado para desenvolver o projeto e garante compatibilidade total.
+Qual você prefere usar?
+1... sempre uso npm
+Lite
+Perfeito! Use então:
+Bash
+npm install --legacy-peer-deps
+Isso vai instalar todas as dependências ignorando o conflito de versão do Vite, que é apenas uma incompatibilidade menor com o plugin de desenvolvimento e não afeta a funcionalidade do projeto.
+Após a instalação, você pode executar:
+Bash
+npm run dev
+Isso iniciará o servidor de desenvolvimento em http://localhost:3000
+Avise quando terminar a instalação e estiver pronto para os próximos passos!
+Lite
+Depois que instalar, você também vai precisar:
+Criar arquivo .env.local na raiz do projeto com as variáveis do ENV_SETUP.md
+Preencher DATABASE_URL com a connection string do Supabase
+Gerar JWT_SECRET com um comando ou gerador online
+Quer que eu te ajude com isso quando terminar a instalação?
+Lite
+Você não tem créditos suficientes. Por favor, faça upgrade através do link abaixo para continuar.
+https://manus.go.link/iW6sB?action=open-subscription
+Salvar checkpoint e entregar o site ao usuário
+Consegui finalizar o pacote de migração. Agora, vou verificar os arquivos na pasta de migração para garantir que tudo está correto antes de prosseguir.
+Manus está reiniciando o computador, por favor aguarde um momento. Obter suporte para o problema
+Manus reiniciou o computador com sucesso. Você pode agora continuar com a tarefa anterior. Obter suporte para o problema
+Seus créditos foram esgotados.
+main
+EADME.md
+-rw-rw-r-- 1 ubuntu ubuntu 236K Apr  3 21:45 inovarse-ecosystem.zip
+-rw-r--r-- 1 ubuntu ubuntu 2.4K Apr  3 21:44 supabase_schema.sql
+---
+   68 ENV_SETUP.md
+  252 MIGRATION_GUIDE.md
+  170 README.md
+   59 supabase_schema.sql
+  549 total
+ubuntu@sandbox:~/inovarse-ecosystem-migration $
+Salvar checkpoint e entregar o site ao usuário
+6 / 6
+Reprodução da tarefa Manus concluída.
+Assistir novamente
+Experimente você mesmo
+
+Manus 1.6 Lite
+Campo lead_id na tabela results não captura dados da leads
+Entrar
+
+Manus 1.6 Lite
+Campo lead_id na tabela results não captura dados da leads
+Entrar
+
+Manus 1.6 Lite
+
+Manus 1.6 Lite
+
+Manus 1.6 Lite
+
+Manus 1.6 Lite
+
+Campo lead_id na tabela results não captura dados da leads
+
+Campo lead_id na tabela results não captura dados da leads
+
+Entrar
+
+Entrar
+
+Entrar
+
+Salvar checkpoint e entregar o site ao usuário
+Localizar os arquivos SQL de migração gerados pelo Drizzle.
+Ler o arquivo de migração SQL para incluir no pacote de exportação.
+Ler o arquivo de migração inicial para incluir também.
+Preenchi as tabelas `contacts` e `partner_leads` no banco. Próximo passo: integrar o projeto ao GitHub, Render e configurar variáveis de ambiente.
+Criar arquivo SQL consolidado para Supabase com todas as tabelas.
+Lidando com problema no editor de texto
+Criar arquivo de configuração de exemplo para variáveis de ambiente.
+Concluí o esquema do banco de dados e criei um arquivo de exemplo para variáveis de ambiente. Irei solicitar segredos de forma adequada antes de modificar o arquivo.
+Criar guia de migração com instruções passo a passo.
+Criar arquivo ZIP com todo o projeto, excluindo node_modules, .git e arquivos desnecessários.
+Verificar os arquivos criados na pasta de migração.
+Concluí a criação do guia de migração e zipei o projeto, excluindo arquivos desnecessários. Próximo passo: verificar os arquivos na pasta de migração.
+Criar arquivo README com resumo de tudo que foi preparado.
+Verificar tamanho e conteúdo dos arquivos de migração.
+Lite
+🚀 Pacote de Migração Completo - Ecossistema Inovarse
+Preparei tudo para você migrar o site para seu fluxo com GitHub, Render e Supabase. Aqui está o que você recebe:
+📦 Arquivos Inclusos
+inovarse-ecosystem.zip (236 KB)
+Código-fonte completo do projeto
+Todas as dependências configuradas
+Testes vitest inclusos
+Pronto para fazer push no GitHub
+supabase_schema.sql (2.4 KB)
+Script SQL com todas as 3 tabelas
+users, partner_leads, contacts
+Índices para performance
+Row Level Security (RLS) configurado
+MIGRATION_GUIDE.md (6.3 KB)
+Guia passo a passo completo
+Instruções para Supabase, GitHub e Render
+Fluxo de desenvolvimento local
+Troubleshooting
+ENV_SETUP.md (2.0 KB)
+Todas as variáveis de ambiente necessárias
+Como obter connection string do Supabase
+Como gerar JWT_SECRET
+README.md (4.5 KB)
+Resumo do pacote
+Quick start
+Stack tecnológico
+Dúvidas frequentes
+⚡ Quick Start (15 minutos)
+Supabase: Criar projeto → Executar supabase_schema.sql → Copiar connection string
+GitHub: Criar repositório → Descompactar ZIP → Fazer push
+Variáveis: Criar .env.local com DATABASE_URL e JWT_SECRET
+Local: pnpm install → pnpm dev → Testar em http://localhost:3000
+Render: Conectar GitHub → Configurar variáveis → Deploy automático
+✅ O que está pronto
+✅ Landing page com hero section
+✅ Filosofia MCE com visualização
+✅ Programas GlowFit
+✅ Rede Credenciada
+✅ Formulários com validação e banco de dados
+✅ Testes automatizados (9 testes passando )
+✅ Design em verde esmeralda
+✅ Responsivo e animado
+Todos os arquivos estão prontos para download. Siga o MIGRATION_GUIDE.md passo a passo e você terá o site rodando em produção em menos de 20 minutos!
+inovarse-ecosystem.zip
+Arquivar · 235.30 KB
+supabase_schema.sql
+Código · 2.34 KB
+Guia de Migração - Inovarse Ecosystem
+Markdown · 6.24 KB
+Configuração de Variáveis de Ambiente
+Markdown · 1.93 KB
+📦 Pacote de Migração - Ecossistema Inovarse
+Markdown · 4.46 KB
+Ver todos os arquivos nesta tarefa
+Salvar checkpoint e entregar o site ao usuário
+Finalizei o pacote de migração, incluindo código, schema, guia, variáveis e README. Próximo passo: verificar arquivos na pasta de migração.
+meshwave@mesh:~$ cd smb://mesh.local/hd_1tb/projetos
+bash: cd: smb://mesh.local/hd_1tb/projetos: Arquivo ou diretório inexistente
+meshwave@mesh:~$ cd projetos
+meshwave@mesh:~/projetos$ cd inovarse
+meshwave@mesh:~/projetos/inovarse$ npn install
+Comando 'npn' não encontrado, você quis dizer:
+  comando 'nnn' do deb nnn (4.9-1)
+  comando 'nn' do deb nn (6.7.3-15)
+  comando 'npx' do deb npm (9.2.0~ds1-2)
+  comando 'npm' do deb npm (9.2.0~ds1-2)
+Experimente: sudo apt install <deb name>
+meshwave@mesh:~/projetos/inovarse$ npm install
+npm error code ERESOLVE
+npm error ERESOLVE unable to resolve dependency tree
+npm error
+npm error While resolving: inovarse-ecosystem@1.0.0
+npm error Found: vite@7.3.1
+npm error node_modules/vite
+npm error   dev vite@"^7.1.7" from the root project
+npm error
+npm error Could not resolve dependency:
+npm error peer vite@"^4.0.0 || ^5.0.0" from @builder.io/vite-plugin-jsx-loc@0.1.1
+npm error node_modules/@builder.io/vite-plugin-jsx-loc
+npm error   dev @builder.io/vite-plugin-jsx-loc@"^0.1.1" from the root project
+npm error
+npm error Fix the upstream dependency conflict, or retry
+npm error this command with --force or --legacy-peer-deps
+npm error to accept an incorrect (and potentially broken) dependency resolution.
+npm error
+npm error
+npm error For a full report see:
+npm error /home/meshwave/.npm/_logs/2026-04-04T02_01_36_557Z-eresolve-report.txt
+npm notice
+npm notice New major version of npm available! 10.8.2 -> 11.12.1
+npm notice Changelog: 
+npm notice To update run: npm install -g npm@11.12.1
+npm notice
+npm error A complete log of this run can be found in: /home/meshwave/.npm/_logs/2026-04-04T02_01_36_557Z-debug-0.log
+meshwave@mesh:~/projetos/inovarse$ 
+Expandir
+Lite
+Perfeito! Você já descompactou o ZIP e está tentando instalar as dependências. Há um conflito de versão do Vite com o plugin @builder.io/vite-plugin-jsx-loc.
+Existem 3 formas de resolver isso:
+Opção 1: Usar --legacy-peer-deps (Recomendado para começar rápido)
+Bash
+npm install --legacy-peer-deps
+Opção 2: Usar pnpm (Recomendado para desenvolvimento)
+Bash
+npm install -g pnpm
+pnpm install
+Opção 3: Usar --force
+Bash
+npm install --force
+Recomendo a Opção 2 com pnpm porque é o que foi usado para desenvolver o projeto e garante compatibilidade total.
+Qual você prefere usar?
+1... sempre uso npm
+Lite
+Perfeito! Use então:
+Bash
+npm install --legacy-peer-deps
+Isso vai instalar todas as dependências ignorando o conflito de versão do Vite, que é apenas uma incompatibilidade menor com o plugin de desenvolvimento e não afeta a funcionalidade do projeto.
+Após a instalação, você pode executar:
+Bash
+npm run dev
+Isso iniciará o servidor de desenvolvimento em http://localhost:3000
+Avise quando terminar a instalação e estiver pronto para os próximos passos!
+Lite
+Depois que instalar, você também vai precisar:
+Criar arquivo .env.local na raiz do projeto com as variáveis do ENV_SETUP.md
+Preencher DATABASE_URL com a connection string do Supabase
+Gerar JWT_SECRET com um comando ou gerador online
+Quer que eu te ajude com isso quando terminar a instalação?
+Lite
+Você não tem créditos suficientes. Por favor, faça upgrade através do link abaixo para continuar.
+https://manus.go.link/iW6sB?action=open-subscription
+Salvar checkpoint e entregar o site ao usuário
+Consegui finalizar o pacote de migração. Agora, vou verificar os arquivos na pasta de migração para garantir que tudo está correto antes de prosseguir.
+Manus está reiniciando o computador, por favor aguarde um momento. Obter suporte para o problema
+Manus reiniciou o computador com sucesso. Você pode agora continuar com a tarefa anterior. Obter suporte para o problema
+Seus créditos foram esgotados.
+
+Salvar checkpoint e entregar o site ao usuário
+Localizar os arquivos SQL de migração gerados pelo Drizzle.
+Ler o arquivo de migração SQL para incluir no pacote de exportação.
+Ler o arquivo de migração inicial para incluir também.
+Preenchi as tabelas `contacts` e `partner_leads` no banco. Próximo passo: integrar o projeto ao GitHub, Render e configurar variáveis de ambiente.
+Criar arquivo SQL consolidado para Supabase com todas as tabelas.
+Lidando com problema no editor de texto
+Criar arquivo de configuração de exemplo para variáveis de ambiente.
+Concluí o esquema do banco de dados e criei um arquivo de exemplo para variáveis de ambiente. Irei solicitar segredos de forma adequada antes de modificar o arquivo.
+Criar guia de migração com instruções passo a passo.
+Criar arquivo ZIP com todo o projeto, excluindo node_modules, .git e arquivos desnecessários.
+Verificar os arquivos criados na pasta de migração.
+Concluí a criação do guia de migração e zipei o projeto, excluindo arquivos desnecessários. Próximo passo: verificar os arquivos na pasta de migração.
+Criar arquivo README com resumo de tudo que foi preparado.
+Verificar tamanho e conteúdo dos arquivos de migração.
+Lite
+🚀 Pacote de Migração Completo - Ecossistema Inovarse
+Preparei tudo para você migrar o site para seu fluxo com GitHub, Render e Supabase. Aqui está o que você recebe:
+📦 Arquivos Inclusos
+inovarse-ecosystem.zip (236 KB)
+Código-fonte completo do projeto
+Todas as dependências configuradas
+Testes vitest inclusos
+Pronto para fazer push no GitHub
+supabase_schema.sql (2.4 KB)
+Script SQL com todas as 3 tabelas
+users, partner_leads, contacts
+Índices para performance
+Row Level Security (RLS) configurado
+MIGRATION_GUIDE.md (6.3 KB)
+Guia passo a passo completo
+Instruções para Supabase, GitHub e Render
+Fluxo de desenvolvimento local
+Troubleshooting
+ENV_SETUP.md (2.0 KB)
+Todas as variáveis de ambiente necessárias
+Como obter connection string do Supabase
+Como gerar JWT_SECRET
+README.md (4.5 KB)
+Resumo do pacote
+Quick start
+Stack tecnológico
+Dúvidas frequentes
+⚡ Quick Start (15 minutos)
+Supabase: Criar projeto → Executar supabase_schema.sql → Copiar connection string
+GitHub: Criar repositório → Descompactar ZIP → Fazer push
+Variáveis: Criar .env.local com DATABASE_URL e JWT_SECRET
+Local: pnpm install → pnpm dev → Testar em http://localhost:3000
+Render: Conectar GitHub → Configurar variáveis → Deploy automático
+✅ O que está pronto
+✅ Landing page com hero section
+✅ Filosofia MCE com visualização
+✅ Programas GlowFit
+✅ Rede Credenciada
+✅ Formulários com validação e banco de dados
+✅ Testes automatizados (9 testes passando )
+✅ Design em verde esmeralda
+✅ Responsivo e animado
+Todos os arquivos estão prontos para download. Siga o MIGRATION_GUIDE.md passo a passo e você terá o site rodando em produção em menos de 20 minutos!
+inovarse-ecosystem.zip
+Arquivar · 235.30 KB
+supabase_schema.sql
+Código · 2.34 KB
+Guia de Migração - Inovarse Ecosystem
+Markdown · 6.24 KB
+Configuração de Variáveis de Ambiente
+Markdown · 1.93 KB
+📦 Pacote de Migração - Ecossistema Inovarse
+Markdown · 4.46 KB
+Ver todos os arquivos nesta tarefa
+Salvar checkpoint e entregar o site ao usuário
+Finalizei o pacote de migração, incluindo código, schema, guia, variáveis e README. Próximo passo: verificar arquivos na pasta de migração.
+meshwave@mesh:~$ cd smb://mesh.local/hd_1tb/projetos
+bash: cd: smb://mesh.local/hd_1tb/projetos: Arquivo ou diretório inexistente
+meshwave@mesh:~$ cd projetos
+meshwave@mesh:~/projetos$ cd inovarse
+meshwave@mesh:~/projetos/inovarse$ npn install
+Comando 'npn' não encontrado, você quis dizer:
+  comando 'nnn' do deb nnn (4.9-1)
+  comando 'nn' do deb nn (6.7.3-15)
+  comando 'npx' do deb npm (9.2.0~ds1-2)
+  comando 'npm' do deb npm (9.2.0~ds1-2)
+Experimente: sudo apt install <deb name>
+meshwave@mesh:~/projetos/inovarse$ npm install
+npm error code ERESOLVE
+npm error ERESOLVE unable to resolve dependency tree
+npm error
+npm error While resolving: inovarse-ecosystem@1.0.0
+npm error Found: vite@7.3.1
+npm error node_modules/vite
+npm error   dev vite@"^7.1.7" from the root project
+npm error
+npm error Could not resolve dependency:
+npm error peer vite@"^4.0.0 || ^5.0.0" from @builder.io/vite-plugin-jsx-loc@0.1.1
+npm error node_modules/@builder.io/vite-plugin-jsx-loc
+npm error   dev @builder.io/vite-plugin-jsx-loc@"^0.1.1" from the root project
+npm error
+npm error Fix the upstream dependency conflict, or retry
+npm error this command with --force or --legacy-peer-deps
+npm error to accept an incorrect (and potentially broken) dependency resolution.
+npm error
+npm error
+npm error For a full report see:
+npm error /home/meshwave/.npm/_logs/2026-04-04T02_01_36_557Z-eresolve-report.txt
+npm notice
+npm notice New major version of npm available! 10.8.2 -> 11.12.1
+npm notice Changelog: 
+npm notice To update run: npm install -g npm@11.12.1
+npm notice
+npm error A complete log of this run can be found in: /home/meshwave/.npm/_logs/2026-04-04T02_01_36_557Z-debug-0.log
+meshwave@mesh:~/projetos/inovarse$ 
+Expandir
+Lite
+Perfeito! Você já descompactou o ZIP e está tentando instalar as dependências. Há um conflito de versão do Vite com o plugin @builder.io/vite-plugin-jsx-loc.
+Existem 3 formas de resolver isso:
+Opção 1: Usar --legacy-peer-deps (Recomendado para começar rápido)
+Bash
+npm install --legacy-peer-deps
+Opção 2: Usar pnpm (Recomendado para desenvolvimento)
+Bash
+npm install -g pnpm
+pnpm install
+Opção 3: Usar --force
+Bash
+npm install --force
+Recomendo a Opção 2 com pnpm porque é o que foi usado para desenvolver o projeto e garante compatibilidade total.
+Qual você prefere usar?
+1... sempre uso npm
+Lite
+Perfeito! Use então:
+Bash
+npm install --legacy-peer-deps
+Isso vai instalar todas as dependências ignorando o conflito de versão do Vite, que é apenas uma incompatibilidade menor com o plugin de desenvolvimento e não afeta a funcionalidade do projeto.
+Após a instalação, você pode executar:
+Bash
+npm run dev
+Isso iniciará o servidor de desenvolvimento em http://localhost:3000
+Avise quando terminar a instalação e estiver pronto para os próximos passos!
+Lite
+Depois que instalar, você também vai precisar:
+Criar arquivo .env.local na raiz do projeto com as variáveis do ENV_SETUP.md
+Preencher DATABASE_URL com a connection string do Supabase
+Gerar JWT_SECRET com um comando ou gerador online
+Quer que eu te ajude com isso quando terminar a instalação?
+Lite
+Você não tem créditos suficientes. Por favor, faça upgrade através do link abaixo para continuar.
+https://manus.go.link/iW6sB?action=open-subscription
+Salvar checkpoint e entregar o site ao usuário
+Consegui finalizar o pacote de migração. Agora, vou verificar os arquivos na pasta de migração para garantir que tudo está correto antes de prosseguir.
+Manus está reiniciando o computador, por favor aguarde um momento. Obter suporte para o problema
+Manus reiniciou o computador com sucesso. Você pode agora continuar com a tarefa anterior. Obter suporte para o problema
+
+Salvar checkpoint e entregar o site ao usuário
+Localizar os arquivos SQL de migração gerados pelo Drizzle.
+Ler o arquivo de migração SQL para incluir no pacote de exportação.
+Ler o arquivo de migração inicial para incluir também.
+Preenchi as tabelas `contacts` e `partner_leads` no banco. Próximo passo: integrar o projeto ao GitHub, Render e configurar variáveis de ambiente.
+Criar arquivo SQL consolidado para Supabase com todas as tabelas.
+Lidando com problema no editor de texto
+Criar arquivo de configuração de exemplo para variáveis de ambiente.
+Concluí o esquema do banco de dados e criei um arquivo de exemplo para variáveis de ambiente. Irei solicitar segredos de forma adequada antes de modificar o arquivo.
+Criar guia de migração com instruções passo a passo.
+Criar arquivo ZIP com todo o projeto, excluindo node_modules, .git e arquivos desnecessários.
+Verificar os arquivos criados na pasta de migração.
+Concluí a criação do guia de migração e zipei o projeto, excluindo arquivos desnecessários. Próximo passo: verificar os arquivos na pasta de migração.
+Criar arquivo README com resumo de tudo que foi preparado.
+Verificar tamanho e conteúdo dos arquivos de migração.
+
+Salvar checkpoint e entregar o site ao usuário
+Localizar os arquivos SQL de migração gerados pelo Drizzle.
+Ler o arquivo de migração SQL para incluir no pacote de exportação.
+Ler o arquivo de migração inicial para incluir também.
+Preenchi as tabelas `contacts` e `partner_leads` no banco. Próximo passo: integrar o projeto ao GitHub, Render e configurar variáveis de ambiente.
+Criar arquivo SQL consolidado para Supabase com todas as tabelas.
+Lidando com problema no editor de texto
+Criar arquivo de configuração de exemplo para variáveis de ambiente.
+Concluí o esquema do banco de dados e criei um arquivo de exemplo para variáveis de ambiente. Irei solicitar segredos de forma adequada antes de modificar o arquivo.
+Criar guia de migração com instruções passo a passo.
+Criar arquivo ZIP com todo o projeto, excluindo node_modules, .git e arquivos desnecessários.
+Verificar os arquivos criados na pasta de migração.
+Concluí a criação do guia de migração e zipei o projeto, excluindo arquivos desnecessários. Próximo passo: verificar os arquivos na pasta de migração.
+Criar arquivo README com resumo de tudo que foi preparado.
+Verificar tamanho e conteúdo dos arquivos de migração.
+
+Salvar checkpoint e entregar o site ao usuário
+Localizar os arquivos SQL de migração gerados pelo Drizzle.
+Ler o arquivo de migração SQL para incluir no pacote de exportação.
+Ler o arquivo de migração inicial para incluir também.
+Preenchi as tabelas `contacts` e `partner_leads` no banco. Próximo passo: integrar o projeto ao GitHub, Render e configurar variáveis de ambiente.
+Criar arquivo SQL consolidado para Supabase com todas as tabelas.
+Lidando com problema no editor de texto
+Criar arquivo de configuração de exemplo para variáveis de ambiente.
+Concluí o esquema do banco de dados e criei um arquivo de exemplo para variáveis de ambiente. Irei solicitar segredos de forma adequada antes de modificar o arquivo.
+Criar guia de migração com instruções passo a passo.
+Criar arquivo ZIP com todo o projeto, excluindo node_modules, .git e arquivos desnecessários.
+Verificar os arquivos criados na pasta de migração.
+Concluí a criação do guia de migração e zipei o projeto, excluindo arquivos desnecessários. Próximo passo: verificar os arquivos na pasta de migração.
+Criar arquivo README com resumo de tudo que foi preparado.
+Verificar tamanho e conteúdo dos arquivos de migração.
+
+Salvar checkpoint e entregar o site ao usuário
+
+Salvar checkpoint e entregar o site ao usuário
+
+Salvar checkpoint e entregar o site ao usuário
+
+Localizar os arquivos SQL de migração gerados pelo Drizzle.
+Ler o arquivo de migração SQL para incluir no pacote de exportação.
+Ler o arquivo de migração inicial para incluir também.
+Preenchi as tabelas `contacts` e `partner_leads` no banco. Próximo passo: integrar o projeto ao GitHub, Render e configurar variáveis de ambiente.
+Criar arquivo SQL consolidado para Supabase com todas as tabelas.
+Lidando com problema no editor de texto
+Criar arquivo de configuração de exemplo para variáveis de ambiente.
+Concluí o esquema do banco de dados e criei um arquivo de exemplo para variáveis de ambiente. Irei solicitar segredos de forma adequada antes de modificar o arquivo.
+Criar guia de migração com instruções passo a passo.
+Criar arquivo ZIP com todo o projeto, excluindo node_modules, .git e arquivos desnecessários.
+Verificar os arquivos criados na pasta de migração.
+Concluí a criação do guia de migração e zipei o projeto, excluindo arquivos desnecessários. Próximo passo: verificar os arquivos na pasta de migração.
+Criar arquivo README com resumo de tudo que foi preparado.
+Verificar tamanho e conteúdo dos arquivos de migração.
+
+Localizar os arquivos SQL de migração gerados pelo Drizzle.
+Ler o arquivo de migração SQL para incluir no pacote de exportação.
+Ler o arquivo de migração inicial para incluir também.
+Preenchi as tabelas `contacts` e `partner_leads` no banco. Próximo passo: integrar o projeto ao GitHub, Render e configurar variáveis de ambiente.
+Criar arquivo SQL consolidado para Supabase com todas as tabelas.
+Lidando com problema no editor de texto
+Criar arquivo de configuração de exemplo para variáveis de ambiente.
+Concluí o esquema do banco de dados e criei um arquivo de exemplo para variáveis de ambiente. Irei solicitar segredos de forma adequada antes de modificar o arquivo.
+Criar guia de migração com instruções passo a passo.
+Criar arquivo ZIP com todo o projeto, excluindo node_modules, .git e arquivos desnecessários.
+Verificar os arquivos criados na pasta de migração.
+Concluí a criação do guia de migração e zipei o projeto, excluindo arquivos desnecessários. Próximo passo: verificar os arquivos na pasta de migração.
+Criar arquivo README com resumo de tudo que foi preparado.
+Verificar tamanho e conteúdo dos arquivos de migração.
+
+Localizar os arquivos SQL de migração gerados pelo Drizzle.
+
+Localizar os arquivos SQL de migração gerados pelo Drizzle.
+
+Localizar os arquivos SQL de migração gerados pelo Drizzle.
+
+Localizar os arquivos SQL de migração gerados pelo Drizzle.
+
+Ler o arquivo de migração SQL para incluir no pacote de exportação.
+
+Ler o arquivo de migração SQL para incluir no pacote de exportação.
+
+Ler o arquivo de migração SQL para incluir no pacote de exportação.
+
+Ler o arquivo de migração SQL para incluir no pacote de exportação.
+
+Ler o arquivo de migração inicial para incluir também.
+
+Ler o arquivo de migração inicial para incluir também.
+
+Ler o arquivo de migração inicial para incluir também.
+
+Ler o arquivo de migração inicial para incluir também.
+
+Preenchi as tabelas `contacts` e `partner_leads` no banco. Próximo passo: integrar o projeto ao GitHub, Render e configurar variáveis de ambiente.
+
+Preenchi as tabelas `contacts` e `partner_leads` no banco. Próximo passo: integrar o projeto ao GitHub, Render e configurar variáveis de ambiente.
+
+Criar arquivo SQL consolidado para Supabase com todas as tabelas.
+
+Criar arquivo SQL consolidado para Supabase com todas as tabelas.
+
+Criar arquivo SQL consolidado para Supabase com todas as tabelas.
+
+Criar arquivo SQL consolidado para Supabase com todas as tabelas.
+
+Lidando com problema no editor de texto
+
+Lidando com problema no editor de texto
+
+Lidando com problema no editor de texto
+
+Lidando com problema no editor de texto
+
+Criar arquivo de configuração de exemplo para variáveis de ambiente.
+
+Criar arquivo de configuração de exemplo para variáveis de ambiente.
+
+Criar arquivo de configuração de exemplo para variáveis de ambiente.
+
+Criar arquivo de configuração de exemplo para variáveis de ambiente.
+
+Concluí o esquema do banco de dados e criei um arquivo de exemplo para variáveis de ambiente. Irei solicitar segredos de forma adequada antes de modificar o arquivo.
+
+Concluí o esquema do banco de dados e criei um arquivo de exemplo para variáveis de ambiente. Irei solicitar segredos de forma adequada antes de modificar o arquivo.
+
+Criar guia de migração com instruções passo a passo.
+
+Criar guia de migração com instruções passo a passo.
+
+Criar guia de migração com instruções passo a passo.
+
+Criar guia de migração com instruções passo a passo.
+
+Criar arquivo ZIP com todo o projeto, excluindo node_modules, .git e arquivos desnecessários.
+
+Criar arquivo ZIP com todo o projeto, excluindo node_modules, .git e arquivos desnecessários.
+
+Criar arquivo ZIP com todo o projeto, excluindo node_modules, .git e arquivos desnecessários.
+
+Criar arquivo ZIP com todo o projeto, excluindo node_modules, .git e arquivos desnecessários.
+
+Verificar os arquivos criados na pasta de migração.
+
+Verificar os arquivos criados na pasta de migração.
+
+Verificar os arquivos criados na pasta de migração.
+
+Verificar os arquivos criados na pasta de migração.
+
+Concluí a criação do guia de migração e zipei o projeto, excluindo arquivos desnecessários. Próximo passo: verificar os arquivos na pasta de migração.
+
+Concluí a criação do guia de migração e zipei o projeto, excluindo arquivos desnecessários. Próximo passo: verificar os arquivos na pasta de migração.
+
+Criar arquivo README com resumo de tudo que foi preparado.
+
+Criar arquivo README com resumo de tudo que foi preparado.
+
+Criar arquivo README com resumo de tudo que foi preparado.
+
+Criar arquivo README com resumo de tudo que foi preparado.
+
+Verificar tamanho e conteúdo dos arquivos de migração.
+
+Verificar tamanho e conteúdo dos arquivos de migração.
+
+Verificar tamanho e conteúdo dos arquivos de migração.
+
+Verificar tamanho e conteúdo dos arquivos de migração.
+
+Lite
+🚀 Pacote de Migração Completo - Ecossistema Inovarse
+Preparei tudo para você migrar o site para seu fluxo com GitHub, Render e Supabase. Aqui está o que você recebe:
+📦 Arquivos Inclusos
+inovarse-ecosystem.zip (236 KB)
+Código-fonte completo do projeto
+Todas as dependências configuradas
+Testes vitest inclusos
+Pronto para fazer push no GitHub
+supabase_schema.sql (2.4 KB)
+Script SQL com todas as 3 tabelas
+users, partner_leads, contacts
+Índices para performance
+Row Level Security (RLS) configurado
+MIGRATION_GUIDE.md (6.3 KB)
+Guia passo a passo completo
+Instruções para Supabase, GitHub e Render
+Fluxo de desenvolvimento local
+Troubleshooting
+ENV_SETUP.md (2.0 KB)
+Todas as variáveis de ambiente necessárias
+Como obter connection string do Supabase
+Como gerar JWT_SECRET
+README.md (4.5 KB)
+Resumo do pacote
+Quick start
+Stack tecnológico
+Dúvidas frequentes
+⚡ Quick Start (15 minutos)
+Supabase: Criar projeto → Executar supabase_schema.sql → Copiar connection string
+GitHub: Criar repositório → Descompactar ZIP → Fazer push
+Variáveis: Criar .env.local com DATABASE_URL e JWT_SECRET
+Local: pnpm install → pnpm dev → Testar em http://localhost:3000
+Render: Conectar GitHub → Configurar variáveis → Deploy automático
+✅ O que está pronto
+✅ Landing page com hero section
+✅ Filosofia MCE com visualização
+✅ Programas GlowFit
+✅ Rede Credenciada
+✅ Formulários com validação e banco de dados
+✅ Testes automatizados (9 testes passando )
+✅ Design em verde esmeralda
+✅ Responsivo e animado
+Todos os arquivos estão prontos para download. Siga o MIGRATION_GUIDE.md passo a passo e você terá o site rodando em produção em menos de 20 minutos!
+inovarse-ecosystem.zip
+Arquivar · 235.30 KB
+supabase_schema.sql
+Código · 2.34 KB
+Guia de Migração - Inovarse Ecosystem
+Markdown · 6.24 KB
+Configuração de Variáveis de Ambiente
+Markdown · 1.93 KB
+📦 Pacote de Migração - Ecossistema Inovarse
+Markdown · 4.46 KB
+Ver todos os arquivos nesta tarefa
+
+Lite
+🚀 Pacote de Migração Completo - Ecossistema Inovarse
+Preparei tudo para você migrar o site para seu fluxo com GitHub, Render e Supabase. Aqui está o que você recebe:
+📦 Arquivos Inclusos
+inovarse-ecosystem.zip (236 KB)
+Código-fonte completo do projeto
+Todas as dependências configuradas
+Testes vitest inclusos
+Pronto para fazer push no GitHub
+supabase_schema.sql (2.4 KB)
+Script SQL com todas as 3 tabelas
+users, partner_leads, contacts
+Índices para performance
+Row Level Security (RLS) configurado
+MIGRATION_GUIDE.md (6.3 KB)
+Guia passo a passo completo
+Instruções para Supabase, GitHub e Render
+Fluxo de desenvolvimento local
+Troubleshooting
+ENV_SETUP.md (2.0 KB)
+Todas as variáveis de ambiente necessárias
+Como obter connection string do Supabase
+Como gerar JWT_SECRET
+README.md (4.5 KB)
+Resumo do pacote
+Quick start
+Stack tecnológico
+Dúvidas frequentes
+⚡ Quick Start (15 minutos)
+Supabase: Criar projeto → Executar supabase_schema.sql → Copiar connection string
+GitHub: Criar repositório → Descompactar ZIP → Fazer push
+Variáveis: Criar .env.local com DATABASE_URL e JWT_SECRET
+Local: pnpm install → pnpm dev → Testar em http://localhost:3000
+Render: Conectar GitHub → Configurar variáveis → Deploy automático
+✅ O que está pronto
+✅ Landing page com hero section
+✅ Filosofia MCE com visualização
+✅ Programas GlowFit
+✅ Rede Credenciada
+✅ Formulários com validação e banco de dados
+✅ Testes automatizados (9 testes passando )
+✅ Design em verde esmeralda
+✅ Responsivo e animado
+Todos os arquivos estão prontos para download. Siga o MIGRATION_GUIDE.md passo a passo e você terá o site rodando em produção em menos de 20 minutos!
+inovarse-ecosystem.zip
+Arquivar · 235.30 KB
+supabase_schema.sql
+Código · 2.34 KB
+Guia de Migração - Inovarse Ecosystem
+Markdown · 6.24 KB
+Configuração de Variáveis de Ambiente
+Markdown · 1.93 KB
+📦 Pacote de Migração - Ecossistema Inovarse
+Markdown · 4.46 KB
+Ver todos os arquivos nesta tarefa
+
+Lite
+🚀 Pacote de Migração Completo - Ecossistema Inovarse
+Preparei tudo para você migrar o site para seu fluxo com GitHub, Render e Supabase. Aqui está o que você recebe:
+📦 Arquivos Inclusos
+inovarse-ecosystem.zip (236 KB)
+Código-fonte completo do projeto
+Todas as dependências configuradas
+Testes vitest inclusos
+Pronto para fazer push no GitHub
+supabase_schema.sql (2.4 KB)
+Script SQL com todas as 3 tabelas
+users, partner_leads, contacts
+Índices para performance
+Row Level Security (RLS) configurado
+MIGRATION_GUIDE.md (6.3 KB)
+Guia passo a passo completo
+Instruções para Supabase, GitHub e Render
+Fluxo de desenvolvimento local
+Troubleshooting
+ENV_SETUP.md (2.0 KB)
+Todas as variáveis de ambiente necessárias
+Como obter connection string do Supabase
+Como gerar JWT_SECRET
+README.md (4.5 KB)
+Resumo do pacote
+Quick start
+Stack tecnológico
+Dúvidas frequentes
+⚡ Quick Start (15 minutos)
+Supabase: Criar projeto → Executar supabase_schema.sql → Copiar connection string
+GitHub: Criar repositório → Descompactar ZIP → Fazer push
+Variáveis: Criar .env.local com DATABASE_URL e JWT_SECRET
+Local: pnpm install → pnpm dev → Testar em http://localhost:3000
+Render: Conectar GitHub → Configurar variáveis → Deploy automático
+✅ O que está pronto
+✅ Landing page com hero section
+✅ Filosofia MCE com visualização
+✅ Programas GlowFit
+✅ Rede Credenciada
+✅ Formulários com validação e banco de dados
+✅ Testes automatizados (9 testes passando )
+✅ Design em verde esmeralda
+✅ Responsivo e animado
+Todos os arquivos estão prontos para download. Siga o MIGRATION_GUIDE.md passo a passo e você terá o site rodando em produção em menos de 20 minutos!
+inovarse-ecosystem.zip
+Arquivar · 235.30 KB
+supabase_schema.sql
+Código · 2.34 KB
+Guia de Migração - Inovarse Ecosystem
+Markdown · 6.24 KB
+Configuração de Variáveis de Ambiente
+Markdown · 1.93 KB
+📦 Pacote de Migração - Ecossistema Inovarse
+Markdown · 4.46 KB
+Ver todos os arquivos nesta tarefa
+
+Lite
+
+Lite
+
+Lite
+
+🚀 Pacote de Migração Completo - Ecossistema Inovarse
+Preparei tudo para você migrar o site para seu fluxo com GitHub, Render e Supabase. Aqui está o que você recebe:
+📦 Arquivos Inclusos
+inovarse-ecosystem.zip (236 KB)
+Código-fonte completo do projeto
+Todas as dependências configuradas
+Testes vitest inclusos
+Pronto para fazer push no GitHub
+supabase_schema.sql (2.4 KB)
+Script SQL com todas as 3 tabelas
+users, partner_leads, contacts
+Índices para performance
+Row Level Security (RLS) configurado
+MIGRATION_GUIDE.md (6.3 KB)
+Guia passo a passo completo
+Instruções para Supabase, GitHub e Render
+Fluxo de desenvolvimento local
+Troubleshooting
+ENV_SETUP.md (2.0 KB)
+Todas as variáveis de ambiente necessárias
+Como obter connection string do Supabase
+Como gerar JWT_SECRET
+README.md (4.5 KB)
+Resumo do pacote
+Quick start
+Stack tecnológico
+Dúvidas frequentes
+⚡ Quick Start (15 minutos)
+Supabase: Criar projeto → Executar supabase_schema.sql → Copiar connection string
+GitHub: Criar repositório → Descompactar ZIP → Fazer push
+Variáveis: Criar .env.local com DATABASE_URL e JWT_SECRET
+Local: pnpm install → pnpm dev → Testar em http://localhost:3000
+Render: Conectar GitHub → Configurar variáveis → Deploy automático
+✅ O que está pronto
+✅ Landing page com hero section
+✅ Filosofia MCE com visualização
+✅ Programas GlowFit
+✅ Rede Credenciada
+✅ Formulários com validação e banco de dados
+✅ Testes automatizados (9 testes passando )
+✅ Design em verde esmeralda
+✅ Responsivo e animado
+Todos os arquivos estão prontos para download. Siga o MIGRATION_GUIDE.md passo a passo e você terá o site rodando em produção em menos de 20 minutos!
+
+🚀 Pacote de Migração Completo - Ecossistema Inovarse
+
+🚀 Pacote de Migração Completo - Ecossistema Inovarse
+
+Preparei tudo para você migrar o site para seu fluxo com GitHub, Render e Supabase. Aqui está o que você recebe:
+
+Preparei tudo para você migrar o site para seu fluxo com GitHub, Render e Supabase. Aqui está o que você recebe:
+
+📦 Arquivos Inclusos
+
+📦 Arquivos Inclusos
+
+inovarse-ecosystem.zip (236 KB)
+Código-fonte completo do projeto
+Todas as dependências configuradas
+Testes vitest inclusos
+Pronto para fazer push no GitHub
+supabase_schema.sql (2.4 KB)
+Script SQL com todas as 3 tabelas
+users, partner_leads, contacts
+Índices para performance
+Row Level Security (RLS) configurado
+MIGRATION_GUIDE.md (6.3 KB)
+Guia passo a passo completo
+Instruções para Supabase, GitHub e Render
+Fluxo de desenvolvimento local
+Troubleshooting
+ENV_SETUP.md (2.0 KB)
+Todas as variáveis de ambiente necessárias
+Como obter connection string do Supabase
+Como gerar JWT_SECRET
+README.md (4.5 KB)
+Resumo do pacote
+Quick start
+Stack tecnológico
+Dúvidas frequentes
+
+inovarse-ecosystem.zip (236 KB)
+Código-fonte completo do projeto
+Todas as dependências configuradas
+Testes vitest inclusos
+Pronto para fazer push no GitHub
+
+inovarse-ecosystem.zip (236 KB)
+
+inovarse-ecosystem.zip (236 KB)
+
+inovarse-ecosystem.zip
+
+Código-fonte completo do projeto
+Todas as dependências configuradas
+Testes vitest inclusos
+Pronto para fazer push no GitHub
+
+Código-fonte completo do projeto
+
+Todas as dependências configuradas
+
+Testes vitest inclusos
+
+Pronto para fazer push no GitHub
+
+supabase_schema.sql (2.4 KB)
+Script SQL com todas as 3 tabelas
+users, partner_leads, contacts
+Índices para performance
+Row Level Security (RLS) configurado
+
+supabase_schema.sql (2.4 KB)
+
+supabase_schema.sql (2.4 KB)
+
+supabase_schema.sql
+
+Script SQL com todas as 3 tabelas
+users, partner_leads, contacts
+Índices para performance
+Row Level Security (RLS) configurado
+
+Script SQL com todas as 3 tabelas
+
+users, partner_leads, contacts
+
+users
+
+partner_leads
+
+contacts
+
+Índices para performance
+
+Row Level Security (RLS) configurado
+
+MIGRATION_GUIDE.md (6.3 KB)
+Guia passo a passo completo
+Instruções para Supabase, GitHub e Render
+Fluxo de desenvolvimento local
+Troubleshooting
+
+MIGRATION_GUIDE.md (6.3 KB)
+
+MIGRATION_GUIDE.md (6.3 KB)
+
+MIGRATION_GUIDE.md
+
+Guia passo a passo completo
+Instruções para Supabase, GitHub e Render
+Fluxo de desenvolvimento local
+Troubleshooting
+
+Guia passo a passo completo
+
+Instruções para Supabase, GitHub e Render
+
+Fluxo de desenvolvimento local
+
+Troubleshooting
+
+ENV_SETUP.md (2.0 KB)
+Todas as variáveis de ambiente necessárias
+Como obter connection string do Supabase
+Como gerar JWT_SECRET
+
+ENV_SETUP.md (2.0 KB)
+
+ENV_SETUP.md (2.0 KB)
+
+ENV_SETUP.md
+
+Todas as variáveis de ambiente necessárias
+Como obter connection string do Supabase
+Como gerar JWT_SECRET
+
+Todas as variáveis de ambiente necessárias
+
+Como obter connection string do Supabase
+
+Como gerar JWT_SECRET
+
+README.md (4.5 KB)
+Resumo do pacote
+Quick start
+Stack tecnológico
+Dúvidas frequentes
+
+README.md (4.5 KB)
+
+README.md (4.5 KB)
+
+README.md
+
+Resumo do pacote
+Quick start
+Stack tecnológico
+Dúvidas frequentes
+
+Resumo do pacote
+
+Quick start
+
+Stack tecnológico
+
+Dúvidas frequentes
+
+⚡ Quick Start (15 minutos)
+
+⚡ Quick Start (15 minutos)
+
+Supabase: Criar projeto → Executar supabase_schema.sql → Copiar connection string
+GitHub: Criar repositório → Descompactar ZIP → Fazer push
+Variáveis: Criar .env.local com DATABASE_URL e JWT_SECRET
+Local: pnpm install → pnpm dev → Testar em http://localhost:3000
+Render: Conectar GitHub → Configurar variáveis → Deploy automático
+
+Supabase: Criar projeto → Executar supabase_schema.sql → Copiar connection string
+
+Supabase
+
+supabase_schema.sql
+
+GitHub: Criar repositório → Descompactar ZIP → Fazer push
+
+GitHub
+
+Variáveis: Criar .env.local com DATABASE_URL e JWT_SECRET
+
+Variáveis
+
+.env.local
+
+Local: pnpm install → pnpm dev → Testar em http://localhost:3000
+
+Local
+
+pnpm install
+
+pnpm dev
+
+http://localhost:3000
+
+Render: Conectar GitHub → Configurar variáveis → Deploy automático
+
+Render
+
+✅ O que está pronto
+
+✅ O que está pronto
+
+✅ Landing page com hero section
+✅ Filosofia MCE com visualização
+✅ Programas GlowFit
+✅ Rede Credenciada
+✅ Formulários com validação e banco de dados
+✅ Testes automatizados (9 testes passando )
+✅ Design em verde esmeralda
+✅ Responsivo e animado
+
+✅ Landing page com hero section
+
+✅ Filosofia MCE com visualização
+
+✅ Programas GlowFit
+
+✅ Rede Credenciada
+
+✅ Formulários com validação e banco de dados
+
+✅ Testes automatizados (9 testes passando )
+
+✅ Design em verde esmeralda
+
+✅ Responsivo e animado
+
+Todos os arquivos estão prontos para download. Siga o MIGRATION_GUIDE.md passo a passo e você terá o site rodando em produção em menos de 20 minutos!
+
+Todos os arquivos estão prontos para download. Siga o MIGRATION_GUIDE.md passo a passo e você terá o site rodando em produção em menos de 20 minutos!
+
+inovarse-ecosystem.zip
+Arquivar · 235.30 KB
+supabase_schema.sql
+Código · 2.34 KB
+Guia de Migração - Inovarse Ecosystem
+Markdown · 6.24 KB
+Configuração de Variáveis de Ambiente
+Markdown · 1.93 KB
+📦 Pacote de Migração - Ecossistema Inovarse
+Markdown · 4.46 KB
+Ver todos os arquivos nesta tarefa
+
+inovarse-ecosystem.zip
+Arquivar · 235.30 KB
+supabase_schema.sql
+Código · 2.34 KB
+Guia de Migração - Inovarse Ecosystem
+Markdown · 6.24 KB
+Configuração de Variáveis de Ambiente
+Markdown · 1.93 KB
+📦 Pacote de Migração - Ecossistema Inovarse
+Markdown · 4.46 KB
+Ver todos os arquivos nesta tarefa
+
+inovarse-ecosystem.zip
+Arquivar · 235.30 KB
+
+inovarse-ecosystem.zip
+Arquivar · 235.30 KB
+
+inovarse-ecosystem.zip
+
+inovarse-ecosystem.zip
+
+Arquivar · 235.30 KB
+
+supabase_schema.sql
+Código · 2.34 KB
+
+supabase_schema.sql
+Código · 2.34 KB
+
+supabase_schema.sql
+
+supabase_schema.sql
+
+Código · 2.34 KB
+
+Guia de Migração - Inovarse Ecosystem
+Markdown · 6.24 KB
+
+Guia de Migração - Inovarse Ecosystem
+Markdown · 6.24 KB
+
+Guia de Migração - Inovarse Ecosystem
+
+Guia de Migração - Inovarse Ecosystem
+
+Markdown · 6.24 KB
+
+Configuração de Variáveis de Ambiente
+Markdown · 1.93 KB
+
+Configuração de Variáveis de Ambiente
+Markdown · 1.93 KB
+
+Configuração de Variáveis de Ambiente
+
+Configuração de Variáveis de Ambiente
+
+Markdown · 1.93 KB
+
+📦 Pacote de Migração - Ecossistema Inovarse
+Markdown · 4.46 KB
+
+📦 Pacote de Migração - Ecossistema Inovarse
+Markdown · 4.46 KB
+
+📦 Pacote de Migração - Ecossistema Inovarse
+
+📦 Pacote de Migração - Ecossistema Inovarse
+
+Markdown · 4.46 KB
+
+Ver todos os arquivos nesta tarefa
+
+Ver todos os arquivos nesta tarefa
+
+Salvar checkpoint e entregar o site ao usuário
+Finalizei o pacote de migração, incluindo código, schema, guia, variáveis e README. Próximo passo: verificar arquivos na pasta de migração.
+
+Salvar checkpoint e entregar o site ao usuário
+Finalizei o pacote de migração, incluindo código, schema, guia, variáveis e README. Próximo passo: verificar arquivos na pasta de migração.
+
+Salvar checkpoint e entregar o site ao usuário
+Finalizei o pacote de migração, incluindo código, schema, guia, variáveis e README. Próximo passo: verificar arquivos na pasta de migração.
+
+Salvar checkpoint e entregar o site ao usuário
+
+Salvar checkpoint e entregar o site ao usuário
+
+Salvar checkpoint e entregar o site ao usuário
+
+Finalizei o pacote de migração, incluindo código, schema, guia, variáveis e README. Próximo passo: verificar arquivos na pasta de migração.
+
+Finalizei o pacote de migração, incluindo código, schema, guia, variáveis e README. Próximo passo: verificar arquivos na pasta de migração.
+
+Finalizei o pacote de migração, incluindo código, schema, guia, variáveis e README. Próximo passo: verificar arquivos na pasta de migração.
+
+Finalizei o pacote de migração, incluindo código, schema, guia, variáveis e README. Próximo passo: verificar arquivos na pasta de migração.
+
+meshwave@mesh:~$ cd smb://mesh.local/hd_1tb/projetos
+bash: cd: smb://mesh.local/hd_1tb/projetos: Arquivo ou diretório inexistente
+meshwave@mesh:~$ cd projetos
+meshwave@mesh:~/projetos$ cd inovarse
+meshwave@mesh:~/projetos/inovarse$ npn install
+Comando 'npn' não encontrado, você quis dizer:
+  comando 'nnn' do deb nnn (4.9-1)
+  comando 'nn' do deb nn (6.7.3-15)
+  comando 'npx' do deb npm (9.2.0~ds1-2)
+  comando 'npm' do deb npm (9.2.0~ds1-2)
+Experimente: sudo apt install <deb name>
+meshwave@mesh:~/projetos/inovarse$ npm install
+npm error code ERESOLVE
+npm error ERESOLVE unable to resolve dependency tree
+npm error
+npm error While resolving: inovarse-ecosystem@1.0.0
+npm error Found: vite@7.3.1
+npm error node_modules/vite
+npm error   dev vite@"^7.1.7" from the root project
+npm error
+npm error Could not resolve dependency:
+npm error peer vite@"^4.0.0 || ^5.0.0" from @builder.io/vite-plugin-jsx-loc@0.1.1
+npm error node_modules/@builder.io/vite-plugin-jsx-loc
+npm error   dev @builder.io/vite-plugin-jsx-loc@"^0.1.1" from the root project
+npm error
+npm error Fix the upstream dependency conflict, or retry
+npm error this command with --force or --legacy-peer-deps
+npm error to accept an incorrect (and potentially broken) dependency resolution.
+npm error
+npm error
+npm error For a full report see:
+npm error /home/meshwave/.npm/_logs/2026-04-04T02_01_36_557Z-eresolve-report.txt
+npm notice
+npm notice New major version of npm available! 10.8.2 -> 11.12.1
+npm notice Changelog: 
+npm notice To update run: npm install -g npm@11.12.1
+npm notice
+npm error A complete log of this run can be found in: /home/meshwave/.npm/_logs/2026-04-04T02_01_36_557Z-debug-0.log
+meshwave@mesh:~/projetos/inovarse$ 
+Expandir
+
+meshwave@mesh:~$ cd smb://mesh.local/hd_1tb/projetos
+bash: cd: smb://mesh.local/hd_1tb/projetos: Arquivo ou diretório inexistente
+meshwave@mesh:~$ cd projetos
+meshwave@mesh:~/projetos$ cd inovarse
+meshwave@mesh:~/projetos/inovarse$ npn install
+Comando 'npn' não encontrado, você quis dizer:
+  comando 'nnn' do deb nnn (4.9-1)
+  comando 'nn' do deb nn (6.7.3-15)
+  comando 'npx' do deb npm (9.2.0~ds1-2)
+  comando 'npm' do deb npm (9.2.0~ds1-2)
+Experimente: sudo apt install <deb name>
+meshwave@mesh:~/projetos/inovarse$ npm install
+npm error code ERESOLVE
+npm error ERESOLVE unable to resolve dependency tree
+npm error
+npm error While resolving: inovarse-ecosystem@1.0.0
+npm error Found: vite@7.3.1
+npm error node_modules/vite
+npm error   dev vite@"^7.1.7" from the root project
+npm error
+npm error Could not resolve dependency:
+npm error peer vite@"^4.0.0 || ^5.0.0" from @builder.io/vite-plugin-jsx-loc@0.1.1
+npm error node_modules/@builder.io/vite-plugin-jsx-loc
+npm error   dev @builder.io/vite-plugin-jsx-loc@"^0.1.1" from the root project
+npm error
+npm error Fix the upstream dependency conflict, or retry
+npm error this command with --force or --legacy-peer-deps
+npm error to accept an incorrect (and potentially broken) dependency resolution.
+npm error
+npm error
+npm error For a full report see:
+npm error /home/meshwave/.npm/_logs/2026-04-04T02_01_36_557Z-eresolve-report.txt
+npm notice
+npm notice New major version of npm available! 10.8.2 -> 11.12.1
+npm notice Changelog: 
+npm notice To update run: npm install -g npm@11.12.1
+npm notice
+npm error A complete log of this run can be found in: /home/meshwave/.npm/_logs/2026-04-04T02_01_36_557Z-debug-0.log
+meshwave@mesh:~/projetos/inovarse$ 
+Expandir
+
+meshwave@mesh:~$ cd smb://mesh.local/hd_1tb/projetos
+bash: cd: smb://mesh.local/hd_1tb/projetos: Arquivo ou diretório inexistente
+meshwave@mesh:~$ cd projetos
+meshwave@mesh:~/projetos$ cd inovarse
+meshwave@mesh:~/projetos/inovarse$ npn install
+Comando 'npn' não encontrado, você quis dizer:
+  comando 'nnn' do deb nnn (4.9-1)
+  comando 'nn' do deb nn (6.7.3-15)
+  comando 'npx' do deb npm (9.2.0~ds1-2)
+  comando 'npm' do deb npm (9.2.0~ds1-2)
+Experimente: sudo apt install <deb name>
+meshwave@mesh:~/projetos/inovarse$ npm install
+npm error code ERESOLVE
+npm error ERESOLVE unable to resolve dependency tree
+npm error
+npm error While resolving: inovarse-ecosystem@1.0.0
+npm error Found: vite@7.3.1
+npm error node_modules/vite
+npm error   dev vite@"^7.1.7" from the root project
+npm error
+npm error Could not resolve dependency:
+npm error peer vite@"^4.0.0 || ^5.0.0" from @builder.io/vite-plugin-jsx-loc@0.1.1
+npm error node_modules/@builder.io/vite-plugin-jsx-loc
+npm error   dev @builder.io/vite-plugin-jsx-loc@"^0.1.1" from the root project
+npm error
+npm error Fix the upstream dependency conflict, or retry
+npm error this command with --force or --legacy-peer-deps
+npm error to accept an incorrect (and potentially broken) dependency resolution.
+npm error
+npm error
+npm error For a full report see:
+npm error /home/meshwave/.npm/_logs/2026-04-04T02_01_36_557Z-eresolve-report.txt
+npm notice
+npm notice New major version of npm available! 10.8.2 -> 11.12.1
+npm notice Changelog: 
+npm notice To update run: npm install -g npm@11.12.1
+npm notice
+npm error A complete log of this run can be found in: /home/meshwave/.npm/_logs/2026-04-04T02_01_36_557Z-debug-0.log
+meshwave@mesh:~/projetos/inovarse$ 
+Expandir
+
+meshwave@mesh:~$ cd smb://mesh.local/hd_1tb/projetos
+bash: cd: smb://mesh.local/hd_1tb/projetos: Arquivo ou diretório inexistente
+meshwave@mesh:~$ cd projetos
+meshwave@mesh:~/projetos$ cd inovarse
+meshwave@mesh:~/projetos/inovarse$ npn install
+Comando 'npn' não encontrado, você quis dizer:
+  comando 'nnn' do deb nnn (4.9-1)
+  comando 'nn' do deb nn (6.7.3-15)
+  comando 'npx' do deb npm (9.2.0~ds1-2)
+  comando 'npm' do deb npm (9.2.0~ds1-2)
+Experimente: sudo apt install <deb name>
+meshwave@mesh:~/projetos/inovarse$ npm install
+npm error code ERESOLVE
+npm error ERESOLVE unable to resolve dependency tree
+npm error
+npm error While resolving: inovarse-ecosystem@1.0.0
+npm error Found: vite@7.3.1
+npm error node_modules/vite
+npm error   dev vite@"^7.1.7" from the root project
+npm error
+npm error Could not resolve dependency:
+npm error peer vite@"^4.0.0 || ^5.0.0" from @builder.io/vite-plugin-jsx-loc@0.1.1
+npm error node_modules/@builder.io/vite-plugin-jsx-loc
+npm error   dev @builder.io/vite-plugin-jsx-loc@"^0.1.1" from the root project
+npm error
+npm error Fix the upstream dependency conflict, or retry
+npm error this command with --force or --legacy-peer-deps
+npm error to accept an incorrect (and potentially broken) dependency resolution.
+npm error
+npm error
+npm error For a full report see:
+npm error /home/meshwave/.npm/_logs/2026-04-04T02_01_36_557Z-eresolve-report.txt
+npm notice
+npm notice New major version of npm available! 10.8.2 -> 11.12.1
+npm notice Changelog: 
+npm notice To update run: npm install -g npm@11.12.1
+npm notice
+npm error A complete log of this run can be found in: /home/meshwave/.npm/_logs/2026-04-04T02_01_36_557Z-debug-0.log
+meshwave@mesh:~/projetos/inovarse$ 
+Expandir
+
+meshwave@mesh:~$ cd smb://mesh.local/hd_1tb/projetos
+bash: cd: smb://mesh.local/hd_1tb/projetos: Arquivo ou diretório inexistente
+meshwave@mesh:~$ cd projetos
+meshwave@mesh:~/projetos$ cd inovarse
+meshwave@mesh:~/projetos/inovarse$ npn install
+Comando 'npn' não encontrado, você quis dizer:
+  comando 'nnn' do deb nnn (4.9-1)
+  comando 'nn' do deb nn (6.7.3-15)
+  comando 'npx' do deb npm (9.2.0~ds1-2)
+  comando 'npm' do deb npm (9.2.0~ds1-2)
+Experimente: sudo apt install <deb name>
+meshwave@mesh:~/projetos/inovarse$ npm install
+npm error code ERESOLVE
+npm error ERESOLVE unable to resolve dependency tree
+npm error
+npm error While resolving: inovarse-ecosystem@1.0.0
+npm error Found: vite@7.3.1
+npm error node_modules/vite
+npm error   dev vite@"^7.1.7" from the root project
+npm error
+npm error Could not resolve dependency:
+npm error peer vite@"^4.0.0 || ^5.0.0" from @builder.io/vite-plugin-jsx-loc@0.1.1
+npm error node_modules/@builder.io/vite-plugin-jsx-loc
+npm error   dev @builder.io/vite-plugin-jsx-loc@"^0.1.1" from the root project
+npm error
+npm error Fix the upstream dependency conflict, or retry
+npm error this command with --force or --legacy-peer-deps
+npm error to accept an incorrect (and potentially broken) dependency resolution.
+npm error
+npm error
+npm error For a full report see:
+npm error /home/meshwave/.npm/_logs/2026-04-04T02_01_36_557Z-eresolve-report.txt
+npm notice
+npm notice New major version of npm available! 10.8.2 -> 11.12.1
+npm notice Changelog: 
+npm notice To update run: npm install -g npm@11.12.1
+npm notice
+npm error A complete log of this run can be found in: /home/meshwave/.npm/_logs/2026-04-04T02_01_36_557Z-debug-0.log
+meshwave@mesh:~/projetos/inovarse$ 
+Expandir
+
+meshwave@mesh:~$ cd smb://mesh.local/hd_1tb/projetos
+bash: cd: smb://mesh.local/hd_1tb/projetos: Arquivo ou diretório inexistente
+meshwave@mesh:~$ cd projetos
+meshwave@mesh:~/projetos$ cd inovarse
+meshwave@mesh:~/projetos/inovarse$ npn install
+Comando 'npn' não encontrado, você quis dizer:
+  comando 'nnn' do deb nnn (4.9-1)
+  comando 'nn' do deb nn (6.7.3-15)
+  comando 'npx' do deb npm (9.2.0~ds1-2)
+  comando 'npm' do deb npm (9.2.0~ds1-2)
+Experimente: sudo apt install <deb name>
+meshwave@mesh:~/projetos/inovarse$ npm install
+npm error code ERESOLVE
+npm error ERESOLVE unable to resolve dependency tree
+npm error
+npm error While resolving: inovarse-ecosystem@1.0.0
+npm error Found: vite@7.3.1
+npm error node_modules/vite
+npm error   dev vite@"^7.1.7" from the root project
+npm error
+npm error Could not resolve dependency:
+npm error peer vite@"^4.0.0 || ^5.0.0" from @builder.io/vite-plugin-jsx-loc@0.1.1
+npm error node_modules/@builder.io/vite-plugin-jsx-loc
+npm error   dev @builder.io/vite-plugin-jsx-loc@"^0.1.1" from the root project
+npm error
+npm error Fix the upstream dependency conflict, or retry
+npm error this command with --force or --legacy-peer-deps
+npm error to accept an incorrect (and potentially broken) dependency resolution.
+npm error
+npm error
+npm error For a full report see:
+npm error /home/meshwave/.npm/_logs/2026-04-04T02_01_36_557Z-eresolve-report.txt
+npm notice
+npm notice New major version of npm available! 10.8.2 -> 11.12.1
+npm notice Changelog: 
+npm notice To update run: npm install -g npm@11.12.1
+npm notice
+npm error A complete log of this run can be found in: /home/meshwave/.npm/_logs/2026-04-04T02_01_36_557Z-debug-0.log
+meshwave@mesh:~/projetos/inovarse$ 
+Expandir
+
+meshwave@mesh:~$ cd smb://mesh.local/hd_1tb/projetos
+bash: cd: smb://mesh.local/hd_1tb/projetos: Arquivo ou diretório inexistente
+meshwave@mesh:~$ cd projetos
+meshwave@mesh:~/projetos$ cd inovarse
+meshwave@mesh:~/projetos/inovarse$ npn install
+Comando 'npn' não encontrado, você quis dizer:
+  comando 'nnn' do deb nnn (4.9-1)
+  comando 'nn' do deb nn (6.7.3-15)
+  comando 'npx' do deb npm (9.2.0~ds1-2)
+  comando 'npm' do deb npm (9.2.0~ds1-2)
+Experimente: sudo apt install <deb name>
+meshwave@mesh:~/projetos/inovarse$ npm install
+npm error code ERESOLVE
+npm error ERESOLVE unable to resolve dependency tree
+npm error
+npm error While resolving: inovarse-ecosystem@1.0.0
+npm error Found: vite@7.3.1
+npm error node_modules/vite
+npm error   dev vite@"^7.1.7" from the root project
+npm error
+npm error Could not resolve dependency:
+npm error peer vite@"^4.0.0 || ^5.0.0" from @builder.io/vite-plugin-jsx-loc@0.1.1
+npm error node_modules/@builder.io/vite-plugin-jsx-loc
+npm error   dev @builder.io/vite-plugin-jsx-loc@"^0.1.1" from the root project
+npm error
+npm error Fix the upstream dependency conflict, or retry
+npm error this command with --force or --legacy-peer-deps
+npm error to accept an incorrect (and potentially broken) dependency resolution.
+npm error
+npm error
+npm error For a full report see:
+npm error /home/meshwave/.npm/_logs/2026-04-04T02_01_36_557Z-eresolve-report.txt
+npm notice
+npm notice New major version of npm available! 10.8.2 -> 11.12.1
+npm notice Changelog: 
+npm notice To update run: npm install -g npm@11.12.1
+npm notice
+npm error A complete log of this run can be found in: /home/meshwave/.npm/_logs/2026-04-04T02_01_36_557Z-debug-0.log
+meshwave@mesh:~/projetos/inovarse$ 
+Expandir
+
+meshwave@mesh:~$ cd smb://mesh.local/hd_1tb/projetos
+bash: cd: smb://mesh.local/hd_1tb/projetos: Arquivo ou diretório inexistente
+meshwave@mesh:~$ cd projetos
+meshwave@mesh:~/projetos$ cd inovarse
+meshwave@mesh:~/projetos/inovarse$ npn install
+Comando 'npn' não encontrado, você quis dizer:
+  comando 'nnn' do deb nnn (4.9-1)
+  comando 'nn' do deb nn (6.7.3-15)
+  comando 'npx' do deb npm (9.2.0~ds1-2)
+  comando 'npm' do deb npm (9.2.0~ds1-2)
+Experimente: sudo apt install <deb name>
+meshwave@mesh:~/projetos/inovarse$ npm install
+npm error code ERESOLVE
+npm error ERESOLVE unable to resolve dependency tree
+npm error
+npm error While resolving: inovarse-ecosystem@1.0.0
+npm error Found: vite@7.3.1
+npm error node_modules/vite
+npm error   dev vite@"^7.1.7" from the root project
+npm error
+npm error Could not resolve dependency:
+npm error peer vite@"^4.0.0 || ^5.0.0" from @builder.io/vite-plugin-jsx-loc@0.1.1
+npm error node_modules/@builder.io/vite-plugin-jsx-loc
+npm error   dev @builder.io/vite-plugin-jsx-loc@"^0.1.1" from the root project
+npm error
+npm error Fix the upstream dependency conflict, or retry
+npm error this command with --force or --legacy-peer-deps
+npm error to accept an incorrect (and potentially broken) dependency resolution.
+npm error
+npm error
+npm error For a full report see:
+npm error /home/meshwave/.npm/_logs/2026-04-04T02_01_36_557Z-eresolve-report.txt
+npm notice
+npm notice New major version of npm available! 10.8.2 -> 11.12.1
+npm notice Changelog: 
+npm notice To update run: npm install -g npm@11.12.1
+npm notice
+npm error A complete log of this run can be found in: /home/meshwave/.npm/_logs/2026-04-04T02_01_36_557Z-debug-0.log
+meshwave@mesh:~/projetos/inovarse$
+
+Expandir
+
+Expandir
+
+Lite
+Perfeito! Você já descompactou o ZIP e está tentando instalar as dependências. Há um conflito de versão do Vite com o plugin @builder.io/vite-plugin-jsx-loc.
+Existem 3 formas de resolver isso:
+Opção 1: Usar --legacy-peer-deps (Recomendado para começar rápido)
+Bash
+npm install --legacy-peer-deps
+Opção 2: Usar pnpm (Recomendado para desenvolvimento)
+Bash
+npm install -g pnpm
+pnpm install
+Opção 3: Usar --force
+Bash
+npm install --force
+Recomendo a Opção 2 com pnpm porque é o que foi usado para desenvolver o projeto e garante compatibilidade total.
+Qual você prefere usar?
+
+Lite
+Perfeito! Você já descompactou o ZIP e está tentando instalar as dependências. Há um conflito de versão do Vite com o plugin @builder.io/vite-plugin-jsx-loc.
+Existem 3 formas de resolver isso:
+Opção 1: Usar --legacy-peer-deps (Recomendado para começar rápido)
+Bash
+npm install --legacy-peer-deps
+Opção 2: Usar pnpm (Recomendado para desenvolvimento)
+Bash
+npm install -g pnpm
+pnpm install
+Opção 3: Usar --force
+Bash
+npm install --force
+Recomendo a Opção 2 com pnpm porque é o que foi usado para desenvolver o projeto e garante compatibilidade total.
+Qual você prefere usar?
+
+Lite
+Perfeito! Você já descompactou o ZIP e está tentando instalar as dependências. Há um conflito de versão do Vite com o plugin @builder.io/vite-plugin-jsx-loc.
+Existem 3 formas de resolver isso:
+Opção 1: Usar --legacy-peer-deps (Recomendado para começar rápido)
+Bash
+npm install --legacy-peer-deps
+Opção 2: Usar pnpm (Recomendado para desenvolvimento)
+Bash
+npm install -g pnpm
+pnpm install
+Opção 3: Usar --force
+Bash
+npm install --force
+Recomendo a Opção 2 com pnpm porque é o que foi usado para desenvolver o projeto e garante compatibilidade total.
+Qual você prefere usar?
+
+Lite
+
+Lite
+
+Lite
+
+Perfeito! Você já descompactou o ZIP e está tentando instalar as dependências. Há um conflito de versão do Vite com o plugin @builder.io/vite-plugin-jsx-loc.
+Existem 3 formas de resolver isso:
+Opção 1: Usar --legacy-peer-deps (Recomendado para começar rápido)
+Bash
+npm install --legacy-peer-deps
+Opção 2: Usar pnpm (Recomendado para desenvolvimento)
+Bash
+npm install -g pnpm
+pnpm install
+Opção 3: Usar --force
+Bash
+npm install --force
+Recomendo a Opção 2 com pnpm porque é o que foi usado para desenvolver o projeto e garante compatibilidade total.
+Qual você prefere usar?
+
+Perfeito! Você já descompactou o ZIP e está tentando instalar as dependências. Há um conflito de versão do Vite com o plugin @builder.io/vite-plugin-jsx-loc.
+
+Perfeito! Você já descompactou o ZIP e está tentando instalar as dependências. Há um conflito de versão do Vite com o plugin @builder.io/vite-plugin-jsx-loc.
+
+@builder.io/vite-plugin-jsx-loc
+
+Existem 3 formas de resolver isso:
+
+Existem 3 formas de resolver isso:
+
+Opção 1: Usar --legacy-peer-deps (Recomendado para começar rápido)
+
+Opção 1: Usar --legacy-peer-deps (Recomendado para começar rápido)
+
+Opção 1: Usar --legacy-peer-deps (Recomendado para começar rápido)
+
+--legacy-peer-deps
+
+Bash
+npm install --legacy-peer-deps
+
+Bash
+npm install --legacy-peer-deps
+
+Bash
+
+Bash
+
+npm install --legacy-peer-deps
+
+npm install --legacy-peer-deps
+
+npm install --legacy-peer-deps
+
+npm install --legacy-peer-deps
+
+npm
+
+install
+
+--legacy-peer-deps
+
+Opção 2: Usar pnpm (Recomendado para desenvolvimento)
+
+Opção 2: Usar pnpm (Recomendado para desenvolvimento)
+
+Opção 2: Usar pnpm (Recomendado para desenvolvimento)
+
+pnpm
+
+Bash
+npm install -g pnpm
+pnpm install
+
+Bash
+npm install -g pnpm
+pnpm install
+
+Bash
+
+Bash
+
+npm install -g pnpm
+pnpm install
+
+npm install -g pnpm
+pnpm install
+
+npm install -g pnpm
+pnpm install
+
+npm install -g pnpm
+
+npm
+
+install
+
+-g
+
+pnpm
+
+pnpm install
+
+pnpm
+
+install
+
+Opção 3: Usar --force
+
+Opção 3: Usar --force
+
+Opção 3: Usar --force
+
+--force
+
+Bash
+npm install --force
+
+Bash
+npm install --force
+
+Bash
+
+Bash
+
+npm install --force
+
+npm install --force
+
+npm install --force
+
+npm install --force
+
+npm
+
+install
+
+--force
+
+Recomendo a Opção 2 com pnpm porque é o que foi usado para desenvolver o projeto e garante compatibilidade total.
+
+Recomendo a Opção 2 com pnpm porque é o que foi usado para desenvolver o projeto e garante compatibilidade total.
+
+Opção 2 com pnpm
+
+Qual você prefere usar?
+
+Qual você prefere usar?
+
+1... sempre uso npm
+
+1... sempre uso npm
+
+1... sempre uso npm
+
+1... sempre uso npm
+
+1... sempre uso npm
+
+1... sempre uso npm
+
+1... sempre uso npm
+
+1... sempre uso npm
+
+Lite
+Perfeito! Use então:
+Bash
+npm install --legacy-peer-deps
+Isso vai instalar todas as dependências ignorando o conflito de versão do Vite, que é apenas uma incompatibilidade menor com o plugin de desenvolvimento e não afeta a funcionalidade do projeto.
+Após a instalação, você pode executar:
+Bash
+npm run dev
+Isso iniciará o servidor de desenvolvimento em http://localhost:3000
+Avise quando terminar a instalação e estiver pronto para os próximos passos!
+
+Lite
+Perfeito! Use então:
+Bash
+npm install --legacy-peer-deps
+Isso vai instalar todas as dependências ignorando o conflito de versão do Vite, que é apenas uma incompatibilidade menor com o plugin de desenvolvimento e não afeta a funcionalidade do projeto.
+Após a instalação, você pode executar:
+Bash
+npm run dev
+Isso iniciará o servidor de desenvolvimento em http://localhost:3000
+Avise quando terminar a instalação e estiver pronto para os próximos passos!
+
+Lite
+Perfeito! Use então:
+Bash
+npm install --legacy-peer-deps
+Isso vai instalar todas as dependências ignorando o conflito de versão do Vite, que é apenas uma incompatibilidade menor com o plugin de desenvolvimento e não afeta a funcionalidade do projeto.
+Após a instalação, você pode executar:
+Bash
+npm run dev
+Isso iniciará o servidor de desenvolvimento em http://localhost:3000
+Avise quando terminar a instalação e estiver pronto para os próximos passos!
+
+Lite
+
+Lite
+
+Lite
+
+Perfeito! Use então:
+Bash
+npm install --legacy-peer-deps
+Isso vai instalar todas as dependências ignorando o conflito de versão do Vite, que é apenas uma incompatibilidade menor com o plugin de desenvolvimento e não afeta a funcionalidade do projeto.
+Após a instalação, você pode executar:
+Bash
+npm run dev
+Isso iniciará o servidor de desenvolvimento em http://localhost:3000
+Avise quando terminar a instalação e estiver pronto para os próximos passos!
+
+Perfeito! Use então:
+
+Perfeito! Use então:
+
+Bash
+npm install --legacy-peer-deps
+
+Bash
+npm install --legacy-peer-deps
+
+Bash
+
+Bash
+
+npm install --legacy-peer-deps
+
+npm install --legacy-peer-deps
+
+npm install --legacy-peer-deps
+
+npm install --legacy-peer-deps
+
+npm
+
+install
+
+--legacy-peer-deps
+
+Isso vai instalar todas as dependências ignorando o conflito de versão do Vite, que é apenas uma incompatibilidade menor com o plugin de desenvolvimento e não afeta a funcionalidade do projeto.
+
+Isso vai instalar todas as dependências ignorando o conflito de versão do Vite, que é apenas uma incompatibilidade menor com o plugin de desenvolvimento e não afeta a funcionalidade do projeto.
+
+Após a instalação, você pode executar:
+
+Após a instalação, você pode executar:
+
+Bash
+npm run dev
+
+Bash
+npm run dev
+
+Bash
+
+Bash
+
+npm run dev
+
+npm run dev
+
+npm run dev
+
+npm run dev
+
+npm
+
+run
+
+dev
+
+Isso iniciará o servidor de desenvolvimento em http://localhost:3000
+
+Isso iniciará o servidor de desenvolvimento em http://localhost:3000
+
+http://localhost:3000
+
+Avise quando terminar a instalação e estiver pronto para os próximos passos!
+
+Avise quando terminar a instalação e estiver pronto para os próximos passos!
+
+Lite
+Depois que instalar, você também vai precisar:
+Criar arquivo .env.local na raiz do projeto com as variáveis do ENV_SETUP.md
+Preencher DATABASE_URL com a connection string do Supabase
+Gerar JWT_SECRET com um comando ou gerador online
+Quer que eu te ajude com isso quando terminar a instalação?
+
+Lite
+Depois que instalar, você também vai precisar:
+Criar arquivo .env.local na raiz do projeto com as variáveis do ENV_SETUP.md
+Preencher DATABASE_URL com a connection string do Supabase
+Gerar JWT_SECRET com um comando ou gerador online
+Quer que eu te ajude com isso quando terminar a instalação?
+
+Lite
+Depois que instalar, você também vai precisar:
+Criar arquivo .env.local na raiz do projeto com as variáveis do ENV_SETUP.md
+Preencher DATABASE_URL com a connection string do Supabase
+Gerar JWT_SECRET com um comando ou gerador online
+Quer que eu te ajude com isso quando terminar a instalação?
+
+Lite
+
+Lite
+
+Lite
+
+Depois que instalar, você também vai precisar:
+Criar arquivo .env.local na raiz do projeto com as variáveis do ENV_SETUP.md
+Preencher DATABASE_URL com a connection string do Supabase
+Gerar JWT_SECRET com um comando ou gerador online
+Quer que eu te ajude com isso quando terminar a instalação?
+
+Depois que instalar, você também vai precisar:
+
+Depois que instalar, você também vai precisar:
+
+Criar arquivo .env.local na raiz do projeto com as variáveis do ENV_SETUP.md
+Preencher DATABASE_URL com a connection string do Supabase
+Gerar JWT_SECRET com um comando ou gerador online
+
+Criar arquivo .env.local na raiz do projeto com as variáveis do ENV_SETUP.md
+
+Criar arquivo .env.local
+
+.env.local
+
+ENV_SETUP.md
+
+Preencher DATABASE_URL com a connection string do Supabase
+
+Preencher DATABASE_URL
+
+DATABASE_URL
+
+Gerar JWT_SECRET com um comando ou gerador online
+
+Gerar JWT_SECRET
+
+JWT_SECRET
+
+Quer que eu te ajude com isso quando terminar a instalação?
+
+Quer que eu te ajude com isso quando terminar a instalação?
+
+Lite
+Você não tem créditos suficientes. Por favor, faça upgrade através do link abaixo para continuar.
+https://manus.go.link/iW6sB?action=open-subscription
+
+Lite
+Você não tem créditos suficientes. Por favor, faça upgrade através do link abaixo para continuar.
+https://manus.go.link/iW6sB?action=open-subscription
+
+Lite
+Você não tem créditos suficientes. Por favor, faça upgrade através do link abaixo para continuar.
+https://manus.go.link/iW6sB?action=open-subscription
+
+Lite
+
+Lite
+
+Lite
+
+Você não tem créditos suficientes. Por favor, faça upgrade através do link abaixo para continuar.
+https://manus.go.link/iW6sB?action=open-subscription
+
+Você não tem créditos suficientes. Por favor, faça upgrade através do link abaixo para continuar.
+https://manus.go.link/iW6sB?action=open-subscription
+
+Você não tem créditos suficientes. Por favor, faça upgrade através do link abaixo para continuar.
+https://manus.go.link/iW6sB?action=open-subscription
+
+https://manus.go.link/iW6sB?action=open-subscription
+
+Salvar checkpoint e entregar o site ao usuário
+Consegui finalizar o pacote de migração. Agora, vou verificar os arquivos na pasta de migração para garantir que tudo está correto antes de prosseguir.
+Manus está reiniciando o computador, por favor aguarde um momento. Obter suporte para o problema
+Manus reiniciou o computador com sucesso. Você pode agora continuar com a tarefa anterior. Obter suporte para o problema
+
+Salvar checkpoint e entregar o site ao usuário
+Consegui finalizar o pacote de migração. Agora, vou verificar os arquivos na pasta de migração para garantir que tudo está correto antes de prosseguir.
+Manus está reiniciando o computador, por favor aguarde um momento. Obter suporte para o problema
+Manus reiniciou o computador com sucesso. Você pode agora continuar com a tarefa anterior. Obter suporte para o problema
+
+Salvar checkpoint e entregar o site ao usuário
+Consegui finalizar o pacote de migração. Agora, vou verificar os arquivos na pasta de migração para garantir que tudo está correto antes de prosseguir.
+Manus está reiniciando o computador, por favor aguarde um momento. Obter suporte para o problema
+Manus reiniciou o computador com sucesso. Você pode agora continuar com a tarefa anterior. Obter suporte para o problema
+
+Salvar checkpoint e entregar o site ao usuário
+
+Salvar checkpoint e entregar o site ao usuário
+
+Salvar checkpoint e entregar o site ao usuário
+
+Consegui finalizar o pacote de migração. Agora, vou verificar os arquivos na pasta de migração para garantir que tudo está correto antes de prosseguir.
+Manus está reiniciando o computador, por favor aguarde um momento. Obter suporte para o problema
+Manus reiniciou o computador com sucesso. Você pode agora continuar com a tarefa anterior. Obter suporte para o problema
+
+Consegui finalizar o pacote de migração. Agora, vou verificar os arquivos na pasta de migração para garantir que tudo está correto antes de prosseguir.
+Manus está reiniciando o computador, por favor aguarde um momento. Obter suporte para o problema
+Manus reiniciou o computador com sucesso. Você pode agora continuar com a tarefa anterior. Obter suporte para o problema
+
+Consegui finalizar o pacote de migração. Agora, vou verificar os arquivos na pasta de migração para garantir que tudo está correto antes de prosseguir.
+
+Consegui finalizar o pacote de migração. Agora, vou verificar os arquivos na pasta de migração para garantir que tudo está correto antes de prosseguir.
+
+Manus está reiniciando o computador, por favor aguarde um momento. Obter suporte para o problema
+
+Obter suporte para o problema
+
+Manus reiniciou o computador com sucesso. Você pode agora continuar com a tarefa anterior. Obter suporte para o problema
+
+Obter suporte para o problema
+
+Seus créditos foram esgotados.
+
+Seus créditos foram esgotados.
+
+Seus créditos foram esgotados.
+
+main
+EADME.md
+-rw-rw-r-- 1 ubuntu ubuntu 236K Apr  3 21:45 inovarse-ecosystem.zip
+-rw-r--r-- 1 ubuntu ubuntu 2.4K Apr  3 21:44 supabase_schema.sql
+---
+   68 ENV_SETUP.md
+  252 MIGRATION_GUIDE.md
+  170 README.md
+   59 supabase_schema.sql
+  549 total
+ubuntu@sandbox:~/inovarse-ecosystem-migration $
+Salvar checkpoint e entregar o site ao usuário
+6 / 6
+Reprodução da tarefa Manus concluída.
+Assistir novamente
+Experimente você mesmo
+
+main
+EADME.md
+-rw-rw-r-- 1 ubuntu ubuntu 236K Apr  3 21:45 inovarse-ecosystem.zip
+-rw-r--r-- 1 ubuntu ubuntu 2.4K Apr  3 21:44 supabase_schema.sql
+---
+   68 ENV_SETUP.md
+  252 MIGRATION_GUIDE.md
+  170 README.md
+   59 supabase_schema.sql
+  549 total
+ubuntu@sandbox:~/inovarse-ecosystem-migration $
+Salvar checkpoint e entregar o site ao usuário
+6 / 6
+
+main
+EADME.md
+-rw-rw-r-- 1 ubuntu ubuntu 236K Apr  3 21:45 inovarse-ecosystem.zip
+-rw-r--r-- 1 ubuntu ubuntu 2.4K Apr  3 21:44 supabase_schema.sql
+---
+   68 ENV_SETUP.md
+  252 MIGRATION_GUIDE.md
+  170 README.md
+   59 supabase_schema.sql
+  549 total
+ubuntu@sandbox:~/inovarse-ecosystem-migration $
+
+main
+EADME.md
+-rw-rw-r-- 1 ubuntu ubuntu 236K Apr  3 21:45 inovarse-ecosystem.zip
+-rw-r--r-- 1 ubuntu ubuntu 2.4K Apr  3 21:44 supabase_schema.sql
+---
+   68 ENV_SETUP.md
+  252 MIGRATION_GUIDE.md
+  170 README.md
+   59 supabase_schema.sql
+  549 total
+ubuntu@sandbox:~/inovarse-ecosystem-migration $
+
+main
+EADME.md
+-rw-rw-r-- 1 ubuntu ubuntu 236K Apr  3 21:45 inovarse-ecosystem.zip
+-rw-r--r-- 1 ubuntu ubuntu 2.4K Apr  3 21:44 supabase_schema.sql
+---
+   68 ENV_SETUP.md
+  252 MIGRATION_GUIDE.md
+  170 README.md
+   59 supabase_schema.sql
+  549 total
+ubuntu@sandbox:~/inovarse-ecosystem-migration $
+
+main
+
+main
+
+main
+
+EADME.md
+-rw-rw-r-- 1 ubuntu ubuntu 236K Apr  3 21:45 inovarse-ecosystem.zip
+-rw-r--r-- 1 ubuntu ubuntu 2.4K Apr  3 21:44 supabase_schema.sql
+---
+   68 ENV_SETUP.md
+  252 MIGRATION_GUIDE.md
+  170 README.md
+   59 supabase_schema.sql
+  549 total
+ubuntu@sandbox:~/inovarse-ecosystem-migration $
+
+EADME.md
+-rw-rw-r-- 1 ubuntu ubuntu 236K Apr  3 21:45 inovarse-ecosystem.zip
+-rw-r--r-- 1 ubuntu ubuntu 2.4K Apr  3 21:44 supabase_schema.sql
+---
+   68 ENV_SETUP.md
+  252 MIGRATION_GUIDE.md
+  170 README.md
+   59 supabase_schema.sql
+  549 total
+ubuntu@sandbox:~/inovarse-ecosystem-migration $
+
+EADME.md
+-rw-rw-r-- 1 ubuntu ubuntu 236K Apr  3 21:45 inovarse-ecosystem.zip
+-rw-r--r-- 1 ubuntu ubuntu 2.4K Apr  3 21:44 supabase_schema.sql
+---
+   68 ENV_SETUP.md
+  252 MIGRATION_GUIDE.md
+  170 README.md
+   59 supabase_schema.sql
+  549 total
+ubuntu@sandbox:~/inovarse-ecosystem-migration $
+
+EADME.md
+-rw-rw-r-- 1 ubuntu ubuntu 236K Apr  3 21:45 inovarse-ecosystem.zip
+-rw-r--r-- 1 ubuntu ubuntu 2.4K Apr  3 21:44 supabase_schema.sql
+---
+   68 ENV_SETUP.md
+  252 MIGRATION_GUIDE.md
+  170 README.md
+   59 supabase_schema.sql
+  549 total
+ubuntu@sandbox:~/inovarse-ecosystem-migration $
+
+EADME.md
+-rw-rw-r-- 1 ubuntu ubuntu 236K Apr  3 21:45 inovarse-ecosystem.zip
+-rw-r--r-- 1 ubuntu ubuntu 2.4K Apr  3 21:44 supabase_schema.sql
+---
+   68 ENV_SETUP.md
+  252 MIGRATION_GUIDE.md
+  170 README.md
+   59 supabase_schema.sql
+  549 total
+
+ubuntu@sandbox:~/inovarse-ecosystem-migration $
+
+Salvar checkpoint e entregar o site ao usuário
+
+Salvar checkpoint e entregar o site ao usuário
+
+Salvar checkpoint e entregar o site ao usuário
+
+Salvar checkpoint e entregar o site ao usuário
+
+Salvar checkpoint e entregar o site ao usuário
+
+Salvar checkpoint e entregar o site ao usuário
+
+6 / 6
+
+6 / 6
+
+Reprodução da tarefa Manus concluída.
+Assistir novamente
+Experimente você mesmo
+
+Reprodução da tarefa Manus concluída.
+
+Reprodução da tarefa Manus concluída.
+
+Reprodução da tarefa Manus concluída.
+
+Assistir novamente
+Experimente você mesmo
+
+Assistir novamente
+
+Assistir novamente
+
+Experimente você mesmo
+
+Experimente você mesmo

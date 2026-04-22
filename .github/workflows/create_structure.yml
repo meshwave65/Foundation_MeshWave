@@ -1,0 +1,21 @@
+name: Create Directory Structure
+on: [push]
+jobs:
+  create-structure:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+      - name: Create directories
+        run: |
+          mkdir -p Estrutura/Aplicacao Estrutura/Rede_MESH Estrutura/Otimizacao_de_IA
+          touch Estrutura/Aplicacao/.gitkeep Estrutura/Rede_MESH/.gitkeep Estrutura/Otimizacao_de_IA/.gitkeep
+      - name: Commit changes
+        run: |
+          git config --global user.name "Diógenes Duarte Sobral"
+          git config --global user.email "ddsl@meshwave.com.br"
+          git add .
+          git commit -m "Adiciona estrutura inicial de diretórios" || echo "Nenhuma mudança para commit"
+          git push
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

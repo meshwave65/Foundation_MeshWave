@@ -1,0 +1,303 @@
+
+
+================================================================================Fundation_MeshWave
+
+Fundation_MeshWave
+
+phases/
+
+agents/
+
+generated_content/
+
+README.md
+
+git add .
+
+git commit -m "Estrutura inicial do Projeto MeshWave"
+
+git push origin main
+
+.github/workflows/setup_project_structure.yml
+
+workflow_dispatch
+
+main
+
+develop
+
+Settings > Branches > Add branch protection rule
+
+feature/nome-da-feature
+
+agent/nome-do-agente-task
+
+generated_content/reports/
+
+docs/
+
+code/
+
+media/
+
+history/
+
+agents/centralizers/agent_name/src/
+
+agents/specialists/phaseX/segment/agent_name/src/
+
+phases/
+
+Settings
+
+Developer settings
+
+GitHub Apps
+
+New GitHub App
+
+Read & write
+
+Read & write
+
+Read & write
+
+Read & write
+
+Read-only
+
+push
+
+pull_request
+
+workflow_run
+
+Only on this account
+
+Fundation_MeshWave
+
+General
+
+Private keys
+
+.pem
+
+App ID
+
+App ID
+
+PyGithub
+
+Settings
+
+Developer settings
+
+Personal access tokens
+
+Tokens (classic)
+
+Generate new token
+
+repo
+
+repo:status
+
+public_repo
+
+Settings
+
+Secrets and variables
+
+Actions
+
+New repository secret
+
+GITHUB_APP_ID
+
+GITHUB_APP_PRIVATE_KEY
+
+.pem
+
+GITHUB_PAT
+
+MANUS_API_KEY
+
+EMAIL_SENDER_API_KEY
+
+secrets.GITHUB_APP_ID
+
+Dockerfile
+
+Dockerfile
+
+# agents/specialists/phase1/application/agent_app_core/Dockerfile
+FROM python:3.9-slim-buster
+WORKDIR /app
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+COPY src/ .
+CMD ["python", "main.py"] # Ou o script principal do agente
+```    *   **Kubernetes/Orquestrador de Contêineres:** Para uma solução escalável e robusta, considere usar Kubernetes ou um serviço de contêiner gerenciado (e.g., AWS ECS, Google Cloud Run, Azure Container Instances) para orquestrar a execução dos seus agentes.
+
+# agents/specialists/phase1/application/agent_app_core/Dockerfile
+FROM python:3.9-slim-buster
+WORKDIR /app
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+COPY src/ .
+CMD ["python", "main.py"] # Ou o script principal do agente
+```    *   **Kubernetes/Orquestrador de Contêineres:** Para uma solução escalável e robusta, considere usar Kubernetes ou um serviço de contêiner gerenciado (e.g., AWS ECS, Google Cloud Run, Azure Container Instances) para orquestrar a execução dos seus agentes.
+
+Fundation_MeshWave
+
+git add
+
+git commit
+
+git push
+
+schedule
+
+workflow_dispatch
+
+python agents/specialists/phase1/application/agent_app_core/src/main.py
+
+docker build -t agent-app-core agents/specialists/phase1/application/agent_app_core/
+
+docker run agent-app-core
+
+git add
+
+git commit
+
+git push
+
+phases/
+
+# .github/workflows/run_agent_app_core.yml
+name: Run Agent AppCore
+
+on:
+  workflow_dispatch: # Disparo manual
+  # schedule:
+  #   - cron: '0 0 * * *' # Diariamente à meia-noite UTC
+
+jobs:
+  run_agent:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+      with:
+        token: ${{ secrets.GITHUB_PAT }} # Ou usar GitHub App para autenticação
+
+    - name: Setup Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.9'
+
+    - name: Install dependencies
+      run: |
+        pip install GitPython # e outras libs que o agente precise
+
+    - name: Configure Git for agent
+      run: |
+        git config user.name "Agent AppCore Bot"
+        git config user.email "agent-appcore@meshwave.com"
+
+    - name: Run Agent AppCore
+      env:
+        # Passar segredos como variáveis de ambiente para o agente
+        GITHUB_PAT: ${{ secrets.GITHUB_PAT }}
+        # ... outras variáveis de ambiente que o agente precise
+      run: |
+        python agents/specialists/phase1/application/agent_app_core/src/main.py
+
+    - name: Commit and Push changes
+      run: |
+        git add phases/phase1_foundation_integration/application/
+        git commit -m "Agent AppCore: Automated update for App MeshWave module" || echo "No changes to commit"
+        git push
+
+# .github/workflows/run_agent_app_core.yml
+name: Run Agent AppCore
+
+on:
+  workflow_dispatch: # Disparo manual
+  # schedule:
+  #   - cron: '0 0 * * *' # Diariamente à meia-noite UTC
+
+jobs:
+  run_agent:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+      with:
+        token: ${{ secrets.GITHUB_PAT }} # Ou usar GitHub App para autenticação
+
+    - name: Setup Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.9'
+
+    - name: Install dependencies
+      run: |
+        pip install GitPython # e outras libs que o agente precise
+
+    - name: Configure Git for agent
+      run: |
+        git config user.name "Agent AppCore Bot"
+        git config user.email "agent-appcore@meshwave.com"
+
+    - name: Run Agent AppCore
+      env:
+        # Passar segredos como variáveis de ambiente para o agente
+        GITHUB_PAT: ${{ secrets.GITHUB_PAT }}
+        # ... outras variáveis de ambiente que o agente precise
+      run: |
+        python agents/specialists/phase1/application/agent_app_core/src/main.py
+
+    - name: Commit and Push changes
+      run: |
+        git add phases/phase1_foundation_integration/application/
+        git commit -m "Agent AppCore: Automated update for App MeshWave module" || echo "No changes to commit"
+        git push
+
+schedule
+
+repository_dispatch
+
+generated_content/agent_specific_outputs/
+
+phases/
+
+generated_content/agent_specific_outputs/
+
+generated_content/reports/agent_centralizador_relatorios/
+
+git add
+
+git commit
+
+git push
+
+secrets.EMAIL_SENDER_API_KEY
+
+logging
+
+generated_content/
+
+- [x] Fase 1: Planejamento e Preparação da Estrutura
+- [x] Fase 2: Configuração do Repositório GitHub
+- [x] Fase 3: Implementação de Scripts de Automação
+- [x] Fase 4: Configuração de Permissões e Segurança
+- [x] Fase 5: Criação de Templates para Agentes
+- [x] Fase 6: Documentação e Entrega Final
+
+- [x] Fase 1: Planejamento e Preparação da Estrutura
+- [x] Fase 2: Configuração do Repositório GitHub
+- [x] Fase 3: Implementação de Scripts de Automação
+- [x] Fase 4: Configuração de Permissões e Segurança
+- [x] Fase 5: Criação de Templates para Agentes
+- [x] Fase 6: Documentação e Entrega Final

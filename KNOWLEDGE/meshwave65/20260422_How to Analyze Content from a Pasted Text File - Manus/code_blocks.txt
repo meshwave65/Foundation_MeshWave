@@ -1,0 +1,1125 @@
+
+
+================================================================================client/src/App.tsx
+
+client/src/App.tsx
+
+import { useState, useEffect } from 'react'
+import { motion } from 'framer-motion'
+import { supabase } from './lib/supabase'
+
+const HERO_BG = 'https://d2sxsph8kpxj0f.cloudfront.net/310419663029287297/oB8kVe32CcVmCbr6pyHqsc/inovarse-hero-background.webp'
+const RESULT_BG = 'https://d2sxsph8kpxj0f.cloudfront.net/310419663029287297/oB8kVe32CcVmCbr6pyHqsc/inovarse-result-background.webp'
+
+interface ResultData {
+  altM: string
+  altC: string
+  altE: string
+  deslocM: string
+  deslocC: string
+  deslocE: string
+  idealM: number
+  idealC: number
+  idealE: number
+}
+
+function App( ) {
+  const [mente, setMente] = useState(4)
+  const [corpo, setCorpo] = useState(3)
+  const [restante, setRestante] = useState(Math.max(0, 10 - mente))
+  const [espirito, setEspirito] = useState(Math.max(0, restante - corpo))
+
+  const [pairedCM, setPairedCM] = useState({ mente: 5, corpo: 5 })
+  const [pairedCE, setPairedCE] = useState({ corpo: 5, espirito: 5 })
+  const [pairedME, setPairedME] = useState({ mente: 5, espirito: 5 })
+
+  const [result, setResult] = useState<ResultData | null>(null)
+  const [status, setStatus] = useState('')
+  const [loading, setLoading] = useState(false)
+  const [showIntro, setShowIntro] = useState(true)
+
+  useEffect(() => {
+    const newRestante = Math.max(0, 10 - mente)
+    setRestante(newRestante)
+    setEspirito(Math.max(0, newRestante - corpo))
+  }, [mente, corpo])
+
+  if (showIntro) {
+    return (
+      <div className="min-h-screen bg-cover bg-center flex items-center justify-center p-4" style={{ backgroundImage: `url(${HERO_BG})` }}>
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="bg-white/90 backdrop-blur-md p-8 rounded-3xl shadow-2xl max-w-2xl w-full text-center border border-white/50"
+        >
+          <h1 className="text-4xl font-bold text-slate-800 mb-6">Triângulo MCE</h1>
+          <div className="space-y-4 text-lg text-slate-600 leading-relaxed mb-8">
+            <p>
+              O teste para definição do <strong>Triângulo MCE (Mente, Corpo e Espírito)</strong> serve para podermos elaborar um programa que seja personalizado e de acordo com suas inclinações e preferências pessoais.
+            </p>
+            <p>
+              Não buscamos um programa genérico que tente o equilíbrio perfeito entre as 3 áreas, mas sim um que leve em consideração o que é mais importante para você hoje.
+            </p>
+          </div>
+          <button 
+            onClick={() => setShowIntro(false)}
+            className="bg-indigo-600 hover:bg-indigo-700 text-white px-10 py-4 rounded-full text-xl font-semibold transition-all transform hover:scale-105 shadow-lg"
+          >
+            Começar o Teste
+          </button>
+        </motion.div>
+      </div>
+    )
+  }
+
+  return (
+    <div className="min-h-screen bg-slate-50 py-12 px-4">
+      <div className="max-w-3xl mx-auto space-y-12">
+        
+        {/* Etapa 1: Distribuição Ideal */}
+        <section className="bg-white p-8 rounded-3xl shadow-xl border border-slate-100">
+          <div className="mb-8">
+            <h2 className="text-2xl font-bold text-slate-800 mb-2">1. Sua Distribuição Ideal</h2>
+            <p className="text-slate-600 leading-relaxed">
+              Aqui você distribuirá sua preferência pessoal entre as 3 áreas. 
+              <strong> Supondo que tivesse 10 horas para elas, quanto destinaria a cada uma?</strong> 
+              Mova os sliders para fazer sua distribuição ideal pessoal.
+            </p>
+          </div>
+          
+          <div className="space-y-8">
+            <div className="space-y-4">
+              <div className="flex justify-between font-medium text-slate-700">
+                <span>Mente</span>
+                <span className="bg-indigo-100 text-indigo-700 px-3 py-1 rounded-full">{mente}h</span>
+              </div>
+              <input 
+                type="range" min="0" max="10" step="1" value={mente}
+                onChange={(e) => setMente(parseInt(e.target.value))}
+                className="w-full h-3 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-indigo-600"
+              />
+            </div>
+
+            <div className="space-y-4">
+              <div className="flex justify-between font-medium text-slate-700">
+                <span>Corpo</span>
+                <span className="bg-emerald-100 text-emerald-700 px-3 py-1 rounded-full">{corpo}h</span>
+              </div>
+              <input 
+                type="range" min="0" max={restante} step="1" value={corpo}
+                onChange={(e) => setCorpo(parseInt(e.target.value))}
+                className="w-full h-3 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-emerald-600"
+              />
+            </div>
+
+            <div className="space-y-4">
+              <div className="flex justify-between font-medium text-slate-700">
+                <span>Espírito</span>
+                <span className="bg-amber-100 text-amber-700 px-3 py-1 rounded-full">{espirito}h</span>
+              </div>
+              <div className="w-full h-3 bg-slate-200 rounded-lg relative overflow-hidden">
+                <div className="h-full bg-amber-500 transition-all" style={{ width: `${espirito * 10}%` }} />
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Etapa 2: Preferências Relativas */}
+        <section className="bg-white p-8 rounded-3xl shadow-xl border border-slate-100">
+          <div className="mb-8">
+            <h2 className="text-2xl font-bold text-slate-800 mb-2">2. Preferências Relativas</h2>
+            <p className="text-slate-600 leading-relaxed">
+              Aqui você definirá entre apenas duas áreas correlacionadas qual a proporção que destinaria a cada uma. 
+              Assim poderemos entender também a <strong>correlação isolada</strong> entre apenas duas áreas.
+            </p>
+          </div>
+
+          <div className="space-y-12">
+            {/* Par Mente vs Corpo */}
+            <div className="space-y-6">
+              <div className="flex justify-between text-sm font-bold uppercase tracking-wider text-slate-400">
+                <span>Mente ({pairedCM.mente})</span>
+                <span>Corpo ({pairedCM.corpo})</span>
+              </div>
+              <input 
+                type="range" min="0" max="10" step="1" value={pairedCM.corpo}
+                onChange={(e) => {
+                  const c = parseInt(e.target.value)
+                  setPairedCM({ mente: 10 - c, corpo: c })
+                }}
+                className="w-full h-3 bg-gradient-to-r from-indigo-500 to-emerald-500 rounded-lg appearance-none cursor-pointer"
+              />
+            </div>
+
+            {/* Par Corpo vs Espírito */}
+            <div className="space-y-6">
+              <div className="flex justify-between text-sm font-bold uppercase tracking-wider text-slate-400">
+                <span>Corpo ({pairedCE.corpo})</span>
+                <span>Espírito ({pairedCE.espirito})</span>
+              </div>
+              <input 
+                type="range" min="0" max="10" step="1" value={pairedCE.espirito}
+                onChange={(e) => {
+                  const s = parseInt(e.target.value)
+                  setPairedCE({ corpo: 10 - s, espirito: s })
+                }}
+                className="w-full h-3 bg-gradient-to-r from-emerald-500 to-amber-500 rounded-lg appearance-none cursor-pointer"
+              />
+            </div>
+
+            {/* Par Mente vs Espírito */}
+            <div className="space-y-6">
+              <div className="flex justify-between text-sm font-bold uppercase tracking-wider text-slate-400">
+                <span>Mente ({pairedME.mente})</span>
+                <span>Espírito ({pairedME.espirito})</span>
+              </div>
+              <input 
+                type="range" min="0" max="10" step="1" value={pairedME.espirito}
+                onChange={(e) => {
+                  const s = parseInt(e.target.value)
+                  setPairedME({ mente: 10 - s, espirito: s })
+                }}
+                className="w-full h-3 bg-gradient-to-r from-indigo-500 to-amber-500 rounded-lg appearance-none cursor-pointer"
+              />
+            </div>
+          </div>
+        </section>
+
+        {/* Botão de Envio */}
+        <div className="text-center pt-8">
+          <button 
+            onClick={async () => {
+              setLoading(true)
+              // Aqui você pode adicionar a lógica de salvar no Supabase se desejar
+              // Exemplo: await supabase.from('testes').insert([...])
+              setLoading(false)
+              alert('Teste enviado com sucesso! (Lógica de resultado a ser implementada)')
+            }}
+            disabled={loading}
+            className="bg-slate-900 hover:bg-black text-white px-12 py-5 rounded-2xl text-xl font-bold transition-all disabled:opacity-50 shadow-2xl"
+          >
+            {loading ? 'Processando...' : 'Ver Meu Resultado'}
+          </button>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+export default App
+
+import { useState, useEffect } from 'react'
+import { motion } from 'framer-motion'
+import { supabase } from './lib/supabase'
+
+const HERO_BG = 'https://d2sxsph8kpxj0f.cloudfront.net/310419663029287297/oB8kVe32CcVmCbr6pyHqsc/inovarse-hero-background.webp'
+const RESULT_BG = 'https://d2sxsph8kpxj0f.cloudfront.net/310419663029287297/oB8kVe32CcVmCbr6pyHqsc/inovarse-result-background.webp'
+
+interface ResultData {
+  altM: string
+  altC: string
+  altE: string
+  deslocM: string
+  deslocC: string
+  deslocE: string
+  idealM: number
+  idealC: number
+  idealE: number
+}
+
+function App( ) {
+  const [mente, setMente] = useState(4)
+  const [corpo, setCorpo] = useState(3)
+  const [restante, setRestante] = useState(Math.max(0, 10 - mente))
+  const [espirito, setEspirito] = useState(Math.max(0, restante - corpo))
+
+  const [pairedCM, setPairedCM] = useState({ mente: 5, corpo: 5 })
+  const [pairedCE, setPairedCE] = useState({ corpo: 5, espirito: 5 })
+  const [pairedME, setPairedME] = useState({ mente: 5, espirito: 5 })
+
+  const [result, setResult] = useState<ResultData | null>(null)
+  const [status, setStatus] = useState('')
+  const [loading, setLoading] = useState(false)
+  const [showIntro, setShowIntro] = useState(true)
+
+  useEffect(() => {
+    const newRestante = Math.max(0, 10 - mente)
+    setRestante(newRestante)
+    setEspirito(Math.max(0, newRestante - corpo))
+  }, [mente, corpo])
+
+  if (showIntro) {
+    return (
+      <div className="min-h-screen bg-cover bg-center flex items-center justify-center p-4" style={{ backgroundImage: `url(${HERO_BG})` }}>
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="bg-white/90 backdrop-blur-md p-8 rounded-3xl shadow-2xl max-w-2xl w-full text-center border border-white/50"
+        >
+          <h1 className="text-4xl font-bold text-slate-800 mb-6">Triângulo MCE</h1>
+          <div className="space-y-4 text-lg text-slate-600 leading-relaxed mb-8">
+            <p>
+              O teste para definição do <strong>Triângulo MCE (Mente, Corpo e Espírito)</strong> serve para podermos elaborar um programa que seja personalizado e de acordo com suas inclinações e preferências pessoais.
+            </p>
+            <p>
+              Não buscamos um programa genérico que tente o equilíbrio perfeito entre as 3 áreas, mas sim um que leve em consideração o que é mais importante para você hoje.
+            </p>
+          </div>
+          <button 
+            onClick={() => setShowIntro(false)}
+            className="bg-indigo-600 hover:bg-indigo-700 text-white px-10 py-4 rounded-full text-xl font-semibold transition-all transform hover:scale-105 shadow-lg"
+          >
+            Começar o Teste
+          </button>
+        </motion.div>
+      </div>
+    )
+  }
+
+  return (
+    <div className="min-h-screen bg-slate-50 py-12 px-4">
+      <div className="max-w-3xl mx-auto space-y-12">
+        
+        {/* Etapa 1: Distribuição Ideal */}
+        <section className="bg-white p-8 rounded-3xl shadow-xl border border-slate-100">
+          <div className="mb-8">
+            <h2 className="text-2xl font-bold text-slate-800 mb-2">1. Sua Distribuição Ideal</h2>
+            <p className="text-slate-600 leading-relaxed">
+              Aqui você distribuirá sua preferência pessoal entre as 3 áreas. 
+              <strong> Supondo que tivesse 10 horas para elas, quanto destinaria a cada uma?</strong> 
+              Mova os sliders para fazer sua distribuição ideal pessoal.
+            </p>
+          </div>
+          
+          <div className="space-y-8">
+            <div className="space-y-4">
+              <div className="flex justify-between font-medium text-slate-700">
+                <span>Mente</span>
+                <span className="bg-indigo-100 text-indigo-700 px-3 py-1 rounded-full">{mente}h</span>
+              </div>
+              <input 
+                type="range" min="0" max="10" step="1" value={mente}
+                onChange={(e) => setMente(parseInt(e.target.value))}
+                className="w-full h-3 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-indigo-600"
+              />
+            </div>
+
+            <div className="space-y-4">
+              <div className="flex justify-between font-medium text-slate-700">
+                <span>Corpo</span>
+                <span className="bg-emerald-100 text-emerald-700 px-3 py-1 rounded-full">{corpo}h</span>
+              </div>
+              <input 
+                type="range" min="0" max={restante} step="1" value={corpo}
+                onChange={(e) => setCorpo(parseInt(e.target.value))}
+                className="w-full h-3 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-emerald-600"
+              />
+            </div>
+
+            <div className="space-y-4">
+              <div className="flex justify-between font-medium text-slate-700">
+                <span>Espírito</span>
+                <span className="bg-amber-100 text-amber-700 px-3 py-1 rounded-full">{espirito}h</span>
+              </div>
+              <div className="w-full h-3 bg-slate-200 rounded-lg relative overflow-hidden">
+                <div className="h-full bg-amber-500 transition-all" style={{ width: `${espirito * 10}%` }} />
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Etapa 2: Preferências Relativas */}
+        <section className="bg-white p-8 rounded-3xl shadow-xl border border-slate-100">
+          <div className="mb-8">
+            <h2 className="text-2xl font-bold text-slate-800 mb-2">2. Preferências Relativas</h2>
+            <p className="text-slate-600 leading-relaxed">
+              Aqui você definirá entre apenas duas áreas correlacionadas qual a proporção que destinaria a cada uma. 
+              Assim poderemos entender também a <strong>correlação isolada</strong> entre apenas duas áreas.
+            </p>
+          </div>
+
+          <div className="space-y-12">
+            {/* Par Mente vs Corpo */}
+            <div className="space-y-6">
+              <div className="flex justify-between text-sm font-bold uppercase tracking-wider text-slate-400">
+                <span>Mente ({pairedCM.mente})</span>
+                <span>Corpo ({pairedCM.corpo})</span>
+              </div>
+              <input 
+                type="range" min="0" max="10" step="1" value={pairedCM.corpo}
+                onChange={(e) => {
+                  const c = parseInt(e.target.value)
+                  setPairedCM({ mente: 10 - c, corpo: c })
+                }}
+                className="w-full h-3 bg-gradient-to-r from-indigo-500 to-emerald-500 rounded-lg appearance-none cursor-pointer"
+              />
+            </div>
+
+            {/* Par Corpo vs Espírito */}
+            <div className="space-y-6">
+              <div className="flex justify-between text-sm font-bold uppercase tracking-wider text-slate-400">
+                <span>Corpo ({pairedCE.corpo})</span>
+                <span>Espírito ({pairedCE.espirito})</span>
+              </div>
+              <input 
+                type="range" min="0" max="10" step="1" value={pairedCE.espirito}
+                onChange={(e) => {
+                  const s = parseInt(e.target.value)
+                  setPairedCE({ corpo: 10 - s, espirito: s })
+                }}
+                className="w-full h-3 bg-gradient-to-r from-emerald-500 to-amber-500 rounded-lg appearance-none cursor-pointer"
+              />
+            </div>
+
+            {/* Par Mente vs Espírito */}
+            <div className="space-y-6">
+              <div className="flex justify-between text-sm font-bold uppercase tracking-wider text-slate-400">
+                <span>Mente ({pairedME.mente})</span>
+                <span>Espírito ({pairedME.espirito})</span>
+              </div>
+              <input 
+                type="range" min="0" max="10" step="1" value={pairedME.espirito}
+                onChange={(e) => {
+                  const s = parseInt(e.target.value)
+                  setPairedME({ mente: 10 - s, espirito: s })
+                }}
+                className="w-full h-3 bg-gradient-to-r from-indigo-500 to-amber-500 rounded-lg appearance-none cursor-pointer"
+              />
+            </div>
+          </div>
+        </section>
+
+        {/* Botão de Envio */}
+        <div className="text-center pt-8">
+          <button 
+            onClick={async () => {
+              setLoading(true)
+              // Aqui você pode adicionar a lógica de salvar no Supabase se desejar
+              // Exemplo: await supabase.from('testes').insert([...])
+              setLoading(false)
+              alert('Teste enviado com sucesso! (Lógica de resultado a ser implementada)')
+            }}
+            disabled={loading}
+            className="bg-slate-900 hover:bg-black text-white px-12 py-5 rounded-2xl text-xl font-bold transition-all disabled:opacity-50 shadow-2xl"
+          >
+            {loading ? 'Processando...' : 'Ver Meu Resultado'}
+          </button>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+export default App
+
+client/src/App.tsx
+
+logo_inovarse.jpeg
+
+const calcular
+
+client/src/App.tsx
+
+import { useState, useEffect } from 'react'
+import { motion } from 'framer-motion'
+import { supabase } from './lib/supabase'
+
+const HERO_BG = 'https://d2sxsph8kpxj0f.cloudfront.net/310419663029287297/oB8kVe32CcVmCbr6pyHqsc/inovarse-hero-background.webp'
+const RESULT_BG = 'https://d2sxsph8kpxj0f.cloudfront.net/310419663029287297/oB8kVe32CcVmCbr6pyHqsc/inovarse-result-background.webp'
+
+interface ResultData {
+  altM: string
+  altC: string
+  altE: string
+  deslocM: string
+  deslocC: string
+  deslocE: string
+  idealM: number
+  idealC: number
+  idealE: number
+}
+
+function App( ) {
+  const [mente, setMente] = useState(4)
+  const [corpo, setCorpo] = useState(3)
+  const [restante, setRestante] = useState(Math.max(0, 10 - mente))
+  const [espirito, setEspirito] = useState(Math.max(0, restante - corpo))
+
+  const [pairedCM, setPairedCM] = useState({ mente: 5, corpo: 5 })
+  const [pairedCE, setPairedCE] = useState({ corpo: 5, espirito: 5 })
+  const [pairedME, setPairedME] = useState({ mente: 5, espirito: 5 })
+
+  const [result, setResult] = useState<ResultData | null>(null)
+  const [status, setStatus] = useState('')
+  const [loading, setLoading] = useState(false)
+  const [showIntro, setShowIntro] = useState(true)
+
+  useEffect(() => {
+    const newRestante = Math.max(0, 10 - mente)
+    setRestante(newRestante)
+    setEspirito(Math.max(0, newRestante - corpo))
+  }, [mente, corpo])
+
+  const calcular = async () => {
+    setLoading(true)
+    setStatus('Gerando seu Triângulo MCE...')
+
+    const altM = ((mente + pairedCM.mente * 0.5 + pairedME.mente * 0.5) / 2).toFixed(1)
+    const altC = ((corpo + pairedCM.corpo * 0.5 + pairedCE.corpo * 0.5) / 2).toFixed(1)
+    const altE = ((espirito + pairedCE.espirito * 0.5 + pairedME.espirito * 0.5) / 2).toFixed(1)
+
+    const deslocM = ((pairedCM.mente - pairedCM.corpo) + (pairedME.mente - pairedME.espirito)) / 2
+    const deslocC = ((pairedCM.corpo - pairedCM.mente) + (pairedCE.corpo - pairedCE.espirito)) / 2
+    const deslocE = ((pairedCE.espirito - pairedCE.corpo) + (pairedME.espirito - pairedME.mente)) / 2
+
+    const res: ResultData = {
+      altM,
+      altC,
+      altE,
+      deslocM: deslocM.toFixed(1),
+      deslocC: deslocC.toFixed(1),
+      deslocE: deslocE.toFixed(1),
+      idealM: mente,
+      idealC: corpo,
+      idealE: espirito
+    }
+
+    try {
+      await supabase
+        .from('results')
+        .insert({
+          mental: parseFloat(altM),
+          corpo: parseFloat(altC),
+          espirito: parseFloat(altE),
+          ideal_mental: mente,
+          ideal_corpo: corpo,
+          ideal_espirito: espirito
+        })
+      
+      setResult(res)
+      localStorage.setItem('trianguloMCE_result', JSON.stringify(res))
+    } catch (err: any) {
+      console.error('Erro ao salvar:', err)
+      setResult(res) // Mostra resultado mesmo se falhar o banco
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  const reset = () => {
+    setResult(null)
+    setStatus('')
+    localStorage.removeItem('trianguloMCE_result')
+    setShowIntro(true)
+  }
+
+  const getInterpretation = (res: ResultData) => {
+    const diffM = Math.abs(Number(res.altM) - res.idealM)
+    const diffC = Math.abs(Number(res.altC) - res.idealC)
+    const diffE = Math.abs(Number(res.altE) - res.idealE)
+    const maior = Math.max(diffM, diffC, diffE)
+
+    if (maior <= 1.5) return "Seu Triângulo MCE revela um excelente equilíbrio entre Mente, Corpo e Espírito. Você já possui uma base sólida para sua jornada."
+    if (diffC === maior) return "Sua maior lacuna está no **Corpo**. Isso é extremamente comum e indica que, apesar de cuidar da mente e espírito, sua base física precisa de mais atenção."
+    if (diffM === maior) return "Sua maior lacuna está na **Mente**. Mesmo que você se cuide fisicamente, a sobrecarga mental e emocional pode estar drenando sua energia."
+    return "Sua maior lacuna está no **Espírito**. Muitas pessoas desenvolvem Corpo e Mente, mas deixam o Espírito de lado, o que gera uma sensação de vazio."
+  }
+
+  if (showIntro) {
+    return (
+      <div className="min-h-screen relative overflow-hidden">
+        <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: `url(${HERO_BG})` }} />
+        <div className="absolute inset-0 bg-gradient-to-b from-white/70 via-white/60 to-white/80" />
+        
+        <div className="relative flex items-center justify-center min-h-screen p-4 md:p-8">
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }} 
+            animate={{ opacity: 1, y: 0 }} 
+            transition={{ duration: 0.8 }}
+            className="max-w-4xl w-full"
+          >
+            <motion.div 
+              initial={{ scale: 0.8, opacity: 0 }} 
+              animate={{ scale: 1, opacity: 1 }} 
+              transition={{ duration: 1 }}
+              className="w-64 h-64 bg-white rounded-full shadow-2xl flex items-center justify-center border-4 border-white/50 mx-auto mb-10 overflow-hidden"
+            >
+              <img src="/logo_inovarse.jpeg" alt="Inovarse" className="w-56 h-56 object-contain" />
+            </motion.div>
+
+            <div className="bg-white/40 backdrop-blur-md p-8 md:p-12 rounded-[3rem] shadow-2xl border border-white/50 text-center">
+              <h1 className="text-4xl md:text-6xl font-bold text-emerald-900 mb-8" style={{ fontFamily: "'Playfair Display', serif" }}>
+                Ecossistema Inovarse
+              </h1>
+              
+              <div className="space-y-6 text-lg md:text-xl text-slate-700 max-w-3xl mx-auto mb-10 leading-relaxed">
+                <p>Vivemos em um mundo onde a estética muitas vezes se resume a procedimentos pontuais e resultados rápidos.</p>
+                <p>No <span className="font-semibold text-emerald-700">Inovarse</span>, acreditamos em algo diferente.</p>
+                <p>Mesmo quando desenvolvemos as três áreas de forma espontânea, sem uma visão holística integrada, o resultado é frágil.</p>
+                
+                <div className="bg-emerald-50/80 p-6 rounded-2xl border border-emerald-100 text-emerald-900 text-left mt-8">
+                  <p className="font-medium mb-2">O objetivo deste teste:</p>
+                  <p className="text-base md:text-lg leading-relaxed">
+                    O teste para definição do <strong>Triângulo MCE (Mente, Corpo e Espírito)</strong> serve para podermos elaborar um programa que seja personalizado e de acordo com suas inclinações e preferências pessoais, e não um programa genérico que busque o equilíbrio perfeito entre as 3 áreas sem levar em consideração suas preferências.
+                  </p>
+                </div>
+              </div>
+
+              <button 
+                onClick={() => setShowIntro(false)}
+                className="w-full md:w-auto px-12 py-5 bg-gradient-to-r from-emerald-600 to-emerald-700 hover:from-emerald-700 hover:to-emerald-800 text-white rounded-2xl text-xl font-bold transition-all transform hover:scale-105 shadow-xl"
+              >
+                Iniciar o Teste Triângulo MCE
+              </button>
+              <p className="text-sm text-slate-500 mt-6">Gratuito • Confidencial • Leva apenas 5 minutos</p>
+            </div>
+          </motion.div>
+        </div>
+      </div>
+    )
+  }
+
+  if (result) {
+    const whatsappMessage = encodeURIComponent(
+      `Olá! Vim do site Inovarse e fiz o Teste Triângulo MCE.\n\n` +
+      `📊 Meus resultados:\n` +
+      `• Mente: ${result.altM} (ideal ${result.idealM})\n` +
+      `• Corpo: ${result.altC} (ideal ${result.idealC})\n` +
+      `• Espírito: ${result.altE} (ideal ${result.idealE})\n\n` +
+      `Gostaria de agendar uma avaliação para entender melhor meu perfil e montar meu Programa Personalizado Inovarse.`
+    )
+
+    return (
+      <div className="min-h-screen relative overflow-hidden">
+        <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: `url(${RESULT_BG})` }} />
+        <div className="absolute inset-0 bg-gradient-to-b from-white/60 via-white/50 to-white/70" />
+        
+        <div className="relative flex items-center justify-center min-h-screen p-4 md:p-8">
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }} 
+            animate={{ opacity: 1, y: 0 }}
+            className="max-w-4xl w-full bg-white/95 backdrop-blur-md rounded-3xl shadow-2xl p-8 md:p-12 border border-white/50"
+          >
+            <div className="flex justify-between items-start mb-10">
+              <div>
+                <h1 className="text-4xl font-bold text-emerald-900" style={{ fontFamily: "'Playfair Display', serif" }}>Seu Triângulo MCE</h1>
+                <p className="text-emerald-700 font-medium mt-2">Estética Integrativa • Inovarse</p>
+              </div>
+              <button onClick={reset} className="text-sm font-medium text-emerald-700 hover:text-emerald-900 underline">Fazer novo teste</button>
+            </div>
+
+            <div className="grid md:grid-cols-3 gap-8 mb-12">
+              <div className="bg-indigo-50 p-6 rounded-2xl border border-indigo-100">
+                <p className="text-indigo-900 font-bold text-sm uppercase tracking-wider mb-2">Mente</p>
+                <p className="text-4xl font-black text-indigo-600">{result.altM}</p>
+                <p className="text-xs text-indigo-400 mt-1">Seu ideal: {result.idealM}</p>
+              </div>
+              <div className="bg-emerald-50 p-6 rounded-2xl border border-emerald-100">
+                <p className="text-emerald-900 font-bold text-sm uppercase tracking-wider mb-2">Corpo</p>
+                <p className="text-4xl font-black text-emerald-600">{result.altC}</p>
+                <p className="text-xs text-emerald-400 mt-1">Seu ideal: {result.idealC}</p>
+              </div>
+              <div className="bg-amber-50 p-6 rounded-2xl border border-amber-100">
+                <p className="text-amber-900 font-bold text-sm uppercase tracking-wider mb-2">Espírito</p>
+                <p className="text-4xl font-black text-amber-600">{result.altE}</p>
+                <p className="text-xs text-amber-400 mt-1">Seu ideal: {result.idealE}</p>
+              </div>
+            </div>
+
+            <div className="bg-slate-50 p-8 rounded-2xl border border-slate-200 mb-10">
+              <h3 className="text-xl font-bold text-slate-800 mb-4">O que isso significa?</h3>
+              <p className="text-slate-700 leading-relaxed text-lg">{getInterpretation(result)}</p>
+            </div>
+
+            <a 
+              href={`https://wa.me/5511999999999?text=${whatsappMessage}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="block w-full text-center bg-emerald-600 hover:bg-emerald-700 text-white py-6 rounded-2xl text-xl font-bold transition-all shadow-xl"
+            >
+              Agendar minha Avaliação Personalizada
+            </a>
+          </motion.div>
+        </div>
+      </div>
+     )
+  }
+
+  return (
+    <div className="min-h-screen bg-slate-50 py-12 px-4">
+      <div className="max-w-3xl mx-auto space-y-12">
+        
+        {/* Etapa 1: Distribuição Ideal */}
+        <section className="bg-white p-8 rounded-3xl shadow-xl border border-slate-100">
+          <div className="mb-8">
+            <h2 className="text-2xl font-bold text-slate-800 mb-2">1. Sua Distribuição Ideal</h2>
+            <p className="text-slate-600 leading-relaxed">
+              Aqui você distribuirá sua preferência pessoal entre as 3 áreas. 
+              <strong> Supondo que tivesse 10 horas para elas, quanto destinaria a cada uma?</strong> 
+              Mova os sliders para fazer sua distribuição ideal pessoal.
+            </p>
+          </div>
+          
+          <div className="space-y-8">
+            <div className="space-y-4">
+              <div className="flex justify-between font-medium text-slate-700">
+                <span>Mente</span>
+                <span className="bg-indigo-100 text-indigo-700 px-3 py-1 rounded-full">{mente}h</span>
+              </div>
+              <input 
+                type="range" min="0" max="10" step="1" value={mente}
+                onChange={(e) => setMente(parseInt(e.target.value))}
+                className="w-full h-3 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-indigo-600"
+              />
+            </div>
+
+            <div className="space-y-4">
+              <div className="flex justify-between font-medium text-slate-700">
+                <span>Corpo</span>
+                <span className="bg-emerald-100 text-emerald-700 px-3 py-1 rounded-full">{corpo}h</span>
+              </div>
+              <input 
+                type="range" min="0" max={restante} step="1" value={corpo}
+                onChange={(e) => setCorpo(parseInt(e.target.value))}
+                className="w-full h-3 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-emerald-600"
+              />
+            </div>
+
+            <div className="space-y-4">
+              <div className="flex justify-between font-medium text-slate-700">
+                <span>Espírito</span>
+                <span className="bg-amber-100 text-amber-700 px-3 py-1 rounded-full">{espirito}h</span>
+              </div>
+              <div className="w-full h-3 bg-slate-200 rounded-lg relative overflow-hidden">
+                <div className="h-full bg-amber-500 transition-all" style={{ width: `${espirito * 10}%` }} />
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Etapa 2: Preferências Relativas */}
+        <section className="bg-white p-8 rounded-3xl shadow-xl border border-slate-100">
+          <div className="mb-8">
+            <h2 className="text-2xl font-bold text-slate-800 mb-2">2. Preferências Relativas</h2>
+            <p className="text-slate-600 leading-relaxed">
+              Aqui você definirá entre apenas duas áreas correlacionadas qual a proporção que destinaria a cada uma. 
+              Assim poderemos entender também a <strong>correlação isolada</strong> entre apenas duas áreas.
+            </p>
+          </div>
+
+          <div className="space-y-12">
+            <div className="space-y-6">
+              <div className="flex justify-between text-sm font-bold uppercase tracking-wider text-slate-400">
+                <span>Mente ({pairedCM.mente})</span>
+                <span>Corpo ({pairedCM.corpo})</span>
+              </div>
+              <input 
+                type="range" min="0" max="10" step="1" value={pairedCM.corpo}
+                onChange={(e) => {
+                  const c = parseInt(e.target.value)
+                  setPairedCM({ mente: 10 - c, corpo: c })
+                }}
+                className="w-full h-3 bg-gradient-to-r from-indigo-500 to-emerald-500 rounded-lg appearance-none cursor-pointer"
+              />
+            </div>
+
+            <div className="space-y-6">
+              <div className="flex justify-between text-sm font-bold uppercase tracking-wider text-slate-400">
+                <span>Corpo ({pairedCE.corpo})</span>
+                <span>Espírito ({pairedCE.espirito})</span>
+              </div>
+              <input 
+                type="range" min="0" max="10" step="1" value={pairedCE.espirito}
+                onChange={(e) => {
+                  const s = parseInt(e.target.value)
+                  setPairedCE({ corpo: 10 - s, espirito: s })
+                }}
+                className="w-full h-3 bg-gradient-to-r from-emerald-500 to-amber-500 rounded-lg appearance-none cursor-pointer"
+              />
+            </div>
+
+            <div className="space-y-6">
+              <div className="flex justify-between text-sm font-bold uppercase tracking-wider text-slate-400">
+                <span>Mente ({pairedME.mente})</span>
+                <span>Espírito ({pairedME.espirito})</span>
+              </div>
+              <input 
+                type="range" min="0" max="10" step="1" value={pairedME.espirito}
+                onChange={(e) => {
+                  const s = parseInt(e.target.value)
+                  setPairedME({ mente: 10 - s, espirito: s })
+                }}
+                className="w-full h-3 bg-gradient-to-r from-indigo-500 to-amber-500 rounded-lg appearance-none cursor-pointer"
+              />
+            </div>
+          </div>
+        </section>
+
+        <div className="text-center pt-8">
+          <button 
+            onClick={calcular}
+            disabled={loading}
+            className="bg-slate-900 hover:bg-black text-white px-12 py-5 rounded-2xl text-xl font-bold transition-all disabled:opacity-50 shadow-2xl"
+          >
+            {loading ? 'Processando...' : 'Ver Meu Resultado'}
+          </button>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+export default App
+
+import { useState, useEffect } from 'react'
+import { motion } from 'framer-motion'
+import { supabase } from './lib/supabase'
+
+const HERO_BG = 'https://d2sxsph8kpxj0f.cloudfront.net/310419663029287297/oB8kVe32CcVmCbr6pyHqsc/inovarse-hero-background.webp'
+const RESULT_BG = 'https://d2sxsph8kpxj0f.cloudfront.net/310419663029287297/oB8kVe32CcVmCbr6pyHqsc/inovarse-result-background.webp'
+
+interface ResultData {
+  altM: string
+  altC: string
+  altE: string
+  deslocM: string
+  deslocC: string
+  deslocE: string
+  idealM: number
+  idealC: number
+  idealE: number
+}
+
+function App( ) {
+  const [mente, setMente] = useState(4)
+  const [corpo, setCorpo] = useState(3)
+  const [restante, setRestante] = useState(Math.max(0, 10 - mente))
+  const [espirito, setEspirito] = useState(Math.max(0, restante - corpo))
+
+  const [pairedCM, setPairedCM] = useState({ mente: 5, corpo: 5 })
+  const [pairedCE, setPairedCE] = useState({ corpo: 5, espirito: 5 })
+  const [pairedME, setPairedME] = useState({ mente: 5, espirito: 5 })
+
+  const [result, setResult] = useState<ResultData | null>(null)
+  const [status, setStatus] = useState('')
+  const [loading, setLoading] = useState(false)
+  const [showIntro, setShowIntro] = useState(true)
+
+  useEffect(() => {
+    const newRestante = Math.max(0, 10 - mente)
+    setRestante(newRestante)
+    setEspirito(Math.max(0, newRestante - corpo))
+  }, [mente, corpo])
+
+  const calcular = async () => {
+    setLoading(true)
+    setStatus('Gerando seu Triângulo MCE...')
+
+    const altM = ((mente + pairedCM.mente * 0.5 + pairedME.mente * 0.5) / 2).toFixed(1)
+    const altC = ((corpo + pairedCM.corpo * 0.5 + pairedCE.corpo * 0.5) / 2).toFixed(1)
+    const altE = ((espirito + pairedCE.espirito * 0.5 + pairedME.espirito * 0.5) / 2).toFixed(1)
+
+    const deslocM = ((pairedCM.mente - pairedCM.corpo) + (pairedME.mente - pairedME.espirito)) / 2
+    const deslocC = ((pairedCM.corpo - pairedCM.mente) + (pairedCE.corpo - pairedCE.espirito)) / 2
+    const deslocE = ((pairedCE.espirito - pairedCE.corpo) + (pairedME.espirito - pairedME.mente)) / 2
+
+    const res: ResultData = {
+      altM,
+      altC,
+      altE,
+      deslocM: deslocM.toFixed(1),
+      deslocC: deslocC.toFixed(1),
+      deslocE: deslocE.toFixed(1),
+      idealM: mente,
+      idealC: corpo,
+      idealE: espirito
+    }
+
+    try {
+      await supabase
+        .from('results')
+        .insert({
+          mental: parseFloat(altM),
+          corpo: parseFloat(altC),
+          espirito: parseFloat(altE),
+          ideal_mental: mente,
+          ideal_corpo: corpo,
+          ideal_espirito: espirito
+        })
+      
+      setResult(res)
+      localStorage.setItem('trianguloMCE_result', JSON.stringify(res))
+    } catch (err: any) {
+      console.error('Erro ao salvar:', err)
+      setResult(res) // Mostra resultado mesmo se falhar o banco
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  const reset = () => {
+    setResult(null)
+    setStatus('')
+    localStorage.removeItem('trianguloMCE_result')
+    setShowIntro(true)
+  }
+
+  const getInterpretation = (res: ResultData) => {
+    const diffM = Math.abs(Number(res.altM) - res.idealM)
+    const diffC = Math.abs(Number(res.altC) - res.idealC)
+    const diffE = Math.abs(Number(res.altE) - res.idealE)
+    const maior = Math.max(diffM, diffC, diffE)
+
+    if (maior <= 1.5) return "Seu Triângulo MCE revela um excelente equilíbrio entre Mente, Corpo e Espírito. Você já possui uma base sólida para sua jornada."
+    if (diffC === maior) return "Sua maior lacuna está no **Corpo**. Isso é extremamente comum e indica que, apesar de cuidar da mente e espírito, sua base física precisa de mais atenção."
+    if (diffM === maior) return "Sua maior lacuna está na **Mente**. Mesmo que você se cuide fisicamente, a sobrecarga mental e emocional pode estar drenando sua energia."
+    return "Sua maior lacuna está no **Espírito**. Muitas pessoas desenvolvem Corpo e Mente, mas deixam o Espírito de lado, o que gera uma sensação de vazio."
+  }
+
+  if (showIntro) {
+    return (
+      <div className="min-h-screen relative overflow-hidden">
+        <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: `url(${HERO_BG})` }} />
+        <div className="absolute inset-0 bg-gradient-to-b from-white/70 via-white/60 to-white/80" />
+        
+        <div className="relative flex items-center justify-center min-h-screen p-4 md:p-8">
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }} 
+            animate={{ opacity: 1, y: 0 }} 
+            transition={{ duration: 0.8 }}
+            className="max-w-4xl w-full"
+          >
+            <motion.div 
+              initial={{ scale: 0.8, opacity: 0 }} 
+              animate={{ scale: 1, opacity: 1 }} 
+              transition={{ duration: 1 }}
+              className="w-64 h-64 bg-white rounded-full shadow-2xl flex items-center justify-center border-4 border-white/50 mx-auto mb-10 overflow-hidden"
+            >
+              <img src="/logo_inovarse.jpeg" alt="Inovarse" className="w-56 h-56 object-contain" />
+            </motion.div>
+
+            <div className="bg-white/40 backdrop-blur-md p-8 md:p-12 rounded-[3rem] shadow-2xl border border-white/50 text-center">
+              <h1 className="text-4xl md:text-6xl font-bold text-emerald-900 mb-8" style={{ fontFamily: "'Playfair Display', serif" }}>
+                Ecossistema Inovarse
+              </h1>
+              
+              <div className="space-y-6 text-lg md:text-xl text-slate-700 max-w-3xl mx-auto mb-10 leading-relaxed">
+                <p>Vivemos em um mundo onde a estética muitas vezes se resume a procedimentos pontuais e resultados rápidos.</p>
+                <p>No <span className="font-semibold text-emerald-700">Inovarse</span>, acreditamos em algo diferente.</p>
+                <p>Mesmo quando desenvolvemos as três áreas de forma espontânea, sem uma visão holística integrada, o resultado é frágil.</p>
+                
+                <div className="bg-emerald-50/80 p-6 rounded-2xl border border-emerald-100 text-emerald-900 text-left mt-8">
+                  <p className="font-medium mb-2">O objetivo deste teste:</p>
+                  <p className="text-base md:text-lg leading-relaxed">
+                    O teste para definição do <strong>Triângulo MCE (Mente, Corpo e Espírito)</strong> serve para podermos elaborar um programa que seja personalizado e de acordo com suas inclinações e preferências pessoais, e não um programa genérico que busque o equilíbrio perfeito entre as 3 áreas sem levar em consideração suas preferências.
+                  </p>
+                </div>
+              </div>
+
+              <button 
+                onClick={() => setShowIntro(false)}
+                className="w-full md:w-auto px-12 py-5 bg-gradient-to-r from-emerald-600 to-emerald-700 hover:from-emerald-700 hover:to-emerald-800 text-white rounded-2xl text-xl font-bold transition-all transform hover:scale-105 shadow-xl"
+              >
+                Iniciar o Teste Triângulo MCE
+              </button>
+              <p className="text-sm text-slate-500 mt-6">Gratuito • Confidencial • Leva apenas 5 minutos</p>
+            </div>
+          </motion.div>
+        </div>
+      </div>
+    )
+  }
+
+  if (result) {
+    const whatsappMessage = encodeURIComponent(
+      `Olá! Vim do site Inovarse e fiz o Teste Triângulo MCE.\n\n` +
+      `📊 Meus resultados:\n` +
+      `• Mente: ${result.altM} (ideal ${result.idealM})\n` +
+      `• Corpo: ${result.altC} (ideal ${result.idealC})\n` +
+      `• Espírito: ${result.altE} (ideal ${result.idealE})\n\n` +
+      `Gostaria de agendar uma avaliação para entender melhor meu perfil e montar meu Programa Personalizado Inovarse.`
+    )
+
+    return (
+      <div className="min-h-screen relative overflow-hidden">
+        <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: `url(${RESULT_BG})` }} />
+        <div className="absolute inset-0 bg-gradient-to-b from-white/60 via-white/50 to-white/70" />
+        
+        <div className="relative flex items-center justify-center min-h-screen p-4 md:p-8">
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }} 
+            animate={{ opacity: 1, y: 0 }}
+            className="max-w-4xl w-full bg-white/95 backdrop-blur-md rounded-3xl shadow-2xl p-8 md:p-12 border border-white/50"
+          >
+            <div className="flex justify-between items-start mb-10">
+              <div>
+                <h1 className="text-4xl font-bold text-emerald-900" style={{ fontFamily: "'Playfair Display', serif" }}>Seu Triângulo MCE</h1>
+                <p className="text-emerald-700 font-medium mt-2">Estética Integrativa • Inovarse</p>
+              </div>
+              <button onClick={reset} className="text-sm font-medium text-emerald-700 hover:text-emerald-900 underline">Fazer novo teste</button>
+            </div>
+
+            <div className="grid md:grid-cols-3 gap-8 mb-12">
+              <div className="bg-indigo-50 p-6 rounded-2xl border border-indigo-100">
+                <p className="text-indigo-900 font-bold text-sm uppercase tracking-wider mb-2">Mente</p>
+                <p className="text-4xl font-black text-indigo-600">{result.altM}</p>
+                <p className="text-xs text-indigo-400 mt-1">Seu ideal: {result.idealM}</p>
+              </div>
+              <div className="bg-emerald-50 p-6 rounded-2xl border border-emerald-100">
+                <p className="text-emerald-900 font-bold text-sm uppercase tracking-wider mb-2">Corpo</p>
+                <p className="text-4xl font-black text-emerald-600">{result.altC}</p>
+                <p className="text-xs text-emerald-400 mt-1">Seu ideal: {result.idealC}</p>
+              </div>
+              <div className="bg-amber-50 p-6 rounded-2xl border border-amber-100">
+                <p className="text-amber-900 font-bold text-sm uppercase tracking-wider mb-2">Espírito</p>
+                <p className="text-4xl font-black text-amber-600">{result.altE}</p>
+                <p className="text-xs text-amber-400 mt-1">Seu ideal: {result.idealE}</p>
+              </div>
+            </div>
+
+            <div className="bg-slate-50 p-8 rounded-2xl border border-slate-200 mb-10">
+              <h3 className="text-xl font-bold text-slate-800 mb-4">O que isso significa?</h3>
+              <p className="text-slate-700 leading-relaxed text-lg">{getInterpretation(result)}</p>
+            </div>
+
+            <a 
+              href={`https://wa.me/5511999999999?text=${whatsappMessage}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="block w-full text-center bg-emerald-600 hover:bg-emerald-700 text-white py-6 rounded-2xl text-xl font-bold transition-all shadow-xl"
+            >
+              Agendar minha Avaliação Personalizada
+            </a>
+          </motion.div>
+        </div>
+      </div>
+     )
+  }
+
+  return (
+    <div className="min-h-screen bg-slate-50 py-12 px-4">
+      <div className="max-w-3xl mx-auto space-y-12">
+        
+        {/* Etapa 1: Distribuição Ideal */}
+        <section className="bg-white p-8 rounded-3xl shadow-xl border border-slate-100">
+          <div className="mb-8">
+            <h2 className="text-2xl font-bold text-slate-800 mb-2">1. Sua Distribuição Ideal</h2>
+            <p className="text-slate-600 leading-relaxed">
+              Aqui você distribuirá sua preferência pessoal entre as 3 áreas. 
+              <strong> Supondo que tivesse 10 horas para elas, quanto destinaria a cada uma?</strong> 
+              Mova os sliders para fazer sua distribuição ideal pessoal.
+            </p>
+          </div>
+          
+          <div className="space-y-8">
+            <div className="space-y-4">
+              <div className="flex justify-between font-medium text-slate-700">
+                <span>Mente</span>
+                <span className="bg-indigo-100 text-indigo-700 px-3 py-1 rounded-full">{mente}h</span>
+              </div>
+              <input 
+                type="range" min="0" max="10" step="1" value={mente}
+                onChange={(e) => setMente(parseInt(e.target.value))}
+                className="w-full h-3 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-indigo-600"
+              />
+            </div>
+
+            <div className="space-y-4">
+              <div className="flex justify-between font-medium text-slate-700">
+                <span>Corpo</span>
+                <span className="bg-emerald-100 text-emerald-700 px-3 py-1 rounded-full">{corpo}h</span>
+              </div>
+              <input 
+                type="range" min="0" max={restante} step="1" value={corpo}
+                onChange={(e) => setCorpo(parseInt(e.target.value))}
+                className="w-full h-3 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-emerald-600"
+              />
+            </div>
+
+            <div className="space-y-4">
+              <div className="flex justify-between font-medium text-slate-700">
+                <span>Espírito</span>
+                <span className="bg-amber-100 text-amber-700 px-3 py-1 rounded-full">{espirito}h</span>
+              </div>
+              <div className="w-full h-3 bg-slate-200 rounded-lg relative overflow-hidden">
+                <div className="h-full bg-amber-500 transition-all" style={{ width: `${espirito * 10}%` }} />
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Etapa 2: Preferências Relativas */}
+        <section className="bg-white p-8 rounded-3xl shadow-xl border border-slate-100">
+          <div className="mb-8">
+            <h2 className="text-2xl font-bold text-slate-800 mb-2">2. Preferências Relativas</h2>
+            <p className="text-slate-600 leading-relaxed">
+              Aqui você definirá entre apenas duas áreas correlacionadas qual a proporção que destinaria a cada uma. 
+              Assim poderemos entender também a <strong>correlação isolada</strong> entre apenas duas áreas.
+            </p>
+          </div>
+
+          <div className="space-y-12">
+            <div className="space-y-6">
+              <div className="flex justify-between text-sm font-bold uppercase tracking-wider text-slate-400">
+                <span>Mente ({pairedCM.mente})</span>
+                <span>Corpo ({pairedCM.corpo})</span>
+              </div>
+              <input 
+                type="range" min="0" max="10" step="1" value={pairedCM.corpo}
+                onChange={(e) => {
+                  const c = parseInt(e.target.value)
+                  setPairedCM({ mente: 10 - c, corpo: c })
+                }}
+                className="w-full h-3 bg-gradient-to-r from-indigo-500 to-emerald-500 rounded-lg appearance-none cursor-pointer"
+              />
+            </div>
+
+            <div className="space-y-6">
+              <div className="flex justify-between text-sm font-bold uppercase tracking-wider text-slate-400">
+                <span>Corpo ({pairedCE.corpo})</span>
+                <span>Espírito ({pairedCE.espirito})</span>
+              </div>
+              <input 
+                type="range" min="0" max="10" step="1" value={pairedCE.espirito}
+                onChange={(e) => {
+                  const s = parseInt(e.target.value)
+                  setPairedCE({ corpo: 10 - s, espirito: s })
+                }}
+                className="w-full h-3 bg-gradient-to-r from-emerald-500 to-amber-500 rounded-lg appearance-none cursor-pointer"
+              />
+            </div>
+
+            <div className="space-y-6">
+              <div className="flex justify-between text-sm font-bold uppercase tracking-wider text-slate-400">
+                <span>Mente ({pairedME.mente})</span>
+                <span>Espírito ({pairedME.espirito})</span>
+              </div>
+              <input 
+                type="range" min="0" max="10" step="1" value={pairedME.espirito}
+                onChange={(e) => {
+                  const s = parseInt(e.target.value)
+                  setPairedME({ mente: 10 - s, espirito: s })
+                }}
+                className="w-full h-3 bg-gradient-to-r from-indigo-500 to-amber-500 rounded-lg appearance-none cursor-pointer"
+              />
+            </div>
+          </div>
+        </section>
+
+        <div className="text-center pt-8">
+          <button 
+            onClick={calcular}
+            disabled={loading}
+            className="bg-slate-900 hover:bg-black text-white px-12 py-5 rounded-2xl text-xl font-bold transition-all disabled:opacity-50 shadow-2xl"
+          >
+            {loading ? 'Processando...' : 'Ver Meu Resultado'}
+          </button>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+export default App
+
+5511999999999

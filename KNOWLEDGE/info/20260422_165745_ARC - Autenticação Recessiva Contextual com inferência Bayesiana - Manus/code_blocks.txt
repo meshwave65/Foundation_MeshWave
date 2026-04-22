@@ -1,0 +1,1609 @@
+
+
+================================================================================null
+
+SyncResult
+
+ResilientValue
+
+sealed class
+
+// --- COMPONENTE DE DADOS RESILIENTE ---
+
+/**
+ * Um invólucro que representa um valor que pode ser real ou um placeholder.
+ * Isso evita o uso de `null` e torna o estado dos dados explícito.
+ */
+sealed class ResilientValue<T> {
+    abstract val value: T
+
+    /** O valor é real e foi medido/calculado com sucesso. */
+    data class Real<T>(override val value: T) : ResilientValue<T>()
+
+    /** O valor é um placeholder seguro (default-fail). */
+    data class Placeholder<T>(override val value: T) : ResilientValue<T>()
+}
+
+// --- COMPONENTE DE DADOS RESILIENTE ---
+
+/**
+ * Um invólucro que representa um valor que pode ser real ou um placeholder.
+ * Isso evita o uso de `null` e torna o estado dos dados explícito.
+ */
+sealed class ResilientValue<T> {
+    abstract val value: T
+
+    /** O valor é real e foi medido/calculado com sucesso. */
+    data class Real<T>(override val value: T) : ResilientValue<T>()
+
+    /** O valor é um placeholder seguro (default-fail). */
+    data class Placeholder<T>(override val value: T) : ResilientValue<T>()
+}
+
+SyncResult
+
+ResilientValue
+
+SyncResult
+
+averageLatencyMs
+
+// --- MÓDULO 1: SINCRONIZAÇÃO (REATORADO COM RESILIÊNCIA) ---
+
+// O status ainda é útil para uma visão geral rápida.
+enum class SyncStatus { SUCCESS, UNSTABLE, FAILED }
+
+data class SyncResult(
+    val status: SyncStatus,
+    // O valor da latência agora está encapsulado, nunca é nulo.
+    val averageLatencyMs: ResilientValue<Long>,
+    val situationalAwarenessScore: Float
+)
+
+object TimeSyncProtocol {
+    // Valor padrão seguro para latência quando a medição falha.
+    // Um valor alto e irrealista é uma boa escolha, pois é improvável que seja confundido com uma medição real.
+    const val DEFAULT_FAIL_LATENCY_MS = 9999L
+    
+    // ... (código anterior do TimeSyncProtocol) ...
+
+    fun analyzeCalibration(packet: CalibrationPacket, actualArrivalTime: Long): SyncResult {
+        val predictionError = abs(actualArrivalTime - packet.predictedArrival)
+        val score = (1.0f - (predictionError.toFloat() / 50)).coerceIn(0f, 1f)
+
+        return if (score > 0.75f) {
+            val latency = (actualArrivalTime - packet.originTimestamp) / 2
+            // O valor é REAL
+            SyncResult(SyncStatus.SUCCESS, ResilientValue.Real(latency), score)
+        } else {
+            // O valor é um PLACEHOLDER
+            SyncResult(SyncStatus.UNSTABLE, ResilientValue.Placeholder(DEFAULT_FAIL_LATENCY_MS), score)
+        }
+    }
+}
+
+// O TimeSyncManager não precisa de alterações.
+
+// --- MÓDULO 1: SINCRONIZAÇÃO (REATORADO COM RESILIÊNCIA) ---
+
+// O status ainda é útil para uma visão geral rápida.
+enum class SyncStatus { SUCCESS, UNSTABLE, FAILED }
+
+data class SyncResult(
+    val status: SyncStatus,
+    // O valor da latência agora está encapsulado, nunca é nulo.
+    val averageLatencyMs: ResilientValue<Long>,
+    val situationalAwarenessScore: Float
+)
+
+object TimeSyncProtocol {
+    // Valor padrão seguro para latência quando a medição falha.
+    // Um valor alto e irrealista é uma boa escolha, pois é improvável que seja confundido com uma medição real.
+    const val DEFAULT_FAIL_LATENCY_MS = 9999L
+    
+    // ... (código anterior do TimeSyncProtocol) ...
+
+    fun analyzeCalibration(packet: CalibrationPacket, actualArrivalTime: Long): SyncResult {
+        val predictionError = abs(actualArrivalTime - packet.predictedArrival)
+        val score = (1.0f - (predictionError.toFloat() / 50)).coerceIn(0f, 1f)
+
+        return if (score > 0.75f) {
+            val latency = (actualArrivalTime - packet.originTimestamp) / 2
+            // O valor é REAL
+            SyncResult(SyncStatus.SUCCESS, ResilientValue.Real(latency), score)
+        } else {
+            // O valor é um PLACEHOLDER
+            SyncResult(SyncStatus.UNSTABLE, ResilientValue.Placeholder(DEFAULT_FAIL_LATENCY_MS), score)
+        }
+    }
+}
+
+// O TimeSyncManager não precisa de alterações.
+
+ResilientValue
+
+// --- MÓDULO 3: INFERÊNCIA BAYESIANA (REATORADO COM RESILIÊNCIA) ---
+
+class BayesianModule {
+    private val prob_GoodLatency_Given_Legit = 0.8f
+    private val prob_GoodLatency_Given_Impostor = 0.3f
+
+    fun calculateConfidence(evidence: EvidenceBundle): ConfidenceScore {
+        println("[Bayes]: Calculando confiança com base em evidências resilientes.")
+
+        if (evidence.validationResult.status == ValidationStatus.INVALID) {
+            println("[Bayes]: Evidência conclusiva: Segmento inválido. Confiança = 0%.")
+            return ConfidenceScore(0.0f)
+        }
+
+        val priorLegit = when (evidence.syncResult.status) {
+            SyncStatus.SUCCESS -> 0.7f
+            SyncStatus.UNSTABLE -> 0.4f
+            SyncStatus.FAILED -> 0.2f
+        }
+        println("[Bayes]: Crença Anterior (baseada na Sincronização): ${"%.0f".format(priorLegit * 100)}%")
+
+        var likelihoodFactor = 1.0f // Fator neutro por padrão
+
+        // A MÁGICA ACONTECE AQUI:
+        // Verificamos o TIPO do valor, não apenas o valor em si.
+        when (evidence.syncResult.averageLatencyMs) {
+            is ResilientValue.Real -> {
+                // Temos um dado real, podemos usá-lo para o cálculo.
+                val realSyncLatency = evidence.syncResult.averageLatencyMs.value
+                if (evidence.authLatencyMs != null) {
+                    val latencyIsGood = evidence.authLatencyMs < (realSyncLatency + 40)
+                    val likelihoodGivenLegit = if (latencyIsGood) prob_GoodLatency_Given_Legit else (1 - prob_GoodLatency_Given_Legit)
+                    val likelihoodGivenImpostor = if (latencyIsGood) prob_GoodLatency_Given_Impostor else (1 - prob_GoodLatency_Given_Impostor)
+                    
+                    if (likelihoodGivenImpostor > 0) {
+                        likelihoodFactor = likelihoodGivenLegit / likelihoodGivenImpostor
+                    }
+                    println("[Bayes]: Fator de Verossimilhança (Latência REAL): ${"%.2f".format(likelihoodFactor)}")
+                }
+            }
+            is ResilientValue.Placeholder -> {
+                // Temos um placeholder. A latência da sincronização não é confiável.
+                // Não podemos calcular a verossimilhança da latência.
+                // O fator permanece neutro (1.0), e a baixa confiança virá do `priorLegit` já reduzido.
+                println("[Bayes]: Fator de Verossimilhança (Latência): IGNORADO (dado é placeholder).")
+            }
+        }
+
+        val priorOdds = priorLegit / (1 - priorLegit)
+        val posteriorOdds = likelihoodFactor * priorOdds
+        val finalProbability = (posteriorOdds / (1 + posteriorOdds)).coerceIn(0f, 1f)
+
+        println("[Bayes]: Análise concluída. Confiança final: ${"%.2f".format(finalProbability * 100)}%")
+        return ConfidenceScore(finalProbability)
+    }
+}
+
+// --- MÓDULO 3: INFERÊNCIA BAYESIANA (REATORADO COM RESILIÊNCIA) ---
+
+class BayesianModule {
+    private val prob_GoodLatency_Given_Legit = 0.8f
+    private val prob_GoodLatency_Given_Impostor = 0.3f
+
+    fun calculateConfidence(evidence: EvidenceBundle): ConfidenceScore {
+        println("[Bayes]: Calculando confiança com base em evidências resilientes.")
+
+        if (evidence.validationResult.status == ValidationStatus.INVALID) {
+            println("[Bayes]: Evidência conclusiva: Segmento inválido. Confiança = 0%.")
+            return ConfidenceScore(0.0f)
+        }
+
+        val priorLegit = when (evidence.syncResult.status) {
+            SyncStatus.SUCCESS -> 0.7f
+            SyncStatus.UNSTABLE -> 0.4f
+            SyncStatus.FAILED -> 0.2f
+        }
+        println("[Bayes]: Crença Anterior (baseada na Sincronização): ${"%.0f".format(priorLegit * 100)}%")
+
+        var likelihoodFactor = 1.0f // Fator neutro por padrão
+
+        // A MÁGICA ACONTECE AQUI:
+        // Verificamos o TIPO do valor, não apenas o valor em si.
+        when (evidence.syncResult.averageLatencyMs) {
+            is ResilientValue.Real -> {
+                // Temos um dado real, podemos usá-lo para o cálculo.
+                val realSyncLatency = evidence.syncResult.averageLatencyMs.value
+                if (evidence.authLatencyMs != null) {
+                    val latencyIsGood = evidence.authLatencyMs < (realSyncLatency + 40)
+                    val likelihoodGivenLegit = if (latencyIsGood) prob_GoodLatency_Given_Legit else (1 - prob_GoodLatency_Given_Legit)
+                    val likelihoodGivenImpostor = if (latencyIsGood) prob_GoodLatency_Given_Impostor else (1 - prob_GoodLatency_Given_Impostor)
+                    
+                    if (likelihoodGivenImpostor > 0) {
+                        likelihoodFactor = likelihoodGivenLegit / likelihoodGivenImpostor
+                    }
+                    println("[Bayes]: Fator de Verossimilhança (Latência REAL): ${"%.2f".format(likelihoodFactor)}")
+                }
+            }
+            is ResilientValue.Placeholder -> {
+                // Temos um placeholder. A latência da sincronização não é confiável.
+                // Não podemos calcular a verossimilhança da latência.
+                // O fator permanece neutro (1.0), e a baixa confiança virá do `priorLegit` já reduzido.
+                println("[Bayes]: Fator de Verossimilhança (Latência): IGNORADO (dado é placeholder).")
+            }
+        }
+
+        val priorOdds = priorLegit / (1 - priorLegit)
+        val posteriorOdds = likelihoodFactor * priorOdds
+        val finalProbability = (posteriorOdds / (1 + posteriorOdds)).coerceIn(0f, 1f)
+
+        println("[Bayes]: Análise concluída. Confiança final: ${"%.2f".format(finalProbability * 100)}%")
+        return ConfidenceScore(finalProbability)
+    }
+}
+
+Real
+
+Placeholder
+
+Placeholder
+
+ResilientValue.Real
+
+ResilientValue.Placeholder
+
+ResilientValue
+
+ResilientValue.Placeholder
+
+import kotlinx.coroutines.*
+import java.security.MessageDigest
+import kotlin.math.abs
+import kotlin.random.Random
+
+// --- COMPONENTE DE DADOS RESILIENTE (NOVO) ---
+
+/**
+ * Um invólucro que representa um valor que pode ser real ou um placeholder.
+ * Isso torna o estado dos dados explícito e evita o uso de `null`.
+ */
+sealed class ResilientValue<T> {
+    abstract val value: T
+
+    /** O valor é real e foi medido/calculado com sucesso. */
+    data class Real<T>(override val value: T) : ResilientValue<T>()
+
+    /** O valor é um placeholder seguro (default-fail). */
+    data class Placeholder<T>(override val value: T) : ResilientValue<T>()
+}
+
+
+// --- MÓDULO 1: SINCRONIZAÇÃO (REATORADO COM RESILIÊNCIA) ---
+
+enum class SyncStatus { SUCCESS, UNSTABLE, FAILED }
+
+data class SyncResult(
+    val status: SyncStatus,
+    // O valor da latência agora está encapsulado, nunca é nulo.
+    val averageLatencyMs: ResilientValue<Long>,
+    val situationalAwarenessScore: Float
+)
+
+object TimeSyncProtocol {
+    const val SYNC_PACKET_COUNT = 8
+    // Valor padrão seguro para latência quando a medição falha.
+    const val DEFAULT_FAIL_LATENCY_MS = 9999L
+    private const val MAX_PREDICTION_ERROR_MS = 50
+
+    fun analyzeCalibration(packet: CalibrationPacket, actualArrivalTime: Long): SyncResult {
+        val predictionError = abs(actualArrivalTime - packet.predictedArrival)
+        val score = (1.0f - (predictionError.toFloat() / MAX_PREDICTION_ERROR_MS)).coerceIn(0f, 1f)
+
+        return if (score > 0.75f) {
+            val latency = (actualArrivalTime - packet.originTimestamp) / 2
+            // O valor é REAL
+            SyncResult(SyncStatus.SUCCESS, ResilientValue.Real(latency), score)
+        } else {
+            // O valor é um PLACEHOLDER
+            SyncResult(SyncStatus.UNSTABLE, ResilientValue.Placeholder(DEFAULT_FAIL_LATENCY_MS), score)
+        }
+    }
+}
+
+class TimeSyncManager(private val device: Device) {
+    private var observedTimestamps = mutableListOf<Pair<Long, Long>>()
+
+    suspend fun startServerProcess(connection: FakeConnection) {
+        observedTimestamps.clear()
+        println("[${device.name}-Sync]: Iniciando sincronização.")
+        repeat(TimeSyncProtocol.SYNC_PACKET_COUNT) {
+            connection.send(device, SyncPacket(device.clock.time()))
+        }
+    }
+
+    suspend fun handleClientPacket(packet: SyncPacket, connection: FakeConnection) {
+        observedTimestamps.add(Pair(packet.originTimestamp, device.clock.time()))
+
+        if (observedTimestamps.size == TimeSyncProtocol.SYNC_PACKET_COUNT) {
+            val latencies = observedTimestamps.zipWithNext { a, b -> (b.second - a.second) - (b.first - a.first) }
+            val oneWayApproximation = (latencies.average().toLong() / 2).coerceAtLeast(0)
+            
+            val t3 = device.clock.time()
+            val t4_predicted = t3 + oneWayApproximation
+            connection.send(device, CalibrationPacket(t3, t4_predicted))
+            observedTimestamps.clear()
+        }
+    }
+}
+
+
+// --- MÓDULO 2: ARC (AUTENTICAÇÃO RECESSIVA CONTEXTUAL) ---
+
+enum class ValidationStatus { VALID, INVALID }
+data class ValidationResult(val status: ValidationStatus)
+data class ArcChallenge(val segmentIndex: Int, val segmentLength: Int, val timestamp: Long)
+data class ArcResponse(val segment: String)
+
+object ArcProtocol {
+    private fun sha256(input: String): String = MessageDigest.getInstance("SHA-256")
+        .digest(input.toByteArray()).fold("") { str, it -> str + "%02x".format(it) }
+
+    fun createSegment(secretId: String, challenge: ArcChallenge): String {
+        val baseHash = sha256(secretId)
+        val contextualHash = sha256(baseHash + challenge.timestamp)
+        return contextualHash.substring(challenge.segmentIndex, challenge.segmentIndex + challenge.segmentLength)
+    }
+
+    fun validate(response: ArcResponse, challenge: ArcChallenge, peerSecretId: String): ValidationResult {
+        val expectedSegment = createSegment(peerSecretId, challenge)
+        val isValid = response.segment == expectedSegment
+        println("[ARC-Protocol]: Validando. Esperado: $expectedSegment, Recebido: ${response.segment}. Válido: $isValid")
+        return ValidationResult(if (isValid) ValidationStatus.VALID else ValidationStatus.INVALID)
+    }
+}
+
+class ArcManager(private val device: Device) {
+    fun createChallenge(): ArcChallenge = ArcChallenge(10, 8, device.clock.time())
+
+    fun createResponse(challenge: ArcChallenge): ArcResponse {
+        val segment = ArcProtocol.createSegment(device.secretId, challenge)
+        println("[${device.name}-ARC]: Respondendo com o segmento: $segment")
+        return ArcResponse(segment)
+    }
+}
+
+
+// --- MÓDULO 3: INFERÊNCIA BAYESIANA (ATUALIZADO PARA RESILIÊNCIA) ---
+
+data class EvidenceBundle(
+    val validationResult: ValidationResult,
+    val authLatencyMs: Long?,
+    val syncResult: SyncResult
+)
+
+data class ConfidenceScore(val probability: Float)
+
+class BayesianModule {
+    private val prob_GoodLatency_Given_Legit = 0.8f
+    private val prob_GoodLatency_Given_Impostor = 0.3f
+
+    fun calculateConfidence(evidence: EvidenceBundle): ConfidenceScore {
+        println("[Bayes]: Calculando confiança com base em evidências resilientes.")
+
+        if (evidence.validationResult.status == ValidationStatus.INVALID) {
+            println("[Bayes]: Evidência conclusiva: Segmento inválido. Confiança = 0%.")
+            return ConfidenceScore(0.0f)
+        }
+
+        val priorLegit = when (evidence.syncResult.status) {
+            SyncStatus.SUCCESS -> 0.7f
+            SyncStatus.UNSTABLE -> 0.4f
+            SyncStatus.FAILED -> 0.2f
+        }
+        println("[Bayes]: Crença Anterior (baseada na Sincronização): ${"%.0f".format(priorLegit * 100)}%")
+
+        var likelihoodFactor = 1.0f
+
+        // A lógica agora verifica o TIPO do valor de latência da sincronização
+        when (val syncLatency = evidence.syncResult.averageLatencyMs) {
+            is ResilientValue.Real -> {
+                if (evidence.authLatencyMs != null) {
+                    val latencyIsGood = evidence.authLatencyMs < (syncLatency.value + 40)
+                    val likelihoodGivenLegit = if (latencyIsGood) prob_GoodLatency_Given_Legit else (1 - prob_GoodLatency_Given_Legit)
+                    val likelihoodGivenImpostor = if (latencyIsGood) prob_GoodLatency_Given_Impostor else (1 - prob_GoodLatency_Given_Impostor)
+                    
+                    if (likelihoodGivenImpostor > 0) {
+                        likelihoodFactor = likelihoodGivenLegit / likelihoodGivenImpostor
+                    }
+                    println("[Bayes]: Fator de Verossimilhança (Latência REAL): ${"%.2f".format(likelihoodFactor)}")
+                }
+            }
+            is ResilientValue.Placeholder -> {
+                println("[Bayes]: Fator de Verossimilhança (Latência): IGNORADO (dado é placeholder).")
+            }
+        }
+
+        val priorOdds = priorLegit / (1 - priorLegit)
+        val posteriorOdds = likelihoodFactor * priorOdds
+        val finalProbability = (posteriorOdds / (1 + posteriorOdds)).coerceIn(0f, 1f)
+
+        println("[Bayes]: Análise concluída. Confiança final: ${"%.2f".format(finalProbability * 100)}%")
+        return ConfidenceScore(finalProbability)
+    }
+}
+
+
+// --- ORQUESTRADOR E SIMULAÇÃO ---
+
+// Simulação de Rede e Dispositivo
+class DeviceClock(private val offsetMs: Long = 0) { fun time(): Long = System.currentTimeMillis() + offsetMs }
+class FakeConnection(private val deviceA: Device, private val deviceB: Device, private val baseLatencyMs: Long, private val jitterMs: Int) {
+    suspend fun send(from: Device, message: Any) {
+        val latency = baseLatencyMs + Random.nextInt(-jitterMs, jitterMs)
+        delay(latency)
+        val receiver = if (from == deviceA) deviceB else deviceA
+        receiver.receive(message)
+    }
+}
+data class SyncPacket(val originTimestamp: Long)
+data class CalibrationPacket(val originTimestamp: Long, val predictedArrival: Long)
+
+class Device(
+    val name: String,
+    val clock: DeviceClock,
+    val secretId: String,
+    var knownPeers: Map<String, String> = emptyMap()
+) {
+    private val timeSyncManager = TimeSyncManager(this)
+    private val arcManager = ArcManager(this)
+    private val bayesianModule = BayesianModule()
+
+    private var pendingChallenge: ArcChallenge? = null
+    private var authStartTime: Long = 0
+    private lateinit var lastSyncResult: SyncResult
+    private lateinit var connection: FakeConnection
+
+    fun setConnection(conn: FakeConnection) { connection = conn }
+
+    suspend fun startProcess() { timeSyncManager.startServerProcess(connection) }
+
+    suspend fun receive(message: Any) {
+        println("[$name]: Mensagem recebida: ${message::class.simpleName}")
+        when (message) {
+            is SyncPacket -> timeSyncManager.handleClientPacket(message, connection)
+            is CalibrationPacket -> {
+                lastSyncResult = TimeSyncProtocol.analyzeCalibration(message, clock.time())
+                println("[$name]: Resultado da Sincronização: ${lastSyncResult.status} com latência ${lastSyncResult.averageLatencyMs}")
+
+                val challenge = arcManager.createChallenge()
+                pendingChallenge = challenge
+                authStartTime = clock.time()
+                connection.send(this, challenge)
+            }
+            is ArcChallenge -> {
+                val response = arcManager.createResponse(message)
+                connection.send(this, response)
+            }
+            is ArcResponse -> {
+                val authLatency = clock.time() - authStartTime
+                val peerName = if (name == "DispositivoA") "DispositivoB" else "DispositivoA"
+                val validation = ArcProtocol.validate(message, pendingChallenge!!, knownPeers[peerName]!!)
+                
+                val evidence = EvidenceBundle(validation, authLatency, lastSyncResult)
+                val confidence = bayesianModule.calculateConfidence(evidence)
+
+                if (confidence.probability > 0.85f) {
+                    println("\n>>> [$name]: AUTENTICAÇÃO BEM-SUCEDIDA (Confiança: ${"%.1f".format(confidence.probability * 100)}%) <<<\n")
+                } else {
+                    println("\n>>> [$name]: FALHA NA AUTENTICAÇÃO (Confiança: ${"%.1f".format(confidence.probability * 100)}%) <<<\n")
+                }
+            }
+        }
+    }
+}
+
+// --- PONTO DE ENTRADA DA EXECUÇÃO ---
+suspend fun main() = coroutineScope {
+    println("--- INICIANDO SIMULAÇÃO DE AUTENTICAÇÃO RESILIENTE ---")
+
+    val clockA = DeviceClock()
+    val clockB = DeviceClock(offsetMs = -80)
+    
+    val deviceA = Device("DispositivoA", clockA, "segredo-do-A-123")
+    val deviceB = Device("DispositivoB", clockB, "segredo-do-B-456")
+
+    deviceA.knownPeers = mapOf("DispositivoB" to deviceB.secretId)
+    deviceB.knownPeers = mapOf("DispositivoA" to deviceA.secretId)
+
+    // Para testar o cenário de falha, aumente o jitter para que a previsão erre mais
+    val connection = FakeConnection(deviceA, deviceB, baseLatencyMs = 30, jitterMs = 40)
+    deviceA.setConnection(connection)
+    deviceB.setConnection(connection)
+    
+    launch {
+        deviceB.startProcess()
+    }
+}
+
+import kotlinx.coroutines.*
+import java.security.MessageDigest
+import kotlin.math.abs
+import kotlin.random.Random
+
+// --- COMPONENTE DE DADOS RESILIENTE (NOVO) ---
+
+/**
+ * Um invólucro que representa um valor que pode ser real ou um placeholder.
+ * Isso torna o estado dos dados explícito e evita o uso de `null`.
+ */
+sealed class ResilientValue<T> {
+    abstract val value: T
+
+    /** O valor é real e foi medido/calculado com sucesso. */
+    data class Real<T>(override val value: T) : ResilientValue<T>()
+
+    /** O valor é um placeholder seguro (default-fail). */
+    data class Placeholder<T>(override val value: T) : ResilientValue<T>()
+}
+
+
+// --- MÓDULO 1: SINCRONIZAÇÃO (REATORADO COM RESILIÊNCIA) ---
+
+enum class SyncStatus { SUCCESS, UNSTABLE, FAILED }
+
+data class SyncResult(
+    val status: SyncStatus,
+    // O valor da latência agora está encapsulado, nunca é nulo.
+    val averageLatencyMs: ResilientValue<Long>,
+    val situationalAwarenessScore: Float
+)
+
+object TimeSyncProtocol {
+    const val SYNC_PACKET_COUNT = 8
+    // Valor padrão seguro para latência quando a medição falha.
+    const val DEFAULT_FAIL_LATENCY_MS = 9999L
+    private const val MAX_PREDICTION_ERROR_MS = 50
+
+    fun analyzeCalibration(packet: CalibrationPacket, actualArrivalTime: Long): SyncResult {
+        val predictionError = abs(actualArrivalTime - packet.predictedArrival)
+        val score = (1.0f - (predictionError.toFloat() / MAX_PREDICTION_ERROR_MS)).coerceIn(0f, 1f)
+
+        return if (score > 0.75f) {
+            val latency = (actualArrivalTime - packet.originTimestamp) / 2
+            // O valor é REAL
+            SyncResult(SyncStatus.SUCCESS, ResilientValue.Real(latency), score)
+        } else {
+            // O valor é um PLACEHOLDER
+            SyncResult(SyncStatus.UNSTABLE, ResilientValue.Placeholder(DEFAULT_FAIL_LATENCY_MS), score)
+        }
+    }
+}
+
+class TimeSyncManager(private val device: Device) {
+    private var observedTimestamps = mutableListOf<Pair<Long, Long>>()
+
+    suspend fun startServerProcess(connection: FakeConnection) {
+        observedTimestamps.clear()
+        println("[${device.name}-Sync]: Iniciando sincronização.")
+        repeat(TimeSyncProtocol.SYNC_PACKET_COUNT) {
+            connection.send(device, SyncPacket(device.clock.time()))
+        }
+    }
+
+    suspend fun handleClientPacket(packet: SyncPacket, connection: FakeConnection) {
+        observedTimestamps.add(Pair(packet.originTimestamp, device.clock.time()))
+
+        if (observedTimestamps.size == TimeSyncProtocol.SYNC_PACKET_COUNT) {
+            val latencies = observedTimestamps.zipWithNext { a, b -> (b.second - a.second) - (b.first - a.first) }
+            val oneWayApproximation = (latencies.average().toLong() / 2).coerceAtLeast(0)
+            
+            val t3 = device.clock.time()
+            val t4_predicted = t3 + oneWayApproximation
+            connection.send(device, CalibrationPacket(t3, t4_predicted))
+            observedTimestamps.clear()
+        }
+    }
+}
+
+
+// --- MÓDULO 2: ARC (AUTENTICAÇÃO RECESSIVA CONTEXTUAL) ---
+
+enum class ValidationStatus { VALID, INVALID }
+data class ValidationResult(val status: ValidationStatus)
+data class ArcChallenge(val segmentIndex: Int, val segmentLength: Int, val timestamp: Long)
+data class ArcResponse(val segment: String)
+
+object ArcProtocol {
+    private fun sha256(input: String): String = MessageDigest.getInstance("SHA-256")
+        .digest(input.toByteArray()).fold("") { str, it -> str + "%02x".format(it) }
+
+    fun createSegment(secretId: String, challenge: ArcChallenge): String {
+        val baseHash = sha256(secretId)
+        val contextualHash = sha256(baseHash + challenge.timestamp)
+        return contextualHash.substring(challenge.segmentIndex, challenge.segmentIndex + challenge.segmentLength)
+    }
+
+    fun validate(response: ArcResponse, challenge: ArcChallenge, peerSecretId: String): ValidationResult {
+        val expectedSegment = createSegment(peerSecretId, challenge)
+        val isValid = response.segment == expectedSegment
+        println("[ARC-Protocol]: Validando. Esperado: $expectedSegment, Recebido: ${response.segment}. Válido: $isValid")
+        return ValidationResult(if (isValid) ValidationStatus.VALID else ValidationStatus.INVALID)
+    }
+}
+
+class ArcManager(private val device: Device) {
+    fun createChallenge(): ArcChallenge = ArcChallenge(10, 8, device.clock.time())
+
+    fun createResponse(challenge: ArcChallenge): ArcResponse {
+        val segment = ArcProtocol.createSegment(device.secretId, challenge)
+        println("[${device.name}-ARC]: Respondendo com o segmento: $segment")
+        return ArcResponse(segment)
+    }
+}
+
+
+// --- MÓDULO 3: INFERÊNCIA BAYESIANA (ATUALIZADO PARA RESILIÊNCIA) ---
+
+data class EvidenceBundle(
+    val validationResult: ValidationResult,
+    val authLatencyMs: Long?,
+    val syncResult: SyncResult
+)
+
+data class ConfidenceScore(val probability: Float)
+
+class BayesianModule {
+    private val prob_GoodLatency_Given_Legit = 0.8f
+    private val prob_GoodLatency_Given_Impostor = 0.3f
+
+    fun calculateConfidence(evidence: EvidenceBundle): ConfidenceScore {
+        println("[Bayes]: Calculando confiança com base em evidências resilientes.")
+
+        if (evidence.validationResult.status == ValidationStatus.INVALID) {
+            println("[Bayes]: Evidência conclusiva: Segmento inválido. Confiança = 0%.")
+            return ConfidenceScore(0.0f)
+        }
+
+        val priorLegit = when (evidence.syncResult.status) {
+            SyncStatus.SUCCESS -> 0.7f
+            SyncStatus.UNSTABLE -> 0.4f
+            SyncStatus.FAILED -> 0.2f
+        }
+        println("[Bayes]: Crença Anterior (baseada na Sincronização): ${"%.0f".format(priorLegit * 100)}%")
+
+        var likelihoodFactor = 1.0f
+
+        // A lógica agora verifica o TIPO do valor de latência da sincronização
+        when (val syncLatency = evidence.syncResult.averageLatencyMs) {
+            is ResilientValue.Real -> {
+                if (evidence.authLatencyMs != null) {
+                    val latencyIsGood = evidence.authLatencyMs < (syncLatency.value + 40)
+                    val likelihoodGivenLegit = if (latencyIsGood) prob_GoodLatency_Given_Legit else (1 - prob_GoodLatency_Given_Legit)
+                    val likelihoodGivenImpostor = if (latencyIsGood) prob_GoodLatency_Given_Impostor else (1 - prob_GoodLatency_Given_Impostor)
+                    
+                    if (likelihoodGivenImpostor > 0) {
+                        likelihoodFactor = likelihoodGivenLegit / likelihoodGivenImpostor
+                    }
+                    println("[Bayes]: Fator de Verossimilhança (Latência REAL): ${"%.2f".format(likelihoodFactor)}")
+                }
+            }
+            is ResilientValue.Placeholder -> {
+                println("[Bayes]: Fator de Verossimilhança (Latência): IGNORADO (dado é placeholder).")
+            }
+        }
+
+        val priorOdds = priorLegit / (1 - priorLegit)
+        val posteriorOdds = likelihoodFactor * priorOdds
+        val finalProbability = (posteriorOdds / (1 + posteriorOdds)).coerceIn(0f, 1f)
+
+        println("[Bayes]: Análise concluída. Confiança final: ${"%.2f".format(finalProbability * 100)}%")
+        return ConfidenceScore(finalProbability)
+    }
+}
+
+
+// --- ORQUESTRADOR E SIMULAÇÃO ---
+
+// Simulação de Rede e Dispositivo
+class DeviceClock(private val offsetMs: Long = 0) { fun time(): Long = System.currentTimeMillis() + offsetMs }
+class FakeConnection(private val deviceA: Device, private val deviceB: Device, private val baseLatencyMs: Long, private val jitterMs: Int) {
+    suspend fun send(from: Device, message: Any) {
+        val latency = baseLatencyMs + Random.nextInt(-jitterMs, jitterMs)
+        delay(latency)
+        val receiver = if (from == deviceA) deviceB else deviceA
+        receiver.receive(message)
+    }
+}
+data class SyncPacket(val originTimestamp: Long)
+data class CalibrationPacket(val originTimestamp: Long, val predictedArrival: Long)
+
+class Device(
+    val name: String,
+    val clock: DeviceClock,
+    val secretId: String,
+    var knownPeers: Map<String, String> = emptyMap()
+) {
+    private val timeSyncManager = TimeSyncManager(this)
+    private val arcManager = ArcManager(this)
+    private val bayesianModule = BayesianModule()
+
+    private var pendingChallenge: ArcChallenge? = null
+    private var authStartTime: Long = 0
+    private lateinit var lastSyncResult: SyncResult
+    private lateinit var connection: FakeConnection
+
+    fun setConnection(conn: FakeConnection) { connection = conn }
+
+    suspend fun startProcess() { timeSyncManager.startServerProcess(connection) }
+
+    suspend fun receive(message: Any) {
+        println("[$name]: Mensagem recebida: ${message::class.simpleName}")
+        when (message) {
+            is SyncPacket -> timeSyncManager.handleClientPacket(message, connection)
+            is CalibrationPacket -> {
+                lastSyncResult = TimeSyncProtocol.analyzeCalibration(message, clock.time())
+                println("[$name]: Resultado da Sincronização: ${lastSyncResult.status} com latência ${lastSyncResult.averageLatencyMs}")
+
+                val challenge = arcManager.createChallenge()
+                pendingChallenge = challenge
+                authStartTime = clock.time()
+                connection.send(this, challenge)
+            }
+            is ArcChallenge -> {
+                val response = arcManager.createResponse(message)
+                connection.send(this, response)
+            }
+            is ArcResponse -> {
+                val authLatency = clock.time() - authStartTime
+                val peerName = if (name == "DispositivoA") "DispositivoB" else "DispositivoA"
+                val validation = ArcProtocol.validate(message, pendingChallenge!!, knownPeers[peerName]!!)
+                
+                val evidence = EvidenceBundle(validation, authLatency, lastSyncResult)
+                val confidence = bayesianModule.calculateConfidence(evidence)
+
+                if (confidence.probability > 0.85f) {
+                    println("\n>>> [$name]: AUTENTICAÇÃO BEM-SUCEDIDA (Confiança: ${"%.1f".format(confidence.probability * 100)}%) <<<\n")
+                } else {
+                    println("\n>>> [$name]: FALHA NA AUTENTICAÇÃO (Confiança: ${"%.1f".format(confidence.probability * 100)}%) <<<\n")
+                }
+            }
+        }
+    }
+}
+
+// --- PONTO DE ENTRADA DA EXECUÇÃO ---
+suspend fun main() = coroutineScope {
+    println("--- INICIANDO SIMULAÇÃO DE AUTENTICAÇÃO RESILIENTE ---")
+
+    val clockA = DeviceClock()
+    val clockB = DeviceClock(offsetMs = -80)
+    
+    val deviceA = Device("DispositivoA", clockA, "segredo-do-A-123")
+    val deviceB = Device("DispositivoB", clockB, "segredo-do-B-456")
+
+    deviceA.knownPeers = mapOf("DispositivoB" to deviceB.secretId)
+    deviceB.knownPeers = mapOf("DispositivoA" to deviceA.secretId)
+
+    // Para testar o cenário de falha, aumente o jitter para que a previsão erre mais
+    val connection = FakeConnection(deviceA, deviceB, baseLatencyMs = 30, jitterMs = 40)
+    deviceA.setConnection(connection)
+    deviceB.setConnection(connection)
+    
+    launch {
+        deviceB.startProcess()
+    }
+}
+
+main
+
+jitterMs
+
+FakeConnection
+
+// Cenário de sucesso (jitter baixo)
+// val connection = FakeConnection(deviceA, deviceB, baseLatencyMs = 30, jitterMs = 15)
+
+// Cenário de falha na sincronização (jitter alto)
+val connection = FakeConnection(deviceA, deviceB, baseLatencyMs = 30, jitterMs = 40)
+
+// Cenário de sucesso (jitter baixo)
+// val connection = FakeConnection(deviceA, deviceB, baseLatencyMs = 30, jitterMs = 15)
+
+// Cenário de falha na sincronização (jitter alto)
+val connection = FakeConnection(deviceA, deviceB, baseLatencyMs = 30, jitterMs = 40)
+
+jitterMs = 40
+
+SyncResult
+
+UNSTABLE
+
+ResilientValue.Placeholder
+
+index.html
+
+style.css
+
+app.js
+
+Device
+
+TimeSyncManager
+
+ArcManager
+
+BayesianModule
+
+arc-simulator
+
+arc-simulator/
+├── build.gradle.kts             // Arquivo de build do projeto
+├── gradlew                        // Wrapper do Gradle (Linux/macOS)
+├── gradlew.bat                    // Wrapper do Gradle (Windows)
+├── gradle/                        // Pasta do wrapper
+│   └── wrapper/
+│       ├── gradle-wrapper.jar
+│       └── gradle-wrapper.properties
+└── src/
+    ├── main/
+    │   ├── kotlin/
+    │   │   └── com/example/
+    │   │       └── Application.kt // Código do servidor Ktor
+    │   └── resources/
+    │       └── static/            // Arquivos do Frontend
+    │           ├── index.html
+    │           ├── style.css
+    │           └── app.js
+    └── test/
+        └── ...
+
+arc-simulator/
+├── build.gradle.kts             // Arquivo de build do projeto
+├── gradlew                        // Wrapper do Gradle (Linux/macOS)
+├── gradlew.bat                    // Wrapper do Gradle (Windows)
+├── gradle/                        // Pasta do wrapper
+│   └── wrapper/
+│       ├── gradle-wrapper.jar
+│       └── gradle-wrapper.properties
+└── src/
+    ├── main/
+    │   ├── kotlin/
+    │   │   └── com/example/
+    │   │       └── Application.kt // Código do servidor Ktor
+    │   └── resources/
+    │       └── static/            // Arquivos do Frontend
+    │           ├── index.html
+    │           ├── style.css
+    │           └── app.js
+    └── test/
+        └── ...
+
+src/main/kotlin/com/example/Application.kt
+
+package com.example
+
+import io.ktor.server.application.*
+import io.ktor.server.engine.*
+import io.ktor.server.netty.*
+import io.ktor.server.http.content.*
+import io.ktor.server.routing.*
+import io.ktor.server.websocket.*
+import io.ktor.websocket.*
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import java.time.Duration
+import kotlin.random.Random
+
+fun main( ) {
+    embeddedServer(Netty, port = 8080, host = "0.0.0.0") {
+        install(WebSockets) {
+            pingPeriod = Duration.ofSeconds(15)
+            timeout = Duration.ofSeconds(15)
+            maxFrameSize = Long.MAX_VALUE
+            masking = false
+        }
+
+        routing {
+            // Endpoint WebSocket que simula a rede
+            webSocket("/ws/network") {
+                val jitter = call.request.queryParameters["jitter"]?.toIntOrNull() ?: 15
+                val latency = call.request.queryParameters["latency"]?.toLongOrNull() ?: 30
+
+                for (frame in incoming) {
+                    if (frame is Frame.Text) {
+                        // Simula a latência e o jitter da rede
+                        val delayMs = latency + Random.nextInt(-jitter, jitter)
+                        launch {
+                            delay(delayMs)
+                            // Retransmite a mensagem para todos os clientes conectados (os 2 dispositivos)
+                            send(frame.readText())
+                        }
+                    }
+                }
+            }
+
+            // Serve os arquivos estáticos do frontend
+            static("/") {
+                resources("static")
+                defaultResource("static/index.html")
+            }
+        }
+    }.start(wait = true)
+}
+
+package com.example
+
+import io.ktor.server.application.*
+import io.ktor.server.engine.*
+import io.ktor.server.netty.*
+import io.ktor.server.http.content.*
+import io.ktor.server.routing.*
+import io.ktor.server.websocket.*
+import io.ktor.websocket.*
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import java.time.Duration
+import kotlin.random.Random
+
+fun main( ) {
+    embeddedServer(Netty, port = 8080, host = "0.0.0.0") {
+        install(WebSockets) {
+            pingPeriod = Duration.ofSeconds(15)
+            timeout = Duration.ofSeconds(15)
+            maxFrameSize = Long.MAX_VALUE
+            masking = false
+        }
+
+        routing {
+            // Endpoint WebSocket que simula a rede
+            webSocket("/ws/network") {
+                val jitter = call.request.queryParameters["jitter"]?.toIntOrNull() ?: 15
+                val latency = call.request.queryParameters["latency"]?.toLongOrNull() ?: 30
+
+                for (frame in incoming) {
+                    if (frame is Frame.Text) {
+                        // Simula a latência e o jitter da rede
+                        val delayMs = latency + Random.nextInt(-jitter, jitter)
+                        launch {
+                            delay(delayMs)
+                            // Retransmite a mensagem para todos os clientes conectados (os 2 dispositivos)
+                            send(frame.readText())
+                        }
+                    }
+                }
+            }
+
+            // Serve os arquivos estáticos do frontend
+            static("/") {
+                resources("static")
+                defaultResource("static/index.html")
+            }
+        }
+    }.start(wait = true)
+}
+
+src/main/resources/static/index.html
+
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simulador de Autenticação Recessiva Contextual (ARC)</title>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="app">
+        <header>
+            <h1>Simulador ARC</h1>
+            <div class="controls">
+                <div class="control-group">
+                    <label for="jitter">Condição da Rede (Jitter ):</label>
+                    <input type="range" id="jitter" min="5" max="80" v-model.number="network.jitter">
+                    <span>{{ network.jitter }}ms ({{ network.jitter < 30 ? 'Estável' : 'Instável' }})</span>
+                </div>
+                <button @click="startSimulation" :disabled="simulation.running">Iniciar Simulação</button>
+                <button @click="resetSimulation" :disabled="!simulation.running">Resetar</button>
+            </div>
+        </header>
+        <main class="simulation-area">
+            <div class="device-panel" id="device-a">
+                <h2>Dispositivo A (Cliente)</h2>
+                <div class="status" :class="deviceA.statusClass">{{ deviceA.status }}</div>
+                <div class="logs">
+                    <div v-for="log in deviceA.logs" class="log-entry" :class="log.type">{{ log.message }}</div>
+                </div>
+            </div>
+            <div class="device-panel" id="device-b">
+                <h2>Dispositivo B (Servidor)</h2>
+                <div class="status" :class="deviceB.statusClass">{{ deviceB.status }}</div>
+                <div class="logs">
+                    <div v-for="log in deviceB.logs" class="log-entry" :class="log.type">{{ log.message }}</div>
+                </div>
+            </div>
+        </main>
+    </div>
+    <script src="app.js"></script>
+</body>
+</html>
+
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simulador de Autenticação Recessiva Contextual (ARC)</title>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="app">
+        <header>
+            <h1>Simulador ARC</h1>
+            <div class="controls">
+                <div class="control-group">
+                    <label for="jitter">Condição da Rede (Jitter ):</label>
+                    <input type="range" id="jitter" min="5" max="80" v-model.number="network.jitter">
+                    <span>{{ network.jitter }}ms ({{ network.jitter < 30 ? 'Estável' : 'Instável' }})</span>
+                </div>
+                <button @click="startSimulation" :disabled="simulation.running">Iniciar Simulação</button>
+                <button @click="resetSimulation" :disabled="!simulation.running">Resetar</button>
+            </div>
+        </header>
+        <main class="simulation-area">
+            <div class="device-panel" id="device-a">
+                <h2>Dispositivo A (Cliente)</h2>
+                <div class="status" :class="deviceA.statusClass">{{ deviceA.status }}</div>
+                <div class="logs">
+                    <div v-for="log in deviceA.logs" class="log-entry" :class="log.type">{{ log.message }}</div>
+                </div>
+            </div>
+            <div class="device-panel" id="device-b">
+                <h2>Dispositivo B (Servidor)</h2>
+                <div class="status" :class="deviceB.statusClass">{{ deviceB.status }}</div>
+                <div class="logs">
+                    <div v-for="log in deviceB.logs" class="log-entry" :class="log.type">{{ log.message }}</div>
+                </div>
+            </div>
+        </main>
+    </div>
+    <script src="app.js"></script>
+</body>
+</html>
+
+src/main/resources/static/style.css
+
+/* (CSS para estilizar a interface - pode ser longo, então aqui está um resumo) */
+body { font-family: sans-serif; background-color: #f0f2f5; color: #333; margin: 0; }
+#app { display: flex; flex-direction: column; height: 100vh; }
+header { background: #fff; padding: 1rem; border-bottom: 1px solid #ddd; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+h1 { text-align: center; margin: 0; }
+.controls { display: flex; justify-content: center; align-items: center; gap: 2rem; margin-top: 1rem; }
+.simulation-area { display: flex; flex-grow: 1; gap: 1rem; padding: 1rem; }
+.device-panel { flex: 1; background: #fff; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); display: flex; flex-direction: column; }
+.device-panel h2 { text-align: center; padding: 0.5rem; border-bottom: 1px solid #eee; }
+.status { font-weight: bold; text-align: center; padding: 0.8rem; margin: 1rem; border-radius: 5px; color: #fff; }
+.status.success { background-color: #28a745; }
+.status.failure { background-color: #dc3545; }
+.status.running { background-color: #007bff; }
+.status.idle { background-color: #6c757d; }
+.logs { padding: 1rem; overflow-y: auto; flex-grow: 1; font-family: monospace; font-size: 0.9em; }
+.log-entry { margin-bottom: 0.5rem; padding-bottom: 0.5rem; border-bottom: 1px dotted #eee; }
+.log-entry.info { color: #333; }
+.log-entry.success { color: #28a745; font-weight: bold; }
+.log-entry.error { color: #dc3545; font-weight: bold; }
+
+/* (CSS para estilizar a interface - pode ser longo, então aqui está um resumo) */
+body { font-family: sans-serif; background-color: #f0f2f5; color: #333; margin: 0; }
+#app { display: flex; flex-direction: column; height: 100vh; }
+header { background: #fff; padding: 1rem; border-bottom: 1px solid #ddd; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+h1 { text-align: center; margin: 0; }
+.controls { display: flex; justify-content: center; align-items: center; gap: 2rem; margin-top: 1rem; }
+.simulation-area { display: flex; flex-grow: 1; gap: 1rem; padding: 1rem; }
+.device-panel { flex: 1; background: #fff; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); display: flex; flex-direction: column; }
+.device-panel h2 { text-align: center; padding: 0.5rem; border-bottom: 1px solid #eee; }
+.status { font-weight: bold; text-align: center; padding: 0.8rem; margin: 1rem; border-radius: 5px; color: #fff; }
+.status.success { background-color: #28a745; }
+.status.failure { background-color: #dc3545; }
+.status.running { background-color: #007bff; }
+.status.idle { background-color: #6c757d; }
+.logs { padding: 1rem; overflow-y: auto; flex-grow: 1; font-family: monospace; font-size: 0.9em; }
+.log-entry { margin-bottom: 0.5rem; padding-bottom: 0.5rem; border-bottom: 1px dotted #eee; }
+.log-entry.info { color: #333; }
+.log-entry.success { color: #28a745; font-weight: bold; }
+.log-entry.error { color: #dc3545; font-weight: bold; }
+
+src/main/resources/static/app.js
+
+// Este arquivo conterá a tradução da lógica Kotlin para JS e o código Vue.js
+// É um arquivo longo, então vou estruturá-lo em seções.
+
+// --- Seção 1: Lógica Pura (Tradução do Kotlin) ---
+// Funções de Hash, Protocolos de Sincronização e ARC, Módulo Bayesiano
+// (Esta parte é uma tradução direta da lógica que já criamos)
+
+// --- Seção 2: Classe do Dispositivo Simulado ---
+class Device {
+    constructor(name, secretId, vueInstance) {
+        // ... inicializa módulos, estado, etc.
+    }
+    // ... métodos para receber mensagens, iniciar processos, etc.
+}
+
+// --- Seção 3: Aplicação Vue.js ---
+const { createApp } = Vue;
+
+createApp({
+    data() {
+        return {
+            simulation: { running: false },
+            network: { jitter: 15, latency: 30 },
+            deviceA: { status: 'Ocioso', logs: [], statusClass: 'idle' },
+            deviceB: { status: 'Ocioso', logs: [], statusClass: 'idle' }
+        }
+    },
+    methods: {
+        startSimulation() {
+            // ... Lógica para criar as instâncias dos dispositivos,
+            //     conectar ao WebSocket do Ktor e iniciar o processo.
+        },
+        resetSimulation() {
+            // ... Lógica para limpar os logs, resetar o status e fechar a conexão.
+        }
+    }
+}).mount('#app');
+
+// Este arquivo conterá a tradução da lógica Kotlin para JS e o código Vue.js
+// É um arquivo longo, então vou estruturá-lo em seções.
+
+// --- Seção 1: Lógica Pura (Tradução do Kotlin) ---
+// Funções de Hash, Protocolos de Sincronização e ARC, Módulo Bayesiano
+// (Esta parte é uma tradução direta da lógica que já criamos)
+
+// --- Seção 2: Classe do Dispositivo Simulado ---
+class Device {
+    constructor(name, secretId, vueInstance) {
+        // ... inicializa módulos, estado, etc.
+    }
+    // ... métodos para receber mensagens, iniciar processos, etc.
+}
+
+// --- Seção 3: Aplicação Vue.js ---
+const { createApp } = Vue;
+
+createApp({
+    data() {
+        return {
+            simulation: { running: false },
+            network: { jitter: 15, latency: 30 },
+            deviceA: { status: 'Ocioso', logs: [], statusClass: 'idle' },
+            deviceB: { status: 'Ocioso', logs: [], statusClass: 'idle' }
+        }
+    },
+    methods: {
+        startSimulation() {
+            // ... Lógica para criar as instâncias dos dispositivos,
+            //     conectar ao WebSocket do Ktor e iniciar o processo.
+        },
+        resetSimulation() {
+            // ... Lógica para limpar os logs, resetar o status e fechar a conexão.
+        }
+    }
+}).mount('#app');
+
+app.js
+
+WebSockets
+
+Static Content
+
+Application.kt
+
+index.html
+
+style.css
+
+app.js
+
+arc-simulator
+
+./gradlew run
+
+gradlew.bat run
+
+...Protocol
+
+...Module
+
+.aar
+
+File > New > New Module...
+
+sync
+
+arc
+
+bayesian
+
+...Protocol
+
+...Module
+
+ResilientValue
+
+arc
+
+arc/src/main/java/.../ArcProtocol.kt
+
+object ArcProtocol {
+    // ... toda a lógica de hashing e criação de segmentos ...
+}
+
+object ArcProtocol {
+    // ... toda a lógica de hashing e criação de segmentos ...
+}
+
+arc/src/main/java/.../data/ArcData.kt
+
+// Coloque as classes de dados aqui para organização
+data class ArcChallenge(...)
+data class ArcResponse(...)
+enum class ValidationStatus { ... }
+data class ValidationResult(...)
+
+// Coloque as classes de dados aqui para organização
+data class ArcChallenge(...)
+data class ArcResponse(...)
+enum class ValidationStatus { ... }
+data class ValidationResult(...)
+
+bayesian
+
+BayesianModule
+
+sync
+
+TimeSyncProtocol
+
+app
+
+MeshPeerConnectionManager
+
+app/src/main/java/.../network/MeshPeerConnectionManager.kt
+
+import kotlinx.coroutines.*
+import java.net.ServerSocket
+import java.net.Socket
+
+// Importe as classes dos seus novos módulos de biblioteca
+import com.meshwave.arc.ArcProtocol
+import com.meshwave.sync.TimeSyncProtocol
+import com.meshwave.bayesian.BayesianModule
+// ... e as classes de dados
+
+class MeshPeerConnectionManager(
+    private val viewModelScope: CoroutineScope, // Passe o escopo de um ViewModel ou Service
+    private val onUpdate: (String) -> Unit, // Callback para atualizar a UI
+    private val onResult: (Boolean, Float) -> Unit // Callback para o resultado final
+) {
+    // --- Módulos de Lógica ---
+    private val bayesianModule = BayesianModule()
+
+    // --- Estado da Conexão ---
+    private var clientSocket: Socket? = null
+    private var pendingChallenge: ArcChallenge? = null
+    private var authStartTime: Long = 0
+    private lateinit var lastSyncResult: SyncResult
+
+    // ... (código para iniciar como servidor ou conectar como cliente) ...
+
+    // Função principal que é chamada quando uma conexão é estabelecida
+    fun handleConnection(socket: Socket) {
+        this.clientSocket = socket
+        viewModelScope.launch(Dispatchers.IO) {
+            // 1. Iniciar Sincronização
+            onUpdate("Conexão estabelecida. Iniciando sincronização...")
+            startSyncProcess(socket)
+
+            // 2. Escutar por respostas
+            listenForMessages(socket)
+        }
+    }
+
+    private suspend fun startSyncProcess(socket: Socket) {
+        // A lógica de envio de pacotes de sincronização vai aqui
+        // ...
+    }
+
+    private suspend fun listenForMessages(socket: Socket) {
+        try {
+            val reader = socket.getInputStream().bufferedReader()
+            while (isActive) {
+                val messageJson = reader.readLine() ?: break // Conexão fechada
+                // Use uma biblioteca como GSON ou Kotlinx.Serialization para deserializar
+                // a mensagem e descobrir seu tipo (SyncPacket, ArcResponse, etc.)
+                
+                // Exemplo de fluxo de recebimento
+                val message = deserializeMessage(messageJson) // Função a ser criada
+                
+                when (message) {
+                    is CalibrationPacket -> handleCalibration(message)
+                    is ArcResponse -> handleAuthResponse(message)
+                    // ... outros tipos de mensagem
+                }
+            }
+        } catch (e: Exception) {
+            onUpdate("Conexão perdida: ${e.message}")
+        }
+    }
+
+    private suspend fun handleCalibration(packet: CalibrationPacket) {
+        lastSyncResult = TimeSyncProtocol.analyzeCalibration(packet, System.currentTimeMillis())
+        onUpdate("Sincronização concluída com status: ${lastSyncResult.status}")
+
+        // 2. Iniciar Autenticação ARC
+        val challenge = ArcProtocol.createChallenge() // Simplificado, deveria vir de um ArcManager
+        pendingChallenge = challenge
+        authStartTime = System.currentTimeMillis()
+        sendMessage(challenge) // Envia o desafio para o outro peer
+    }
+
+    private fun handleAuthResponse(response: ArcResponse) {
+        val authLatency = System.currentTimeMillis() - authStartTime
+        
+        // Supondo que você tenha o ID secreto do peer
+        val peerSecretId = "SECRET_DO_PEER_CONHECIDO" 
+        val validation = ArcProtocol.validate(response, pendingChallenge!!, peerSecretId)
+
+        val evidence = EvidenceBundle(validation, authLatency, lastSyncResult)
+        val confidence = bayesianModule.calculateConfidence(evidence)
+
+        onUpdate("Validação concluída. Confiança: ${confidence.probability * 100}%")
+        onResult(confidence.probability > 0.85f, confidence.probability)
+        
+        // Se a autenticação falhar, feche o socket
+        if (confidence.probability <= 0.85f) {
+            clientSocket?.close()
+        }
+    }
+
+    private suspend fun sendMessage(data: Any) {
+        // Use GSON/Kotlinx.Serialization para converter o objeto para JSON
+        val jsonString = serializeMessage(data)
+        withContext(Dispatchers.IO) {
+            clientSocket?.getOutputStream()?.write((jsonString + "\n").toByteArray())
+        }
+    }
+    
+    // Funções auxiliares para serialização (a serem implementadas)
+    private fun serializeMessage(data: Any): String { /* ... */ return "" }
+    private fun deserializeMessage(json: String): Any { /* ... */ return Any() }
+}
+
+import kotlinx.coroutines.*
+import java.net.ServerSocket
+import java.net.Socket
+
+// Importe as classes dos seus novos módulos de biblioteca
+import com.meshwave.arc.ArcProtocol
+import com.meshwave.sync.TimeSyncProtocol
+import com.meshwave.bayesian.BayesianModule
+// ... e as classes de dados
+
+class MeshPeerConnectionManager(
+    private val viewModelScope: CoroutineScope, // Passe o escopo de um ViewModel ou Service
+    private val onUpdate: (String) -> Unit, // Callback para atualizar a UI
+    private val onResult: (Boolean, Float) -> Unit // Callback para o resultado final
+) {
+    // --- Módulos de Lógica ---
+    private val bayesianModule = BayesianModule()
+
+    // --- Estado da Conexão ---
+    private var clientSocket: Socket? = null
+    private var pendingChallenge: ArcChallenge? = null
+    private var authStartTime: Long = 0
+    private lateinit var lastSyncResult: SyncResult
+
+    // ... (código para iniciar como servidor ou conectar como cliente) ...
+
+    // Função principal que é chamada quando uma conexão é estabelecida
+    fun handleConnection(socket: Socket) {
+        this.clientSocket = socket
+        viewModelScope.launch(Dispatchers.IO) {
+            // 1. Iniciar Sincronização
+            onUpdate("Conexão estabelecida. Iniciando sincronização...")
+            startSyncProcess(socket)
+
+            // 2. Escutar por respostas
+            listenForMessages(socket)
+        }
+    }
+
+    private suspend fun startSyncProcess(socket: Socket) {
+        // A lógica de envio de pacotes de sincronização vai aqui
+        // ...
+    }
+
+    private suspend fun listenForMessages(socket: Socket) {
+        try {
+            val reader = socket.getInputStream().bufferedReader()
+            while (isActive) {
+                val messageJson = reader.readLine() ?: break // Conexão fechada
+                // Use uma biblioteca como GSON ou Kotlinx.Serialization para deserializar
+                // a mensagem e descobrir seu tipo (SyncPacket, ArcResponse, etc.)
+                
+                // Exemplo de fluxo de recebimento
+                val message = deserializeMessage(messageJson) // Função a ser criada
+                
+                when (message) {
+                    is CalibrationPacket -> handleCalibration(message)
+                    is ArcResponse -> handleAuthResponse(message)
+                    // ... outros tipos de mensagem
+                }
+            }
+        } catch (e: Exception) {
+            onUpdate("Conexão perdida: ${e.message}")
+        }
+    }
+
+    private suspend fun handleCalibration(packet: CalibrationPacket) {
+        lastSyncResult = TimeSyncProtocol.analyzeCalibration(packet, System.currentTimeMillis())
+        onUpdate("Sincronização concluída com status: ${lastSyncResult.status}")
+
+        // 2. Iniciar Autenticação ARC
+        val challenge = ArcProtocol.createChallenge() // Simplificado, deveria vir de um ArcManager
+        pendingChallenge = challenge
+        authStartTime = System.currentTimeMillis()
+        sendMessage(challenge) // Envia o desafio para o outro peer
+    }
+
+    private fun handleAuthResponse(response: ArcResponse) {
+        val authLatency = System.currentTimeMillis() - authStartTime
+        
+        // Supondo que você tenha o ID secreto do peer
+        val peerSecretId = "SECRET_DO_PEER_CONHECIDO" 
+        val validation = ArcProtocol.validate(response, pendingChallenge!!, peerSecretId)
+
+        val evidence = EvidenceBundle(validation, authLatency, lastSyncResult)
+        val confidence = bayesianModule.calculateConfidence(evidence)
+
+        onUpdate("Validação concluída. Confiança: ${confidence.probability * 100}%")
+        onResult(confidence.probability > 0.85f, confidence.probability)
+        
+        // Se a autenticação falhar, feche o socket
+        if (confidence.probability <= 0.85f) {
+            clientSocket?.close()
+        }
+    }
+
+    private suspend fun sendMessage(data: Any) {
+        // Use GSON/Kotlinx.Serialization para converter o objeto para JSON
+        val jsonString = serializeMessage(data)
+        withContext(Dispatchers.IO) {
+            clientSocket?.getOutputStream()?.write((jsonString + "\n").toByteArray())
+        }
+    }
+    
+    // Funções auxiliares para serialização (a serem implementadas)
+    private fun serializeMessage(data: Any): String { /* ... */ return "" }
+    private fun deserializeMessage(json: String): Any { /* ... */ return Any() }
+}
+
+ViewModel
+
+MeshPeerConnectionManager
+
+app/src/main/java/.../ui/MeshViewModel.kt
+
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+
+class MeshViewModel : ViewModel() {
+    val logMessages = MutableLiveData<List<String>>(emptyList())
+    val isAuthenticated = MutableLiveData<Boolean>(false)
+    val confidenceScore = MutableLiveData<Float>(0f)
+
+    private val connectionManager = MeshPeerConnectionManager(
+        viewModelScope,
+        onUpdate = { message ->
+            val currentLogs = logMessages.value ?: emptyList()
+            logMessages.postValue(currentLogs + message)
+        },
+        onResult = { success, score ->
+            isAuthenticated.postValue(success)
+            confidenceScore.postValue(score)
+        }
+    )
+
+    fun startServer() {
+        // Chame a função do seu connectionManager para iniciar o servidor
+    }
+
+    fun connectToPeer(peerAddress: String) {
+        // Chame a função para conectar
+    }
+}
+
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+
+class MeshViewModel : ViewModel() {
+    val logMessages = MutableLiveData<List<String>>(emptyList())
+    val isAuthenticated = MutableLiveData<Boolean>(false)
+    val confidenceScore = MutableLiveData<Float>(0f)
+
+    private val connectionManager = MeshPeerConnectionManager(
+        viewModelScope,
+        onUpdate = { message ->
+            val currentLogs = logMessages.value ?: emptyList()
+            logMessages.postValue(currentLogs + message)
+        },
+        onResult = { success, score ->
+            isAuthenticated.postValue(success)
+            confidenceScore.postValue(score)
+        }
+    )
+
+    fun startServer() {
+        // Chame a função do seu connectionManager para iniciar o servidor
+    }
+
+    fun connectToPeer(peerAddress: String) {
+        // Chame a função para conectar
+    }
+}
+
+// Obtenha o ViewModel
+val viewModel: MeshViewModel by viewModels()
+
+// Observe os LiveData para atualizar a UI
+viewModel.logMessages.observe(viewLifecycleOwner) { logs ->
+    // Atualize seu TextView ou RecyclerView de logs
+    myLogTextView.text = logs.joinToString("\n")
+}
+
+viewModel.isAuthenticated.observe(viewLifecycleOwner) { success ->
+    // Mostre uma mensagem de sucesso/falha, mude a cor de um ícone, etc.
+    if (success) {
+        statusIndicator.setBackgroundColor(Color.GREEN)
+    } else {
+        statusIndicator.setBackgroundColor(Color.RED)
+    }
+}
+
+// Chame as funções do ViewModel quando o usuário clicar nos botões
+buttonStartServer.setOnClickListener {
+    viewModel.startServer()
+}
+
+// Obtenha o ViewModel
+val viewModel: MeshViewModel by viewModels()
+
+// Observe os LiveData para atualizar a UI
+viewModel.logMessages.observe(viewLifecycleOwner) { logs ->
+    // Atualize seu TextView ou RecyclerView de logs
+    myLogTextView.text = logs.joinToString("\n")
+}
+
+viewModel.isAuthenticated.observe(viewLifecycleOwner) { success ->
+    // Mostre uma mensagem de sucesso/falha, mude a cor de um ícone, etc.
+    if (success) {
+        statusIndicator.setBackgroundColor(Color.GREEN)
+    } else {
+        statusIndicator.setBackgroundColor(Color.RED)
+    }
+}
+
+// Chame as funções do ViewModel quando o usuário clicar nos botões
+buttonStartServer.setOnClickListener {
+    viewModel.startServer()
+}
+
+arc
+
+sync
+
+bayesian
+
+MeshPeerConnectionManager
+
+ViewModel
+
+LiveData

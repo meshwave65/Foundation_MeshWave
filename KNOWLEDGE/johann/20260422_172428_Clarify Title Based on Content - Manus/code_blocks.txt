@@ -1,0 +1,649 @@
+
+
+================================================================================systemctl status
+
+sofia.service
+
+sentinel.py
+
+CGroup
+
+CGroup: /system.slice/sofia.service
+         ├─184867 /home/mesh/home/sofia/venv/bin/python ... (O Sentinel)
+         ├─185060 /home/mesh/home/sofia/venv/bin/python -m uvicorn ... (O Backend Principal)
+         ├─185061 npm "" "" "" "" "" "" "" "" "" "" "" "" "" "" "" "" "" ""... (O Frontend Principal)
+         ├─185062 cloudflared tunnel run sofia-dev (O Túnel Cloudflare)
+         ├─185063 /usr/bin/podman run --name appsmith ... (O Appsmith)
+         ├─185229 /home/mesh/home/sofia/venv/bin/python ... (Processo filho do Uvicorn)
+         └─185230 /home/mesh/home/sofia/venv/bin/python ... (Processo filho do Uvicorn)
+
+CGroup: /system.slice/sofia.service
+         ├─184867 /home/mesh/home/sofia/venv/bin/python ... (O Sentinel)
+         ├─185060 /home/mesh/home/sofia/venv/bin/python -m uvicorn ... (O Backend Principal)
+         ├─185061 npm "" "" "" "" "" "" "" "" "" "" "" "" "" "" "" "" "" ""... (O Frontend Principal)
+         ├─185062 cloudflared tunnel run sofia-dev (O Túnel Cloudflare)
+         ├─185063 /usr/bin/podman run --name appsmith ... (O Appsmith)
+         ├─185229 /home/mesh/home/sofia/venv/bin/python ... (Processo filho do Uvicorn)
+         └─185230 /home/mesh/home/sofia/venv/bin/python ... (Processo filho do Uvicorn)
+
+npm
+
+uvicorn
+
+systemd
+
+uvicorn
+
+npm
+
+cloudflared
+
+docker/podman
+
+sofia.service
+
+User=mesh
+
+Environment="PATH=..."
+
+architecture.py
+
+sentinel.py
+
+http://localhost:5175
+
+5175
+
+8002
+
+http://localhost:5175
+
+Failed to load resource: the server responded with a status of 404 (Not Found)
+
+App.vue:1
+
+404 (Not Found)
+
+App.vue
+
+App.vue
+
+App.vue
+
+systemctl status
+
+npm
+
+sentinel.py
+
+npm run dev
+
+cwd
+
+sentinel.py
+
+src
+
+index.html
+
+cwd
+
+sentinel.py
+
+/home/mesh/condenser-agent-poc
+
+sentinel.py
+
+/home/mesh/home/sofia/engine/sentinel.py
+
+frontend_condenser
+
+sentinel.py
+
+cwd
+
+# Hipótese de como a seção DEVE estar no sentinel.py
+
+# ...
+from architecture import (
+    # ...
+    CONDENSER_FRONTEND_DIR # Garante que estamos importando o caminho
+)
+
+# ...
+
+if __name__ == "__main__":
+    SERVICES = {
+        # ... outros serviços ...
+
+        "frontend_condenser": {
+            "name": "Interface Condenser Agent",
+            "command": ["/home/mesh/.nvm/versions/node/v22.18.0/bin/npm", "run", "dev", "--", "--host", "--port", str(CONDENSER_FRONTEND_PORT)],
+            # [PONTO CRÍTICO] - O CWD deve apontar para o diretório do novo projeto
+            "cwd": str(CONDENSER_FRONTEND_DIR) 
+        }
+    }
+    # ...
+
+# Hipótese de como a seção DEVE estar no sentinel.py
+
+# ...
+from architecture import (
+    # ...
+    CONDENSER_FRONTEND_DIR # Garante que estamos importando o caminho
+)
+
+# ...
+
+if __name__ == "__main__":
+    SERVICES = {
+        # ... outros serviços ...
+
+        "frontend_condenser": {
+            "name": "Interface Condenser Agent",
+            "command": ["/home/mesh/.nvm/versions/node/v22.18.0/bin/npm", "run", "dev", "--", "--host", "--port", str(CONDENSER_FRONTEND_PORT)],
+            # [PONTO CRÍTICO] - O CWD deve apontar para o diretório do novo projeto
+            "cwd": str(CONDENSER_FRONTEND_DIR) 
+        }
+    }
+    # ...
+
+architecture.py
+
+CONDENSER_FRONTEND_DIR
+
+# Hipótese de como a variável DEVE estar no architecture.py
+CONDENSER_FRONTEND_DIR = Path("/home/mesh/condenser-agent-poc")
+
+# Hipótese de como a variável DEVE estar no architecture.py
+CONDENSER_FRONTEND_DIR = Path("/home/mesh/condenser-agent-poc")
+
+systemd
+
+npm
+
+sentinel.py
+
+localhost:8001/docs
+
+condenser_service
+
+condenser_service.py
+
+/condense
+
+/home/mesh/home/sofia/engine/condenser_service.py
+
+condenser_service.py
+
+condenser_service.py
+
+# /home/mesh/home/sofia/engine/condenser_service.py
+# VERSÃO 1.0.0 - Serviço dedicado para a PoC do Condenser Agent
+
+import sys
+from pathlib import Path
+from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
+from pydantic import BaseModel
+from groq import Groq
+
+# Adiciona o caminho do engine para importar a arquitetura
+ENGINE_ROOT = Path(__file__).resolve().parent
+if str(ENGINE_ROOT) not in sys.path:
+    sys.path.append(str(ENGINE_ROOT))
+
+# Importa as configurações da fonte da verdade
+try:
+    from architecture import GROQ_API_KEY, CONDENSER_FRONTEND_PORT
+except ImportError as e:
+    print(f"❌ ERRO CRÍTICO: Não foi possível importar de 'architecture.py'. {e}")
+    sys.exit(1)
+
+# --- Modelo de Dados para a Requisição ---
+class CondenseRequest(BaseModel):
+    text: str
+
+# --- Inicialização do FastAPI ---
+app = FastAPI(
+    title="SOFIA - Condenser Service (PoC)",
+    description="Um serviço dedicado para demonstrar a capacidade de condensação de texto do SOFIA.",
+    version="1.0.0"
+)
+
+# --- Configuração do CORS ---
+# Permite que o frontend (rodando na porta 5175) se comunique com este backend.
+origins = [
+    f"http://localhost:{CONDENSER_FRONTEND_PORT}",
+    "http://localhost" # Adicionado para flexibilidade
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+ )
+
+# --- Inicialização do Cliente da API ---
+try:
+    groq_client = Groq(api_key=GROQ_API_KEY)
+except Exception as e:
+    print(f"❌ ERRO CRÍTICO: Falha ao inicializar o cliente Groq. Verifique a GROQ_API_KEY. {e}")
+    groq_client = None
+
+# --- Prompt de Condensação ---
+PROMPT_CONDENSAR = """
+Condense o texto a seguir de forma brutal, removendo toda e qualquer palavra ou frase que não seja absolutamente essencial para o entendimento do núcleo da informação. Seu objetivo é a máxima redução de tokens, mantendo a integridade semântica. Não adicione introduções, conclusões ou qualquer texto explicativo. Retorne apenas o texto condensado.
+
+Texto Original:
+---
+{text}
+---
+Texto Condensado:
+"""
+
+# --- O Endpoint que Faltava ---
+@app.post("/condense")
+async def condense_text(request: CondenseRequest):
+    """
+    Recebe um texto e retorna sua versão condensada.
+    """
+    if not groq_client:
+        return {"error": "Serviço de IA não inicializado."}
+    if not request.text.strip():
+        return {"error": "O texto não pode estar vazio."}
+
+    try:
+        completion = groq_client.chat.completions.create(
+            messages=[
+                {
+                    "role": "user",
+                    "content": PROMPT_CONDENSAR.format(text=request.text),
+                }
+            ],
+            model="llama3-8b-8192", # Usando um modelo rápido para a PoC
+            temperature=0.1,
+        )
+        condensed_result = completion.choices[0].message.content
+        return {"condensed_text": condensed_result}
+    except Exception as e:
+        return {"error": f"Erro ao comunicar com a API da Groq: {str(e)}"}
+
+print("✅ Serviço de Condensação (condenser_service.py) pronto para ser iniciado.")
+
+# /home/mesh/home/sofia/engine/condenser_service.py
+# VERSÃO 1.0.0 - Serviço dedicado para a PoC do Condenser Agent
+
+import sys
+from pathlib import Path
+from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
+from pydantic import BaseModel
+from groq import Groq
+
+# Adiciona o caminho do engine para importar a arquitetura
+ENGINE_ROOT = Path(__file__).resolve().parent
+if str(ENGINE_ROOT) not in sys.path:
+    sys.path.append(str(ENGINE_ROOT))
+
+# Importa as configurações da fonte da verdade
+try:
+    from architecture import GROQ_API_KEY, CONDENSER_FRONTEND_PORT
+except ImportError as e:
+    print(f"❌ ERRO CRÍTICO: Não foi possível importar de 'architecture.py'. {e}")
+    sys.exit(1)
+
+# --- Modelo de Dados para a Requisição ---
+class CondenseRequest(BaseModel):
+    text: str
+
+# --- Inicialização do FastAPI ---
+app = FastAPI(
+    title="SOFIA - Condenser Service (PoC)",
+    description="Um serviço dedicado para demonstrar a capacidade de condensação de texto do SOFIA.",
+    version="1.0.0"
+)
+
+# --- Configuração do CORS ---
+# Permite que o frontend (rodando na porta 5175) se comunique com este backend.
+origins = [
+    f"http://localhost:{CONDENSER_FRONTEND_PORT}",
+    "http://localhost" # Adicionado para flexibilidade
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+ )
+
+# --- Inicialização do Cliente da API ---
+try:
+    groq_client = Groq(api_key=GROQ_API_KEY)
+except Exception as e:
+    print(f"❌ ERRO CRÍTICO: Falha ao inicializar o cliente Groq. Verifique a GROQ_API_KEY. {e}")
+    groq_client = None
+
+# --- Prompt de Condensação ---
+PROMPT_CONDENSAR = """
+Condense o texto a seguir de forma brutal, removendo toda e qualquer palavra ou frase que não seja absolutamente essencial para o entendimento do núcleo da informação. Seu objetivo é a máxima redução de tokens, mantendo a integridade semântica. Não adicione introduções, conclusões ou qualquer texto explicativo. Retorne apenas o texto condensado.
+
+Texto Original:
+---
+{text}
+---
+Texto Condensado:
+"""
+
+# --- O Endpoint que Faltava ---
+@app.post("/condense")
+async def condense_text(request: CondenseRequest):
+    """
+    Recebe um texto e retorna sua versão condensada.
+    """
+    if not groq_client:
+        return {"error": "Serviço de IA não inicializado."}
+    if not request.text.strip():
+        return {"error": "O texto não pode estar vazio."}
+
+    try:
+        completion = groq_client.chat.completions.create(
+            messages=[
+                {
+                    "role": "user",
+                    "content": PROMPT_CONDENSAR.format(text=request.text),
+                }
+            ],
+            model="llama3-8b-8192", # Usando um modelo rápido para a PoC
+            temperature=0.1,
+        )
+        condensed_result = completion.choices[0].message.content
+        return {"condensed_text": condensed_result}
+    except Exception as e:
+        return {"error": f"Erro ao comunicar com a API da Groq: {str(e)}"}
+
+print("✅ Serviço de Condensação (condenser_service.py) pronto para ser iniciado.")
+
+condenser-agent-poc
+
+/home/mesh/condenser-agent-poc/.env
+
+VITE_CONDENSER_API_URL=http://localhost:8002
+
+/home/mesh/condenser-agent-poc/src/App.vue
+
+CondenserAgent.vue
+
+<script setup>
+import CondenserAgent from './components/CondenserAgent.vue';
+</script>
+<template>
+  <main>
+    <CondenserAgent />
+  </main>
+</template>
+<style>
+body { margin: 0; padding: 0; box-sizing: border-box; background-color: #1D2A3A; }
+</style>
+
+<script setup>
+import CondenserAgent from './components/CondenserAgent.vue';
+</script>
+<template>
+  <main>
+    <CondenserAgent />
+  </main>
+</template>
+<style>
+body { margin: 0; padding: 0; box-sizing: border-box; background-color: #1D2A3A; }
+</style>
+
+/home/mesh/condenser-agent-poc/src/components/CondenserAgent.vue
+
+fetch
+
+import.meta.env.VITE_CONDENSER_API_URL
+
+/home/mesh/home/sofia/engine/architecture.py
+
+/home/mesh/home/sofia/engine/sentinel.py
+
+cwd
+
+frontend_condenser
+
+# Dentro do sentinel.py
+"frontend_condenser": {
+    "name": "Interface Condenser Agent",
+    "command": [ ... ],
+    "cwd": str(CONDENSER_FRONTEND_DIR) # Onde CONDENSER_FRONTEND_DIR é Path("/home/mesh/condenser-agent-poc")
+}
+
+# Dentro do sentinel.py
+"frontend_condenser": {
+    "name": "Interface Condenser Agent",
+    "command": [ ... ],
+    "cwd": str(CONDENSER_FRONTEND_DIR) # Onde CONDENSER_FRONTEND_DIR é Path("/home/mesh/condenser-agent-poc")
+}
+
+/etc/systemd/system/sofia.service
+
+condenser_service.py
+
+/condense
+
+cwd
+
+frontend_condenser
+
+sentinel.py
+
+condenser_service.py
+
+/home/mesh/home/sofia/engine/
+
+sentinel.py
+
+cwd
+
+frontend_condenser
+
+/home/mesh/condenser-agent-poc
+
+sudo systemctl restart sofia.service
+
+http://localhost:5175
+
+condenser_service.py
+
+sentinel.py
+
+gateway
+
+tasks
+
+messages
+
+condenser_service
+
+task
+
+condenser_service.py
+
+gateway
+
+gateway
+
+backend/main.py
+
+/home/mesh/home/sofia/engine/backend/main.py
+
+# ... outras importações ...
+from pydantic import BaseModel
+from groq import Groq
+from architecture import GROQ_API_KEY # Supondo que já está no architecture.py
+
+# --- Modelo de Dados ---
+class CondenseRequest(BaseModel):
+    text: str
+    # Poderíamos adicionar um client_id para saber qual meshwalker fez a condensação
+    # client_id: str 
+
+# --- Cliente Groq (se já não existir) ---
+groq_client = Groq(api_key=GROQ_API_KEY)
+
+# --- Prompt (o mesmo) ---
+PROMPT_CONDENSAR = """
+Condense o texto a seguir de forma brutal...
+"""
+
+# --- O NOVO ENDPOINT ---
+@app.post("/api/v1/tools/condense", tags=["Tools"])
+async def run_condensation_tool(request: CondenseRequest):
+    """
+    Recebe um texto, o condensa usando uma LLM, e retorna o resultado.
+    (FUTURO: Registra a economia de tokens como uma interação no banco de dados)
+    """
+    original_tokens = len(request.text.split()) # Contagem simples de tokens
+    
+    try:
+        completion = groq_client.chat.completions.create(
+            messages=[{"role": "user", "content": PROMPT_CONDENSAR.format(text=request.text)}],
+            model="llama3-8b-8192",
+            temperature=0.1,
+        )
+        condensed_text = completion.choices[0].message.content
+        condensed_tokens = len(condensed_text.split())
+
+        # --- PONTO DE INTEGRAÇÃO FUTURO ---
+        # Aqui é onde chamaríamos a lógica para salvar no banco de dados:
+        # db_session.add(Interaction(
+        #     task_type="condensation",
+        #     input_tokens=original_tokens,
+        #     output_tokens=condensed_tokens,
+        #     savings=original_tokens - condensed_tokens,
+        #     client_id=request.client_id 
+        # ))
+        # db_session.commit()
+        # ------------------------------------
+
+        return {
+            "original_text": request.text,
+            "condensed_text": condensed_text,
+            "original_tokens": original_tokens,
+            "condensed_tokens": condensed_tokens,
+            "reduction_percentage": round((1 - (condensed_tokens / original_tokens)) * 100, 2) if original_tokens > 0 else 0
+        }
+    except Exception as e:
+        # ... tratamento de erro ...
+
+# ... outras importações ...
+from pydantic import BaseModel
+from groq import Groq
+from architecture import GROQ_API_KEY # Supondo que já está no architecture.py
+
+# --- Modelo de Dados ---
+class CondenseRequest(BaseModel):
+    text: str
+    # Poderíamos adicionar um client_id para saber qual meshwalker fez a condensação
+    # client_id: str 
+
+# --- Cliente Groq (se já não existir) ---
+groq_client = Groq(api_key=GROQ_API_KEY)
+
+# --- Prompt (o mesmo) ---
+PROMPT_CONDENSAR = """
+Condense o texto a seguir de forma brutal...
+"""
+
+# --- O NOVO ENDPOINT ---
+@app.post("/api/v1/tools/condense", tags=["Tools"])
+async def run_condensation_tool(request: CondenseRequest):
+    """
+    Recebe um texto, o condensa usando uma LLM, e retorna o resultado.
+    (FUTURO: Registra a economia de tokens como uma interação no banco de dados)
+    """
+    original_tokens = len(request.text.split()) # Contagem simples de tokens
+    
+    try:
+        completion = groq_client.chat.completions.create(
+            messages=[{"role": "user", "content": PROMPT_CONDENSAR.format(text=request.text)}],
+            model="llama3-8b-8192",
+            temperature=0.1,
+        )
+        condensed_text = completion.choices[0].message.content
+        condensed_tokens = len(condensed_text.split())
+
+        # --- PONTO DE INTEGRAÇÃO FUTURO ---
+        # Aqui é onde chamaríamos a lógica para salvar no banco de dados:
+        # db_session.add(Interaction(
+        #     task_type="condensation",
+        #     input_tokens=original_tokens,
+        #     output_tokens=condensed_tokens,
+        #     savings=original_tokens - condensed_tokens,
+        #     client_id=request.client_id 
+        # ))
+        # db_session.commit()
+        # ------------------------------------
+
+        return {
+            "original_text": request.text,
+            "condensed_text": condensed_text,
+            "original_tokens": original_tokens,
+            "condensed_tokens": condensed_tokens,
+            "reduction_percentage": round((1 - (condensed_tokens / original_tokens)) * 100, 2) if original_tokens > 0 else 0
+        }
+    except Exception as e:
+        # ... tratamento de erro ...
+
+CondenserAgent.vue
+
+gateway
+
+/home/mesh/condenser-agent-poc/src/components/CondenserAgent.vue
+
+fetch
+
+// No CondenserAgent.vue
+
+// A URL base agora aponta para o gateway principal
+const apiUrl = `${import.meta.env.VITE_GATEWAY_API_URL}/tools/condense`;
+
+// A chamada fetch usará esta nova URL
+const response = await fetch(apiUrl, {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify({ text: originalText.value })
+});
+
+// No CondenserAgent.vue
+
+// A URL base agora aponta para o gateway principal
+const apiUrl = `${import.meta.env.VITE_GATEWAY_API_URL}/tools/condense`;
+
+// A chamada fetch usará esta nova URL
+const response = await fetch(apiUrl, {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify({ text: originalText.value })
+});
+
+.env
+
+/home/mesh/condenser-agent-poc/.env
+
+VITE_GATEWAY_API_URL=http://localhost:8000/api/v1
+
+sentinel.py
+
+condenser_service_backend
+
+sentinel.py
+
+gateway
+
+/tools/condense

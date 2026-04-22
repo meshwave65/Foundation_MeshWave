@@ -1,0 +1,323 @@
+
+
+================================================================================cannot find symbol variable peers
+
+cannot find symbol method updateCacheLocal()
+
+error: cannot find symbol variable handler
+
+BluetoothSendReceiveThread.java
+
+TcpSendReceiveThread.java
+
+error: cannot find symbol variable peers
+
+P2PSendReceiveThread.java
+
+error: cannot find symbol method updateCacheLocal()
+
+P2PSendReceiveThread.java
+
+BluetoothSendReceiveThread
+
+TcpSendReceiveThread
+
+P2PSendReceiveThread
+
+handler
+
+peers
+
+updateCacheLocal()
+
+MainActivity
+
+handler
+
+Handler
+
+MainActivity.java
+
+private Handler handler;
+
+private Handler handler;
+
+fusedLocationClient
+
+textViewGeohash
+
+bluetoothAdapter
+
+wifiManager
+
+handler
+
+onCreate
+
+MainActivity
+
+// Dentro do onCreate, após outras inicializações
+        handler = new Handler(Looper.getMainLooper()) {
+            @Override
+            public void handleMessage(@NonNull Message msg) {
+                switch (msg.what) {
+                    case MESSAGE_READ:
+                        byte[] readBuff = (byte[]) msg.obj;
+                        String tempMsg = new String(readBuff, 0, msg.arg1);
+                        log("Mensagem recebida: " + tempMsg);
+                        // Aqui você pode adicionar lógica para processar a mensagem recebida
+                        break;
+                }
+            }
+        };
+
+// Dentro do onCreate, após outras inicializações
+        handler = new Handler(Looper.getMainLooper()) {
+            @Override
+            public void handleMessage(@NonNull Message msg) {
+                switch (msg.what) {
+                    case MESSAGE_READ:
+                        byte[] readBuff = (byte[]) msg.obj;
+                        String tempMsg = new String(readBuff, 0, msg.arg1);
+                        log("Mensagem recebida: " + tempMsg);
+                        // Aqui você pode adicionar lógica para processar a mensagem recebida
+                        break;
+                }
+            }
+        };
+
+onCreate
+
+MainActivity
+
+textViewScannedDevices
+
+fusedLocationClient
+
+bluetoothAdapter
+
+wifiManager
+
+android.os.Handler
+
+android.os.Looper
+
+android.os.Message
+
+MainActivity.java
+
+Build
+
+Clean Project
+
+Build
+
+Rebuild Project
+
+cannot find symbol variable handler
+
+BluetoothSendReceiveThread.java
+
+TcpSendReceiveThread.java
+
+Handler
+
+MainActivity
+
+cannot find symbol variable handler
+
+BluetoothSendReceiveThread.java
+
+TcpSendReceiveThread.java
+
+Handler
+
+MainActivity
+
+P2PSendReceiveThread.java
+
+error: cannot find symbol variable peers
+
+error: cannot find symbol method updateCacheLocal()
+
+P2PSendReceiveThread
+
+peers
+
+updateCacheLocal()
+
+MainActivity
+
+P2PSendReceiveThread
+
+P2PSendReceiveThread.java
+
+MainActivity
+
+peers
+
+import android.os.Handler;
+import java.util.List;
+
+public class P2PSendReceiveThread extends Thread {
+    private Handler handler;
+    private MainActivity activity; // Adicione esta linha
+    private List<String> peers; // Adicione esta linha
+
+    // ... restante do código
+}
+
+import android.os.Handler;
+import java.util.List;
+
+public class P2PSendReceiveThread extends Thread {
+    private Handler handler;
+    private MainActivity activity; // Adicione esta linha
+    private List<String> peers; // Adicione esta linha
+
+    // ... restante do código
+}
+
+MainActivity
+
+List<String>
+
+public P2PSendReceiveThread(Handler handler, MainActivity activity, List<String> peers) { // Modifique esta linha
+        this.handler = handler;
+        this.activity = activity; // Adicione esta linha
+        this.peers = peers; // Adicione esta linha
+    }
+
+public P2PSendReceiveThread(Handler handler, MainActivity activity, List<String> peers) { // Modifique esta linha
+        this.handler = handler;
+        this.activity = activity; // Adicione esta linha
+        this.peers = peers; // Adicione esta linha
+    }
+
+peers
+
+updateCacheLocal()
+
+P2PSendReceiveThread
+
+activity
+
+peers.add(...)
+
+peers.remove(...)
+
+peers
+
+updateCacheLocal()
+
+activity.updateCacheLocal();
+
+updateCacheLocal()
+
+P2PSendReceiveThread
+
+// Dentro de algum método em P2PSendReceiveThread
+// ...
+activity.updateCacheLocal(); // Altere de updateCacheLocal() para activity.updateCacheLocal()
+// ...
+
+// Dentro de algum método em P2PSendReceiveThread
+// ...
+activity.updateCacheLocal(); // Altere de updateCacheLocal() para activity.updateCacheLocal()
+// ...
+
+android.os.Handler
+
+java.util.List
+
+P2PSendReceiveThread.java
+
+Build
+
+Clean Project
+
+Build
+
+Rebuild Project
+
+cannot find symbol variable peers
+
+cannot find symbol method updateCacheLocal()
+
+P2PSendReceiveThread.java
+
+P2PSendReceiveThread
+
+cannot find symbol variable peers
+
+cannot find symbol method updateCacheLocal()
+
+P2PSendReceiveThread.java
+
+P2PSendReceiveThread
+
+error: no suitable constructor found for P2PSendReceiveThread(Handler)
+
+P2PSendReceiveThread
+
+Handler
+
+MainActivity
+
+List<String>
+
+MainActivity
+
+P2PSendReceiveThread
+
+Handler
+
+P2PSendReceiveThread
+
+P2PSendReceiveThread
+
+MainActivity.java
+
+// Exemplo de como pode estar agora:
+P2PSendReceiveThread p2pThread = new P2PSendReceiveThread(handler);
+
+// Exemplo de como pode estar agora:
+P2PSendReceiveThread p2pThread = new P2PSendReceiveThread(handler);
+
+// Altere para:
+P2PSendReceiveThread p2pThread = new P2PSendReceiveThread(handler, this, peers);
+
+// Altere para:
+P2PSendReceiveThread p2pThread = new P2PSendReceiveThread(handler, this, peers);
+
+MainActivity
+
+Build
+
+Clean Project
+
+Build
+
+Rebuild Project
+
+MainActivity.java
+
+P2PSendReceiveThread
+
+ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, WIFI_SCAN_PERMISSION_REQUEST_CODE);
+        } else {
+            startWifiScan();
+        }
+    }
+
+    // ... (outros métodos como startBluetoothScan(), getDeviceLocation(), etc., permanecem os mesmos)
+}
+
+ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, WIFI_SCAN_PERMISSION_REQUEST_CODE);
+        } else {
+            startWifiScan();
+        }
+    }
+
+    // ... (outros métodos como startBluetoothScan(), getDeviceLocation(), etc., permanecem os mesmos)
+}

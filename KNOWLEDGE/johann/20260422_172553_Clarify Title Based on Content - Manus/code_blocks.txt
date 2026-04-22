@@ -1,0 +1,403 @@
+
+
+================================================================================[plugin:vite:vue] At least one <template> or <script> is required in a single file component. /home/mesh/global-aquometro-poc/src/components/GlobalAquometer.vue
+
+GlobalAquometer.vue
+
+<template>
+
+<script>
+
+touch src/components/GlobalAquometer.vue
+
+touch
+
+Ctrl + C
+
+GlobalAquometer.vue
+
+/home/mesh/global-aquometro-poc/src/components/GlobalAquometer.vue
+
+<template>
+  <div class="aquometer-container">
+    <header class="aquometer-header">
+      <h1>GLOBAL AQUÔMETRO MESHWAVE/SOFIA</h1>
+      <p>Medindo o Impacto da IA Sustentável em Tempo Real</p>
+    </header>
+
+    <main class="aquometer-main" @click="toggleSimulation">
+      <div v-if="!simulationStarted" class="start-prompt">
+        <p>Clique para iniciar a simulação</p>
+      </div>
+
+      <div class="pool-visualizer">
+        <video class="pool-video-background" autoplay loop muted playsinline>
+          <!-- AJUSTE AQUI: Coloque o caminho para o seu vídeo -->
+          <source src="/videos/water-filling.mp4" type="video/mp4">
+        </video>
+        <div class="pool-mask" :style="{ height: maskHeight + '%' }"></div>
+        <div class="pool-border"></div>
+      </div>
+
+      <div class="metrics-panel">
+        <div class="metric-item">
+          <span class="metric-value">{{ formattedLitres }}</span>
+          <span class="metric-label">Litros de Água Economizados</span>
+        </div>
+        <div class="metric-item">
+          <span class="metric-value">{{ poolPercentage.toFixed(4) }} %</span>
+          <span class="metric-label">de uma Piscina Olímpica</span>
+        </div>
+      </div>
+    </main>
+
+    <footer class="guardians-mural">
+      <h2>Guardiões da IA Sustentável</h2>
+      <div class="logo-grid">
+        <div class="logo-item featured">
+          <!-- AJUSTE AQUI: Coloque o caminho para as logos -->
+          <img src="/logos/carbon-zero.png" alt="CarbonZero Logo">
+          <span>Parceiro Fundador</span>
+        </div>
+        <div class="logo-item">
+          <img src="/logos/meshwave.png" alt="MeshWave Logo">
+        </div>
+        <div class="logo-item">
+          <img src="/logos/google.svg" alt="Google Logo">
+        </div>
+        <div class="logo-item">
+          <img src="/logos/microsoft.svg" alt="Microsoft Logo">
+        </div>
+         <div class="logo-item">
+          <img src="/logos/openai.svg" alt="OpenAI Logo">
+        </div>
+      </div>
+    </footer>
+  </div>
+</template>
+
+<script setup>
+import { ref, computed, onUnmounted } from 'vue';
+
+const LITRES_PER_SECOND = 6.52;
+const OLYMPIC_POOL_VOLUME = 2500000;
+
+const accumulatedLitres = ref(0);
+const simulationStarted = ref(false);
+const simulationRunning = ref(false);
+let intervalId = null;
+
+const formattedLitres = computed(() => {
+  return new Intl.NumberFormat('pt-BR').format(accumulatedLitres.value.toFixed(0));
+});
+
+const poolPercentage = computed(() => {
+  if (accumulatedLitres.value === 0) return 0;
+  return (accumulatedLitres.value / OLYMPIC_POOL_VOLUME) * 100;
+});
+
+const maskHeight = computed(() => {
+  return 100 - poolPercentage.value;
+});
+
+const startSimulation = () => {
+  if (intervalId) return;
+  simulationStarted.value = true;
+  simulationRunning.value = true;
+  intervalId = setInterval(() => {
+    accumulatedLitres.value += LITRES_PER_SECOND;
+  }, 1000);
+};
+
+const stopSimulation = () => {
+  clearInterval(intervalId);
+  intervalId = null;
+  simulationRunning.value = false;
+};
+
+const toggleSimulation = () => {
+  if (!simulationStarted.value) {
+    startSimulation();
+  } else if (simulationRunning.value) {
+    stopSimulation();
+  } else {
+    startSimulation();
+  }
+};
+
+onUnmounted(() => {
+  stopSimulation();
+});
+</script>
+
+<style scoped>
+.aquometer-container {
+  background-color: #121212;
+  color: #E0E0E0;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  text-align: center;
+  overflow: hidden;
+}
+.aquometer-header { padding: 2rem 1rem; }
+.aquometer-header h1 { font-size: 2.5rem; color: #4CAF50; margin-bottom: 0.5rem; }
+.aquometer-main { flex-grow: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: pointer; position: relative; }
+.start-prompt { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 1.5rem; color: rgba(255, 255, 255, 0.5); z-index: 10; animation: pulse 2s infinite; }
+@keyframes pulse { 0% { opacity: 0.7; } 50% { opacity: 1; } 100% { opacity: 0.7; } }
+.pool-visualizer { width: 80%; max-width: 600px; height: 300px; position: relative; overflow: hidden; border-radius: 10px; margin-bottom: 2rem; }
+.pool-video-background { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: 1; }
+.pool-mask { position: absolute; bottom: 0; left: 0; width: 100%; background-color: #121212; z-index: 2; transition: height 1s linear; }
+.pool-border { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 4px solid #4CAF50; border-radius: 10px; box-sizing: border-box; z-index: 3; }
+.metrics-panel { display: flex; gap: 4rem; margin-top: 1rem; }
+.metric-item { display: flex; flex-direction: column; }
+.metric-value { font-size: 3.5rem; font-weight: bold; color: #FFFFFF; }
+.metric-label { font-size: 1rem; color: #B0B0B0; }
+.guardians-mural { padding: 3rem 1rem; background-color: #1a1a1a; }
+.logo-grid { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 2rem; margin-top: 1.5rem; }
+.logo-item { display: flex; flex-direction: column; align-items: center; gap: 0.5rem; filter: grayscale(100%); opacity: 0.6; transition: all 0.3s ease; }
+.logo-item:hover { filter: none; opacity: 1; transform: scale(1.1); }
+.logo-item.featured { filter: none; opacity: 1; transform: scale(1.15); }
+.logo-item.featured span { color: #4CAF50; font-weight: bold; }
+.logo-item img { max-height: 40px; max-width: 120px; }
+</style>
+
+<template>
+  <div class="aquometer-container">
+    <header class="aquometer-header">
+      <h1>GLOBAL AQUÔMETRO MESHWAVE/SOFIA</h1>
+      <p>Medindo o Impacto da IA Sustentável em Tempo Real</p>
+    </header>
+
+    <main class="aquometer-main" @click="toggleSimulation">
+      <div v-if="!simulationStarted" class="start-prompt">
+        <p>Clique para iniciar a simulação</p>
+      </div>
+
+      <div class="pool-visualizer">
+        <video class="pool-video-background" autoplay loop muted playsinline>
+          <!-- AJUSTE AQUI: Coloque o caminho para o seu vídeo -->
+          <source src="/videos/water-filling.mp4" type="video/mp4">
+        </video>
+        <div class="pool-mask" :style="{ height: maskHeight + '%' }"></div>
+        <div class="pool-border"></div>
+      </div>
+
+      <div class="metrics-panel">
+        <div class="metric-item">
+          <span class="metric-value">{{ formattedLitres }}</span>
+          <span class="metric-label">Litros de Água Economizados</span>
+        </div>
+        <div class="metric-item">
+          <span class="metric-value">{{ poolPercentage.toFixed(4) }} %</span>
+          <span class="metric-label">de uma Piscina Olímpica</span>
+        </div>
+      </div>
+    </main>
+
+    <footer class="guardians-mural">
+      <h2>Guardiões da IA Sustentável</h2>
+      <div class="logo-grid">
+        <div class="logo-item featured">
+          <!-- AJUSTE AQUI: Coloque o caminho para as logos -->
+          <img src="/logos/carbon-zero.png" alt="CarbonZero Logo">
+          <span>Parceiro Fundador</span>
+        </div>
+        <div class="logo-item">
+          <img src="/logos/meshwave.png" alt="MeshWave Logo">
+        </div>
+        <div class="logo-item">
+          <img src="/logos/google.svg" alt="Google Logo">
+        </div>
+        <div class="logo-item">
+          <img src="/logos/microsoft.svg" alt="Microsoft Logo">
+        </div>
+         <div class="logo-item">
+          <img src="/logos/openai.svg" alt="OpenAI Logo">
+        </div>
+      </div>
+    </footer>
+  </div>
+</template>
+
+<script setup>
+import { ref, computed, onUnmounted } from 'vue';
+
+const LITRES_PER_SECOND = 6.52;
+const OLYMPIC_POOL_VOLUME = 2500000;
+
+const accumulatedLitres = ref(0);
+const simulationStarted = ref(false);
+const simulationRunning = ref(false);
+let intervalId = null;
+
+const formattedLitres = computed(() => {
+  return new Intl.NumberFormat('pt-BR').format(accumulatedLitres.value.toFixed(0));
+});
+
+const poolPercentage = computed(() => {
+  if (accumulatedLitres.value === 0) return 0;
+  return (accumulatedLitres.value / OLYMPIC_POOL_VOLUME) * 100;
+});
+
+const maskHeight = computed(() => {
+  return 100 - poolPercentage.value;
+});
+
+const startSimulation = () => {
+  if (intervalId) return;
+  simulationStarted.value = true;
+  simulationRunning.value = true;
+  intervalId = setInterval(() => {
+    accumulatedLitres.value += LITRES_PER_SECOND;
+  }, 1000);
+};
+
+const stopSimulation = () => {
+  clearInterval(intervalId);
+  intervalId = null;
+  simulationRunning.value = false;
+};
+
+const toggleSimulation = () => {
+  if (!simulationStarted.value) {
+    startSimulation();
+  } else if (simulationRunning.value) {
+    stopSimulation();
+  } else {
+    startSimulation();
+  }
+};
+
+onUnmounted(() => {
+  stopSimulation();
+});
+</script>
+
+<style scoped>
+.aquometer-container {
+  background-color: #121212;
+  color: #E0E0E0;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  text-align: center;
+  overflow: hidden;
+}
+.aquometer-header { padding: 2rem 1rem; }
+.aquometer-header h1 { font-size: 2.5rem; color: #4CAF50; margin-bottom: 0.5rem; }
+.aquometer-main { flex-grow: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: pointer; position: relative; }
+.start-prompt { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 1.5rem; color: rgba(255, 255, 255, 0.5); z-index: 10; animation: pulse 2s infinite; }
+@keyframes pulse { 0% { opacity: 0.7; } 50% { opacity: 1; } 100% { opacity: 0.7; } }
+.pool-visualizer { width: 80%; max-width: 600px; height: 300px; position: relative; overflow: hidden; border-radius: 10px; margin-bottom: 2rem; }
+.pool-video-background { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: 1; }
+.pool-mask { position: absolute; bottom: 0; left: 0; width: 100%; background-color: #121212; z-index: 2; transition: height 1s linear; }
+.pool-border { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 4px solid #4CAF50; border-radius: 10px; box-sizing: border-box; z-index: 3; }
+.metrics-panel { display: flex; gap: 4rem; margin-top: 1rem; }
+.metric-item { display: flex; flex-direction: column; }
+.metric-value { font-size: 3.5rem; font-weight: bold; color: #FFFFFF; }
+.metric-label { font-size: 1rem; color: #B0B0B0; }
+.guardians-mural { padding: 3rem 1rem; background-color: #1a1a1a; }
+.logo-grid { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 2rem; margin-top: 1.5rem; }
+.logo-item { display: flex; flex-direction: column; align-items: center; gap: 0.5rem; filter: grayscale(100%); opacity: 0.6; transition: all 0.3s ease; }
+.logo-item:hover { filter: none; opacity: 1; transform: scale(1.1); }
+.logo-item.featured { filter: none; opacity: 1; transform: scale(1.15); }
+.logo-item.featured span { color: #4CAF50; font-weight: bold; }
+.logo-item img { max-height: 40px; max-width: 120px; }
+</style>
+
+npm run dev
+
+npm run dev
+
+http://localhost:5174
+
+isRevealed
+
+false
+
+isRevealed
+
+false
+
+isRevealed
+
+true
+
+GlobalAquometer.vue
+
+Failed to resolve import "/videos/water-filling.mp4" from "src/components/GlobalAquometer.vue". Does the file exist?
+
+/videos/water-filling.mp4
+
+Ctrl + C
+
+water-filling.mp4
+
+/home/mesh/global-aquometro-poc/public/videos/
+
+.png
+
+.svg
+
+/home/mesh/global-aquometro-poc/public/logos/
+
+carbonzero.svg
+
+<img src="/logos/carbon-zero.png">
+
+<img src="/logos/carbonzero.svg">
+
+/home/mesh/global-aquometro-poc/public/videos/water-filling.mp4
+
+/home/mesh/global-aquometro-poc/public/logos/carbon-zero.png
+
+/home/mesh/global-aquometro-poc/public/logos/meshwave.png
+
+/home/mesh/global-aquometro-poc/public/logos/google.svg
+
+<source>
+
+<img>
+
+GlobalAquometer.vue
+
+npm run dev
+
+npm run dev
+
+/videos/water-filling.mp4
+
+Failed to resolve import "/videos/water-filling.mp4"
+
+water-filling.mp4
+
+/home/mesh/global-aquometro-poc/public/videos/
+
+water_filling.mp4
+
+water-filling.mov
+
+Ctrl + C
+
+GlobalAquometer.vue
+
+/home/mesh/global-aquometro-poc/src/components/GlobalAquometer.vue
+
+<source src="/videos/water-filling.mp4" type="video/mp4">
+
+<source src="/videos/water-filling.mp4" type="video/mp4">
+
+<source src="https://videos.pexels.com/video-files/4782135/4782135-hd_1280_720_25fps.mp4" type="video/mp4">
+
+<source src="https://videos.pexels.com/video-files/4782135/4782135-hd_1280_720_25fps.mp4" type="video/mp4">
+
+GlobalAquometer.vue
+
+npm run dev
+
+npm run dev
+
+http://localhost:5174

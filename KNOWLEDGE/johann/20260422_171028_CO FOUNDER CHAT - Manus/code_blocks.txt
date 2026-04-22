@@ -1,0 +1,13 @@
+
+
+================================================================================= Column(SmallInteger, default=1, nullable=False)
+    version = Column(BigInteger)
+    tags = Column(JSONB)
+    created_at = Column(DateTime(timezone=True), default=func.now(), nullable=False)
+    updated_at = Column(DateTime(timezone=True), default=func.now(), onupdate=func.now(), nullable=False)
+
+= Column(SmallInteger, default=1, nullable=False)
+    version = Column(BigInteger)
+    tags = Column(JSONB)
+    created_at = Column(DateTime(timezone=True), default=func.now(), nullable=False)
+    updated_at = Column(DateTime(timezone=True), default=func.now(), onupdate=func.now(), nullable=False)

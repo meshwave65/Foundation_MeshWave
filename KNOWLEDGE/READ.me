@@ -1,0 +1,33 @@
+# Protocolo de Conhecimento MeshWave (KNOWLEDGE)
+
+Este diretório é o repositório central de inteligência extraída das interações Manus.
+
+PAT
+[REMOVED_TOKEN]
+
+1. Modus Operandi para Agentes (TOC)
+Sempre que um novo agente iniciar a tarefa, ele deve seguir este fluxo:
+Reconhecimento: 
+
+1. Acessar o repositório https://github.com/meshwave65/Foundation_MeshWave/edit/main/KNOWLEDGE;
+2. Ler o README.md (este documento) na raiz de KNOWLEDGE.
+
+Preparação: 
+3. Baixar o script manus_extractor_v1.04.py e um dos arquivos .txt de links pendente (se existir mais de 1) renomeando imediatamente o arquivo para .proc e criando um diretório /[nome da conta] caso não haja (primeira serie de extração da conta);
+.
+Execução: 
+4. Rodar a extração na sandbox.
+
+Finalização:
+5. Mover os dados extraídos para KNOWLEDGE/[NOME_DA_CONTA]/;
+6. Renomear o arquivo de link para .bak (https://github.com/meshwave65/Foundation_MeshWave/edit/main/KNOWLEDGE/manus_links_[nome da conta].bak);
+7. Movê-lo para a mesma pasta da conta.
+8. Commit & Push: Enviar as alterações para o GitHub.
+
+Resumo da operação
+## 🛠️ Instruções para Agentes
+1. selecionando uma lista de links em um dos arquivos manus_links_[nome da conta].txt renomeando imediatamente para .proc (que mostra que eta em processamento);
+2. Utilize o script 'manus_extractor_v1.xx.py' (substituido o xx pela versão mais alta que existir no repositório) para garantir a integridade das imagens e screenshots.
+3. Após processar um arquivo `.txt` (qu você renomeou para .proc), renomeie-o para `.bak`.
+4. Salve todo o conteúdo (MD, Imagens e o arquivo .bak) na subpasta correspondente ao nome da conta.
+5. realizar o push final.

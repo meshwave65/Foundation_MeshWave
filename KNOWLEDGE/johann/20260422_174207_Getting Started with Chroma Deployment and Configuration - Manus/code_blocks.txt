@@ -1,0 +1,505 @@
+
+
+================================================================================workspace_router
+
+main.py
+
+engine/backend/main.py
+
+engine/backend/main.py
+
+# engine/backend/main.py
+# VERSÃO 2.8.3 - Adiciona o router para Workspace e Git.
+
+import os
+import shutil
+from fastapi import FastAPI, HTTPException, UploadFile, File, Form, BackgroundTasks
+from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import PlainTextResponse
+from datetime import datetime
+from architecture import ARTIFACTS_DIR, MONITOR_DIR
+
+# Importa todos os routers que fazem parte do seu projeto
+from backend.app.routers import (
+    tasks_router, 
+    roadmap_router, 
+    oracle_router, 
+    topics_router, 
+    interaction_router,
+    messages_router,
+    missions_router,
+    workspace_router  # <-- 1. IMPORTAÇÃO DO NOVO ROUTER
+)
+
+from backend.app.database.connect_db import engine, SessionLocal, Base
+from backend.app.models import models
+
+# Configurar as tabelas
+Base.metadata.create_all(bind=engine)
+
+app = FastAPI(
+    title="SOFIA - Strategic Operations Framework and Intelligent Automation",
+    description="API para o ecossistema SOFIA.",
+    version="2.8.3"  # Versão atualizada
+)
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+# Inclui todos os routers do projeto
+app.include_router(tasks_router.router)
+app.include_router(roadmap_router.router)
+app.include_router(oracle_router.router)
+app.include_router(topics_router.router)
+app.include_router(interaction_router.router)
+app.include_router(messages_router.router)
+app.include_router(missions_router.router)
+app.include_router(workspace_router.router) # <-- 2. INCLUSÃO DO NOVO ROUTER NA APLICAÇÃO
+
+@app.get("/", response_class=PlainTextResponse)
+async def read_root():
+    return "SOFIA API is running."
+
+@app.post("/api/v1/artifacts", tags=["Artifacts"])
+async def upload_artifact(
+    task_id: int = Form(...),
+    file: UploadFile = File(...)
+):
+    os.makedirs(ARTIFACTS_DIR, exist_ok=True)
+    file_path = os.path.join(ARTIFACTS_DIR, file.filename)
+    if not os.path.abspath(file_path).startswith(os.path.abspath(ARTIFACTS_DIR)):
+        raise HTTPException(status_code=400, detail="Caminho de arquivo inválido.")
+    try:
+        with open(file_path, "wb") as buffer:
+            shutil.copyfileobj(file.file, buffer)
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Falha ao salvar o arquivo: {str(e)}")
+    finally:
+        if file:
+            file.file.close()
+
+# Endpoint para monitoramento
+MONITOR_ARTIFACTS_DIR = MONITOR_DIR
+os.makedirs(MONITOR_ARTIFACTS_DIR, exist_ok=True)
+
+@app.post("/api/v1/monitor", tags=["Monitor"])
+async def receive_monitor_artifact(
+    background_tasks: BackgroundTasks,
+    file: UploadFile = File(...),
+    artifact_type: str = Form("gps")
+):
+    if artifact_type not in ["gps", "audio", "image"]:
+        raise HTTPException(status_code=400, detail="Tipo de artefato inválido. Use: 'gps', 'audio', 'image'")
+
+    try:
+        contents = await file.read()
+        
+        type_config = {
+            "gps": {"prefix": "gps", "ext": "json"},
+            "audio": {"prefix": "audio", "ext": "mp3"}, 
+            "image": {"prefix": "img", "ext": "jpg"}
+        }
+        config = type_config[artifact_type]
+        
+        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S_%f")
+        filename = f"{config['prefix']}_{timestamp}.{config['ext']}"
+        file_path = os.path.join(MONITOR_ARTIFACTS_DIR, filename)
+        
+        def save_file():
+            with open(file_path, "wb") as f:
+                f.write(contents)
+            print(f"Artefato de monitoramento salvo: {file_path}")
+        
+        background_tasks.add_task(save_file)
+        
+        return {
+            "status": "success",
+            "message": "Artefato recebido e está sendo processado.",
+            "artifact_type": artifact_type,
+            "filename": filename,
+            "received_at": datetime.now().isoformat()
+        }
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Erro ao processar artefato: {str(e)}")
+    finally:
+        await file.close()
+
+# engine/backend/main.py
+# VERSÃO 2.8.3 - Adiciona o router para Workspace e Git.
+
+import os
+import shutil
+from fastapi import FastAPI, HTTPException, UploadFile, File, Form, BackgroundTasks
+from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import PlainTextResponse
+from datetime import datetime
+from architecture import ARTIFACTS_DIR, MONITOR_DIR
+
+# Importa todos os routers que fazem parte do seu projeto
+from backend.app.routers import (
+    tasks_router, 
+    roadmap_router, 
+    oracle_router, 
+    topics_router, 
+    interaction_router,
+    messages_router,
+    missions_router,
+    workspace_router  # <-- 1. IMPORTAÇÃO DO NOVO ROUTER
+)
+
+from backend.app.database.connect_db import engine, SessionLocal, Base
+from backend.app.models import models
+
+# Configurar as tabelas
+Base.metadata.create_all(bind=engine)
+
+app = FastAPI(
+    title="SOFIA - Strategic Operations Framework and Intelligent Automation",
+    description="API para o ecossistema SOFIA.",
+    version="2.8.3"  # Versão atualizada
+)
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+# Inclui todos os routers do projeto
+app.include_router(tasks_router.router)
+app.include_router(roadmap_router.router)
+app.include_router(oracle_router.router)
+app.include_router(topics_router.router)
+app.include_router(interaction_router.router)
+app.include_router(messages_router.router)
+app.include_router(missions_router.router)
+app.include_router(workspace_router.router) # <-- 2. INCLUSÃO DO NOVO ROUTER NA APLICAÇÃO
+
+@app.get("/", response_class=PlainTextResponse)
+async def read_root():
+    return "SOFIA API is running."
+
+@app.post("/api/v1/artifacts", tags=["Artifacts"])
+async def upload_artifact(
+    task_id: int = Form(...),
+    file: UploadFile = File(...)
+):
+    os.makedirs(ARTIFACTS_DIR, exist_ok=True)
+    file_path = os.path.join(ARTIFACTS_DIR, file.filename)
+    if not os.path.abspath(file_path).startswith(os.path.abspath(ARTIFACTS_DIR)):
+        raise HTTPException(status_code=400, detail="Caminho de arquivo inválido.")
+    try:
+        with open(file_path, "wb") as buffer:
+            shutil.copyfileobj(file.file, buffer)
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Falha ao salvar o arquivo: {str(e)}")
+    finally:
+        if file:
+            file.file.close()
+
+# Endpoint para monitoramento
+MONITOR_ARTIFACTS_DIR = MONITOR_DIR
+os.makedirs(MONITOR_ARTIFACTS_DIR, exist_ok=True)
+
+@app.post("/api/v1/monitor", tags=["Monitor"])
+async def receive_monitor_artifact(
+    background_tasks: BackgroundTasks,
+    file: UploadFile = File(...),
+    artifact_type: str = Form("gps")
+):
+    if artifact_type not in ["gps", "audio", "image"]:
+        raise HTTPException(status_code=400, detail="Tipo de artefato inválido. Use: 'gps', 'audio', 'image'")
+
+    try:
+        contents = await file.read()
+        
+        type_config = {
+            "gps": {"prefix": "gps", "ext": "json"},
+            "audio": {"prefix": "audio", "ext": "mp3"}, 
+            "image": {"prefix": "img", "ext": "jpg"}
+        }
+        config = type_config[artifact_type]
+        
+        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S_%f")
+        filename = f"{config['prefix']}_{timestamp}.{config['ext']}"
+        file_path = os.path.join(MONITOR_ARTIFACTS_DIR, filename)
+        
+        def save_file():
+            with open(file_path, "wb") as f:
+                f.write(contents)
+            print(f"Artefato de monitoramento salvo: {file_path}")
+        
+        background_tasks.add_task(save_file)
+        
+        return {
+            "status": "success",
+            "message": "Artefato recebido e está sendo processado.",
+            "artifact_type": artifact_type,
+            "filename": filename,
+            "received_at": datetime.now().isoformat()
+        }
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Erro ao processar artefato: {str(e)}")
+    finally:
+        await file.close()
+
+from backend.app.routers import ...
+
+workspace_router
+
+app.include_router(...)
+
+app.include_router(workspace_router.router)
+
+2.8.3
+
+sudo systemctl restart sofia.service
+
+sudo systemctl restart sofia.service
+
+/api/v1/workspace/list
+
+/read
+
+/write
+
+/mkdir
+
+/git/commit
+
+workspace_router.py
+
+/list
+
+/read
+
+/write
+
+/mkdir
+
+/git/commit
+
+https://chromadb.meshwave.com.br
+
+https://sofia-api.meshwave.com.br/api/v1/workspace/...
+
+https://sofia-api.meshwave.com.br/api/v1/workspace/git/commit
+
+MANUS-OP-MANUAL-20250912-V1
+
+ECOSYSTEM-KNOWLEDGE-BASE
+
+https://chromadb.meshwave.com.br
+
+https://sofia-api.meshwave.com.br/api/v1/workspace
+
+/media/mesh/MYEBOOK1/ECOSYSTEM-KNOWLEDGE-BASE
+
+POST /list
+
+{"path": "caminho/relativo/ao/diretorio_raiz"}
+
+{"path": ""}
+
+POST /read
+
+{"path": "caminho/relativo/para/o/arquivo.md"}
+
+POST /write
+
+{"file_path": "caminho/do/novo_relatorio.md", "content": "Conteúdo do relatório..."}
+
+POST /mkdir
+
+{"path": "novo_diretorio_de_relatorios"}
+
+https://sofia-api.meshwave.com.br/api/v1/workspace/git
+
+POST /commit
+
+git add .
+
+git commit
+
+git push
+
+{"commit_message": "Relatório parcial sobre ARC-Bayes.", "branch": "main"}
+
+/list
+
+ECOSYSTEM-KNOWLEDGE-BASE
+
+roteamento_preditivo_v1.md
+
+/read
+
+ConsolidatedReports
+
+/ConsolidatedReports/RoteamentoPreditivo.md
+
+/mkdir
+
+/write
+
+roteamento_preditivo_v2_com_IA.md
+
+/ConsolidatedReports/RoteamentoPreditivo.md
+
+/write
+
+/git/commit
+
+feat(docs): Consolida informações sobre ARC-Bayes
+
+refactor(docs): Atualiza relatório de Roteamento Preditivo com dados de IA
+
+DIRECTIVE-20250913.md
+
+MANUS-OP-MANUAL-20250912-V2
+
+ECOSYSTEM-KNOWLEDGE-BASE
+
+sofia_db
+
+sofia_db
+
+https://chromadb.meshwave.com.br
+
+POST /api/v1/tasks
+
+https://sofia-api.meshwave.com.br/api/v1/workspace
+
+https://sofia-api.meshwave.com.br/api/v1/workspace/git
+
+/list
+
+ECOSYSTEM-KNOWLEDGE-BASE
+
+roteamento_preditivo_v1.md
+
+/read
+
+POST /api/v1/tasks
+
+artifact_name
+
+roteamento_preditivo_v1.md
+
+description
+
+tags
+
+["meshwave", "roteamento", "preditivo", "v1"]
+
+task_block
+
+/ConsolidatedReports
+
+/write
+
+/git/commit
+
+feat(docs): Arquiva e consolida documentos sobre Segurança
+
+sofia_db
+
+SystemOracleIndex
+
+whitepaper_artifacts
+
+SystemOracleIndex
+
+artifact_name
+
+title
+
+parent_id
+
+tags
+
+status
+
+version
+
+Artifacts
+
+task_id
+
+message_id
+
+filepath
+
+filename
+
+mimetype
+
+filesize
+
+whitepaper_artifacts
+
+whitepaper_artifacts
+
+whitepaper_artifacts
+
+whitepaper_artifacts
+
+artifact_name
+
+KnowledgeBaseRoot.json
+
+title
+
+parent_id
+
+NULL
+
+tags
+
+["root", "knowledge_base", "archeology"]
+
+id
+
+id=100
+
+parent_id
+
+ECOSYSTEM-KNOWLEDGE-BASE
+
+ARC_Bayes_v1.md
+
+/read
+
+POST
+
+whitepaper_artifacts
+
+artifact_name
+
+ARC_Bayes_v1.md
+
+title
+
+parent_id
+
+100
+
+tags
+
+["arc", "bayes", "security", "v1"]
+
+status
+
+1
+
+version
+
+whitepaper_artifacts
+
+whitepaper_artifacts

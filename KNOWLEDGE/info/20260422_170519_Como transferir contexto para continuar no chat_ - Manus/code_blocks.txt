@@ -1,0 +1,427 @@
+
+
+================================================================================Unresolved reference 'compose'
+
+Color.kt
+
+ui.theme
+
+Color.kt
+
+Theme.kt
+
+Type.kt
+
+app/build.gradle.kts
+
+androidx.compose.ui.graphics.Color
+
+MeshWave-Core
+
+rm -rf app/src/main/java/com/meshwave/core/ui
+
+rm -rf app/src/main/java/com/meshwave/core/ui
+
+rm -rf
+
+app/src/main/java/com/meshwave/core/ui
+
+ui
+
+theme
+
+Color.kt
+
+Theme.kt
+
+Type.kt
+
+MainActivity.kt
+
+StatusFragment.kt
+
+./gradlew clean
+
+./gradlew clean
+
+./gradlew assembleDebug
+
+./gradlew assembleDebug
+
+logcat
+
+java.lang.IllegalStateException: You need to use a Theme.AppCompat theme (or descendant) with this activity.
+
+setContentView(R.layout.activity_main)
+
+MainActivity
+
+MainActivity
+
+AppCompatActivity
+
+ActionBar
+
+AndroidManifest.xml
+
+Theme.AppCompat
+
+Theme.AppCompat.Light.DarkActionBar
+
+Theme.Material3.DayNight.NoActionBar
+
+AppCompatActivity
+
+app/src/main/res/values/themes.xml
+
+<!-- app/src/main/res/values/themes.xml -->
+<!-- VERSÃO CORRIGIDA - Usando um tema AppCompat -->
+
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Base.Theme.MeshWaveCore" parent="Theme.AppCompat.DayNight.DarkActionBar">
+        <!--
+            O tema base do aplicativo.
+            Theme.AppCompat.DayNight.DarkActionBar é um tema compatível que
+            funciona com AppCompatActivity e fornece uma barra de ação.
+            Ele também se adapta automaticamente aos modos claro e escuro.
+        -->
+        <!-- Customize your light theme here. -->
+        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+    </style>
+
+    <style name="Theme.MeshWaveCore" parent="Base.Theme.MeshWaveCore" />
+</resources>
+
+<!-- app/src/main/res/values/themes.xml -->
+<!-- VERSÃO CORRIGIDA - Usando um tema AppCompat -->
+
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Base.Theme.MeshWaveCore" parent="Theme.AppCompat.DayNight.DarkActionBar">
+        <!--
+            O tema base do aplicativo.
+            Theme.AppCompat.DayNight.DarkActionBar é um tema compatível que
+            funciona com AppCompatActivity e fornece uma barra de ação.
+            Ele também se adapta automaticamente aos modos claro e escuro.
+        -->
+        <!-- Customize your light theme here. -->
+        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+    </style>
+
+    <style name="Theme.MeshWaveCore" parent="Base.Theme.MeshWaveCore" />
+</resources>
+
+parent
+
+Theme.Material3.DayNight.NoActionBar
+
+Theme.AppCompat.DayNight.DarkActionBar
+
+MainActivity
+
+IllegalStateException
+
+themes.xml
+
+clean
+
+./gradlew assembleDebug
+
+./gradlew assembleDebug
+
+MainActivity
+
+BuildConfig
+
+BuildConfig
+
+PackageManager
+
+versionName
+
+PackageManager
+
+app/build.gradle.kts
+
+app/build.gradle.kts
+
+gradle.properties
+
+v0.1.0-alpha
+
+gradle.properties
+
+gradle.properties
+
+# ... (outras propriedades) ...
+
+# Versão Semântica do MeshWave-Core
+APP_VERSION_MAJOR=0
+APP_VERSION_MINOR=1
+APP_VERSION_PATCH=0
+APP_VERSION_BUILD=1
+APP_VERSION_SUFFIX=alpha
+
+# ... (outras propriedades) ...
+
+# Versão Semântica do MeshWave-Core
+APP_VERSION_MAJOR=0
+APP_VERSION_MINOR=1
+APP_VERSION_PATCH=0
+APP_VERSION_BUILD=1
+APP_VERSION_SUFFIX=alpha
+
+app/build.gradle.kts
+
+app/build.gradle.kts
+
+// app/build.gradle.kts
+// VERSÃO FINAL E CORRIGIDA
+
+plugins {
+    id("com.android.application")
+    id("org.jetbrains.kotlin.android")
+}
+
+android {
+    namespace = "com.meshwave.core"
+    compileSdk = 34
+
+    defaultConfig {
+        applicationId = "com.meshwave.core"
+        minSdk = 26
+        targetSdk = 34
+
+        // --- Lógica de Versionamento Dinâmico ---
+        val major = project.property("APP_VERSION_MAJOR").toString().toInt()
+        val minor = project.property("APP_VERSION_MINOR").toString().toInt()
+        val patch = project.property("APP_VERSION_PATCH").toString().toInt()
+        val build = project.property("APP_VERSION_BUILD").toString().toInt()
+        val suffix = project.property("APP_VERSION_SUFFIX").toString()
+
+        versionCode = build
+        if (suffix.isNotEmpty() && suffix != "none") {
+            versionName = "$major.$minor.$patch-$suffix"
+        } else {
+            versionName = "$major.$minor.$patch"
+        }
+        // --- Fim da Lógica de Versionamento ---
+
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    buildTypes {
+        release {
+            isMinifyEnabled = false
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
+            )
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
+    }
+
+    kotlinOptions {
+        jvmTarget = "17"
+    }
+}
+
+dependencies {
+    implementation("androidx.core:core-ktx:1.13.1")
+    implementation("androidx.appcompat:appcompat:1.7.0")
+    implementation("com.google.android.material:material:1.12.0")
+    implementation("androidx.constraintlayout:constraintlayout:2.1.4")
+    implementation("ch.hsr:geohash:1.4.0")
+    implementation("com.google.android.gms:play-services-location:21.3.0")
+}
+
+// app/build.gradle.kts
+// VERSÃO FINAL E CORRIGIDA
+
+plugins {
+    id("com.android.application")
+    id("org.jetbrains.kotlin.android")
+}
+
+android {
+    namespace = "com.meshwave.core"
+    compileSdk = 34
+
+    defaultConfig {
+        applicationId = "com.meshwave.core"
+        minSdk = 26
+        targetSdk = 34
+
+        // --- Lógica de Versionamento Dinâmico ---
+        val major = project.property("APP_VERSION_MAJOR").toString().toInt()
+        val minor = project.property("APP_VERSION_MINOR").toString().toInt()
+        val patch = project.property("APP_VERSION_PATCH").toString().toInt()
+        val build = project.property("APP_VERSION_BUILD").toString().toInt()
+        val suffix = project.property("APP_VERSION_SUFFIX").toString()
+
+        versionCode = build
+        if (suffix.isNotEmpty() && suffix != "none") {
+            versionName = "$major.$minor.$patch-$suffix"
+        } else {
+            versionName = "$major.$minor.$patch"
+        }
+        // --- Fim da Lógica de Versionamento ---
+
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    buildTypes {
+        release {
+            isMinifyEnabled = false
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
+            )
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
+    }
+
+    kotlinOptions {
+        jvmTarget = "17"
+    }
+}
+
+dependencies {
+    implementation("androidx.core:core-ktx:1.13.1")
+    implementation("androidx.appcompat:appcompat:1.7.0")
+    implementation("com.google.android.material:material:1.12.0")
+    implementation("androidx.constraintlayout:constraintlayout:2.1.4")
+    implementation("ch.hsr:geohash:1.4.0")
+    implementation("com.google.android.gms:play-services-location:21.3.0")
+}
+
+MainActivity.kt
+
+MainActivity.kt
+
+PackageManager
+
+versionName
+
+build.gradle.kts
+
+MainActivity.kt
+
+// MainActivity.kt
+// VERSÃO FINAL E CORRIGIDA
+
+package com.meshwave.core
+
+import android.content.pm.PackageManager
+import android.os.Bundle
+import android.util.Log
+import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentTransaction
+
+class MainActivity : AppCompatActivity() {
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main)
+
+        // Carrega o StatusFragment no contêiner
+        if (savedInstanceState == null) {
+            val statusFragment = StatusFragment()
+            loadFragment(statusFragment)
+        }
+    }
+
+    private fun loadFragment(fragment: Fragment) {
+        val transaction: FragmentTransaction = supportFragmentManager.beginTransaction()
+        transaction.replace(R.id.fragment_container, fragment)
+        transaction.commit()
+    }
+}
+
+// MainActivity.kt
+// VERSÃO FINAL E CORRIGIDA
+
+package com.meshwave.core
+
+import android.content.pm.PackageManager
+import android.os.Bundle
+import android.util.Log
+import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentTransaction
+
+class MainActivity : AppCompatActivity() {
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main)
+
+        // Carrega o StatusFragment no contêiner
+        if (savedInstanceState == null) {
+            val statusFragment = StatusFragment()
+            loadFragment(statusFragment)
+        }
+    }
+
+    private fun loadFragment(fragment: Fragment) {
+        val transaction: FragmentTransaction = supportFragmentManager.beginTransaction()
+        transaction.replace(R.id.fragment_container, fragment)
+        transaction.commit()
+    }
+}
+
+ActionBar
+
+gradle.properties
+
+app/build.gradle.kts
+
+MainActivity.kt
+
+./gradlew clean
+
+./gradlew clean
+
+./gradlew assembleDebug
+
+./gradlew assembleDebug
+
+0.1.0-alpha
+
+themes.xml
+
+Theme.AppCompat.DayNight.DarkActionBar
+
+DarkActionBar
+
+ActionBar
+
+DayNight
+
+ActionBar
+
+ActionBar
+
+AppCompat
+
+MainActivity
+
+BUILD SUCCESSFUL
+
+LocationModule
+
+g9fail_...
+
+LocationModule.kt
+
+MainActivity

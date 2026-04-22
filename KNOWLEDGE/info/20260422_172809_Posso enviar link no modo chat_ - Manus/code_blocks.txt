@@ -1,0 +1,2339 @@
+
+
+================================================================================error: cannot find symbol
+
+SuppressLint
+
+/media/meshwave/MYEBOOK1/DIRCOM/GERCOM/PROJETOS/MESHWAVE/meshwave_android_prototype/app/src/main/java/com/example/meshwave/MainActivity.java:153: error: cannot find symbol
+    @SuppressLint("MissingPermission")
+     ^
+  symbol:   class SuppressLint
+  location: class MainActivity
+
+/media/meshwave/MYEBOOK1/DIRCOM/GERCOM/PROJETOS/MESHWAVE/meshwave_android_prototype/app/src/main/java/com/example/meshwave/MainActivity.java:153: error: cannot find symbol
+    @SuppressLint("MissingPermission")
+     ^
+  symbol:   class SuppressLint
+  location: class MainActivity
+
+ContextCompat
+
+@SuppressLint
+
+MainActivity.java
+
+@SuppressLint
+
+import
+
+import
+
+MainActivity.java
+
+MainActivity.java
+
+MainActivity.java
+
+MainActivity.java
+
+// v0.3.0-alpha
+package com.example.meshwave;
+
+import android.Manifest;
+import android.annotation.SuppressLint; // <-- ESTA É A NOVA LINHA ADICIONADA
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.IntentFilter;
+import android.content.pm.PackageManager;
+import android.location.Location;
+import android.net.wifi.p2p.WifiP2pConfig;
+import android.net.wifi.p2p.WifiP2pDevice;
+import android.net.wifi.p2p.WifiP2pInfo;
+import android.net.wifi.p2p.WifiP2pManager;
+import android.os.Build;
+import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.provider.Settings;
+import android.util.Log;
+import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
+
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
+
+public class MainActivity extends AppCompatActivity implements ChatFragmentListener {
+
+    // --- Constantes ---
+    private static final String TAG = "MainActivity_v0.3";
+    private static final int PERMISSIONS_REQUEST_CODE = 101;
+    private static final long DISCOVERY_TIMEOUT_MS = 15000; // 15 segundos
+
+    // --- Estado da Rede ---
+    private enum NetworkState { OFFLINE, SEARCHING, CONNECTED_AS_LEADER, CONNECTED_AS_CLIENT }
+    private NetworkState currentState = NetworkState.OFFLINE;
+    private boolean isReceiverRegistered = false;
+
+    // --- Componentes de UI e Fragmentos ---
+    private BottomNavigationView bottomNavigationView;
+    private StatusFragment statusFragment;
+    private ChatFragment chatFragment;
+
+    // --- Lógica de Rede ---
+    private WifiP2pManager manager;
+    private WifiP2pManager.Channel channel;
+    private BroadcastReceiver receiver;
+    private IntentFilter intentFilter;
+    private CommunicationThread communicationThread;
+
+    // --- Identidade e Cache ---
+    private MeshWaveIdentity myIdentity;
+    private String currentSessid = "N/A";
+    private ClaCache localCache;
+    private static final AtomicInteger userCounter = new AtomicInteger(0);
+
+    // --- Handlers e Timers ---
+    private final Handler discoveryTimeoutHandler = new Handler(Looper.getMainLooper());
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        setupFragments();
+        setupBottomNavigation();
+
+        if (savedInstanceState == null) {
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, statusFragment).commit();
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (myIdentity == null) {
+            checkPrerequisitesAndStart();
+        }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        discoveryTimeoutHandler.removeCallbacksAndMessages(null);
+        if (communicationThread != null) {
+            communicationThread.close();
+        }
+        if (isReceiverRegistered) {
+            unregisterReceiver(receiver);
+            isReceiverRegistered = false;
+        }
+        if (manager != null && channel != null) {
+            manager.removeGroup(channel, null);
+        }
+    }
+
+    private void checkPrerequisitesAndStart() {
+        if (hasPermissions()) {
+            initiateBigBang();
+        } else {
+            requestPermissions();
+        }
+    }
+
+    private void requestPermissions() {
+        String[] permissions;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            permissions = new String[]{
+                    Manifest.permission.ACCESS_FINE_LOCATION,
+                    Manifest.permission.NEARBY_WIFI_DEVICES
+            };
+        } else {
+            permissions = new String[]{
+                    Manifest.permission.ACCESS_FINE_LOCATION
+            };
+        }
+        ActivityCompat.requestPermissions(this, permissions, PERMISSIONS_REQUEST_CODE);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == PERMISSIONS_REQUEST_CODE) {
+            if (hasPermissions()) {
+                Log.d(TAG, "Todas as permissões foram concedidas após a solicitação.");
+                initiateBigBang();
+            } else {
+                Log.e(TAG, "Permissões essenciais foram negadas. O app não pode funcionar.");
+                Toast.makeText(this, "Permissões essenciais foram negadas. Verifique as configurações do app.", Toast.LENGTH_LONG).show();
+                updateStatusUI("Permissões Negadas", "Offline", "N/A", "N/A");
+            }
+        }
+    }
+
+    @SuppressLint("MissingPermission")
+    private void initiateBigBang() {
+        myIdentity = IdentityManager.loadIdentity(this);
+        String did = getDeviceDID();
+
+        if (myIdentity == null) {
+            Log.d(TAG, "BIG BANG: Criando nova identidade.");
+            FusedLocationProviderClient fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+            fusedLocationClient.getLastLocation().addOnSuccessListener(this, location -> {
+                if (location != null) {
+                    String cpaGeohash = Geohash.encode(location.getLatitude(), location.getLongitude(), 6);
+                    String username = "User" + String.format("%03d", userCounter.incrementAndGet());
+                    myIdentity = new MeshWaveIdentity(did, cpaGeohash, username);
+                    IdentityManager.saveIdentity(this, myIdentity);
+                    Log.d(TAG, "Nova identidade criada e salva: " + myIdentity);
+                    startNetworkLogic(location);
+                } else {
+                    Log.e(TAG, "Falha ao obter localização inicial.");
+                    Toast.makeText(this, "Não foi possível obter a localização. Verifique os serviços de localização.", Toast.LENGTH_LONG).show();
+                }
+            });
+        } else {
+            Log.d(TAG, "Identidade existente carregada: " + myIdentity.getFormattedForUi());
+            FusedLocationProviderClient fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+            fusedLocationClient.getLastLocation().addOnSuccessListener(this, this::startNetworkLogic);
+        }
+    }
+
+    private String getDeviceDID() {
+        return Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
+    }
+
+    private boolean hasPermissions() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            return ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED &&
+                   ContextCompat.checkSelfPermission(this, Manifest.permission.NEARBY_WIFI_DEVICES) == PackageManager.PERMISSION_GRANTED;
+        } else {
+            return ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED;
+        }
+    }
+
+    private void startNetworkLogic(Location location) {
+        if (location == null) {
+            Log.e(TAG, "Localização nula, não é possível iniciar a lógica de rede.");
+            return;
+        }
+        this.currentSessid = "MeshWave_CLA_" + Geohash.encode(location.getLatitude(), location.getLongitude(), 6);
+        initializeCaches();
+        updateStatusUI(this.currentSessid, "Inicializado", myIdentity.getFormattedForUi(), "Nenhum nó detectado.");
+
+        initializeNetworkComponents();
+        startDiscovery();
+    }
+
+    private void initializeNetworkComponents() {
+        manager = (WifiP2pManager) getSystemService(Context.WIFI_P2P_SERVICE);
+        channel = manager.initialize(this, getMainLooper(), null);
+        receiver = new WiFiDirectBroadcastReceiver(manager, channel, this);
+        intentFilter = new IntentFilter();
+        intentFilter.addAction(WifiP2pManager.WIFI_P2P_STATE_CHANGED_ACTION);
+        intentFilter.addAction(WifiP2pManager.WIFI_P2P_PEERS_CHANGED_ACTION);
+        intentFilter.addAction(WifiP2pManager.WIFI_P2P_CONNECTION_CHANGED_ACTION);
+
+        if (!isReceiverRegistered) {
+            registerReceiver(receiver, intentFilter);
+            isReceiverRegistered = true;
+        }
+    }
+
+    @SuppressLint("MissingPermission")
+    private void startDiscovery() {
+        if (currentState == NetworkState.SEARCHING) return;
+        Log.d(TAG, "Iniciando descoberta de peers...");
+        updateState(NetworkState.SEARCHING);
+
+        manager.discoverPeers(channel, new WifiP2pManager.ActionListener() {
+            @Override
+            public void onSuccess() {
+                Log.d(TAG, "Comando de descoberta de peers enviado com sucesso.");
+                discoveryTimeoutHandler.postDelayed(() -> {
+                    if (currentState == NetworkState.SEARCHING) {
+                        Log.d(TAG, "Timeout de descoberta. Nenhum peer encontrado. Criando grupo...");
+                        createGroup();
+                    }
+                }, DISCOVERY_TIMEOUT_MS);
+            }
+            @Override
+            public void onFailure(int reason) {
+                Log.e(TAG, "Falha ao iniciar descoberta de peers, código: " + reason);
+                updateState(NetworkState.OFFLINE);
+            }
+        });
+    }
+
+    @SuppressLint("MissingPermission")
+    private void createGroup() {
+        manager.createGroup(channel, new WifiP2pManager.ActionListener() {
+            @Override
+            public void onSuccess() {
+                Log.d(TAG, "Grupo criado com sucesso!");
+            }
+            @Override
+            public void onFailure(int reason) {
+                Log.e(TAG, "Falha ao criar grupo, código: " + reason);
+                updateState(NetworkState.OFFLINE);
+            }
+        });
+    }
+
+    public final WifiP2pManager.PeerListListener peerListListener = peerList -> {
+        // Lógica a ser implementada
+    };
+
+    public final WifiP2pManager.ConnectionInfoListener connectionInfoListener = info -> {
+        if (info.groupFormed) {
+            discoveryTimeoutHandler.removeCallbacksAndMessages(null);
+            if (info.isGroupOwner) {
+                updateState(NetworkState.CONNECTED_AS_LEADER);
+                communicationThread = new CommunicationThread(info.groupOwnerAddress, true, this::handleReceivedMessage);
+                communicationThread.start();
+            } else {
+                updateState(NetworkState.CONNECTED_AS_CLIENT);
+                communicationThread = new CommunicationThread(info.groupOwnerAddress, false, this::handleReceivedMessage);
+                communicationThread.start();
+            }
+        }
+    };
+
+    private void handleReceivedMessage(String message) {
+        runOnUiThread(() -> {
+            if (chatFragment != null && chatFragment.isAdded()) {
+                chatFragment.addReceivedMessage(message);
+            }
+        });
+    }
+
+    @Override
+    public void onSendMessage(String message) {
+        if (communicationThread != null) {
+            communicationThread.write(message.getBytes());
+        } else {
+            Toast.makeText(this, "Não conectado a nenhum dispositivo.", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void setupFragments() {
+        statusFragment = new StatusFragment();
+        chatFragment = new ChatFragment();
+    }
+
+    private void setupBottomNavigation() {
+        bottomNavigationView = findViewById(R.id.bottom_navigation);
+        bottomNavigationView.setOnItemSelectedListener(item -> {
+            Fragment selectedFragment = null;
+            int itemId = item.getItemId();
+
+            if (itemId == R.id.nav_status) {
+                selectedFragment = statusFragment;
+            } else if (itemId == R.id.nav_chat) {
+                selectedFragment = chatFragment;
+            }
+
+            if (selectedFragment != null) {
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, selectedFragment).commit();
+                return true;
+            }
+            return false;
+        });
+    }
+
+    private void initializeCaches() {
+        List<ClaCacheEntry> membros = new ArrayList<>();
+        membros.add(new ClaCacheEntry(myIdentity));
+        List<String> sucessao = new ArrayList<>();
+        sucessao.add(myIdentity.getDid());
+        this.localCache = new ClaCache(currentSessid, sucessao, membros);
+        Log.d(TAG, "Cache local (CLA) inicializado: " + localCache);
+    }
+
+    private void updateState(NetworkState newState) {
+        this.currentState = newState;
+        String statusText;
+        switch (newState) {
+            case SEARCHING:
+                statusText = "Procurando...";
+                break;
+            case CONNECTED_AS_LEADER:
+                statusText = "Conectado (Líder)";
+                break;
+            case CONNECTED_AS_CLIENT:
+                statusText = "Conectado (Cliente)";
+                break;
+            case OFFLINE:
+            default:
+                statusText = "Desconectado";
+                break;
+        }
+        updateStatusUI(this.currentSessid, statusText, myIdentity != null ? myIdentity.getFormattedForUi() : "N/A", "Nenhum nó detectado.");
+    }
+
+    private void updateStatusUI(String sessid, String status, String user, String nodeList) {
+        runOnUiThread(() -> {
+            if (statusFragment != null && statusFragment.isAdded()) {
+                statusFragment.updateStatus(sessid, status, user, nodeList);
+            }
+        });
+    }
+}
+
+// v0.3.0-alpha
+package com.example.meshwave;
+
+import android.Manifest;
+import android.annotation.SuppressLint; // <-- ESTA É A NOVA LINHA ADICIONADA
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.IntentFilter;
+import android.content.pm.PackageManager;
+import android.location.Location;
+import android.net.wifi.p2p.WifiP2pConfig;
+import android.net.wifi.p2p.WifiP2pDevice;
+import android.net.wifi.p2p.WifiP2pInfo;
+import android.net.wifi.p2p.WifiP2pManager;
+import android.os.Build;
+import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.provider.Settings;
+import android.util.Log;
+import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
+
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
+
+public class MainActivity extends AppCompatActivity implements ChatFragmentListener {
+
+    // --- Constantes ---
+    private static final String TAG = "MainActivity_v0.3";
+    private static final int PERMISSIONS_REQUEST_CODE = 101;
+    private static final long DISCOVERY_TIMEOUT_MS = 15000; // 15 segundos
+
+    // --- Estado da Rede ---
+    private enum NetworkState { OFFLINE, SEARCHING, CONNECTED_AS_LEADER, CONNECTED_AS_CLIENT }
+    private NetworkState currentState = NetworkState.OFFLINE;
+    private boolean isReceiverRegistered = false;
+
+    // --- Componentes de UI e Fragmentos ---
+    private BottomNavigationView bottomNavigationView;
+    private StatusFragment statusFragment;
+    private ChatFragment chatFragment;
+
+    // --- Lógica de Rede ---
+    private WifiP2pManager manager;
+    private WifiP2pManager.Channel channel;
+    private BroadcastReceiver receiver;
+    private IntentFilter intentFilter;
+    private CommunicationThread communicationThread;
+
+    // --- Identidade e Cache ---
+    private MeshWaveIdentity myIdentity;
+    private String currentSessid = "N/A";
+    private ClaCache localCache;
+    private static final AtomicInteger userCounter = new AtomicInteger(0);
+
+    // --- Handlers e Timers ---
+    private final Handler discoveryTimeoutHandler = new Handler(Looper.getMainLooper());
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        setupFragments();
+        setupBottomNavigation();
+
+        if (savedInstanceState == null) {
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, statusFragment).commit();
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (myIdentity == null) {
+            checkPrerequisitesAndStart();
+        }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        discoveryTimeoutHandler.removeCallbacksAndMessages(null);
+        if (communicationThread != null) {
+            communicationThread.close();
+        }
+        if (isReceiverRegistered) {
+            unregisterReceiver(receiver);
+            isReceiverRegistered = false;
+        }
+        if (manager != null && channel != null) {
+            manager.removeGroup(channel, null);
+        }
+    }
+
+    private void checkPrerequisitesAndStart() {
+        if (hasPermissions()) {
+            initiateBigBang();
+        } else {
+            requestPermissions();
+        }
+    }
+
+    private void requestPermissions() {
+        String[] permissions;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            permissions = new String[]{
+                    Manifest.permission.ACCESS_FINE_LOCATION,
+                    Manifest.permission.NEARBY_WIFI_DEVICES
+            };
+        } else {
+            permissions = new String[]{
+                    Manifest.permission.ACCESS_FINE_LOCATION
+            };
+        }
+        ActivityCompat.requestPermissions(this, permissions, PERMISSIONS_REQUEST_CODE);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == PERMISSIONS_REQUEST_CODE) {
+            if (hasPermissions()) {
+                Log.d(TAG, "Todas as permissões foram concedidas após a solicitação.");
+                initiateBigBang();
+            } else {
+                Log.e(TAG, "Permissões essenciais foram negadas. O app não pode funcionar.");
+                Toast.makeText(this, "Permissões essenciais foram negadas. Verifique as configurações do app.", Toast.LENGTH_LONG).show();
+                updateStatusUI("Permissões Negadas", "Offline", "N/A", "N/A");
+            }
+        }
+    }
+
+    @SuppressLint("MissingPermission")
+    private void initiateBigBang() {
+        myIdentity = IdentityManager.loadIdentity(this);
+        String did = getDeviceDID();
+
+        if (myIdentity == null) {
+            Log.d(TAG, "BIG BANG: Criando nova identidade.");
+            FusedLocationProviderClient fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+            fusedLocationClient.getLastLocation().addOnSuccessListener(this, location -> {
+                if (location != null) {
+                    String cpaGeohash = Geohash.encode(location.getLatitude(), location.getLongitude(), 6);
+                    String username = "User" + String.format("%03d", userCounter.incrementAndGet());
+                    myIdentity = new MeshWaveIdentity(did, cpaGeohash, username);
+                    IdentityManager.saveIdentity(this, myIdentity);
+                    Log.d(TAG, "Nova identidade criada e salva: " + myIdentity);
+                    startNetworkLogic(location);
+                } else {
+                    Log.e(TAG, "Falha ao obter localização inicial.");
+                    Toast.makeText(this, "Não foi possível obter a localização. Verifique os serviços de localização.", Toast.LENGTH_LONG).show();
+                }
+            });
+        } else {
+            Log.d(TAG, "Identidade existente carregada: " + myIdentity.getFormattedForUi());
+            FusedLocationProviderClient fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+            fusedLocationClient.getLastLocation().addOnSuccessListener(this, this::startNetworkLogic);
+        }
+    }
+
+    private String getDeviceDID() {
+        return Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
+    }
+
+    private boolean hasPermissions() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            return ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED &&
+                   ContextCompat.checkSelfPermission(this, Manifest.permission.NEARBY_WIFI_DEVICES) == PackageManager.PERMISSION_GRANTED;
+        } else {
+            return ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED;
+        }
+    }
+
+    private void startNetworkLogic(Location location) {
+        if (location == null) {
+            Log.e(TAG, "Localização nula, não é possível iniciar a lógica de rede.");
+            return;
+        }
+        this.currentSessid = "MeshWave_CLA_" + Geohash.encode(location.getLatitude(), location.getLongitude(), 6);
+        initializeCaches();
+        updateStatusUI(this.currentSessid, "Inicializado", myIdentity.getFormattedForUi(), "Nenhum nó detectado.");
+
+        initializeNetworkComponents();
+        startDiscovery();
+    }
+
+    private void initializeNetworkComponents() {
+        manager = (WifiP2pManager) getSystemService(Context.WIFI_P2P_SERVICE);
+        channel = manager.initialize(this, getMainLooper(), null);
+        receiver = new WiFiDirectBroadcastReceiver(manager, channel, this);
+        intentFilter = new IntentFilter();
+        intentFilter.addAction(WifiP2pManager.WIFI_P2P_STATE_CHANGED_ACTION);
+        intentFilter.addAction(WifiP2pManager.WIFI_P2P_PEERS_CHANGED_ACTION);
+        intentFilter.addAction(WifiP2pManager.WIFI_P2P_CONNECTION_CHANGED_ACTION);
+
+        if (!isReceiverRegistered) {
+            registerReceiver(receiver, intentFilter);
+            isReceiverRegistered = true;
+        }
+    }
+
+    @SuppressLint("MissingPermission")
+    private void startDiscovery() {
+        if (currentState == NetworkState.SEARCHING) return;
+        Log.d(TAG, "Iniciando descoberta de peers...");
+        updateState(NetworkState.SEARCHING);
+
+        manager.discoverPeers(channel, new WifiP2pManager.ActionListener() {
+            @Override
+            public void onSuccess() {
+                Log.d(TAG, "Comando de descoberta de peers enviado com sucesso.");
+                discoveryTimeoutHandler.postDelayed(() -> {
+                    if (currentState == NetworkState.SEARCHING) {
+                        Log.d(TAG, "Timeout de descoberta. Nenhum peer encontrado. Criando grupo...");
+                        createGroup();
+                    }
+                }, DISCOVERY_TIMEOUT_MS);
+            }
+            @Override
+            public void onFailure(int reason) {
+                Log.e(TAG, "Falha ao iniciar descoberta de peers, código: " + reason);
+                updateState(NetworkState.OFFLINE);
+            }
+        });
+    }
+
+    @SuppressLint("MissingPermission")
+    private void createGroup() {
+        manager.createGroup(channel, new WifiP2pManager.ActionListener() {
+            @Override
+            public void onSuccess() {
+                Log.d(TAG, "Grupo criado com sucesso!");
+            }
+            @Override
+            public void onFailure(int reason) {
+                Log.e(TAG, "Falha ao criar grupo, código: " + reason);
+                updateState(NetworkState.OFFLINE);
+            }
+        });
+    }
+
+    public final WifiP2pManager.PeerListListener peerListListener = peerList -> {
+        // Lógica a ser implementada
+    };
+
+    public final WifiP2pManager.ConnectionInfoListener connectionInfoListener = info -> {
+        if (info.groupFormed) {
+            discoveryTimeoutHandler.removeCallbacksAndMessages(null);
+            if (info.isGroupOwner) {
+                updateState(NetworkState.CONNECTED_AS_LEADER);
+                communicationThread = new CommunicationThread(info.groupOwnerAddress, true, this::handleReceivedMessage);
+                communicationThread.start();
+            } else {
+                updateState(NetworkState.CONNECTED_AS_CLIENT);
+                communicationThread = new CommunicationThread(info.groupOwnerAddress, false, this::handleReceivedMessage);
+                communicationThread.start();
+            }
+        }
+    };
+
+    private void handleReceivedMessage(String message) {
+        runOnUiThread(() -> {
+            if (chatFragment != null && chatFragment.isAdded()) {
+                chatFragment.addReceivedMessage(message);
+            }
+        });
+    }
+
+    @Override
+    public void onSendMessage(String message) {
+        if (communicationThread != null) {
+            communicationThread.write(message.getBytes());
+        } else {
+            Toast.makeText(this, "Não conectado a nenhum dispositivo.", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void setupFragments() {
+        statusFragment = new StatusFragment();
+        chatFragment = new ChatFragment();
+    }
+
+    private void setupBottomNavigation() {
+        bottomNavigationView = findViewById(R.id.bottom_navigation);
+        bottomNavigationView.setOnItemSelectedListener(item -> {
+            Fragment selectedFragment = null;
+            int itemId = item.getItemId();
+
+            if (itemId == R.id.nav_status) {
+                selectedFragment = statusFragment;
+            } else if (itemId == R.id.nav_chat) {
+                selectedFragment = chatFragment;
+            }
+
+            if (selectedFragment != null) {
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, selectedFragment).commit();
+                return true;
+            }
+            return false;
+        });
+    }
+
+    private void initializeCaches() {
+        List<ClaCacheEntry> membros = new ArrayList<>();
+        membros.add(new ClaCacheEntry(myIdentity));
+        List<String> sucessao = new ArrayList<>();
+        sucessao.add(myIdentity.getDid());
+        this.localCache = new ClaCache(currentSessid, sucessao, membros);
+        Log.d(TAG, "Cache local (CLA) inicializado: " + localCache);
+    }
+
+    private void updateState(NetworkState newState) {
+        this.currentState = newState;
+        String statusText;
+        switch (newState) {
+            case SEARCHING:
+                statusText = "Procurando...";
+                break;
+            case CONNECTED_AS_LEADER:
+                statusText = "Conectado (Líder)";
+                break;
+            case CONNECTED_AS_CLIENT:
+                statusText = "Conectado (Cliente)";
+                break;
+            case OFFLINE:
+            default:
+                statusText = "Desconectado";
+                break;
+        }
+        updateStatusUI(this.currentSessid, statusText, myIdentity != null ? myIdentity.getFormattedForUi() : "N/A", "Nenhum nó detectado.");
+    }
+
+    private void updateStatusUI(String sessid, String status, String user, String nodeList) {
+        runOnUiThread(() -> {
+            if (statusFragment != null && statusFragment.isAdded()) {
+                statusFragment.updateStatus(sessid, status, user, nodeList);
+            }
+        });
+    }
+}
+
+CommunicationThread
+
+MainActivity
+
+error: cannot find symbol
+
+MainActivity.MESSAGE_READ
+
+/media/meshwave/MYEBOOK1/DIRCOM/GERCOM/PROJETOS/MESHWAVE/meshwave_android_prototype/app/src/main/java/com/example/meshwave/CommunicationThread.java:62: error: cannot find symbol
+                    handler.obtainMessage(MainActivity.MESSAGE_READ, bytes, -1, buffer).sendToTarget();
+                                                      ^
+  symbol:   variable MESSAGE_READ
+  location: class MainActivity
+
+/media/meshwave/MYEBOOK1/DIRCOM/GERCOM/PROJETOS/MESHWAVE/meshwave_android_prototype/app/src/main/java/com/example/meshwave/CommunicationThread.java:62: error: cannot find symbol
+                    handler.obtainMessage(MainActivity.MESSAGE_READ, bytes, -1, buffer).sendToTarget();
+                                                      ^
+  symbol:   variable MESSAGE_READ
+  location: class MainActivity
+
+MainActivity
+
+public static final int MESSAGE_READ = 1;
+
+MainActivity
+
+CommunicationThread
+
+MainActivity
+
+Handler
+
+CommunicationThread
+
+MainActivity
+
+CommunicationThread
+
+CommunicationThread.java
+
+CommunicationThread.java
+
+CommunicationThread.java
+
+// v0.3.0-alpha
+package com.example.meshwave;
+
+import android.os.Handler;
+import android.util.Log;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.InetAddress;
+import java.net.InetSocketAddress;
+import java.net.ServerSocket;
+import java.net.Socket;
+import java.util.function.Consumer;
+
+public class CommunicationThread extends Thread {
+    private static final String TAG = "CommunicationThread";
+    private static final int SERVER_PORT = 8988;
+
+    // --- CONSTANTE MOVIDA PARA CÁ ---
+    public static final int MESSAGE_RECEIVED = 1;
+
+    private ServerSocket serverSocket;
+    private Socket socket;
+    private OutputStream outputStream;
+    private InputStream inputStream;
+
+    private final InetAddress groupOwnerAddress;
+    private final boolean isGroupOwner;
+    private final Consumer<String> onMessageReceived;
+
+    public CommunicationThread(InetAddress groupOwnerAddress, boolean isGroupOwner, Consumer<String> onMessageReceived) {
+        this.groupOwnerAddress = groupOwnerAddress;
+        this.isGroupOwner = isGroupOwner;
+        this.onMessageReceived = onMessageReceived;
+    }
+
+    @Override
+    public void run() {
+        if (isGroupOwner) {
+            // Lógica do Servidor (Líder do Grupo)
+            try {
+                serverSocket = new ServerSocket(SERVER_PORT);
+                Log.d(TAG, "Servidor: Socket aberto na porta " + SERVER_PORT);
+                socket = serverSocket.accept(); // Bloqueia até um cliente conectar
+                Log.d(TAG, "Servidor: Cliente conectado: " + socket.getInetAddress());
+                setupStreams();
+                listenForMessages();
+            } catch (IOException e) {
+                Log.e(TAG, "Servidor: Erro de I/O", e);
+            }
+        } else {
+            // Lógica do Cliente
+            try {
+                socket = new Socket();
+                socket.connect(new InetSocketAddress(groupOwnerAddress, SERVER_PORT), 5000);
+                Log.d(TAG, "Cliente: Conectado ao servidor: " + socket.getInetAddress());
+                setupStreams();
+                listenForMessages();
+            } catch (IOException e) {
+                Log.e(TAG, "Cliente: Erro de I/O", e);
+            }
+        }
+    }
+
+    private void setupStreams() throws IOException {
+        outputStream = socket.getOutputStream();
+        inputStream = socket.getInputStream();
+    }
+
+    private void listenForMessages() {
+        byte[] buffer = new byte[1024];
+        int bytes;
+        while (socket != null && !socket.isClosed()) {
+            try {
+                bytes = inputStream.read(buffer);
+                if (bytes > 0) {
+                    String receivedMessage = new String(buffer, 0, bytes);
+                    Log.d(TAG, "Mensagem recebida: " + receivedMessage);
+                    // Usa o callback para notificar a MainActivity
+                    onMessageReceived.accept(receivedMessage);
+                }
+            } catch (IOException e) {
+                Log.e(TAG, "Conexão perdida.", e);
+                break;
+            }
+        }
+    }
+
+    public void write(byte[] bytes) {
+        if (outputStream != null) {
+            try {
+                outputStream.write(bytes);
+                Log.d(TAG, "Mensagem enviada.");
+            } catch (IOException e) {
+                Log.e(TAG, "Erro ao enviar mensagem", e);
+            }
+        }
+    }
+
+    public void close() {
+        try {
+            if (socket != null && !socket.isClosed()) {
+                socket.close();
+            }
+            if (serverSocket != null && !serverSocket.isClosed()) {
+                serverSocket.close();
+            }
+        } catch (IOException e) {
+            Log.e(TAG, "Erro ao fechar sockets", e);
+        }
+    }
+}
+
+// v0.3.0-alpha
+package com.example.meshwave;
+
+import android.os.Handler;
+import android.util.Log;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.InetAddress;
+import java.net.InetSocketAddress;
+import java.net.ServerSocket;
+import java.net.Socket;
+import java.util.function.Consumer;
+
+public class CommunicationThread extends Thread {
+    private static final String TAG = "CommunicationThread";
+    private static final int SERVER_PORT = 8988;
+
+    // --- CONSTANTE MOVIDA PARA CÁ ---
+    public static final int MESSAGE_RECEIVED = 1;
+
+    private ServerSocket serverSocket;
+    private Socket socket;
+    private OutputStream outputStream;
+    private InputStream inputStream;
+
+    private final InetAddress groupOwnerAddress;
+    private final boolean isGroupOwner;
+    private final Consumer<String> onMessageReceived;
+
+    public CommunicationThread(InetAddress groupOwnerAddress, boolean isGroupOwner, Consumer<String> onMessageReceived) {
+        this.groupOwnerAddress = groupOwnerAddress;
+        this.isGroupOwner = isGroupOwner;
+        this.onMessageReceived = onMessageReceived;
+    }
+
+    @Override
+    public void run() {
+        if (isGroupOwner) {
+            // Lógica do Servidor (Líder do Grupo)
+            try {
+                serverSocket = new ServerSocket(SERVER_PORT);
+                Log.d(TAG, "Servidor: Socket aberto na porta " + SERVER_PORT);
+                socket = serverSocket.accept(); // Bloqueia até um cliente conectar
+                Log.d(TAG, "Servidor: Cliente conectado: " + socket.getInetAddress());
+                setupStreams();
+                listenForMessages();
+            } catch (IOException e) {
+                Log.e(TAG, "Servidor: Erro de I/O", e);
+            }
+        } else {
+            // Lógica do Cliente
+            try {
+                socket = new Socket();
+                socket.connect(new InetSocketAddress(groupOwnerAddress, SERVER_PORT), 5000);
+                Log.d(TAG, "Cliente: Conectado ao servidor: " + socket.getInetAddress());
+                setupStreams();
+                listenForMessages();
+            } catch (IOException e) {
+                Log.e(TAG, "Cliente: Erro de I/O", e);
+            }
+        }
+    }
+
+    private void setupStreams() throws IOException {
+        outputStream = socket.getOutputStream();
+        inputStream = socket.getInputStream();
+    }
+
+    private void listenForMessages() {
+        byte[] buffer = new byte[1024];
+        int bytes;
+        while (socket != null && !socket.isClosed()) {
+            try {
+                bytes = inputStream.read(buffer);
+                if (bytes > 0) {
+                    String receivedMessage = new String(buffer, 0, bytes);
+                    Log.d(TAG, "Mensagem recebida: " + receivedMessage);
+                    // Usa o callback para notificar a MainActivity
+                    onMessageReceived.accept(receivedMessage);
+                }
+            } catch (IOException e) {
+                Log.e(TAG, "Conexão perdida.", e);
+                break;
+            }
+        }
+    }
+
+    public void write(byte[] bytes) {
+        if (outputStream != null) {
+            try {
+                outputStream.write(bytes);
+                Log.d(TAG, "Mensagem enviada.");
+            } catch (IOException e) {
+                Log.e(TAG, "Erro ao enviar mensagem", e);
+            }
+        }
+    }
+
+    public void close() {
+        try {
+            if (socket != null && !socket.isClosed()) {
+                socket.close();
+            }
+            if (serverSocket != null && !serverSocket.isClosed()) {
+                serverSocket.close();
+            }
+        } catch (IOException e) {
+            Log.e(TAG, "Erro ao fechar sockets", e);
+        }
+    }
+}
+
+Handler
+
+MainActivity.MESSAGE_READ
+
+Consumer<String> onMessageReceived
+
+MainActivity
+
+handleReceivedMessage
+
+CommunicationThread
+
+CommunicationThread
+
+onMessageReceived.accept(...)
+
+MainActivity
+
+CommunicationThread
+
+class CommunicationThread is public, should be declared in a file named CommunicationThread.java
+
+CommunicationThread
+
+MainActivity.java
+
+public
+
+.java
+
+CommunicationThread
+
+CommunicationThread.java
+
+CommunicationThread
+
+CommunicationThread.java
+
+CommunicationThread.java
+
+// v0.3.0-alpha
+package com.example.meshwave;
+
+import android.util.Log;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.InetAddress;
+import java.net.InetSocketAddress;
+import java.net.ServerSocket;
+import java.net.Socket;
+import java.util.function.Consumer;
+
+public class CommunicationThread extends Thread {
+    private static final String TAG = "CommunicationThread";
+    private static final int SERVER_PORT = 8988;
+
+    private ServerSocket serverSocket;
+    private Socket socket;
+    private OutputStream outputStream;
+    private InputStream inputStream;
+
+    private final InetAddress groupOwnerAddress;
+    private final boolean isGroupOwner;
+    private final Consumer<String> onMessageReceived;
+
+    public CommunicationThread(InetAddress groupOwnerAddress, boolean isGroupOwner, Consumer<String> onMessageReceived) {
+        this.groupOwnerAddress = groupOwnerAddress;
+        this.isGroupOwner = isGroupOwner;
+        this.onMessageReceived = onMessageReceived;
+    }
+
+    @Override
+    public void run() {
+        if (isGroupOwner) {
+            // Lógica do Servidor (Líder do Grupo)
+            try {
+                serverSocket = new ServerSocket(SERVER_PORT);
+                Log.d(TAG, "Servidor: Socket aberto na porta " + SERVER_PORT);
+                socket = serverSocket.accept(); // Bloqueia até um cliente conectar
+                Log.d(TAG, "Servidor: Cliente conectado: " + socket.getInetAddress());
+                setupStreams();
+                listenForMessages();
+            } catch (IOException e) {
+                Log.e(TAG, "Servidor: Erro de I/O", e);
+            }
+        } else {
+            // Lógica do Cliente
+            try {
+                socket = new Socket();
+                socket.connect(new InetSocketAddress(groupOwnerAddress, SERVER_PORT), 5000);
+                Log.d(TAG, "Cliente: Conectado ao servidor: " + socket.getInetAddress());
+                setupStreams();
+                listenForMessages();
+            } catch (IOException e) {
+                Log.e(TAG, "Cliente: Erro de I/O", e);
+            }
+        }
+    }
+
+    private void setupStreams() throws IOException {
+        outputStream = socket.getOutputStream();
+        inputStream = socket.getInputStream();
+    }
+
+    private void listenForMessages() {
+        byte[] buffer = new byte[1024];
+        int bytes;
+        while (socket != null && !socket.isClosed()) {
+            try {
+                bytes = inputStream.read(buffer);
+                if (bytes > 0) {
+                    String receivedMessage = new String(buffer, 0, bytes);
+                    Log.d(TAG, "Mensagem recebida: " + receivedMessage);
+                    // Usa o callback para notificar a MainActivity
+                    onMessageReceived.accept(receivedMessage);
+                }
+            } catch (IOException e) {
+                Log.e(TAG, "Conexão perdida.", e);
+                break;
+            }
+        }
+    }
+
+    public void write(byte[] bytes) {
+        if (outputStream != null) {
+            try {
+                outputStream.write(bytes);
+                Log.d(TAG, "Mensagem enviada.");
+            } catch (IOException e) {
+                Log.e(TAG, "Erro ao enviar mensagem", e);
+            }
+        }
+    }
+
+    public void close() {
+        try {
+            if (socket != null && !socket.isClosed()) {
+                socket.close();
+            }
+            if (serverSocket != null && !serverSocket.isClosed()) {
+                serverSocket.close();
+            }
+        } catch (IOException e) {
+            Log.e(TAG, "Erro ao fechar sockets", e);
+        }
+    }
+}
+
+// v0.3.0-alpha
+package com.example.meshwave;
+
+import android.util.Log;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.InetAddress;
+import java.net.InetSocketAddress;
+import java.net.ServerSocket;
+import java.net.Socket;
+import java.util.function.Consumer;
+
+public class CommunicationThread extends Thread {
+    private static final String TAG = "CommunicationThread";
+    private static final int SERVER_PORT = 8988;
+
+    private ServerSocket serverSocket;
+    private Socket socket;
+    private OutputStream outputStream;
+    private InputStream inputStream;
+
+    private final InetAddress groupOwnerAddress;
+    private final boolean isGroupOwner;
+    private final Consumer<String> onMessageReceived;
+
+    public CommunicationThread(InetAddress groupOwnerAddress, boolean isGroupOwner, Consumer<String> onMessageReceived) {
+        this.groupOwnerAddress = groupOwnerAddress;
+        this.isGroupOwner = isGroupOwner;
+        this.onMessageReceived = onMessageReceived;
+    }
+
+    @Override
+    public void run() {
+        if (isGroupOwner) {
+            // Lógica do Servidor (Líder do Grupo)
+            try {
+                serverSocket = new ServerSocket(SERVER_PORT);
+                Log.d(TAG, "Servidor: Socket aberto na porta " + SERVER_PORT);
+                socket = serverSocket.accept(); // Bloqueia até um cliente conectar
+                Log.d(TAG, "Servidor: Cliente conectado: " + socket.getInetAddress());
+                setupStreams();
+                listenForMessages();
+            } catch (IOException e) {
+                Log.e(TAG, "Servidor: Erro de I/O", e);
+            }
+        } else {
+            // Lógica do Cliente
+            try {
+                socket = new Socket();
+                socket.connect(new InetSocketAddress(groupOwnerAddress, SERVER_PORT), 5000);
+                Log.d(TAG, "Cliente: Conectado ao servidor: " + socket.getInetAddress());
+                setupStreams();
+                listenForMessages();
+            } catch (IOException e) {
+                Log.e(TAG, "Cliente: Erro de I/O", e);
+            }
+        }
+    }
+
+    private void setupStreams() throws IOException {
+        outputStream = socket.getOutputStream();
+        inputStream = socket.getInputStream();
+    }
+
+    private void listenForMessages() {
+        byte[] buffer = new byte[1024];
+        int bytes;
+        while (socket != null && !socket.isClosed()) {
+            try {
+                bytes = inputStream.read(buffer);
+                if (bytes > 0) {
+                    String receivedMessage = new String(buffer, 0, bytes);
+                    Log.d(TAG, "Mensagem recebida: " + receivedMessage);
+                    // Usa o callback para notificar a MainActivity
+                    onMessageReceived.accept(receivedMessage);
+                }
+            } catch (IOException e) {
+                Log.e(TAG, "Conexão perdida.", e);
+                break;
+            }
+        }
+    }
+
+    public void write(byte[] bytes) {
+        if (outputStream != null) {
+            try {
+                outputStream.write(bytes);
+                Log.d(TAG, "Mensagem enviada.");
+            } catch (IOException e) {
+                Log.e(TAG, "Erro ao enviar mensagem", e);
+            }
+        }
+    }
+
+    public void close() {
+        try {
+            if (socket != null && !socket.isClosed()) {
+                socket.close();
+            }
+            if (serverSocket != null && !serverSocket.isClosed()) {
+                serverSocket.close();
+            }
+        } catch (IOException e) {
+            Log.e(TAG, "Erro ao fechar sockets", e);
+        }
+    }
+}
+
+CommunicationThread.java
+
+MainActivity.java
+
+class CommunicationThread is public, should be declared in a file named CommunicationThread.java
+
+CommunicationThread
+
+MainActivity.java
+
+cannot find symbol: class MainActivity
+
+WiFiDirectBroadcastReceiver.java
+
+MainActivity.java
+
+MainActivity
+
+WiFiDirectBroadcastReceiver
+
+cannot find symbol: variable MainActivity
+
+CommunicationThread.java
+
+CommunicationThread
+
+MainActivity.java
+
+MainActivity.java
+
+MainActivity.java
+
+// v0.3.0-alpha
+package com.example.meshwave;
+
+import android.Manifest;
+import android.annotation.SuppressLint;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.IntentFilter;
+import android.content.pm.PackageManager;
+import android.location.Location;
+import android.net.wifi.p2p.WifiP2pConfig;
+import android.net.wifi.p2p.WifiP2pDevice;
+import android.net.wifi.p2p.WifiP2pInfo;
+import android.net.wifi.p2p.WifiP2pManager;
+import android.os.Build;
+import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.provider.Settings;
+import android.util.Log;
+import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
+
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
+
+public class MainActivity extends AppCompatActivity implements ChatFragmentListener {
+
+    // --- Constantes ---
+    private static final String TAG = "MainActivity_v0.3";
+    private static final int PERMISSIONS_REQUEST_CODE = 101;
+    private static final long DISCOVERY_TIMEOUT_MS = 15000; // 15 segundos
+
+    // --- Estado da Rede ---
+    private enum NetworkState { OFFLINE, SEARCHING, CONNECTED_AS_LEADER, CONNECTED_AS_CLIENT }
+    private NetworkState currentState = NetworkState.OFFLINE;
+    private boolean isReceiverRegistered = false;
+
+    // --- Componentes de UI e Fragmentos ---
+    private BottomNavigationView bottomNavigationView;
+    private StatusFragment statusFragment;
+    private ChatFragment chatFragment;
+
+    // --- Lógica de Rede ---
+    private WifiP2pManager manager;
+    private WifiP2pManager.Channel channel;
+    private BroadcastReceiver receiver;
+    private IntentFilter intentFilter;
+    private CommunicationThread communicationThread;
+
+    // --- Identidade e Cache ---
+    private MeshWaveIdentity myIdentity;
+    private String currentSessid = "N/A";
+    private ClaCache localCache;
+    private static final AtomicInteger userCounter = new AtomicInteger(0);
+
+    // --- Handlers e Timers ---
+    private final Handler discoveryTimeoutHandler = new Handler(Looper.getMainLooper());
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        setupFragments();
+        setupBottomNavigation();
+
+        if (savedInstanceState == null) {
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, statusFragment).commit();
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (myIdentity == null) {
+            checkPrerequisitesAndStart();
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        discoveryTimeoutHandler.removeCallbacksAndMessages(null);
+        if (communicationThread != null) {
+            communicationThread.close();
+        }
+        if (isReceiverRegistered) {
+            unregisterReceiver(receiver);
+            isReceiverRegistered = false;
+        }
+        if (manager != null && channel != null) {
+            manager.removeGroup(channel, null);
+        }
+    }
+
+    private void checkPrerequisitesAndStart() {
+        if (hasPermissions()) {
+            initiateBigBang();
+        } else {
+            requestPermissions();
+        }
+    }
+
+    private void requestPermissions() {
+        String[] permissions;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            permissions = new String[]{
+                    Manifest.permission.ACCESS_FINE_LOCATION,
+                    Manifest.permission.NEARBY_WIFI_DEVICES
+            };
+        } else {
+            permissions = new String[]{
+                    Manifest.permission.ACCESS_FINE_LOCATION
+            };
+        }
+        ActivityCompat.requestPermissions(this, permissions, PERMISSIONS_REQUEST_CODE);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == PERMISSIONS_REQUEST_CODE) {
+            if (hasPermissions()) {
+                Log.d(TAG, "Todas as permissões foram concedidas após a solicitação.");
+                initiateBigBang();
+            } else {
+                Log.e(TAG, "Permissões essenciais foram negadas. O app não pode funcionar.");
+                Toast.makeText(this, "Permissões essenciais foram negadas. Verifique as configurações do app.", Toast.LENGTH_LONG).show();
+                updateStatusUI("Permissões Negadas", "Offline", "N/A", "N/A");
+            }
+        }
+    }
+
+    @SuppressLint("MissingPermission")
+    private void initiateBigBang() {
+        myIdentity = IdentityManager.loadIdentity(this);
+        String did = getDeviceDID();
+
+        if (myIdentity == null) {
+            Log.d(TAG, "BIG BANG: Criando nova identidade.");
+            FusedLocationProviderClient fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+            fusedLocationClient.getLastLocation().addOnSuccessListener(this, location -> {
+                if (location != null) {
+                    String cpaGeohash = Geohash.encode(location.getLatitude(), location.getLongitude(), 6);
+                    String username = "User" + String.format("%03d", userCounter.incrementAndGet());
+                    myIdentity = new MeshWaveIdentity(did, cpaGeohash, username);
+                    IdentityManager.saveIdentity(this, myIdentity);
+                    Log.d(TAG, "Nova identidade criada e salva: " + myIdentity);
+                    startNetworkLogic(location);
+                } else {
+                    Log.e(TAG, "Falha ao obter localização inicial.");
+                    Toast.makeText(this, "Não foi possível obter a localização. Verifique os serviços de localização.", Toast.LENGTH_LONG).show();
+                }
+            });
+        } else {
+            Log.d(TAG, "Identidade existente carregada: " + myIdentity.getFormattedForUi());
+            FusedLocationProviderClient fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+            fusedLocationClient.getLastLocation().addOnSuccessListener(this, this::startNetworkLogic);
+        }
+    }
+
+    private String getDeviceDID() {
+        return Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
+    }
+
+    private boolean hasPermissions() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            return ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED &&
+                   ContextCompat.checkSelfPermission(this, Manifest.permission.NEARBY_WIFI_DEVICES) == PackageManager.PERMISSION_GRANTED;
+        } else {
+            return ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED;
+        }
+    }
+
+    private void startNetworkLogic(Location location) {
+        if (location == null) {
+            Log.e(TAG, "Localização nula, não é possível iniciar a lógica de rede.");
+            return;
+        }
+        this.currentSessid = "MeshWave_CLA_" + Geohash.encode(location.getLatitude(), location.getLongitude(), 6);
+        initializeCaches();
+        updateStatusUI(this.currentSessid, "Inicializado", myIdentity.getFormattedForUi(), "Nenhum nó detectado.");
+
+        initializeNetworkComponents();
+        startDiscovery();
+    }
+
+    private void initializeNetworkComponents() {
+        manager = (WifiP2pManager) getSystemService(Context.WIFI_P2P_SERVICE);
+        channel = manager.initialize(this, getMainLooper(), null);
+        receiver = new WiFiDirectBroadcastReceiver(manager, channel, this);
+        intentFilter = new IntentFilter();
+        intentFilter.addAction(WifiP2pManager.WIFI_P2P_STATE_CHANGED_ACTION);
+        intentFilter.addAction(WifiP2pManager.WIFI_P2P_PEERS_CHANGED_ACTION);
+        intentFilter.addAction(WifiP2pManager.WIFI_P2P_CONNECTION_CHANGED_ACTION);
+
+        if (!isReceiverRegistered) {
+            registerReceiver(receiver, intentFilter);
+            isReceiverRegistered = true;
+        }
+    }
+
+    @SuppressLint("MissingPermission")
+    private void startDiscovery() {
+        if (currentState == NetworkState.SEARCHING) return;
+        Log.d(TAG, "Iniciando descoberta de peers...");
+        updateState(NetworkState.SEARCHING);
+
+        manager.discoverPeers(channel, new WifiP2pManager.ActionListener() {
+            @Override
+            public void onSuccess() {
+                Log.d(TAG, "Comando de descoberta de peers enviado com sucesso.");
+                discoveryTimeoutHandler.postDelayed(() -> {
+                    if (currentState == NetworkState.SEARCHING) {
+                        Log.d(TAG, "Timeout de descoberta. Nenhum peer encontrado. Criando grupo...");
+                        createGroup();
+                    }
+                }, DISCOVERY_TIMEOUT_MS);
+            }
+            @Override
+            public void onFailure(int reason) {
+                Log.e(TAG, "Falha ao iniciar descoberta de peers, código: " + reason);
+                updateState(NetworkState.OFFLINE);
+            }
+        });
+    }
+
+    @SuppressLint("MissingPermission")
+    private void createGroup() {
+        manager.createGroup(channel, new WifiP2pManager.ActionListener() {
+            @Override
+            public void onSuccess() {
+                Log.d(TAG, "Grupo criado com sucesso!");
+            }
+            @Override
+            public void onFailure(int reason) {
+                Log.e(TAG, "Falha ao criar grupo, código: " + reason);
+                updateState(NetworkState.OFFLINE);
+            }
+        });
+    }
+
+    public final WifiP2pManager.PeerListListener peerListListener = peerList -> {
+        // Lógica a ser implementada
+    };
+
+    public final WifiP2pManager.ConnectionInfoListener connectionInfoListener = info -> {
+        if (info.groupFormed) {
+            discoveryTimeoutHandler.removeCallbacksAndMessages(null);
+            if (info.isGroupOwner) {
+                updateState(NetworkState.CONNECTED_AS_LEADER);
+                communicationThread = new CommunicationThread(info.groupOwnerAddress, true, this::handleReceivedMessage);
+                communicationThread.start();
+            } else {
+                updateState(NetworkState.CONNECTED_AS_CLIENT);
+                communicationThread = new CommunicationThread(info.groupOwnerAddress, false, this::handleReceivedMessage);
+                communicationThread.start();
+            }
+        }
+    };
+
+    private void handleReceivedMessage(String message) {
+        runOnUiThread(() -> {
+            if (chatFragment != null && chatFragment.isAdded()) {
+                chatFragment.addReceivedMessage(message);
+            }
+        });
+    }
+
+    @Override
+    public void onSendMessage(String message) {
+        if (communicationThread != null) {
+            communicationThread.write(message.getBytes());
+        } else {
+            Toast.makeText(this, "Não conectado a nenhum dispositivo.", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void setupFragments() {
+        statusFragment = new StatusFragment();
+        chatFragment = new ChatFragment();
+    }
+
+    private void setupBottomNavigation() {
+        bottomNavigationView = findViewById(R.id.bottom_navigation);
+        bottomNavigationView.setOnItemSelectedListener(item -> {
+            Fragment selectedFragment = null;
+            int itemId = item.getItemId();
+
+            if (itemId == R.id.nav_status) {
+                selectedFragment = statusFragment;
+            } else if (itemId == R.id.nav_chat) {
+                selectedFragment = chatFragment;
+            }
+
+            if (selectedFragment != null) {
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, selectedFragment).commit();
+                return true;
+            }
+            return false;
+        });
+    }
+
+    private void initializeCaches() {
+        List<ClaCacheEntry> membros = new ArrayList<>();
+        membros.add(new ClaCacheEntry(myIdentity));
+        List<String> sucessao = new ArrayList<>();
+        sucessao.add(myIdentity.getDid());
+        this.localCache = new ClaCache(currentSessid, sucessao, membros);
+        Log.d(TAG, "Cache local (CLA) inicializado: " + localCache);
+    }
+
+    private void updateState(NetworkState newState) {
+        this.currentState = newState;
+        String statusText;
+        switch (newState) {
+            case SEARCHING:
+                statusText = "Procurando...";
+                break;
+            case CONNECTED_AS_LEADER:
+                statusText = "Conectado (Líder)";
+                break;
+            case CONNECTED_AS_CLIENT:
+                statusText = "Conectado (Cliente)";
+                break;
+            case OFFLINE:
+            default:
+                statusText = "Desconectado";
+                break;
+        }
+        updateStatusUI(this.currentSessid, statusText, myIdentity != null ? myIdentity.getFormattedForUi() : "N/A", "Nenhum nó detectado.");
+    }
+
+    private void updateStatusUI(String sessid, String status, String user, String nodeList) {
+        runOnUiThread(() -> {
+            if (statusFragment != null && statusFragment.isAdded()) {
+                statusFragment.updateStatus(sessid, status, user, nodeList);
+            }
+        });
+    }
+}
+
+// v0.3.0-alpha
+package com.example.meshwave;
+
+import android.Manifest;
+import android.annotation.SuppressLint;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.IntentFilter;
+import android.content.pm.PackageManager;
+import android.location.Location;
+import android.net.wifi.p2p.WifiP2pConfig;
+import android.net.wifi.p2p.WifiP2pDevice;
+import android.net.wifi.p2p.WifiP2pInfo;
+import android.net.wifi.p2p.WifiP2pManager;
+import android.os.Build;
+import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.provider.Settings;
+import android.util.Log;
+import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
+
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
+
+public class MainActivity extends AppCompatActivity implements ChatFragmentListener {
+
+    // --- Constantes ---
+    private static final String TAG = "MainActivity_v0.3";
+    private static final int PERMISSIONS_REQUEST_CODE = 101;
+    private static final long DISCOVERY_TIMEOUT_MS = 15000; // 15 segundos
+
+    // --- Estado da Rede ---
+    private enum NetworkState { OFFLINE, SEARCHING, CONNECTED_AS_LEADER, CONNECTED_AS_CLIENT }
+    private NetworkState currentState = NetworkState.OFFLINE;
+    private boolean isReceiverRegistered = false;
+
+    // --- Componentes de UI e Fragmentos ---
+    private BottomNavigationView bottomNavigationView;
+    private StatusFragment statusFragment;
+    private ChatFragment chatFragment;
+
+    // --- Lógica de Rede ---
+    private WifiP2pManager manager;
+    private WifiP2pManager.Channel channel;
+    private BroadcastReceiver receiver;
+    private IntentFilter intentFilter;
+    private CommunicationThread communicationThread;
+
+    // --- Identidade e Cache ---
+    private MeshWaveIdentity myIdentity;
+    private String currentSessid = "N/A";
+    private ClaCache localCache;
+    private static final AtomicInteger userCounter = new AtomicInteger(0);
+
+    // --- Handlers e Timers ---
+    private final Handler discoveryTimeoutHandler = new Handler(Looper.getMainLooper());
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        setupFragments();
+        setupBottomNavigation();
+
+        if (savedInstanceState == null) {
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, statusFragment).commit();
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (myIdentity == null) {
+            checkPrerequisitesAndStart();
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        discoveryTimeoutHandler.removeCallbacksAndMessages(null);
+        if (communicationThread != null) {
+            communicationThread.close();
+        }
+        if (isReceiverRegistered) {
+            unregisterReceiver(receiver);
+            isReceiverRegistered = false;
+        }
+        if (manager != null && channel != null) {
+            manager.removeGroup(channel, null);
+        }
+    }
+
+    private void checkPrerequisitesAndStart() {
+        if (hasPermissions()) {
+            initiateBigBang();
+        } else {
+            requestPermissions();
+        }
+    }
+
+    private void requestPermissions() {
+        String[] permissions;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            permissions = new String[]{
+                    Manifest.permission.ACCESS_FINE_LOCATION,
+                    Manifest.permission.NEARBY_WIFI_DEVICES
+            };
+        } else {
+            permissions = new String[]{
+                    Manifest.permission.ACCESS_FINE_LOCATION
+            };
+        }
+        ActivityCompat.requestPermissions(this, permissions, PERMISSIONS_REQUEST_CODE);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == PERMISSIONS_REQUEST_CODE) {
+            if (hasPermissions()) {
+                Log.d(TAG, "Todas as permissões foram concedidas após a solicitação.");
+                initiateBigBang();
+            } else {
+                Log.e(TAG, "Permissões essenciais foram negadas. O app não pode funcionar.");
+                Toast.makeText(this, "Permissões essenciais foram negadas. Verifique as configurações do app.", Toast.LENGTH_LONG).show();
+                updateStatusUI("Permissões Negadas", "Offline", "N/A", "N/A");
+            }
+        }
+    }
+
+    @SuppressLint("MissingPermission")
+    private void initiateBigBang() {
+        myIdentity = IdentityManager.loadIdentity(this);
+        String did = getDeviceDID();
+
+        if (myIdentity == null) {
+            Log.d(TAG, "BIG BANG: Criando nova identidade.");
+            FusedLocationProviderClient fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+            fusedLocationClient.getLastLocation().addOnSuccessListener(this, location -> {
+                if (location != null) {
+                    String cpaGeohash = Geohash.encode(location.getLatitude(), location.getLongitude(), 6);
+                    String username = "User" + String.format("%03d", userCounter.incrementAndGet());
+                    myIdentity = new MeshWaveIdentity(did, cpaGeohash, username);
+                    IdentityManager.saveIdentity(this, myIdentity);
+                    Log.d(TAG, "Nova identidade criada e salva: " + myIdentity);
+                    startNetworkLogic(location);
+                } else {
+                    Log.e(TAG, "Falha ao obter localização inicial.");
+                    Toast.makeText(this, "Não foi possível obter a localização. Verifique os serviços de localização.", Toast.LENGTH_LONG).show();
+                }
+            });
+        } else {
+            Log.d(TAG, "Identidade existente carregada: " + myIdentity.getFormattedForUi());
+            FusedLocationProviderClient fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+            fusedLocationClient.getLastLocation().addOnSuccessListener(this, this::startNetworkLogic);
+        }
+    }
+
+    private String getDeviceDID() {
+        return Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
+    }
+
+    private boolean hasPermissions() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            return ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED &&
+                   ContextCompat.checkSelfPermission(this, Manifest.permission.NEARBY_WIFI_DEVICES) == PackageManager.PERMISSION_GRANTED;
+        } else {
+            return ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED;
+        }
+    }
+
+    private void startNetworkLogic(Location location) {
+        if (location == null) {
+            Log.e(TAG, "Localização nula, não é possível iniciar a lógica de rede.");
+            return;
+        }
+        this.currentSessid = "MeshWave_CLA_" + Geohash.encode(location.getLatitude(), location.getLongitude(), 6);
+        initializeCaches();
+        updateStatusUI(this.currentSessid, "Inicializado", myIdentity.getFormattedForUi(), "Nenhum nó detectado.");
+
+        initializeNetworkComponents();
+        startDiscovery();
+    }
+
+    private void initializeNetworkComponents() {
+        manager = (WifiP2pManager) getSystemService(Context.WIFI_P2P_SERVICE);
+        channel = manager.initialize(this, getMainLooper(), null);
+        receiver = new WiFiDirectBroadcastReceiver(manager, channel, this);
+        intentFilter = new IntentFilter();
+        intentFilter.addAction(WifiP2pManager.WIFI_P2P_STATE_CHANGED_ACTION);
+        intentFilter.addAction(WifiP2pManager.WIFI_P2P_PEERS_CHANGED_ACTION);
+        intentFilter.addAction(WifiP2pManager.WIFI_P2P_CONNECTION_CHANGED_ACTION);
+
+        if (!isReceiverRegistered) {
+            registerReceiver(receiver, intentFilter);
+            isReceiverRegistered = true;
+        }
+    }
+
+    @SuppressLint("MissingPermission")
+    private void startDiscovery() {
+        if (currentState == NetworkState.SEARCHING) return;
+        Log.d(TAG, "Iniciando descoberta de peers...");
+        updateState(NetworkState.SEARCHING);
+
+        manager.discoverPeers(channel, new WifiP2pManager.ActionListener() {
+            @Override
+            public void onSuccess() {
+                Log.d(TAG, "Comando de descoberta de peers enviado com sucesso.");
+                discoveryTimeoutHandler.postDelayed(() -> {
+                    if (currentState == NetworkState.SEARCHING) {
+                        Log.d(TAG, "Timeout de descoberta. Nenhum peer encontrado. Criando grupo...");
+                        createGroup();
+                    }
+                }, DISCOVERY_TIMEOUT_MS);
+            }
+            @Override
+            public void onFailure(int reason) {
+                Log.e(TAG, "Falha ao iniciar descoberta de peers, código: " + reason);
+                updateState(NetworkState.OFFLINE);
+            }
+        });
+    }
+
+    @SuppressLint("MissingPermission")
+    private void createGroup() {
+        manager.createGroup(channel, new WifiP2pManager.ActionListener() {
+            @Override
+            public void onSuccess() {
+                Log.d(TAG, "Grupo criado com sucesso!");
+            }
+            @Override
+            public void onFailure(int reason) {
+                Log.e(TAG, "Falha ao criar grupo, código: " + reason);
+                updateState(NetworkState.OFFLINE);
+            }
+        });
+    }
+
+    public final WifiP2pManager.PeerListListener peerListListener = peerList -> {
+        // Lógica a ser implementada
+    };
+
+    public final WifiP2pManager.ConnectionInfoListener connectionInfoListener = info -> {
+        if (info.groupFormed) {
+            discoveryTimeoutHandler.removeCallbacksAndMessages(null);
+            if (info.isGroupOwner) {
+                updateState(NetworkState.CONNECTED_AS_LEADER);
+                communicationThread = new CommunicationThread(info.groupOwnerAddress, true, this::handleReceivedMessage);
+                communicationThread.start();
+            } else {
+                updateState(NetworkState.CONNECTED_AS_CLIENT);
+                communicationThread = new CommunicationThread(info.groupOwnerAddress, false, this::handleReceivedMessage);
+                communicationThread.start();
+            }
+        }
+    };
+
+    private void handleReceivedMessage(String message) {
+        runOnUiThread(() -> {
+            if (chatFragment != null && chatFragment.isAdded()) {
+                chatFragment.addReceivedMessage(message);
+            }
+        });
+    }
+
+    @Override
+    public void onSendMessage(String message) {
+        if (communicationThread != null) {
+            communicationThread.write(message.getBytes());
+        } else {
+            Toast.makeText(this, "Não conectado a nenhum dispositivo.", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void setupFragments() {
+        statusFragment = new StatusFragment();
+        chatFragment = new ChatFragment();
+    }
+
+    private void setupBottomNavigation() {
+        bottomNavigationView = findViewById(R.id.bottom_navigation);
+        bottomNavigationView.setOnItemSelectedListener(item -> {
+            Fragment selectedFragment = null;
+            int itemId = item.getItemId();
+
+            if (itemId == R.id.nav_status) {
+                selectedFragment = statusFragment;
+            } else if (itemId == R.id.nav_chat) {
+                selectedFragment = chatFragment;
+            }
+
+            if (selectedFragment != null) {
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, selectedFragment).commit();
+                return true;
+            }
+            return false;
+        });
+    }
+
+    private void initializeCaches() {
+        List<ClaCacheEntry> membros = new ArrayList<>();
+        membros.add(new ClaCacheEntry(myIdentity));
+        List<String> sucessao = new ArrayList<>();
+        sucessao.add(myIdentity.getDid());
+        this.localCache = new ClaCache(currentSessid, sucessao, membros);
+        Log.d(TAG, "Cache local (CLA) inicializado: " + localCache);
+    }
+
+    private void updateState(NetworkState newState) {
+        this.currentState = newState;
+        String statusText;
+        switch (newState) {
+            case SEARCHING:
+                statusText = "Procurando...";
+                break;
+            case CONNECTED_AS_LEADER:
+                statusText = "Conectado (Líder)";
+                break;
+            case CONNECTED_AS_CLIENT:
+                statusText = "Conectado (Cliente)";
+                break;
+            case OFFLINE:
+            default:
+                statusText = "Desconectado";
+                break;
+        }
+        updateStatusUI(this.currentSessid, statusText, myIdentity != null ? myIdentity.getFormattedForUi() : "N/A", "Nenhum nó detectado.");
+    }
+
+    private void updateStatusUI(String sessid, String status, String user, String nodeList) {
+        runOnUiThread(() -> {
+            if (statusFragment != null && statusFragment.isAdded()) {
+                statusFragment.updateStatus(sessid, status, user, nodeList);
+            }
+        });
+    }
+}
+
+CommunicationThread.java
+
+CommunicationThread.java
+
+CommunicationThread.java
+
+// v0.3.0-alpha
+package com.example.meshwave;
+
+import android.util.Log;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.InetAddress;
+import java.net.InetSocketAddress;
+import java.net.ServerSocket;
+import java.net.Socket;
+import java.util.function.Consumer;
+
+public class CommunicationThread extends Thread {
+    private static final String TAG = "CommunicationThread";
+    private static final int SERVER_PORT = 8988;
+
+    private ServerSocket serverSocket;
+    private Socket socket;
+    private OutputStream outputStream;
+    private InputStream inputStream;
+
+    private final InetAddress groupOwnerAddress;
+    private final boolean isGroupOwner;
+    private final Consumer<String> onMessageReceived;
+
+    public CommunicationThread(InetAddress groupOwnerAddress, boolean isGroupOwner, Consumer<String> onMessageReceived) {
+        this.groupOwnerAddress = groupOwnerAddress;
+        this.isGroupOwner = isGroupOwner;
+        this.onMessageReceived = onMessageReceived;
+    }
+
+    @Override
+    public void run() {
+        if (isGroupOwner) {
+            // Lógica do Servidor (Líder do Grupo)
+            try {
+                serverSocket = new ServerSocket(SERVER_PORT);
+                Log.d(TAG, "Servidor: Socket aberto na porta " + SERVER_PORT);
+                socket = serverSocket.accept(); // Bloqueia até um cliente conectar
+                Log.d(TAG, "Servidor: Cliente conectado: " + socket.getInetAddress());
+                setupStreams();
+                listenForMessages();
+            } catch (IOException e) {
+                Log.e(TAG, "Servidor: Erro de I/O", e);
+            }
+        } else {
+            // Lógica do Cliente
+            try {
+                socket = new Socket();
+                socket.connect(new InetSocketAddress(groupOwnerAddress, SERVER_PORT), 5000);
+                Log.d(TAG, "Cliente: Conectado ao servidor: " + socket.getInetAddress());
+                setupStreams();
+                listenForMessages();
+            } catch (IOException e) {
+                Log.e(TAG, "Cliente: Erro de I/O", e);
+            }
+        }
+    }
+
+    private void setupStreams() throws IOException {
+        outputStream = socket.getOutputStream();
+        inputStream = socket.getInputStream();
+    }
+
+    private void listenForMessages() {
+        byte[] buffer = new byte[1024];
+        int bytes;
+        while (socket != null && !socket.isClosed()) {
+            try {
+                bytes = inputStream.read(buffer);
+                if (bytes > 0) {
+                    String receivedMessage = new String(buffer, 0, bytes);
+                    Log.d(TAG, "Mensagem recebida: " + receivedMessage);
+                    // Usa o callback para notificar a MainActivity
+                    onMessageReceived.accept(receivedMessage);
+                }
+            } catch (IOException e) {
+                Log.e(TAG, "Conexão perdida.", e);
+                break;
+            }
+        }
+    }
+
+    public void write(byte[] bytes) {
+        if (outputStream != null) {
+            try {
+                outputStream.write(bytes);
+                Log.d(TAG, "Mensagem enviada.");
+            } catch (IOException e) {
+                Log.e(TAG, "Erro ao enviar mensagem", e);
+            }
+        }
+    }
+
+    public void close() {
+        try {
+            if (socket != null && !socket.isClosed()) {
+                socket.close();
+            }
+            if (serverSocket != null && !serverSocket.isClosed()) {
+                serverSocket.close();
+            }
+        } catch (IOException e) {
+            Log.e(TAG, "Erro ao fechar sockets", e);
+        }
+    }
+}
+
+// v0.3.0-alpha
+package com.example.meshwave;
+
+import android.util.Log;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.InetAddress;
+import java.net.InetSocketAddress;
+import java.net.ServerSocket;
+import java.net.Socket;
+import java.util.function.Consumer;
+
+public class CommunicationThread extends Thread {
+    private static final String TAG = "CommunicationThread";
+    private static final int SERVER_PORT = 8988;
+
+    private ServerSocket serverSocket;
+    private Socket socket;
+    private OutputStream outputStream;
+    private InputStream inputStream;
+
+    private final InetAddress groupOwnerAddress;
+    private final boolean isGroupOwner;
+    private final Consumer<String> onMessageReceived;
+
+    public CommunicationThread(InetAddress groupOwnerAddress, boolean isGroupOwner, Consumer<String> onMessageReceived) {
+        this.groupOwnerAddress = groupOwnerAddress;
+        this.isGroupOwner = isGroupOwner;
+        this.onMessageReceived = onMessageReceived;
+    }
+
+    @Override
+    public void run() {
+        if (isGroupOwner) {
+            // Lógica do Servidor (Líder do Grupo)
+            try {
+                serverSocket = new ServerSocket(SERVER_PORT);
+                Log.d(TAG, "Servidor: Socket aberto na porta " + SERVER_PORT);
+                socket = serverSocket.accept(); // Bloqueia até um cliente conectar
+                Log.d(TAG, "Servidor: Cliente conectado: " + socket.getInetAddress());
+                setupStreams();
+                listenForMessages();
+            } catch (IOException e) {
+                Log.e(TAG, "Servidor: Erro de I/O", e);
+            }
+        } else {
+            // Lógica do Cliente
+            try {
+                socket = new Socket();
+                socket.connect(new InetSocketAddress(groupOwnerAddress, SERVER_PORT), 5000);
+                Log.d(TAG, "Cliente: Conectado ao servidor: " + socket.getInetAddress());
+                setupStreams();
+                listenForMessages();
+            } catch (IOException e) {
+                Log.e(TAG, "Cliente: Erro de I/O", e);
+            }
+        }
+    }
+
+    private void setupStreams() throws IOException {
+        outputStream = socket.getOutputStream();
+        inputStream = socket.getInputStream();
+    }
+
+    private void listenForMessages() {
+        byte[] buffer = new byte[1024];
+        int bytes;
+        while (socket != null && !socket.isClosed()) {
+            try {
+                bytes = inputStream.read(buffer);
+                if (bytes > 0) {
+                    String receivedMessage = new String(buffer, 0, bytes);
+                    Log.d(TAG, "Mensagem recebida: " + receivedMessage);
+                    // Usa o callback para notificar a MainActivity
+                    onMessageReceived.accept(receivedMessage);
+                }
+            } catch (IOException e) {
+                Log.e(TAG, "Conexão perdida.", e);
+                break;
+            }
+        }
+    }
+
+    public void write(byte[] bytes) {
+        if (outputStream != null) {
+            try {
+                outputStream.write(bytes);
+                Log.d(TAG, "Mensagem enviada.");
+            } catch (IOException e) {
+                Log.e(TAG, "Erro ao enviar mensagem", e);
+            }
+        }
+    }
+
+    public void close() {
+        try {
+            if (socket != null && !socket.isClosed()) {
+                socket.close();
+            }
+            if (serverSocket != null && !serverSocket.isClosed()) {
+                serverSocket.close();
+            }
+        } catch (IOException e) {
+            Log.e(TAG, "Erro ao fechar sockets", e);
+        }
+    }
+}
+
+WiFiDirectBroadcastReceiver.java
+
+WiFiDirectBroadcastReceiver.java
+
+WiFiDirectBroadcastReceiver.java
+
+// v0.3.0-alpha
+package com.example.meshwave;
+
+import android.Manifest;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.net.wifi.p2p.WifiP2pManager;
+import androidx.core.app.ActivityCompat;
+
+public class WiFiDirectBroadcastReceiver extends BroadcastReceiver {
+    private final WifiP2pManager manager;
+    private final WifiP2pManager.Channel channel;
+    private final MainActivity activity;
+
+    public WiFiDirectBroadcastReceiver(WifiP2pManager manager, WifiP2pManager.Channel channel, MainActivity activity) {
+        this.manager = manager;
+        this.channel = channel;
+        this.activity = activity;
+    }
+
+    @Override
+    public void onReceive(Context context, Intent intent) {
+        String action = intent.getAction();
+        if (WifiP2pManager.WIFI_P2P_STATE_CHANGED_ACTION.equals(action)) {
+            // Lógica para estado do Wi-Fi alterado
+        } else if (WifiP2pManager.WIFI_P2P_PEERS_CHANGED_ACTION.equals(action)) {
+            if (manager != null) {
+                if (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+                    manager.requestPeers(channel, activity.peerListListener);
+                }
+            }
+        } else if (WifiP2pManager.WIFI_P2P_CONNECTION_CHANGED_ACTION.equals(action)) {
+            if (manager != null) {
+                manager.requestConnectionInfo(channel, activity.connectionInfoListener);
+            }
+        }
+    }
+}
+
+// v0.3.0-alpha
+package com.example.meshwave;
+
+import android.Manifest;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.net.wifi.p2p.WifiP2pManager;
+import androidx.core.app.ActivityCompat;
+
+public class WiFiDirectBroadcastReceiver extends BroadcastReceiver {
+    private final WifiP2pManager manager;
+    private final WifiP2pManager.Channel channel;
+    private final MainActivity activity;
+
+    public WiFiDirectBroadcastReceiver(WifiP2pManager manager, WifiP2pManager.Channel channel, MainActivity activity) {
+        this.manager = manager;
+        this.channel = channel;
+        this.activity = activity;
+    }
+
+    @Override
+    public void onReceive(Context context, Intent intent) {
+        String action = intent.getAction();
+        if (WifiP2pManager.WIFI_P2P_STATE_CHANGED_ACTION.equals(action)) {
+            // Lógica para estado do Wi-Fi alterado
+        } else if (WifiP2pManager.WIFI_P2P_PEERS_CHANGED_ACTION.equals(action)) {
+            if (manager != null) {
+                if (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+                    manager.requestPeers(channel, activity.peerListListener);
+                }
+            }
+        } else if (WifiP2pManager.WIFI_P2P_CONNECTION_CHANGED_ACTION.equals(action)) {
+            if (manager != null) {
+                manager.requestConnectionInfo(channel, activity.connectionInfoListener);
+            }
+        }
+    }
+}
+
+BUILD FAILED

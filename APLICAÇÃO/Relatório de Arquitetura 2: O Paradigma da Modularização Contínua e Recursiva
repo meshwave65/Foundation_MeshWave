@@ -1,0 +1,25 @@
+Relatório de Arquitetura 2: O Paradigma da Modularização Contínua e Recursiva
+ID do Documento: ARCH-20250715-01
+Status: Princípio Arquitetônico Fundamental
+Autor da Visão: Usuário
+Documentado por: Manus
+1. Sumário Executivo
+Este documento estabelece a Modularização Contínua e Recursiva como o pilar central da arquitetura de software do MeshWave. O objetivo é construir um sistema complexo a partir de componentes simples, independentes e altamente especializados. A MainActivity (e qualquer outra classe de alto nível) deve atuar como uma "maestra" que orquestra os módulos, mas nunca executa a lógica de negócios ou de rede diretamente.
+2. O Princípio: "Especialistas que Conversam, Não um Generalista que Grita"
+A arquitetura do MeshWave evoluirá através da identificação e extração contínua de responsabilidades para módulos dedicados.
+Características de um Módulo Ideal:
+Responsabilidade Única: O módulo faz uma única coisa e a faz bem (ex: BluetoothDiscoveryHandler só sabe descobrir dispositivos Bluetooth).
+Encapsulamento Total: A complexidade interna do módulo é completamente oculta do resto do sistema.
+Interface Clara: O módulo expõe métodos simples e de alto nível para ser controlado (ex: startDiscovery(), connect(device)).
+Comunicação via Mensagens: O módulo reporta seu estado, resultados ou erros de volta para a orquestradora (via Handler ou callbacks), mas não manipula a UI diretamente.
+3. A Natureza Recursiva
+Este princípio não se aplica apenas à MainActivity. Ele é uma filosofia a ser aplicada em todos os níveis do sistema.
+Um módulo, ao crescer em complexidade, deve ser ele mesmo um candidato à refatoração.
+Exemplo: O BluetoothModule inicial pode ser grande. No futuro, ele pode ser quebrado em submódulos menores: BluetoothConnectionHandler, BluetoothChatServiceWrapper, BluetoothDiscoveryHandler. Cada um é um especialista dentro de uma especialidade maior.
+4. Implicações no Desenvolvimento
+Design de Código: Antes de adicionar uma nova funcionalidade a uma classe existente, a primeira pergunta será: "Esta funcionalidade pertence a um novo módulo?".
+Fluxo de Trabalho: O desenvolvimento de uma nova capacidade (ex: comunicação via NFC) começará com a criação de um NfcModule encapsulado desde o primeiro dia.
+Eficiência Energética e de Memória: Módulos especializados podem ser carregados e descarregados da memória de forma mais granular, e seus ciclos de vida podem ser gerenciados de forma independente, levando a um sistema mais eficiente.
+5. Conclusão
+A adoção da Modularização Contínua e Recursiva transforma a maneira como construímos o MeshWave. Deixamos de "adicionar código" para "compor sistemas". Esta é a única maneira viável de gerenciar a imensa complexidade da nossa visão de longo prazo, garantindo que o sistema permaneça robusto, testável e compreensível em todas as fases de seu desenvolvimento.
+Iniciar agent

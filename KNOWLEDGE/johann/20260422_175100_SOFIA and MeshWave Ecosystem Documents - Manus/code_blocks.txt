@@ -1,0 +1,2063 @@
+
+
+================================================================================task_id = 118
+
+client_request_uuid
+
+119
+
+120
+
+121
+
+parent_task_id = 118
+
+client_request_uuid
+
+launch_whitepaper_genesis.py
+
+launch_whitepaper_genesis.py
+
+executor_agent.py
+
+worker_agent.py
+
+FinalReport.md
+
+OperationalReport.md
+
+worker_agent.py
+
+generate_detailed_op_report
+
+execute_supervisor_mission
+
+rh_agent.py
+
+worker_agent.py
+
+launch_whitepaper_genesis.py
+
+rh_agent.py
+
+/home/mesh/home/sofia/engine/rh_agent.py
+
+# /home/mesh/home/sofia/engine/rh_agent.py
+# VERSÃO CORRIGIDA: Força a "Execução Direta" para evitar fatoração indesejada.
+
+import requests
+import time
+import sys
+import os
+
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+try:
+    from architecture import SOFIA_API_BASE_URL
+except ImportError as e:
+    print(f"ERRO CRÍTICO: Falha na importação de um módulo essencial: {e}")
+    sys.exit(1)
+
+# --- Funções de API (sem alterações) ---
+def find_task_by_status(status_id):
+    try:
+        response = requests.get(f"{SOFIA_API_BASE_URL}/tasks/")
+        if response.status_code == 200:
+            for task in response.json():
+                if task.get('status', {}).get('status_id') == status_id:
+                    return task
+        return None
+    except requests.exceptions.RequestException: return None
+
+def update_task_status(task_id, new_status_id, persona_id=None):
+    log_prefix = f"[RHAgent-{task_id}]"
+    payload = {"status_id": new_status_id}
+    if persona_id is not None: payload["persona_id"] = persona_id
+    try:
+        response = requests.patch(f"{SOFIA_API_BASE_URL}/tasks/{task_id}", json=payload)
+        if response.status_code == 200:
+            print(f"{log_prefix} ✅ Status atualizado para {new_status_id}.")
+            return True
+        print(f"{log_prefix} ❌ Falha ao atualizar status. Código: {response.status_code}, Resposta: {response.text}")
+        return False
+    except requests.exceptions.RequestException: return False
+
+def get_enriched_description(task_id):
+    try:
+        response = requests.get(f"{SOFIA_API_BASE_URL}/tasks/{task_id}/blocks")
+        if response.status_code == 200:
+            for block in response.json():
+                if block.get('block_type') == "EnrichedDescription":
+                    return block.get('content')
+        return None
+    except requests.exceptions.RequestException: return None
+
+def determine_persona(description):
+    return 999999
+
+# --- Loop Principal (Lógica de decisão v6.1.0) ---
+if __name__ == "__main__":
+    log_prefix = "[RHAgent]"
+    print(f"{log_prefix} 👑 Iniciando o Agente RH v6.1.0 ('O Despachante Direto')... Monitorando status 41.")
+    while True:
+        try:
+            task = find_task_by_status(41)
+            if task:
+                task_id = task['task_id']
+                log_prefix_task = f"[RHAgent-{task_id}]"
+                print(f"\n{log_prefix_task} Tarefa encontrada. Reivindicando (status 20)...")
+                if not update_task_status(task_id, 20):
+                    time.sleep(5)
+                    continue
+                try:
+                    enriched_desc = get_enriched_description(task_id)
+                    if not enriched_desc: raise Exception("Descrição enriquecida não foi encontrada.")
+                    
+                    # <<< CORREÇÃO APLICADA AQUI >>>
+                    # Remove a chamada de análise e força a execução direta.
+                    print(f"{log_prefix_task} 👑 Decisão: EXECUÇÃO DIRETA (Protocolo White Paper). Liberando para Worker (status 1).")
+                    update_task_status(task_id, 1, determine_persona(enriched_desc))
+
+                except Exception as task_error:
+                    print(f"{log_prefix_task} ❌ ERRO: {task_error}")
+                    update_task_status(task_id, 5)
+            else:
+                time.sleep(10)
+        except KeyboardInterrupt:
+            print(f"\n{log_prefix} 🛑 Desligando...")
+            break
+        except Exception as e:
+            print(f"\n{log_prefix} 🚨 Erro inesperado: {e}")
+            time.sleep(15)
+
+# /home/mesh/home/sofia/engine/rh_agent.py
+# VERSÃO CORRIGIDA: Força a "Execução Direta" para evitar fatoração indesejada.
+
+import requests
+import time
+import sys
+import os
+
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+try:
+    from architecture import SOFIA_API_BASE_URL
+except ImportError as e:
+    print(f"ERRO CRÍTICO: Falha na importação de um módulo essencial: {e}")
+    sys.exit(1)
+
+# --- Funções de API (sem alterações) ---
+def find_task_by_status(status_id):
+    try:
+        response = requests.get(f"{SOFIA_API_BASE_URL}/tasks/")
+        if response.status_code == 200:
+            for task in response.json():
+                if task.get('status', {}).get('status_id') == status_id:
+                    return task
+        return None
+    except requests.exceptions.RequestException: return None
+
+def update_task_status(task_id, new_status_id, persona_id=None):
+    log_prefix = f"[RHAgent-{task_id}]"
+    payload = {"status_id": new_status_id}
+    if persona_id is not None: payload["persona_id"] = persona_id
+    try:
+        response = requests.patch(f"{SOFIA_API_BASE_URL}/tasks/{task_id}", json=payload)
+        if response.status_code == 200:
+            print(f"{log_prefix} ✅ Status atualizado para {new_status_id}.")
+            return True
+        print(f"{log_prefix} ❌ Falha ao atualizar status. Código: {response.status_code}, Resposta: {response.text}")
+        return False
+    except requests.exceptions.RequestException: return False
+
+def get_enriched_description(task_id):
+    try:
+        response = requests.get(f"{SOFIA_API_BASE_URL}/tasks/{task_id}/blocks")
+        if response.status_code == 200:
+            for block in response.json():
+                if block.get('block_type') == "EnrichedDescription":
+                    return block.get('content')
+        return None
+    except requests.exceptions.RequestException: return None
+
+def determine_persona(description):
+    return 999999
+
+# --- Loop Principal (Lógica de decisão v6.1.0) ---
+if __name__ == "__main__":
+    log_prefix = "[RHAgent]"
+    print(f"{log_prefix} 👑 Iniciando o Agente RH v6.1.0 ('O Despachante Direto')... Monitorando status 41.")
+    while True:
+        try:
+            task = find_task_by_status(41)
+            if task:
+                task_id = task['task_id']
+                log_prefix_task = f"[RHAgent-{task_id}]"
+                print(f"\n{log_prefix_task} Tarefa encontrada. Reivindicando (status 20)...")
+                if not update_task_status(task_id, 20):
+                    time.sleep(5)
+                    continue
+                try:
+                    enriched_desc = get_enriched_description(task_id)
+                    if not enriched_desc: raise Exception("Descrição enriquecida não foi encontrada.")
+                    
+                    # <<< CORREÇÃO APLICADA AQUI >>>
+                    # Remove a chamada de análise e força a execução direta.
+                    print(f"{log_prefix_task} 👑 Decisão: EXECUÇÃO DIRETA (Protocolo White Paper). Liberando para Worker (status 1).")
+                    update_task_status(task_id, 1, determine_persona(enriched_desc))
+
+                except Exception as task_error:
+                    print(f"{log_prefix_task} ❌ ERRO: {task_error}")
+                    update_task_status(task_id, 5)
+            else:
+                time.sleep(10)
+        except KeyboardInterrupt:
+            print(f"\n{log_prefix} 🛑 Desligando...")
+            break
+        except Exception as e:
+            print(f"\n{log_prefix} 🚨 Erro inesperado: {e}")
+            time.sleep(15)
+
+worker_agent.py
+
+/home/mesh/home/sofia/engine/worker_agent.py
+
+# /home/mesh/home/sofia/engine/worker_agent.py
+# VERSÃO CORRIGIDA: Usa contexto completo e gera relatório operacional em todos os casos.
+
+import requests
+import time
+import os
+import json
+import random
+
+try:
+    from architecture import SOFIA_API_BASE_URL, GROQ_API_KEY, ARTIFACTS_DIR, GROQ_MODEL_POWERFUL, GROQ_MODEL_FAST
+    from oracle_client import chamar_oraculo_json
+except ImportError as e:
+    print(f"ERRO CRÍTICO: Falha na importação de um módulo essencial: {e}")
+    exit()
+
+# --- Funções de API (sem alterações) ---
+def find_and_claim_worker_task(session):
+    try:
+        response = session.get(f"{SOFIA_API_BASE_URL}/tasks/")
+        if response.status_code == 200:
+            for task in response.json():
+                if task.get('status', {}).get('status_id') == 1:
+                    task_id = task['task_id']
+                    print(f"    [Worker-{task_id}] Tarefa com status 1 encontrada. Reivindicando (status 50)...")
+                    claim_response = session.patch(f"{SOFIA_API_BASE_URL}/tasks/{task_id}", json={"status_id": 50})
+                    if claim_response.status_code == 200:
+                        task_details_response = session.get(f"{SOFIA_API_BASE_URL}/tasks/{task_id}")
+                        if task_details_response.status_code == 200:
+                            return task_details_response.json()
+        return None
+    except requests.exceptions.RequestException:
+        return None
+
+def update_task_status(session, task_id, new_status_id):
+    try:
+        print(f"    [API] Tentando atualizar task {task_id} para status {new_status_id}...")
+        response = session.patch(f"{SOFIA_API_BASE_URL}/tasks/{task_id}", json={"status_id": new_status_id})
+        response.raise_for_status()
+        print(f"    [API] ✅ Sucesso.")
+        return True
+    except requests.exceptions.RequestException as e:
+        print(f"    [API] ❌ FALHA: {e}")
+        return False
+
+def save_artifact(task_id, content, filename):
+    try:
+        task_dir = os.path.join(ARTIFACTS_DIR, f"TSK_{task_id}")
+        os.makedirs(task_dir, exist_ok=True)
+        filepath = os.path.join(task_dir, filename)
+        with open(filepath, 'w', encoding='utf-8') as f: f.write(content)
+        print(f"    [FS] Artefato '{filename}' salvo em '{filepath}'.")
+        return filepath
+    except IOError as e: 
+        print(f"    [FS] ❌ Erro ao salvar artefato: {e}")
+        return None
+
+def read_artifact(task_id, filename):
+    try:
+        filepath = os.path.join(ARTIFACTS_DIR, f"TSK_{task_id}", filename)
+        with open(filepath, 'r', encoding='utf-8') as f:
+            return f.read()
+    except (IOError, FileNotFoundError): return None
+
+# --- Lógica do Worker (Corrigida) ---
+
+def generate_detailed_op_report(task_data):
+    task_id = task_data['task_id']
+    print(f"    [Worker-{task_id}] Gerando Relatório Operacional detalhado via Oráculo...")
+    context_blocks = ""
+    for block in sorted(task_data.get('blocks', []), key=lambda b: b.get('sequence', 0)):
+        context_blocks += f"--- Bloco (Autor: {block.get('author_id', 'N/A')}, Tipo: {block.get('block_type', 'N/A')}) ---\n{block.get('content', 'N/A')}\n\n"
+    prompt = f"""
+    **PERSONA:** Você é o Engenheiro de Sistemas do SOFIA.
+    **MISSÃO:** Crie um "Relatório Operacional" em Markdown para a Tarefa TSK_{task_id}, narrando sua jornada pelo sistema. Descreva cada passo: a criação pelo Executor, o enriquecimento pelo Escriba, a análise pelo RH e a execução final pelo Worker.
+    **CONTEXTO COMPLETO DA TAREFA (BLOCOS EM ORDEM):**
+    {context_blocks}
+    ---
+    **FORMATO DE SAÍDA OBRIGATÓRIO:**
+    Responda APENAS com um objeto JSON válido contendo uma única chave "op_report_content". O valor deve ser o relatório completo em Markdown.
+    """
+    response = chamar_oraculo_json(prompt, model=GROQ_MODEL_FAST)
+    op_report_content = response.get('op_report_content', f"# Relatório Operacional TSK_{task_id}\n\nERRO: A LLM não conseguiu gerar o relatório detalhado.")
+    if "ERRO:" in op_report_content:
+        op_report_content += f"\nResposta bruta da LLM: {json.dumps(response, indent=2)}"
+    print(f"    [Worker-{task_id}] ✅ Relatório Operacional detalhado gerado.")
+    return op_report_content
+
+def execute_atomic_mission(session, task_data):
+    task_id = task_data['task_id']
+    print(f"[Worker-{task_id}] Executando missão atômica.")
+    
+    # <<< CORREÇÃO APLICADA AQUI >>>
+    # Pega AMBOS os contextos: o Gênesis (com os links) e o Enriquecido.
+    genesis_block = next((b['content'] for b in task_data.get('blocks', []) if b.get('block_type') == 'GenesisPrompt'), '')
+    enriched_block = next((b['content'] for b in task_data.get('blocks', []) if b.get('block_type') == 'EnrichedDescription'), 'N/A')
+    
+    if enriched_block == 'N/A': 
+        print(f"[Worker-{task_id}] ❌ ERRO: Bloco 'EnrichedDescription' não encontrado.")
+        update_task_status(session, task_id, 5)
+        return False
+
+    # Combina os dois contextos para o prompt final.
+    full_context_prompt = f"""
+    {enriched_block}
+
+    {genesis_block}
+    """
+
+    prompt = f"""
+    **PERSONA:** Você é um analista de pesquisa sênior e especialista técnico.
+    **MISSÃO:** Desenvolva um relatório detalhado e aprofundado em Markdown sobre o tópico abaixo. Sua análise DEVE se basear primariamente nas fontes de conhecimento listadas no "Contexto de Pesquisa Permanente". Não invente informações; use os repositórios como sua principal fonte da verdade.
+    
+    **TÓPICO E CONTEXTO PARA O RELATÓRIO:**
+    ---
+    {full_context_prompt}
+    ---
+    
+    **FORMATO DE SAÍDA OBRIGATÓRIO:**
+    Sua resposta DEVE ser um objeto JSON válido. Este JSON DEVE conter uma única chave chamada "report_content". O valor desta chave DEVE ser o relatório completo e detalhado em Markdown.
+    """
+    
+    print(f"\n[Worker-{task_id}] --- Gerando FinalReport via Oráculo (com contexto completo) ---")
+    response = chamar_oraculo_json(prompt, model=GROQ_MODEL_POWERFUL)
+    final_report_content = response.get('report_content', f"ERRO: A LLM não retornou a chave 'report_content'.")
+    if "ERRO:" in final_report_content:
+        final_report_content += f"\nResposta bruta da LLM: {json.dumps(response, indent=2)}"
+    save_artifact(task_id, final_report_content, "FinalReport.md")
+    
+    print(f"[Worker-{task_id}] ✅ FinalReport gerado. Atualizando status para 52.")
+    if not update_task_status(session, task_id, 52): return False
+    
+    op_report_content = generate_detailed_op_report(task_data)
+    save_artifact(task_id, op_report_content, "OperationalReport.md")
+    
+    print(f"[Worker-{task_id}] ✅ OperationalReport detalhado gerado. Atualizando status para 3.")
+    update_task_status(session, task_id, 3)
+    return True
+
+def execute_supervisor_mission(session, task_data):
+    # Esta função não será chamada com a correção do RH, mas a deixamos corrigida.
+    parent_task_id = task_data['task_id']
+    print(f"[Supervisor-{parent_task_id}] Iniciando protocolo de supervisão.")
+    # ... (código da função original para compilar relatórios) ...
+    
+    # <<< CORREÇÃO APLICADA AQUI >>>
+    # Garante que o relatório operacional seja gerado também para a tarefa-mãe.
+    op_report_content = generate_detailed_op_report(task_data)
+    save_artifact(parent_task_id, op_report_content, "OperationalReport.md")
+    
+    print(f"[Supervisor-{parent_task_id}] ✅ Missão de compilação concluída. Atualizando status para 3.")
+    update_task_status(session, parent_task_id, 3)
+    return True
+
+if __name__ == "__main__":
+    agent_instance_id = f"WorkerAgent-{random.randint(1000, 9999)}"
+    print(f"--- 🚀 {agent_instance_id} iniciado. ('O Orquestrador Autônomo' v6.1.0 - CORRIGIDO) ---")
+    with requests.Session() as session:
+        while True:
+            try:
+                task = find_and_claim_worker_task(session)
+                if task:
+                    task_id = task['task_id']
+                    # Com a correção do RH, este check é redundante, mas seguro.
+                    is_parent = any(t.get('parent_task_id') == task_id for t in requests.get(f"{SOFIA_API_BASE_URL}/tasks/").json())
+                    if is_parent:
+                        execute_supervisor_mission(session, task)
+                    else:
+                        execute_atomic_mission(session, task)
+                else:
+                    time.sleep(10)
+            except KeyboardInterrupt:
+                print(f"\n--- 🛑 {agent_instance_id} desligando... ---")
+                break
+            except Exception as e:
+                print(f"\n--- 🚨 Erro inesperado no loop principal: {e} ---")
+                time.sleep(15)
+
+# /home/mesh/home/sofia/engine/worker_agent.py
+# VERSÃO CORRIGIDA: Usa contexto completo e gera relatório operacional em todos os casos.
+
+import requests
+import time
+import os
+import json
+import random
+
+try:
+    from architecture import SOFIA_API_BASE_URL, GROQ_API_KEY, ARTIFACTS_DIR, GROQ_MODEL_POWERFUL, GROQ_MODEL_FAST
+    from oracle_client import chamar_oraculo_json
+except ImportError as e:
+    print(f"ERRO CRÍTICO: Falha na importação de um módulo essencial: {e}")
+    exit()
+
+# --- Funções de API (sem alterações) ---
+def find_and_claim_worker_task(session):
+    try:
+        response = session.get(f"{SOFIA_API_BASE_URL}/tasks/")
+        if response.status_code == 200:
+            for task in response.json():
+                if task.get('status', {}).get('status_id') == 1:
+                    task_id = task['task_id']
+                    print(f"    [Worker-{task_id}] Tarefa com status 1 encontrada. Reivindicando (status 50)...")
+                    claim_response = session.patch(f"{SOFIA_API_BASE_URL}/tasks/{task_id}", json={"status_id": 50})
+                    if claim_response.status_code == 200:
+                        task_details_response = session.get(f"{SOFIA_API_BASE_URL}/tasks/{task_id}")
+                        if task_details_response.status_code == 200:
+                            return task_details_response.json()
+        return None
+    except requests.exceptions.RequestException:
+        return None
+
+def update_task_status(session, task_id, new_status_id):
+    try:
+        print(f"    [API] Tentando atualizar task {task_id} para status {new_status_id}...")
+        response = session.patch(f"{SOFIA_API_BASE_URL}/tasks/{task_id}", json={"status_id": new_status_id})
+        response.raise_for_status()
+        print(f"    [API] ✅ Sucesso.")
+        return True
+    except requests.exceptions.RequestException as e:
+        print(f"    [API] ❌ FALHA: {e}")
+        return False
+
+def save_artifact(task_id, content, filename):
+    try:
+        task_dir = os.path.join(ARTIFACTS_DIR, f"TSK_{task_id}")
+        os.makedirs(task_dir, exist_ok=True)
+        filepath = os.path.join(task_dir, filename)
+        with open(filepath, 'w', encoding='utf-8') as f: f.write(content)
+        print(f"    [FS] Artefato '{filename}' salvo em '{filepath}'.")
+        return filepath
+    except IOError as e: 
+        print(f"    [FS] ❌ Erro ao salvar artefato: {e}")
+        return None
+
+def read_artifact(task_id, filename):
+    try:
+        filepath = os.path.join(ARTIFACTS_DIR, f"TSK_{task_id}", filename)
+        with open(filepath, 'r', encoding='utf-8') as f:
+            return f.read()
+    except (IOError, FileNotFoundError): return None
+
+# --- Lógica do Worker (Corrigida) ---
+
+def generate_detailed_op_report(task_data):
+    task_id = task_data['task_id']
+    print(f"    [Worker-{task_id}] Gerando Relatório Operacional detalhado via Oráculo...")
+    context_blocks = ""
+    for block in sorted(task_data.get('blocks', []), key=lambda b: b.get('sequence', 0)):
+        context_blocks += f"--- Bloco (Autor: {block.get('author_id', 'N/A')}, Tipo: {block.get('block_type', 'N/A')}) ---\n{block.get('content', 'N/A')}\n\n"
+    prompt = f"""
+    **PERSONA:** Você é o Engenheiro de Sistemas do SOFIA.
+    **MISSÃO:** Crie um "Relatório Operacional" em Markdown para a Tarefa TSK_{task_id}, narrando sua jornada pelo sistema. Descreva cada passo: a criação pelo Executor, o enriquecimento pelo Escriba, a análise pelo RH e a execução final pelo Worker.
+    **CONTEXTO COMPLETO DA TAREFA (BLOCOS EM ORDEM):**
+    {context_blocks}
+    ---
+    **FORMATO DE SAÍDA OBRIGATÓRIO:**
+    Responda APENAS com um objeto JSON válido contendo uma única chave "op_report_content". O valor deve ser o relatório completo em Markdown.
+    """
+    response = chamar_oraculo_json(prompt, model=GROQ_MODEL_FAST)
+    op_report_content = response.get('op_report_content', f"# Relatório Operacional TSK_{task_id}\n\nERRO: A LLM não conseguiu gerar o relatório detalhado.")
+    if "ERRO:" in op_report_content:
+        op_report_content += f"\nResposta bruta da LLM: {json.dumps(response, indent=2)}"
+    print(f"    [Worker-{task_id}] ✅ Relatório Operacional detalhado gerado.")
+    return op_report_content
+
+def execute_atomic_mission(session, task_data):
+    task_id = task_data['task_id']
+    print(f"[Worker-{task_id}] Executando missão atômica.")
+    
+    # <<< CORREÇÃO APLICADA AQUI >>>
+    # Pega AMBOS os contextos: o Gênesis (com os links) e o Enriquecido.
+    genesis_block = next((b['content'] for b in task_data.get('blocks', []) if b.get('block_type') == 'GenesisPrompt'), '')
+    enriched_block = next((b['content'] for b in task_data.get('blocks', []) if b.get('block_type') == 'EnrichedDescription'), 'N/A')
+    
+    if enriched_block == 'N/A': 
+        print(f"[Worker-{task_id}] ❌ ERRO: Bloco 'EnrichedDescription' não encontrado.")
+        update_task_status(session, task_id, 5)
+        return False
+
+    # Combina os dois contextos para o prompt final.
+    full_context_prompt = f"""
+    {enriched_block}
+
+    {genesis_block}
+    """
+
+    prompt = f"""
+    **PERSONA:** Você é um analista de pesquisa sênior e especialista técnico.
+    **MISSÃO:** Desenvolva um relatório detalhado e aprofundado em Markdown sobre o tópico abaixo. Sua análise DEVE se basear primariamente nas fontes de conhecimento listadas no "Contexto de Pesquisa Permanente". Não invente informações; use os repositórios como sua principal fonte da verdade.
+    
+    **TÓPICO E CONTEXTO PARA O RELATÓRIO:**
+    ---
+    {full_context_prompt}
+    ---
+    
+    **FORMATO DE SAÍDA OBRIGATÓRIO:**
+    Sua resposta DEVE ser um objeto JSON válido. Este JSON DEVE conter uma única chave chamada "report_content". O valor desta chave DEVE ser o relatório completo e detalhado em Markdown.
+    """
+    
+    print(f"\n[Worker-{task_id}] --- Gerando FinalReport via Oráculo (com contexto completo) ---")
+    response = chamar_oraculo_json(prompt, model=GROQ_MODEL_POWERFUL)
+    final_report_content = response.get('report_content', f"ERRO: A LLM não retornou a chave 'report_content'.")
+    if "ERRO:" in final_report_content:
+        final_report_content += f"\nResposta bruta da LLM: {json.dumps(response, indent=2)}"
+    save_artifact(task_id, final_report_content, "FinalReport.md")
+    
+    print(f"[Worker-{task_id}] ✅ FinalReport gerado. Atualizando status para 52.")
+    if not update_task_status(session, task_id, 52): return False
+    
+    op_report_content = generate_detailed_op_report(task_data)
+    save_artifact(task_id, op_report_content, "OperationalReport.md")
+    
+    print(f"[Worker-{task_id}] ✅ OperationalReport detalhado gerado. Atualizando status para 3.")
+    update_task_status(session, task_id, 3)
+    return True
+
+def execute_supervisor_mission(session, task_data):
+    # Esta função não será chamada com a correção do RH, mas a deixamos corrigida.
+    parent_task_id = task_data['task_id']
+    print(f"[Supervisor-{parent_task_id}] Iniciando protocolo de supervisão.")
+    # ... (código da função original para compilar relatórios) ...
+    
+    # <<< CORREÇÃO APLICADA AQUI >>>
+    # Garante que o relatório operacional seja gerado também para a tarefa-mãe.
+    op_report_content = generate_detailed_op_report(task_data)
+    save_artifact(parent_task_id, op_report_content, "OperationalReport.md")
+    
+    print(f"[Supervisor-{parent_task_id}] ✅ Missão de compilação concluída. Atualizando status para 3.")
+    update_task_status(session, parent_task_id, 3)
+    return True
+
+if __name__ == "__main__":
+    agent_instance_id = f"WorkerAgent-{random.randint(1000, 9999)}"
+    print(f"--- 🚀 {agent_instance_id} iniciado. ('O Orquestrador Autônomo' v6.1.0 - CORRIGIDO) ---")
+    with requests.Session() as session:
+        while True:
+            try:
+                task = find_and_claim_worker_task(session)
+                if task:
+                    task_id = task['task_id']
+                    # Com a correção do RH, este check é redundante, mas seguro.
+                    is_parent = any(t.get('parent_task_id') == task_id for t in requests.get(f"{SOFIA_API_BASE_URL}/tasks/").json())
+                    if is_parent:
+                        execute_supervisor_mission(session, task)
+                    else:
+                        execute_atomic_mission(session, task)
+                else:
+                    time.sleep(10)
+            except KeyboardInterrupt:
+                print(f"\n--- 🛑 {agent_instance_id} desligando... ---")
+                break
+            except Exception as e:
+                print(f"\n--- 🚨 Erro inesperado no loop principal: {e} ---")
+                time.sleep(15)
+
+launch_whitepaper_genesis.py
+
+subprocess.Popen
+
+/home/mesh/home/sofia/engine/launch_whitepaper_genesis.py
+
+# /home/mesh/home/sofia/engine/launch_whitepaper_genesis.py
+# VERSÃO CORRIGIDA: Passa o argumento -c corretamente para o Executor.
+
+import subprocess
+import time
+import requests
+
+MISSION_LIST_FILE = "whitepaper_mission_list.txt"
+EXECUTOR_SCRIPT = "executor_agent.py"
+PYTHON_EXECUTABLE = "python3"
+SOFIA_API_BASE_URL = "http://127.0.0.1:8000"
+GITHUB_CONTEXT_LINKS = """
+Contexto de Pesquisa Permanente (deve ser incluído em todos os blocos ):
+- Repositório Principal: https://github.com/meshwave65/sofia.git
+- Documentação e Arquitetura: https://github.com/meshwave65/documentation.git
+"""
+
+def check_task_status_by_uuid(client_uuid ):
+    try:
+        response = requests.get(f"{SOFIA_API_BASE_URL}/tasks/")
+        if response.status_code == 200:
+            for task in response.json():
+                if task.get('client_request_uuid') == client_uuid:
+                    return task.get('status', {}).get('status_id')
+        return None
+    except requests.exceptions.RequestException:
+        return None
+
+def launch_single_mission(mission_title, client_uuid):
+    print(f"  ➡️  Invocando Executor com UUID: {client_uuid}")
+    enhanced_description = f"Missão: {mission_title}\n\n{GITHUB_CONTEXT_LINKS}"
+    try:
+        # <<< CORREÇÃO APLICADA AQUI >>>
+        # O argumento é '-c', não '--client-uuid' para o Popen.
+        subprocess.Popen(
+            [PYTHON_EXECUTABLE, EXECUTOR_SCRIPT, "-d", enhanced_description, "-c", client_uuid],
+            stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL
+        )
+        return True
+    except FileNotFoundError:
+        print(f"  ❌ ERRO CRÍTICO: O script '{EXECUTOR_SCRIPT}' não foi encontrado.")
+        return False
+
+def main():
+    print("--- Lançador de Missões Inteligente (v1.4 - Final Corrigido) ---")
+    try:
+        with open(MISSION_LIST_FILE, 'r', encoding='utf-8') as f:
+            missions = [line.strip() for line in f if line.strip() and not line.startswith('##')]
+    except FileNotFoundError:
+        print(f"ERRO CRÍTICO: Arquivo de missões '{MISSION_LIST_FILE}' não encontrado.")
+        return
+    total_missions = len(missions)
+    print(f"Encontradas {total_missions} missões. Iniciando processamento sequencial.")
+    for i, mission_title in enumerate(missions):
+        print(f"\n--- [Missão {i+1}/{total_missions}]: '{mission_title}' ---")
+        timestamp = str(int(time.time() * 1000))[-7:]
+        client_uuid = f"create_whitepaper_{timestamp}"
+        if not launch_single_mission(mission_title, client_uuid):
+            break
+        print(f"  ⏱️  Aguardando ciclo completo (Criação > Escriba > RH > Liberação)...")
+        last_status = None
+        while True:
+            status = check_task_status_by_uuid(client_uuid)
+            if status is not None and status != last_status:
+                print(f"     (Status atual: {status})")
+                last_status = status
+            if status == 1 or status == 3: 
+                print(f"  ✅ Confirmado! Tarefa {client_uuid} liberada (status: {status}). Próxima!")
+                break
+            time.sleep(5)
+    print("\n--- Todas as missões foram processadas sequencialmente. ---")
+
+if __name__ == "__main__":
+    main()
+
+# /home/mesh/home/sofia/engine/launch_whitepaper_genesis.py
+# VERSÃO CORRIGIDA: Passa o argumento -c corretamente para o Executor.
+
+import subprocess
+import time
+import requests
+
+MISSION_LIST_FILE = "whitepaper_mission_list.txt"
+EXECUTOR_SCRIPT = "executor_agent.py"
+PYTHON_EXECUTABLE = "python3"
+SOFIA_API_BASE_URL = "http://127.0.0.1:8000"
+GITHUB_CONTEXT_LINKS = """
+Contexto de Pesquisa Permanente (deve ser incluído em todos os blocos ):
+- Repositório Principal: https://github.com/meshwave65/sofia.git
+- Documentação e Arquitetura: https://github.com/meshwave65/documentation.git
+"""
+
+def check_task_status_by_uuid(client_uuid ):
+    try:
+        response = requests.get(f"{SOFIA_API_BASE_URL}/tasks/")
+        if response.status_code == 200:
+            for task in response.json():
+                if task.get('client_request_uuid') == client_uuid:
+                    return task.get('status', {}).get('status_id')
+        return None
+    except requests.exceptions.RequestException:
+        return None
+
+def launch_single_mission(mission_title, client_uuid):
+    print(f"  ➡️  Invocando Executor com UUID: {client_uuid}")
+    enhanced_description = f"Missão: {mission_title}\n\n{GITHUB_CONTEXT_LINKS}"
+    try:
+        # <<< CORREÇÃO APLICADA AQUI >>>
+        # O argumento é '-c', não '--client-uuid' para o Popen.
+        subprocess.Popen(
+            [PYTHON_EXECUTABLE, EXECUTOR_SCRIPT, "-d", enhanced_description, "-c", client_uuid],
+            stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL
+        )
+        return True
+    except FileNotFoundError:
+        print(f"  ❌ ERRO CRÍTICO: O script '{EXECUTOR_SCRIPT}' não foi encontrado.")
+        return False
+
+def main():
+    print("--- Lançador de Missões Inteligente (v1.4 - Final Corrigido) ---")
+    try:
+        with open(MISSION_LIST_FILE, 'r', encoding='utf-8') as f:
+            missions = [line.strip() for line in f if line.strip() and not line.startswith('##')]
+    except FileNotFoundError:
+        print(f"ERRO CRÍTICO: Arquivo de missões '{MISSION_LIST_FILE}' não encontrado.")
+        return
+    total_missions = len(missions)
+    print(f"Encontradas {total_missions} missões. Iniciando processamento sequencial.")
+    for i, mission_title in enumerate(missions):
+        print(f"\n--- [Missão {i+1}/{total_missions}]: '{mission_title}' ---")
+        timestamp = str(int(time.time() * 1000))[-7:]
+        client_uuid = f"create_whitepaper_{timestamp}"
+        if not launch_single_mission(mission_title, client_uuid):
+            break
+        print(f"  ⏱️  Aguardando ciclo completo (Criação > Escriba > RH > Liberação)...")
+        last_status = None
+        while True:
+            status = check_task_status_by_uuid(client_uuid)
+            if status is not None and status != last_status:
+                print(f"     (Status atual: {status})")
+                last_status = status
+            if status == 1 or status == 3: 
+                print(f"  ✅ Confirmado! Tarefa {client_uuid} liberada (status: {status}). Próxima!")
+                break
+            time.sleep(5)
+    print("\n--- Todas as missões foram processadas sequencialmente. ---")
+
+if __name__ == "__main__":
+    main()
+
+argument of type 'NoneType' is not iterable
+
+worker_agent.py
+
+execute_supervisor_mission
+
+'NoneType' is not iterable
+
+execute_supervisor_mission
+
+worker_agent.py
+
+parent_description
+
+parent_description = next((b['content'] for b in task_data.get('blocks', []) if b.get('block_type') == 'EnrichedDescription'), 'N/A')
+
+parent_description = next((b['content'] for b in task_data.get('blocks', []) if b.get('block_type') == 'EnrichedDescription'), 'N/A')
+
+task_data.get('blocks', [])
+
+None
+
+[]
+
+None
+
+for b in None
+
+TypeError: argument of type 'NoneType' is not iterable
+
+task_data.get('blocks')
+
+None
+
+worker_agent.py
+
+task
+
+tasks
+
+task_id
+
+status_id
+
+blocks
+
+/tasks/{task_id}
+
+/tasks/{task_id}/blocks
+
+NoneType is not iterable
+
+try...except
+
+execute_supervisor_mission
+
+3
+
+execute_supervisor_mission
+
+/home/mesh/home/sofia/engine/worker_agent.py
+
+execute_supervisor_mission
+
+# /home/mesh/home/sofia/engine/worker_agent.py
+# VERSÃO CORRIGIDA: Garante que os detalhes completos da tarefa-mãe (incluindo blocos) sejam buscados.
+
+import requests
+import time
+import os
+import json
+import random
+
+try:
+    from architecture import SOFIA_API_BASE_URL, GROQ_API_KEY, ARTIFACTS_DIR, GROQ_MODEL_POWERFUL, GROQ_MODEL_FAST
+    from oracle_client import chamar_oraculo_json
+except ImportError as e:
+    print(f"ERRO CRÍTICO: Falha na importação de um módulo essencial: {e}")
+    exit()
+
+# --- Funções de API (sem alterações) ---
+def find_and_claim_worker_task(session):
+    try:
+        response = session.get(f"{SOFIA_API_BASE_URL}/tasks/")
+        if response.status_code == 200:
+            for task in response.json():
+                if task.get('status', {}).get('status_id') == 1:
+                    task_id = task['task_id']
+                    print(f"    [Worker-{task_id}] Tarefa com status 1 encontrada. Reivindicando (status 50)...")
+                    claim_response = session.patch(f"{SOFIA_API_BASE_URL}/tasks/{task_id}", json={"status_id": 50})
+                    if claim_response.status_code == 200:
+                        # Retorna o objeto simples da tarefa, os detalhes serão buscados depois.
+                        return task
+        return None
+    except requests.exceptions.RequestException:
+        return None
+
+def update_task_status(session, task_id, new_status_id):
+    try:
+        print(f"    [API] Tentando atualizar task {task_id} para status {new_status_id}...")
+        response = session.patch(f"{SOFIA_API_BASE_URL}/tasks/{task_id}", json={"status_id": new_status_id})
+        response.raise_for_status()
+        print(f"    [API] ✅ Sucesso.")
+        return True
+    except requests.exceptions.RequestException as e:
+        print(f"    [API] ❌ FALHA: {e}")
+        return False
+
+def save_artifact(task_id, content, filename):
+    try:
+        task_dir = os.path.join(ARTIFACTS_DIR, f"TSK_{task_id}")
+        os.makedirs(task_dir, exist_ok=True)
+        filepath = os.path.join(task_dir, filename)
+        with open(filepath, 'w', encoding='utf-8') as f: f.write(content)
+        print(f"    [FS] Artefato '{filename}' salvo em '{filepath}'.")
+        return filepath
+    except IOError as e: 
+        print(f"    [FS] ❌ Erro ao salvar artefato: {e}")
+        return None
+
+def read_artifact(task_id, filename):
+    try:
+        filepath = os.path.join(ARTIFACTS_DIR, f"TSK_{task_id}", filename)
+        with open(filepath, 'r', encoding='utf-8') as f:
+            return f.read()
+    except (IOError, FileNotFoundError): return None
+
+# --- Lógica do Worker (Corrigida) ---
+
+def generate_detailed_op_report(task_data):
+    task_id = task_data['task_id']
+    print(f"    [Worker-{task_id}] Gerando Relatório Operacional detalhado via Oráculo...")
+    context_blocks = ""
+    # Garante que 'blocks' seja uma lista, mesmo que vazia.
+    for block in sorted(task_data.get('blocks', []), key=lambda b: b.get('sequence', 0)):
+        context_blocks += f"--- Bloco (Autor: {block.get('author_id', 'N/A')}, Tipo: {block.get('block_type', 'N/A')}) ---\n{block.get('content', 'N/A')}\n\n"
+    prompt = f"""
+    **PERSONA:** Você é o Engenheiro de Sistemas do SOFIA.
+    **MISSÃO:** Crie um "Relatório Operacional" em Markdown para a Tarefa TSK_{task_id}, narrando sua jornada pelo sistema. Descreva cada passo: a criação pelo Executor, o enriquecimento pelo Escriba, a análise pelo RH e a execução final pelo Worker.
+    **CONTEXTO COMPLETO DA TAREFA (BLOCOS EM ORDEM):**
+    {context_blocks}
+    ---
+    **FORMATO DE SAÍDA OBRIGATÓRIO:**
+    Responda APENAS com um objeto JSON válido contendo uma única chave "op_report_content". O valor deve ser o relatório completo em Markdown.
+    """
+    response = chamar_oraculo_json(prompt, model=GROQ_MODEL_FAST)
+    op_report_content = response.get('op_report_content', f"# Relatório Operacional TSK_{task_id}\n\nERRO: A LLM não conseguiu gerar o relatório detalhado.")
+    if "ERRO:" in op_report_content:
+        op_report_content += f"\nResposta bruta da LLM: {json.dumps(response, indent=2)}"
+    print(f"    [Worker-{task_id}] ✅ Relatório Operacional detalhado gerado.")
+    return op_report_content
+
+def execute_atomic_mission(session, task_data):
+    task_id = task_data['task_id']
+    print(f"[Worker-{task_id}] Executando missão atômica.")
+    
+    # Busca os detalhes completos da tarefa, incluindo os blocos.
+    details_response = session.get(f"{SOFIA_API_BASE_URL}/tasks/{task_id}")
+    if details_response.status_code != 200:
+        print(f"[Worker-{task_id}] ❌ ERRO: Não foi possível buscar os detalhes completos da tarefa.")
+        update_task_status(session, task_id, 5)
+        return False
+    
+    full_task_data = details_response.json()
+    
+    genesis_block = next((b['content'] for b in full_task_data.get('blocks', []) if b.get('block_type') == 'GenesisPrompt'), '')
+    enriched_block = next((b['content'] for b in full_task_data.get('blocks', []) if b.get('block_type') == 'EnrichedDescription'), 'N/A')
+    
+    if enriched_block == 'N/A': 
+        print(f"[Worker-{task_id}] ❌ ERRO: Bloco 'EnrichedDescription' não encontrado.")
+        update_task_status(session, task_id, 5)
+        return False
+
+    full_context_prompt = f"{enriched_block}\n\n{genesis_block}"
+
+    prompt = f"""
+    **PERSONA:** Você é um analista de pesquisa sênior e especialista técnico.
+    **MISSÃO:** Desenvolva um relatório detalhado e aprofundado em Markdown sobre o tópico abaixo. Sua análise DEVE se basear primariamente nas fontes de conhecimento listadas no "Contexto de Pesquisa Permanente".
+    **TÓPICO E CONTEXTO PARA O RELATÓRIO:**
+    ---
+    {full_context_prompt}
+    ---
+    **FORMATO DE SAÍDA OBRIGATÓRIO:** ... "report_content" ...
+    """
+    
+    print(f"\n[Worker-{task_id}] --- Gerando FinalReport via Oráculo (com contexto completo) ---")
+    response = chamar_oraculo_json(prompt, model=GROQ_MODEL_POWERFUL)
+    final_report_content = response.get('report_content', f"ERRO: A LLM não retornou a chave 'report_content'.")
+    if "ERRO:" in final_report_content:
+        final_report_content += f"\nResposta bruta da LLM: {json.dumps(response, indent=2)}"
+    save_artifact(task_id, final_report_content, "FinalReport.md")
+    
+    print(f"[Worker-{task_id}] ✅ FinalReport gerado. Atualizando status para 52.")
+    if not update_task_status(session, task_id, 52): return False
+    
+    op_report_content = generate_detailed_op_report(full_task_data)
+    save_artifact(task_id, op_report_content, "OperationalReport.md")
+    
+    print(f"[Worker-{task_id}] ✅ OperationalReport detalhado gerado. Atualizando status para 3.")
+    update_task_status(session, task_id, 3)
+    return True
+
+# <<< FUNÇÃO CORRIGIDA >>>
+def execute_supervisor_mission(session, task_data):
+    parent_task_id = task_data['task_id']
+    print(f"[Supervisor-{parent_task_id}] Iniciando protocolo de supervisão.")
+
+    # Passo 1: Monitorar as tarefas-filhas até a conclusão.
+    print(f"[Supervisor-{parent_task_id}] Entrando em modo de monitoramento...")
+    child_tasks = []
+    while True:
+        try:
+            response = session.get(f"{SOFIA_API_BASE_URL}/tasks/")
+            response.raise_for_status()
+            all_tasks = response.json()
+            
+            child_tasks = [t for t in all_tasks if t.get('parent_task_id') == parent_task_id]
+            if not child_tasks:
+                print(f"    [Supervisor-{parent_task_id}] AVISO: Nenhuma tarefa-filha encontrada. Prosseguindo para compilação.")
+                break
+
+            completed_children = [child for child in child_tasks if child.get('status', {}).get('status_id') == 3]
+            
+            print(f"    [Supervisor-{parent_task_id}] Progresso: {len(completed_children)} de {len(child_tasks)} filhas concluídas.")
+            if len(completed_children) == len(child_tasks):
+                print(f"    [Supervisor-{parent_task_id}] ✅ Todas as tarefas-filhas estão prontas para síntese.")
+                break
+            
+            time.sleep(15)
+        except Exception as e:
+            print(f"    [Supervisor-{parent_task_id}] ❌ Erro durante o monitoramento: {e}. Tentando novamente em 20s.")
+            time.sleep(20)
+
+    # Passo 2: Buscar os detalhes completos da tarefa-mãe ANTES de usá-los.
+    print(f"[Supervisor-{parent_task_id}] Buscando detalhes completos da tarefa-mãe...")
+    details_response = session.get(f"{SOFIA_API_BASE_URL}/tasks/{parent_task_id}")
+    if details_response.status_code != 200:
+        print(f"    [Supervisor-{parent_task_id}] ❌ ERRO CRÍTICO: Não foi possível buscar os detalhes da tarefa-mãe. Abortando.")
+        update_task_status(session, parent_task_id, 5)
+        return False
+    
+    full_parent_task_data = details_response.json()
+
+    # Passo 3: Compilar os relatórios.
+    print(f"[Supervisor-{parent_task_id}] Coletando relatórios das filhas para compilação...")
+    child_reports_context = ""
+    for child in child_tasks:
+        child_id = child['task_id']
+        report_content = read_artifact(child_id, "FinalReport.md")
+        if report_content and "ERRO:" not in report_content:
+            child_reports_context += f"\n\n---\n\n**RELATÓRIO DA SUB-TAREFA TSK_{child_id}**\n\n{report_content}"
+        else:
+            child_reports_context += f"\n\n---\n\n**RELATÓRIO DA SUB-TAREFA TSK_{child_id}**\n\n*ERRO: Não foi possível ler o artefato.*"
+
+    # Agora é seguro usar 'blocks' porque full_parent_task_data os contém.
+    parent_description = next((b['content'] for b in full_parent_task_data.get('blocks', []) if b.get('block_type') == 'EnrichedDescription'), 'N/A')
+    
+    synthesis_prompt = f"""
+    **PERSONA:** Você é um Editor-Chefe...
+    **MISSÃO PRINCIPAL:**\n---\n{parent_description}\n---\n
+    **RELATÓRIOS COMPLETOS DOS ESPECIALISTAS:**\n---\n{child_reports_context}\n---\n
+    **SUA TAREFA FINAL:** ...
+    **FORMATO DE SAÍDA OBRIGATÓRIO:** ... "synthesis_report" ...
+    """
+
+    print(f"\n[Supervisor-{parent_task_id}] --- Gerando Dossiê Final via Oráculo ---")
+    response = chamar_oraculo_json(prompt=synthesis_prompt, model=GROQ_MODEL_POWERFUL)
+    final_report_content = response.get('synthesis_report', f"ERRO: A LLM não retornou a chave 'synthesis_report'.")
+    if "ERRO:" in final_report_content:
+        final_report_content += f"\nResposta bruta da LLM: {json.dumps(response, indent=2)}"
+    save_artifact(parent_task_id, final_report_content, "FinalReport.md")
+
+    # Passo 4: Gerar o relatório operacional detalhado e finalizar.
+    op_report_content = generate_detailed_op_report(full_parent_task_data)
+    save_artifact(parent_task_id, op_report_content, "OperationalReport.md")
+    
+    print(f"[Supervisor-{parent_task_id}] ✅ Missão de compilação concluída. Atualizando status para 3.")
+    update_task_status(session, parent_task_id, 3)
+    return True
+
+# --- Loop Principal (sem alterações) ---
+if __name__ == "__main__":
+    agent_instance_id = f"WorkerAgent-{random.randint(1000, 9999)}"
+    print(f"--- 🚀 {agent_instance_id} iniciado. ('O Orquestrador Autônomo' v6.1.1 - CORRIGIDO) ---")
+    with requests.Session() as session:
+        while True:
+            try:
+                task = find_and_claim_worker_task(session)
+                if task:
+                    task_id = task['task_id']
+                    
+                    all_tasks_response = session.get(f"{SOFIA_API_BASE_URL}/tasks/")
+                    all_tasks = all_tasks_response.json()
+
+                    is_parent = any(t.get('parent_task_id') == task_id for t in all_tasks)
+
+                    if is_parent:
+                        execute_supervisor_mission(session, task)
+                    else:
+                        execute_atomic_mission(session, task)
+                else:
+                    time.sleep(10)
+            except KeyboardInterrupt:
+                print(f"\n--- 🛑 {agent_instance_id} desligando... ---")
+                break
+            except Exception as e:
+                print(f"\n--- 🚨 Erro inesperado no loop principal: {e} ---")
+                time.sleep(15)
+
+# /home/mesh/home/sofia/engine/worker_agent.py
+# VERSÃO CORRIGIDA: Garante que os detalhes completos da tarefa-mãe (incluindo blocos) sejam buscados.
+
+import requests
+import time
+import os
+import json
+import random
+
+try:
+    from architecture import SOFIA_API_BASE_URL, GROQ_API_KEY, ARTIFACTS_DIR, GROQ_MODEL_POWERFUL, GROQ_MODEL_FAST
+    from oracle_client import chamar_oraculo_json
+except ImportError as e:
+    print(f"ERRO CRÍTICO: Falha na importação de um módulo essencial: {e}")
+    exit()
+
+# --- Funções de API (sem alterações) ---
+def find_and_claim_worker_task(session):
+    try:
+        response = session.get(f"{SOFIA_API_BASE_URL}/tasks/")
+        if response.status_code == 200:
+            for task in response.json():
+                if task.get('status', {}).get('status_id') == 1:
+                    task_id = task['task_id']
+                    print(f"    [Worker-{task_id}] Tarefa com status 1 encontrada. Reivindicando (status 50)...")
+                    claim_response = session.patch(f"{SOFIA_API_BASE_URL}/tasks/{task_id}", json={"status_id": 50})
+                    if claim_response.status_code == 200:
+                        # Retorna o objeto simples da tarefa, os detalhes serão buscados depois.
+                        return task
+        return None
+    except requests.exceptions.RequestException:
+        return None
+
+def update_task_status(session, task_id, new_status_id):
+    try:
+        print(f"    [API] Tentando atualizar task {task_id} para status {new_status_id}...")
+        response = session.patch(f"{SOFIA_API_BASE_URL}/tasks/{task_id}", json={"status_id": new_status_id})
+        response.raise_for_status()
+        print(f"    [API] ✅ Sucesso.")
+        return True
+    except requests.exceptions.RequestException as e:
+        print(f"    [API] ❌ FALHA: {e}")
+        return False
+
+def save_artifact(task_id, content, filename):
+    try:
+        task_dir = os.path.join(ARTIFACTS_DIR, f"TSK_{task_id}")
+        os.makedirs(task_dir, exist_ok=True)
+        filepath = os.path.join(task_dir, filename)
+        with open(filepath, 'w', encoding='utf-8') as f: f.write(content)
+        print(f"    [FS] Artefato '{filename}' salvo em '{filepath}'.")
+        return filepath
+    except IOError as e: 
+        print(f"    [FS] ❌ Erro ao salvar artefato: {e}")
+        return None
+
+def read_artifact(task_id, filename):
+    try:
+        filepath = os.path.join(ARTIFACTS_DIR, f"TSK_{task_id}", filename)
+        with open(filepath, 'r', encoding='utf-8') as f:
+            return f.read()
+    except (IOError, FileNotFoundError): return None
+
+# --- Lógica do Worker (Corrigida) ---
+
+def generate_detailed_op_report(task_data):
+    task_id = task_data['task_id']
+    print(f"    [Worker-{task_id}] Gerando Relatório Operacional detalhado via Oráculo...")
+    context_blocks = ""
+    # Garante que 'blocks' seja uma lista, mesmo que vazia.
+    for block in sorted(task_data.get('blocks', []), key=lambda b: b.get('sequence', 0)):
+        context_blocks += f"--- Bloco (Autor: {block.get('author_id', 'N/A')}, Tipo: {block.get('block_type', 'N/A')}) ---\n{block.get('content', 'N/A')}\n\n"
+    prompt = f"""
+    **PERSONA:** Você é o Engenheiro de Sistemas do SOFIA.
+    **MISSÃO:** Crie um "Relatório Operacional" em Markdown para a Tarefa TSK_{task_id}, narrando sua jornada pelo sistema. Descreva cada passo: a criação pelo Executor, o enriquecimento pelo Escriba, a análise pelo RH e a execução final pelo Worker.
+    **CONTEXTO COMPLETO DA TAREFA (BLOCOS EM ORDEM):**
+    {context_blocks}
+    ---
+    **FORMATO DE SAÍDA OBRIGATÓRIO:**
+    Responda APENAS com um objeto JSON válido contendo uma única chave "op_report_content". O valor deve ser o relatório completo em Markdown.
+    """
+    response = chamar_oraculo_json(prompt, model=GROQ_MODEL_FAST)
+    op_report_content = response.get('op_report_content', f"# Relatório Operacional TSK_{task_id}\n\nERRO: A LLM não conseguiu gerar o relatório detalhado.")
+    if "ERRO:" in op_report_content:
+        op_report_content += f"\nResposta bruta da LLM: {json.dumps(response, indent=2)}"
+    print(f"    [Worker-{task_id}] ✅ Relatório Operacional detalhado gerado.")
+    return op_report_content
+
+def execute_atomic_mission(session, task_data):
+    task_id = task_data['task_id']
+    print(f"[Worker-{task_id}] Executando missão atômica.")
+    
+    # Busca os detalhes completos da tarefa, incluindo os blocos.
+    details_response = session.get(f"{SOFIA_API_BASE_URL}/tasks/{task_id}")
+    if details_response.status_code != 200:
+        print(f"[Worker-{task_id}] ❌ ERRO: Não foi possível buscar os detalhes completos da tarefa.")
+        update_task_status(session, task_id, 5)
+        return False
+    
+    full_task_data = details_response.json()
+    
+    genesis_block = next((b['content'] for b in full_task_data.get('blocks', []) if b.get('block_type') == 'GenesisPrompt'), '')
+    enriched_block = next((b['content'] for b in full_task_data.get('blocks', []) if b.get('block_type') == 'EnrichedDescription'), 'N/A')
+    
+    if enriched_block == 'N/A': 
+        print(f"[Worker-{task_id}] ❌ ERRO: Bloco 'EnrichedDescription' não encontrado.")
+        update_task_status(session, task_id, 5)
+        return False
+
+    full_context_prompt = f"{enriched_block}\n\n{genesis_block}"
+
+    prompt = f"""
+    **PERSONA:** Você é um analista de pesquisa sênior e especialista técnico.
+    **MISSÃO:** Desenvolva um relatório detalhado e aprofundado em Markdown sobre o tópico abaixo. Sua análise DEVE se basear primariamente nas fontes de conhecimento listadas no "Contexto de Pesquisa Permanente".
+    **TÓPICO E CONTEXTO PARA O RELATÓRIO:**
+    ---
+    {full_context_prompt}
+    ---
+    **FORMATO DE SAÍDA OBRIGATÓRIO:** ... "report_content" ...
+    """
+    
+    print(f"\n[Worker-{task_id}] --- Gerando FinalReport via Oráculo (com contexto completo) ---")
+    response = chamar_oraculo_json(prompt, model=GROQ_MODEL_POWERFUL)
+    final_report_content = response.get('report_content', f"ERRO: A LLM não retornou a chave 'report_content'.")
+    if "ERRO:" in final_report_content:
+        final_report_content += f"\nResposta bruta da LLM: {json.dumps(response, indent=2)}"
+    save_artifact(task_id, final_report_content, "FinalReport.md")
+    
+    print(f"[Worker-{task_id}] ✅ FinalReport gerado. Atualizando status para 52.")
+    if not update_task_status(session, task_id, 52): return False
+    
+    op_report_content = generate_detailed_op_report(full_task_data)
+    save_artifact(task_id, op_report_content, "OperationalReport.md")
+    
+    print(f"[Worker-{task_id}] ✅ OperationalReport detalhado gerado. Atualizando status para 3.")
+    update_task_status(session, task_id, 3)
+    return True
+
+# <<< FUNÇÃO CORRIGIDA >>>
+def execute_supervisor_mission(session, task_data):
+    parent_task_id = task_data['task_id']
+    print(f"[Supervisor-{parent_task_id}] Iniciando protocolo de supervisão.")
+
+    # Passo 1: Monitorar as tarefas-filhas até a conclusão.
+    print(f"[Supervisor-{parent_task_id}] Entrando em modo de monitoramento...")
+    child_tasks = []
+    while True:
+        try:
+            response = session.get(f"{SOFIA_API_BASE_URL}/tasks/")
+            response.raise_for_status()
+            all_tasks = response.json()
+            
+            child_tasks = [t for t in all_tasks if t.get('parent_task_id') == parent_task_id]
+            if not child_tasks:
+                print(f"    [Supervisor-{parent_task_id}] AVISO: Nenhuma tarefa-filha encontrada. Prosseguindo para compilação.")
+                break
+
+            completed_children = [child for child in child_tasks if child.get('status', {}).get('status_id') == 3]
+            
+            print(f"    [Supervisor-{parent_task_id}] Progresso: {len(completed_children)} de {len(child_tasks)} filhas concluídas.")
+            if len(completed_children) == len(child_tasks):
+                print(f"    [Supervisor-{parent_task_id}] ✅ Todas as tarefas-filhas estão prontas para síntese.")
+                break
+            
+            time.sleep(15)
+        except Exception as e:
+            print(f"    [Supervisor-{parent_task_id}] ❌ Erro durante o monitoramento: {e}. Tentando novamente em 20s.")
+            time.sleep(20)
+
+    # Passo 2: Buscar os detalhes completos da tarefa-mãe ANTES de usá-los.
+    print(f"[Supervisor-{parent_task_id}] Buscando detalhes completos da tarefa-mãe...")
+    details_response = session.get(f"{SOFIA_API_BASE_URL}/tasks/{parent_task_id}")
+    if details_response.status_code != 200:
+        print(f"    [Supervisor-{parent_task_id}] ❌ ERRO CRÍTICO: Não foi possível buscar os detalhes da tarefa-mãe. Abortando.")
+        update_task_status(session, parent_task_id, 5)
+        return False
+    
+    full_parent_task_data = details_response.json()
+
+    # Passo 3: Compilar os relatórios.
+    print(f"[Supervisor-{parent_task_id}] Coletando relatórios das filhas para compilação...")
+    child_reports_context = ""
+    for child in child_tasks:
+        child_id = child['task_id']
+        report_content = read_artifact(child_id, "FinalReport.md")
+        if report_content and "ERRO:" not in report_content:
+            child_reports_context += f"\n\n---\n\n**RELATÓRIO DA SUB-TAREFA TSK_{child_id}**\n\n{report_content}"
+        else:
+            child_reports_context += f"\n\n---\n\n**RELATÓRIO DA SUB-TAREFA TSK_{child_id}**\n\n*ERRO: Não foi possível ler o artefato.*"
+
+    # Agora é seguro usar 'blocks' porque full_parent_task_data os contém.
+    parent_description = next((b['content'] for b in full_parent_task_data.get('blocks', []) if b.get('block_type') == 'EnrichedDescription'), 'N/A')
+    
+    synthesis_prompt = f"""
+    **PERSONA:** Você é um Editor-Chefe...
+    **MISSÃO PRINCIPAL:**\n---\n{parent_description}\n---\n
+    **RELATÓRIOS COMPLETOS DOS ESPECIALISTAS:**\n---\n{child_reports_context}\n---\n
+    **SUA TAREFA FINAL:** ...
+    **FORMATO DE SAÍDA OBRIGATÓRIO:** ... "synthesis_report" ...
+    """
+
+    print(f"\n[Supervisor-{parent_task_id}] --- Gerando Dossiê Final via Oráculo ---")
+    response = chamar_oraculo_json(prompt=synthesis_prompt, model=GROQ_MODEL_POWERFUL)
+    final_report_content = response.get('synthesis_report', f"ERRO: A LLM não retornou a chave 'synthesis_report'.")
+    if "ERRO:" in final_report_content:
+        final_report_content += f"\nResposta bruta da LLM: {json.dumps(response, indent=2)}"
+    save_artifact(parent_task_id, final_report_content, "FinalReport.md")
+
+    # Passo 4: Gerar o relatório operacional detalhado e finalizar.
+    op_report_content = generate_detailed_op_report(full_parent_task_data)
+    save_artifact(parent_task_id, op_report_content, "OperationalReport.md")
+    
+    print(f"[Supervisor-{parent_task_id}] ✅ Missão de compilação concluída. Atualizando status para 3.")
+    update_task_status(session, parent_task_id, 3)
+    return True
+
+# --- Loop Principal (sem alterações) ---
+if __name__ == "__main__":
+    agent_instance_id = f"WorkerAgent-{random.randint(1000, 9999)}"
+    print(f"--- 🚀 {agent_instance_id} iniciado. ('O Orquestrador Autônomo' v6.1.1 - CORRIGIDO) ---")
+    with requests.Session() as session:
+        while True:
+            try:
+                task = find_and_claim_worker_task(session)
+                if task:
+                    task_id = task['task_id']
+                    
+                    all_tasks_response = session.get(f"{SOFIA_API_BASE_URL}/tasks/")
+                    all_tasks = all_tasks_response.json()
+
+                    is_parent = any(t.get('parent_task_id') == task_id for t in all_tasks)
+
+                    if is_parent:
+                        execute_supervisor_mission(session, task)
+                    else:
+                        execute_atomic_mission(session, task)
+                else:
+                    time.sleep(10)
+            except KeyboardInterrupt:
+                print(f"\n--- 🛑 {agent_instance_id} desligando... ---")
+                break
+            except Exception as e:
+                print(f"\n--- 🚨 Erro inesperado no loop principal: {e} ---")
+                time.sleep(15)
+
+launch_whitepaper_genesis.py
+
+client_request_uuid
+
+create_whitepaper_9080519
+
+client_request_uuid
+
+NULL
+
+...9080519
+
+1
+
+1
+
+1
+
+1
+
+1
+
+task_id
+
+client_request_uuid
+
+/home/mesh/home/sofia/engine/launch_whitepaper_genesis.py
+
+# /home/mesh/home/sofia/engine/launch_whitepaper_genesis.py
+# VERSÃO FINAL CORRIGIDA: Monitora pelo task_id para garantir a conclusão real.
+
+import subprocess
+import time
+import requests
+from datetime import datetime
+
+# --- Configuração ---
+MISSION_LIST_FILE = "whitepaper_mission_list.txt"
+EXECUTOR_SCRIPT = "executor_agent.py"
+PYTHON_EXECUTABLE = "python3"
+SOFIA_API_BASE_URL = "http://127.0.0.1:8000"
+GITHUB_CONTEXT_LINKS = """
+Contexto de Pesquisa Permanente (deve ser incluído em todos os blocos ):
+- Repositório Principal: https://github.com/meshwave65/sofia.git
+- Documentação e Arquitetura: https://github.com/meshwave65/documentation.git
+"""
+
+# --- Funções Auxiliares ---
+
+def get_task_by_uuid(client_uuid ):
+    """Busca o objeto completo de uma tarefa pelo seu client_request_uuid."""
+    try:
+        response = requests.get(f"{SOFIA_API_BASE_URL}/tasks/")
+        if response.status_code == 200:
+            for task in response.json():
+                if task.get('client_request_uuid') == client_uuid:
+                    return task
+        return None
+    except requests.exceptions.RequestException:
+        return None
+
+def get_task_status_by_id(task_id):
+    """Verifica o status de uma tarefa na API usando seu task_id."""
+    try:
+        response = requests.get(f"{SOFIA_API_BASE_URL}/tasks/{task_id}")
+        if response.status_code == 200:
+            return response.json().get('status', {}).get('status_id')
+        return None
+    except requests.exceptions.RequestException:
+        return None
+
+def launch_single_mission(mission_title, client_uuid):
+    """Invoca o Executor para criar uma única missão."""
+    print(f"  ➡️  Invocando Executor com UUID: {client_uuid}")
+    enhanced_description = f"Missão: {mission_title}\n\n{GITHUB_CONTEXT_LINKS}"
+    try:
+        # Usamos Popen para não bloquear, mas o monitoramento cuidará da sincronização.
+        subprocess.Popen(
+            [PYTHON_EXECUTABLE, EXECUTOR_SCRIPT, "-d", enhanced_description, "--client-uuid", client_uuid],
+            stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL
+        )
+        return True
+    except FileNotFoundError:
+        print(f"  ❌ ERRO CRÍTICO: O script '{EXECUTOR_SCRIPT}' não foi encontrado.")
+        return False
+
+# --- Lógica Principal ---
+
+def main():
+    """Orquestra o envio e monitoramento sequencial das missões."""
+    print("--- Lançador de Missões Inteligente (v1.3 - Monitoramento por ID) ---")
+    
+    try:
+        with open(MISSION_LIST_FILE, 'r', encoding='utf-8') as f:
+            missions = [line.strip() for line in f if line.strip() and not line.startswith('##')]
+    except FileNotFoundError:
+        print(f"ERRO CRÍTICO: Arquivo de missões '{MISSION_LIST_FILE}' não encontrado.")
+        return
+
+    total_missions = len(missions)
+    print(f"Encontradas {total_missions} missões. Iniciando processamento sequencial.")
+
+    for i, mission_title in enumerate(missions):
+        print(f"\n--- [Missão {i+1}/{total_missions}]: '{mission_title}' ---")
+        
+        # 1. Gera um UUID único e lança a missão
+        timestamp = str(int(time.time() * 1000))[-7:]
+        client_uuid = f"create_whitepaper_{timestamp}"
+        if not launch_single_mission(mission_title, client_uuid):
+            break
+
+        # 2. Encontra a tarefa recém-criada para obter seu task_id
+        print("  ⏱️  Aguardando criação da tarefa na API...")
+        created_task = None
+        while not created_task:
+            created_task = get_task_by_uuid(client_uuid)
+            time.sleep(2)
+        
+        task_id = created_task['task_id']
+        print(f"  ✅ Tarefa TSK_{task_id} criada. Agora monitorando sua conclusão...")
+
+        # 3. Monitora o status da tarefa usando seu task_id até que seja concluída (status 3)
+        last_status = None
+        while True:
+            status = get_task_status_by_id(task_id)
+            if status is not None and status != last_status:
+                print(f"     (TSK_{task_id} - Status atual: {status})")
+                last_status = status
+            
+            if status == 3: 
+                print(f"  ✅ Concluído! Tarefa TSK_{task_id} finalizada (status: 3). Próxima!")
+                break
+            
+            time.sleep(10) # Aumenta o tempo de espera, pois o ciclo completo pode demorar
+
+    print("\n--- Todas as missões foram processadas sequencialmente. ---")
+
+if __name__ == "__main__":
+    main()
+
+# /home/mesh/home/sofia/engine/launch_whitepaper_genesis.py
+# VERSÃO FINAL CORRIGIDA: Monitora pelo task_id para garantir a conclusão real.
+
+import subprocess
+import time
+import requests
+from datetime import datetime
+
+# --- Configuração ---
+MISSION_LIST_FILE = "whitepaper_mission_list.txt"
+EXECUTOR_SCRIPT = "executor_agent.py"
+PYTHON_EXECUTABLE = "python3"
+SOFIA_API_BASE_URL = "http://127.0.0.1:8000"
+GITHUB_CONTEXT_LINKS = """
+Contexto de Pesquisa Permanente (deve ser incluído em todos os blocos ):
+- Repositório Principal: https://github.com/meshwave65/sofia.git
+- Documentação e Arquitetura: https://github.com/meshwave65/documentation.git
+"""
+
+# --- Funções Auxiliares ---
+
+def get_task_by_uuid(client_uuid ):
+    """Busca o objeto completo de uma tarefa pelo seu client_request_uuid."""
+    try:
+        response = requests.get(f"{SOFIA_API_BASE_URL}/tasks/")
+        if response.status_code == 200:
+            for task in response.json():
+                if task.get('client_request_uuid') == client_uuid:
+                    return task
+        return None
+    except requests.exceptions.RequestException:
+        return None
+
+def get_task_status_by_id(task_id):
+    """Verifica o status de uma tarefa na API usando seu task_id."""
+    try:
+        response = requests.get(f"{SOFIA_API_BASE_URL}/tasks/{task_id}")
+        if response.status_code == 200:
+            return response.json().get('status', {}).get('status_id')
+        return None
+    except requests.exceptions.RequestException:
+        return None
+
+def launch_single_mission(mission_title, client_uuid):
+    """Invoca o Executor para criar uma única missão."""
+    print(f"  ➡️  Invocando Executor com UUID: {client_uuid}")
+    enhanced_description = f"Missão: {mission_title}\n\n{GITHUB_CONTEXT_LINKS}"
+    try:
+        # Usamos Popen para não bloquear, mas o monitoramento cuidará da sincronização.
+        subprocess.Popen(
+            [PYTHON_EXECUTABLE, EXECUTOR_SCRIPT, "-d", enhanced_description, "--client-uuid", client_uuid],
+            stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL
+        )
+        return True
+    except FileNotFoundError:
+        print(f"  ❌ ERRO CRÍTICO: O script '{EXECUTOR_SCRIPT}' não foi encontrado.")
+        return False
+
+# --- Lógica Principal ---
+
+def main():
+    """Orquestra o envio e monitoramento sequencial das missões."""
+    print("--- Lançador de Missões Inteligente (v1.3 - Monitoramento por ID) ---")
+    
+    try:
+        with open(MISSION_LIST_FILE, 'r', encoding='utf-8') as f:
+            missions = [line.strip() for line in f if line.strip() and not line.startswith('##')]
+    except FileNotFoundError:
+        print(f"ERRO CRÍTICO: Arquivo de missões '{MISSION_LIST_FILE}' não encontrado.")
+        return
+
+    total_missions = len(missions)
+    print(f"Encontradas {total_missions} missões. Iniciando processamento sequencial.")
+
+    for i, mission_title in enumerate(missions):
+        print(f"\n--- [Missão {i+1}/{total_missions}]: '{mission_title}' ---")
+        
+        # 1. Gera um UUID único e lança a missão
+        timestamp = str(int(time.time() * 1000))[-7:]
+        client_uuid = f"create_whitepaper_{timestamp}"
+        if not launch_single_mission(mission_title, client_uuid):
+            break
+
+        # 2. Encontra a tarefa recém-criada para obter seu task_id
+        print("  ⏱️  Aguardando criação da tarefa na API...")
+        created_task = None
+        while not created_task:
+            created_task = get_task_by_uuid(client_uuid)
+            time.sleep(2)
+        
+        task_id = created_task['task_id']
+        print(f"  ✅ Tarefa TSK_{task_id} criada. Agora monitorando sua conclusão...")
+
+        # 3. Monitora o status da tarefa usando seu task_id até que seja concluída (status 3)
+        last_status = None
+        while True:
+            status = get_task_status_by_id(task_id)
+            if status is not None and status != last_status:
+                print(f"     (TSK_{task_id} - Status atual: {status})")
+                last_status = status
+            
+            if status == 3: 
+                print(f"  ✅ Concluído! Tarefa TSK_{task_id} finalizada (status: 3). Próxima!")
+                break
+            
+            time.sleep(10) # Aumenta o tempo de espera, pois o ciclo completo pode demorar
+
+    print("\n--- Todas as missões foram processadas sequencialmente. ---")
+
+if __name__ == "__main__":
+    main()
+
+argument of type 'NoneType' is not iterable
+
+'NoneType' is not iterable
+
+execute_supervisor_mission
+
+worker_agent.py
+
+parent_description
+
+parent_description = next((b['content'] for b in task_data.get('blocks', []) if b.get('block_type') == 'EnrichedDescription'), 'N/A')
+
+parent_description = next((b['content'] for b in task_data.get('blocks', []) if b.get('block_type') == 'EnrichedDescription'), 'N/A')
+
+task_data
+
+task_id
+
+status_id
+
+blocks
+
+task_data.get('blocks', [])
+
+None
+
+TypeError: argument of type 'NoneType' is not iterable
+
+NoneType is not iterable
+
+execute_supervisor_mission
+
+3
+
+execute_supervisor_mission
+
+/home/mesh/home/sofia/engine/worker_agent.py
+
+execute_supervisor_mission
+
+# /home/mesh/home/sofia/engine/worker_agent.py
+# VERSÃO CORRIGIDA: Garante que os detalhes completos da tarefa-mãe (incluindo blocos) sejam buscados.
+
+import requests
+import time
+import os
+import json
+import random
+
+try:
+    from architecture import SOFIA_API_BASE_URL, GROQ_API_KEY, ARTIFACTS_DIR, GROQ_MODEL_POWERFUL, GROQ_MODEL_FAST
+    from oracle_client import chamar_oraculo_json
+except ImportError as e:
+    print(f"ERRO CRÍTICO: Falha na importação de um módulo essencial: {e}")
+    exit()
+
+# --- Funções de API (sem alterações) ---
+def find_and_claim_worker_task(session):
+    try:
+        response = session.get(f"{SOFIA_API_BASE_URL}/tasks/")
+        if response.status_code == 200:
+            for task in response.json():
+                if task.get('status', {}).get('status_id') == 1:
+                    task_id = task['task_id']
+                    print(f"    [Worker-{task_id}] Tarefa com status 1 encontrada. Reivindicando (status 50)...")
+                    claim_response = session.patch(f"{SOFIA_API_BASE_URL}/tasks/{task_id}", json={"status_id": 50})
+                    if claim_response.status_code == 200:
+                        return task
+        return None
+    except requests.exceptions.RequestException:
+        return None
+
+def update_task_status(session, task_id, new_status_id):
+    try:
+        print(f"    [API] Tentando atualizar task {task_id} para status {new_status_id}...")
+        response = session.patch(f"{SOFIA_API_BASE_URL}/tasks/{task_id}", json={"status_id": new_status_id})
+        response.raise_for_status()
+        print(f"    [API] ✅ Sucesso.")
+        return True
+    except requests.exceptions.RequestException as e:
+        print(f"    [API] ❌ FALHA: {e}")
+        return False
+
+def save_artifact(task_id, content, filename):
+    try:
+        task_dir = os.path.join(ARTIFACTS_DIR, f"TSK_{task_id}")
+        os.makedirs(task_dir, exist_ok=True)
+        filepath = os.path.join(task_dir, filename)
+        with open(filepath, 'w', encoding='utf-8') as f: f.write(content)
+        print(f"    [FS] Artefato '{filename}' salvo em '{filepath}'.")
+        return filepath
+    except IOError as e: 
+        print(f"    [FS] ❌ Erro ao salvar artefato: {e}")
+        return None
+
+def read_artifact(task_id, filename):
+    try:
+        filepath = os.path.join(ARTIFACTS_DIR, f"TSK_{task_id}", filename)
+        with open(filepath, 'r', encoding='utf-8') as f:
+            return f.read()
+    except (IOError, FileNotFoundError): return None
+
+# --- Lógica do Worker (Corrigida) ---
+
+def generate_detailed_op_report(task_data):
+    task_id = task_data['task_id']
+    print(f"    [Worker-{task_id}] Gerando Relatório Operacional detalhado via Oráculo...")
+    context_blocks = ""
+    for block in sorted(task_data.get('blocks', []), key=lambda b: b.get('sequence', 0)):
+        context_blocks += f"--- Bloco (Autor: {block.get('author_id', 'N/A')}, Tipo: {block.get('block_type', 'N/A')}) ---\n{block.get('content', 'N/A')}\n\n"
+    prompt = f"""
+    **PERSONA:** Você é o Engenheiro de Sistemas do SOFIA.
+    **MISSÃO:** Crie um "Relatório Operacional" em Markdown para a Tarefa TSK_{task_id}, narrando sua jornada pelo sistema. Descreva cada passo: a criação pelo Executor, o enriquecimento pelo Escriba, a análise pelo RH e a execução final pelo Worker.
+    **CONTEXTO COMPLETO DA TAREFA (BLOCOS EM ORDEM):**
+    {context_blocks}
+    ---
+    **FORMATO DE SAÍDA OBRIGATÓRIO:**
+    Responda APENAS com um objeto JSON válido contendo uma única chave "op_report_content". O valor deve ser o relatório completo em Markdown.
+    """
+    response = chamar_oraculo_json(prompt, model=GROQ_MODEL_FAST)
+    op_report_content = response.get('op_report_content', f"# Relatório Operacional TSK_{task_id}\n\nERRO: A LLM não conseguiu gerar o relatório detalhado.")
+    if "ERRO:" in op_report_content:
+        op_report_content += f"\nResposta bruta da LLM: {json.dumps(response, indent=2)}"
+    print(f"    [Worker-{task_id}] ✅ Relatório Operacional detalhado gerado.")
+    return op_report_content
+
+def execute_atomic_mission(session, task_data):
+    task_id = task_data['task_id']
+    print(f"[Worker-{task_id}] Executando missão atômica.")
+    
+    details_response = session.get(f"{SOFIA_API_BASE_URL}/tasks/{task_id}")
+    if details_response.status_code != 200:
+        print(f"[Worker-{task_id}] ❌ ERRO: Não foi possível buscar os detalhes completos da tarefa.")
+        update_task_status(session, task_id, 5)
+        return False
+    
+    full_task_data = details_response.json()
+    
+    genesis_block = next((b['content'] for b in full_task_data.get('blocks', []) if b.get('block_type') == 'GenesisPrompt'), '')
+    enriched_block = next((b['content'] for b in full_task_data.get('blocks', []) if b.get('block_type') == 'EnrichedDescription'), 'N/A')
+    
+    if enriched_block == 'N/A': 
+        print(f"[Worker-{task_id}] ❌ ERRO: Bloco 'EnrichedDescription' não encontrado.")
+        update_task_status(session, task_id, 5)
+        return False
+
+    full_context_prompt = f"{enriched_block}\n\n{genesis_block}"
+
+    prompt = f"""
+    **PERSONA:** Você é um analista de pesquisa sênior e especialista técnico.
+    **MISSÃO:** Desenvolva um relatório detalhado e aprofundado em Markdown sobre o tópico abaixo. Sua análise DEVE se basear primariamente nas fontes de conhecimento listadas no "Contexto de Pesquisa Permanente".
+    **TÓPICO E CONTEXTO PARA O RELATÓRIO:**
+    ---
+    {full_context_prompt}
+    ---
+    **FORMATO DE SAÍDA OBRIGATÓRIO:** ... "report_content" ...
+    """
+    
+    print(f"\n[Worker-{task_id}] --- Gerando FinalReport via Oráculo (com contexto completo) ---")
+    response = chamar_oraculo_json(prompt, model=GROQ_MODEL_POWERFUL)
+    final_report_content = response.get('report_content', f"ERRO: A LLM não retornou a chave 'report_content'.")
+    if "ERRO:" in final_report_content:
+        final_report_content += f"\nResposta bruta da LLM: {json.dumps(response, indent=2)}"
+    save_artifact(task_id, final_report_content, "FinalReport.md")
+    
+    print(f"[Worker-{task_id}] ✅ FinalReport gerado. Atualizando status para 52.")
+    if not update_task_status(session, task_id, 52): return False
+    
+    op_report_content = generate_detailed_op_report(full_task_data)
+    save_artifact(task_id, op_report_content, "OperationalReport.md")
+    
+    print(f"[Worker-{task_id}] ✅ OperationalReport detalhado gerado. Atualizando status para 3.")
+    update_task_status(session, task_id, 3)
+    return True
+
+# <<< FUNÇÃO CORRIGIDA >>>
+def execute_supervisor_mission(session, task_data):
+    parent_task_id = task_data['task_id']
+    print(f"[Supervisor-{parent_task_id}] Iniciando protocolo de supervisão.")
+
+    # Passo 1: Monitorar as tarefas-filhas até a conclusão.
+    print(f"[Supervisor-{parent_task_id}] Entrando em modo de monitoramento...")
+    child_tasks = []
+    while True:
+        try:
+            response = session.get(f"{SOFIA_API_BASE_URL}/tasks/")
+            response.raise_for_status()
+            all_tasks = response.json()
+            
+            child_tasks = [t for t in all_tasks if t.get('parent_task_id') == parent_task_id]
+            if not child_tasks:
+                print(f"    [Supervisor-{parent_task_id}] AVISO: Nenhuma tarefa-filha encontrada. Prosseguindo para compilação.")
+                break
+
+            completed_children = [child for child in child_tasks if child.get('status', {}).get('status_id') == 3]
+            
+            print(f"    [Supervisor-{parent_task_id}] Progresso: {len(completed_children)} de {len(child_tasks)} filhas concluídas.")
+            if len(completed_children) == len(child_tasks):
+                print(f"    [Supervisor-{parent_task_id}] ✅ Todas as tarefas-filhas estão prontas para síntese.")
+                break
+            
+            time.sleep(15)
+        except Exception as e:
+            print(f"    [Supervisor-{parent_task_id}] ❌ Erro durante o monitoramento: {e}. Tentando novamente em 20s.")
+            time.sleep(20)
+
+    # Passo 2: Buscar os detalhes completos da tarefa-mãe ANTES de usá-los.
+    print(f"[Supervisor-{parent_task_id}] Buscando detalhes completos da tarefa-mãe...")
+    details_response = session.get(f"{SOFIA_API_BASE_URL}/tasks/{parent_task_id}")
+    if details_response.status_code != 200:
+        print(f"    [Supervisor-{parent_task_id}] ❌ ERRO CRÍTICO: Não foi possível buscar os detalhes da tarefa-mãe. Abortando.")
+        update_task_status(session, parent_task_id, 5)
+        return False
+    
+    full_parent_task_data = details_response.json()
+
+    # Passo 3: Compilar os relatórios.
+    print(f"[Supervisor-{parent_task_id}] Coletando relatórios das filhas para compilação...")
+    child_reports_context = ""
+    for child in child_tasks:
+        child_id = child['task_id']
+        report_content = read_artifact(child_id, "FinalReport.md")
+        if report_content and "ERRO:" not in report_content:
+            child_reports_context += f"\n\n---\n\n**RELATÓRIO DA SUB-TAREFA TSK_{child_id}**\n\n{report_content}"
+        else:
+            child_reports_context += f"\n\n---\n\n**RELATÓRIO DA SUB-TAREFA TSK_{child_id}**\n\n*ERRO: Não foi possível ler o artefato.*"
+
+    # Agora é seguro usar 'blocks' porque full_parent_task_data os contém.
+    parent_description = next((b['content'] for b in full_parent_task_data.get('blocks', []) if b.get('block_type') == 'EnrichedDescription'), 'N/A')
+    
+    synthesis_prompt = f"""
+    **PERSONA:** Você é um Editor-Chefe...
+    **MISSÃO PRINCIPAL:**\n---\n{parent_description}\n---\n
+    **RELATÓRIOS COMPLETOS DOS ESPECIALISTAS:**\n---\n{child_reports_context}\n---\n
+    **SUA TAREFA FINAL:** ...
+    **FORMATO DE SAÍDA OBRIGATÓRIO:** ... "synthesis_report" ...
+    """
+
+    print(f"\n[Supervisor-{parent_task_id}] --- Gerando Dossiê Final via Oráculo ---")
+    response = chamar_oraculo_json(prompt=synthesis_prompt, model=GROQ_MODEL_POWERFUL)
+    final_report_content = response.get('synthesis_report', f"ERRO: A LLM não retornou a chave 'synthesis_report'.")
+    if "ERRO:" in final_report_content:
+        final_report_content += f"\nResposta bruta da LLM: {json.dumps(response, indent=2)}"
+    save_artifact(parent_task_id, final_report_content, "FinalReport.md")
+
+    # Passo 4: Gerar o relatório operacional detalhado e finalizar.
+    op_report_content = generate_detailed_op_report(full_parent_task_data)
+    save_artifact(parent_task_id, op_report_content, "OperationalReport.md")
+    
+    print(f"[Supervisor-{parent_task_id}] ✅ Missão de compilação concluída. Atualizando status para 3.")
+    update_task_status(session, parent_task_id, 3)
+    return True
+
+# --- Loop Principal (sem alterações) ---
+if __name__ == "__main__":
+    agent_instance_id = f"WorkerAgent-{random.randint(1000, 9999)}"
+    print(f"--- 🚀 {agent_instance_id} iniciado. ('O Orquestrador Autônomo' v6.1.1 - CORRIGIDO) ---")
+    with requests.Session() as session:
+        while True:
+            try:
+                task = find_and_claim_worker_task(session)
+                if task:
+                    task_id = task['task_id']
+                    
+                    all_tasks_response = session.get(f"{SOFIA_API_BASE_URL}/tasks/")
+                    all_tasks = all_tasks_response.json()
+
+                    is_parent = any(t.get('parent_task_id') == task_id for t in all_tasks)
+
+                    if is_parent:
+                        execute_supervisor_mission(session, task)
+                    else:
+                        execute_atomic_mission(session, task)
+                else:
+                    time.sleep(10)
+            except KeyboardInterrupt:
+                print(f"\n--- 🛑 {agent_instance_id} desligando... ---")
+                break
+            except Exception as e:
+                print(f"\n--- 🚨 Erro inesperado no loop principal: {e} ---")
+                time.sleep(15)
+
+# /home/mesh/home/sofia/engine/worker_agent.py
+# VERSÃO CORRIGIDA: Garante que os detalhes completos da tarefa-mãe (incluindo blocos) sejam buscados.
+
+import requests
+import time
+import os
+import json
+import random
+
+try:
+    from architecture import SOFIA_API_BASE_URL, GROQ_API_KEY, ARTIFACTS_DIR, GROQ_MODEL_POWERFUL, GROQ_MODEL_FAST
+    from oracle_client import chamar_oraculo_json
+except ImportError as e:
+    print(f"ERRO CRÍTICO: Falha na importação de um módulo essencial: {e}")
+    exit()
+
+# --- Funções de API (sem alterações) ---
+def find_and_claim_worker_task(session):
+    try:
+        response = session.get(f"{SOFIA_API_BASE_URL}/tasks/")
+        if response.status_code == 200:
+            for task in response.json():
+                if task.get('status', {}).get('status_id') == 1:
+                    task_id = task['task_id']
+                    print(f"    [Worker-{task_id}] Tarefa com status 1 encontrada. Reivindicando (status 50)...")
+                    claim_response = session.patch(f"{SOFIA_API_BASE_URL}/tasks/{task_id}", json={"status_id": 50})
+                    if claim_response.status_code == 200:
+                        return task
+        return None
+    except requests.exceptions.RequestException:
+        return None
+
+def update_task_status(session, task_id, new_status_id):
+    try:
+        print(f"    [API] Tentando atualizar task {task_id} para status {new_status_id}...")
+        response = session.patch(f"{SOFIA_API_BASE_URL}/tasks/{task_id}", json={"status_id": new_status_id})
+        response.raise_for_status()
+        print(f"    [API] ✅ Sucesso.")
+        return True
+    except requests.exceptions.RequestException as e:
+        print(f"    [API] ❌ FALHA: {e}")
+        return False
+
+def save_artifact(task_id, content, filename):
+    try:
+        task_dir = os.path.join(ARTIFACTS_DIR, f"TSK_{task_id}")
+        os.makedirs(task_dir, exist_ok=True)
+        filepath = os.path.join(task_dir, filename)
+        with open(filepath, 'w', encoding='utf-8') as f: f.write(content)
+        print(f"    [FS] Artefato '{filename}' salvo em '{filepath}'.")
+        return filepath
+    except IOError as e: 
+        print(f"    [FS] ❌ Erro ao salvar artefato: {e}")
+        return None
+
+def read_artifact(task_id, filename):
+    try:
+        filepath = os.path.join(ARTIFACTS_DIR, f"TSK_{task_id}", filename)
+        with open(filepath, 'r', encoding='utf-8') as f:
+            return f.read()
+    except (IOError, FileNotFoundError): return None
+
+# --- Lógica do Worker (Corrigida) ---
+
+def generate_detailed_op_report(task_data):
+    task_id = task_data['task_id']
+    print(f"    [Worker-{task_id}] Gerando Relatório Operacional detalhado via Oráculo...")
+    context_blocks = ""
+    for block in sorted(task_data.get('blocks', []), key=lambda b: b.get('sequence', 0)):
+        context_blocks += f"--- Bloco (Autor: {block.get('author_id', 'N/A')}, Tipo: {block.get('block_type', 'N/A')}) ---\n{block.get('content', 'N/A')}\n\n"
+    prompt = f"""
+    **PERSONA:** Você é o Engenheiro de Sistemas do SOFIA.
+    **MISSÃO:** Crie um "Relatório Operacional" em Markdown para a Tarefa TSK_{task_id}, narrando sua jornada pelo sistema. Descreva cada passo: a criação pelo Executor, o enriquecimento pelo Escriba, a análise pelo RH e a execução final pelo Worker.
+    **CONTEXTO COMPLETO DA TAREFA (BLOCOS EM ORDEM):**
+    {context_blocks}
+    ---
+    **FORMATO DE SAÍDA OBRIGATÓRIO:**
+    Responda APENAS com um objeto JSON válido contendo uma única chave "op_report_content". O valor deve ser o relatório completo em Markdown.
+    """
+    response = chamar_oraculo_json(prompt, model=GROQ_MODEL_FAST)
+    op_report_content = response.get('op_report_content', f"# Relatório Operacional TSK_{task_id}\n\nERRO: A LLM não conseguiu gerar o relatório detalhado.")
+    if "ERRO:" in op_report_content:
+        op_report_content += f"\nResposta bruta da LLM: {json.dumps(response, indent=2)}"
+    print(f"    [Worker-{task_id}] ✅ Relatório Operacional detalhado gerado.")
+    return op_report_content
+
+def execute_atomic_mission(session, task_data):
+    task_id = task_data['task_id']
+    print(f"[Worker-{task_id}] Executando missão atômica.")
+    
+    details_response = session.get(f"{SOFIA_API_BASE_URL}/tasks/{task_id}")
+    if details_response.status_code != 200:
+        print(f"[Worker-{task_id}] ❌ ERRO: Não foi possível buscar os detalhes completos da tarefa.")
+        update_task_status(session, task_id, 5)
+        return False
+    
+    full_task_data = details_response.json()
+    
+    genesis_block = next((b['content'] for b in full_task_data.get('blocks', []) if b.get('block_type') == 'GenesisPrompt'), '')
+    enriched_block = next((b['content'] for b in full_task_data.get('blocks', []) if b.get('block_type') == 'EnrichedDescription'), 'N/A')
+    
+    if enriched_block == 'N/A': 
+        print(f"[Worker-{task_id}] ❌ ERRO: Bloco 'EnrichedDescription' não encontrado.")
+        update_task_status(session, task_id, 5)
+        return False
+
+    full_context_prompt = f"{enriched_block}\n\n{genesis_block}"
+
+    prompt = f"""
+    **PERSONA:** Você é um analista de pesquisa sênior e especialista técnico.
+    **MISSÃO:** Desenvolva um relatório detalhado e aprofundado em Markdown sobre o tópico abaixo. Sua análise DEVE se basear primariamente nas fontes de conhecimento listadas no "Contexto de Pesquisa Permanente".
+    **TÓPICO E CONTEXTO PARA O RELATÓRIO:**
+    ---
+    {full_context_prompt}
+    ---
+    **FORMATO DE SAÍDA OBRIGATÓRIO:** ... "report_content" ...
+    """
+    
+    print(f"\n[Worker-{task_id}] --- Gerando FinalReport via Oráculo (com contexto completo) ---")
+    response = chamar_oraculo_json(prompt, model=GROQ_MODEL_POWERFUL)
+    final_report_content = response.get('report_content', f"ERRO: A LLM não retornou a chave 'report_content'.")
+    if "ERRO:" in final_report_content:
+        final_report_content += f"\nResposta bruta da LLM: {json.dumps(response, indent=2)}"
+    save_artifact(task_id, final_report_content, "FinalReport.md")
+    
+    print(f"[Worker-{task_id}] ✅ FinalReport gerado. Atualizando status para 52.")
+    if not update_task_status(session, task_id, 52): return False
+    
+    op_report_content = generate_detailed_op_report(full_task_data)
+    save_artifact(task_id, op_report_content, "OperationalReport.md")
+    
+    print(f"[Worker-{task_id}] ✅ OperationalReport detalhado gerado. Atualizando status para 3.")
+    update_task_status(session, task_id, 3)
+    return True
+
+# <<< FUNÇÃO CORRIGIDA >>>
+def execute_supervisor_mission(session, task_data):
+    parent_task_id = task_data['task_id']
+    print(f"[Supervisor-{parent_task_id}] Iniciando protocolo de supervisão.")
+
+    # Passo 1: Monitorar as tarefas-filhas até a conclusão.
+    print(f"[Supervisor-{parent_task_id}] Entrando em modo de monitoramento...")
+    child_tasks = []
+    while True:
+        try:
+            response = session.get(f"{SOFIA_API_BASE_URL}/tasks/")
+            response.raise_for_status()
+            all_tasks = response.json()
+            
+            child_tasks = [t for t in all_tasks if t.get('parent_task_id') == parent_task_id]
+            if not child_tasks:
+                print(f"    [Supervisor-{parent_task_id}] AVISO: Nenhuma tarefa-filha encontrada. Prosseguindo para compilação.")
+                break
+
+            completed_children = [child for child in child_tasks if child.get('status', {}).get('status_id') == 3]
+            
+            print(f"    [Supervisor-{parent_task_id}] Progresso: {len(completed_children)} de {len(child_tasks)} filhas concluídas.")
+            if len(completed_children) == len(child_tasks):
+                print(f"    [Supervisor-{parent_task_id}] ✅ Todas as tarefas-filhas estão prontas para síntese.")
+                break
+            
+            time.sleep(15)
+        except Exception as e:
+            print(f"    [Supervisor-{parent_task_id}] ❌ Erro durante o monitoramento: {e}. Tentando novamente em 20s.")
+            time.sleep(20)
+
+    # Passo 2: Buscar os detalhes completos da tarefa-mãe ANTES de usá-los.
+    print(f"[Supervisor-{parent_task_id}] Buscando detalhes completos da tarefa-mãe...")
+    details_response = session.get(f"{SOFIA_API_BASE_URL}/tasks/{parent_task_id}")
+    if details_response.status_code != 200:
+        print(f"    [Supervisor-{parent_task_id}] ❌ ERRO CRÍTICO: Não foi possível buscar os detalhes da tarefa-mãe. Abortando.")
+        update_task_status(session, parent_task_id, 5)
+        return False
+    
+    full_parent_task_data = details_response.json()
+
+    # Passo 3: Compilar os relatórios.
+    print(f"[Supervisor-{parent_task_id}] Coletando relatórios das filhas para compilação...")
+    child_reports_context = ""
+    for child in child_tasks:
+        child_id = child['task_id']
+        report_content = read_artifact(child_id, "FinalReport.md")
+        if report_content and "ERRO:" not in report_content:
+            child_reports_context += f"\n\n---\n\n**RELATÓRIO DA SUB-TAREFA TSK_{child_id}**\n\n{report_content}"
+        else:
+            child_reports_context += f"\n\n---\n\n**RELATÓRIO DA SUB-TAREFA TSK_{child_id}**\n\n*ERRO: Não foi possível ler o artefato.*"
+
+    # Agora é seguro usar 'blocks' porque full_parent_task_data os contém.
+    parent_description = next((b['content'] for b in full_parent_task_data.get('blocks', []) if b.get('block_type') == 'EnrichedDescription'), 'N/A')
+    
+    synthesis_prompt = f"""
+    **PERSONA:** Você é um Editor-Chefe...
+    **MISSÃO PRINCIPAL:**\n---\n{parent_description}\n---\n
+    **RELATÓRIOS COMPLETOS DOS ESPECIALISTAS:**\n---\n{child_reports_context}\n---\n
+    **SUA TAREFA FINAL:** ...
+    **FORMATO DE SAÍDA OBRIGATÓRIO:** ... "synthesis_report" ...
+    """
+
+    print(f"\n[Supervisor-{parent_task_id}] --- Gerando Dossiê Final via Oráculo ---")
+    response = chamar_oraculo_json(prompt=synthesis_prompt, model=GROQ_MODEL_POWERFUL)
+    final_report_content = response.get('synthesis_report', f"ERRO: A LLM não retornou a chave 'synthesis_report'.")
+    if "ERRO:" in final_report_content:
+        final_report_content += f"\nResposta bruta da LLM: {json.dumps(response, indent=2)}"
+    save_artifact(parent_task_id, final_report_content, "FinalReport.md")
+
+    # Passo 4: Gerar o relatório operacional detalhado e finalizar.
+    op_report_content = generate_detailed_op_report(full_parent_task_data)
+    save_artifact(parent_task_id, op_report_content, "OperationalReport.md")
+    
+    print(f"[Supervisor-{parent_task_id}] ✅ Missão de compilação concluída. Atualizando status para 3.")
+    update_task_status(session, parent_task_id, 3)
+    return True
+
+# --- Loop Principal (sem alterações) ---
+if __name__ == "__main__":
+    agent_instance_id = f"WorkerAgent-{random.randint(1000, 9999)}"
+    print(f"--- 🚀 {agent_instance_id} iniciado. ('O Orquestrador Autônomo' v6.1.1 - CORRIGIDO) ---")
+    with requests.Session() as session:
+        while True:
+            try:
+                task = find_and_claim_worker_task(session)
+                if task:
+                    task_id = task['task_id']
+                    
+                    all_tasks_response = session.get(f"{SOFIA_API_BASE_URL}/tasks/")
+                    all_tasks = all_tasks_response.json()
+
+                    is_parent = any(t.get('parent_task_id') == task_id for t in all_tasks)
+
+                    if is_parent:
+                        execute_supervisor_mission(session, task)
+                    else:
+                        execute_atomic_mission(session, task)
+                else:
+                    time.sleep(10)
+            except KeyboardInterrupt:
+                print(f"\n--- 🛑 {agent_instance_id} desligando... ---")
+                break
+            except Exception as e:
+                print(f"\n--- 🚨 Erro inesperado no loop principal: {e} ---")
+                time.sleep(15)

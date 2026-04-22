@@ -1,0 +1,1313 @@
+
+
+================================================================================e: file:///home/mesh/home/MeshWave-Core/app/src/main/java/com/meshwave/core/WiFiDirectModule.kt:394:25 This type has a constructor, so it must be initialized here.
+
+e: file:///home/mesh/home/MeshWave-Core/app/src/main/java/com/meshwave/core/WiFiDirectModule.kt:394:25 This type has a constructor, so it must be initialized here.
+
+WiFiDirectModule.kt
+
+WiFiDirectModule.kt
+
+createSimulatedGroup
+
+// WiFiDirectModule.kt
+
+private fun createSimulatedGroup(isOwner: Boolean): WifiP2pGroup {
+    // Esta é uma implementação simulada para testes
+    // Em produção, seria obtida do WifiP2pManager
+    return object : WifiP2pGroup { // <--- Linha 394
+        override fun getNetworkName(): String = "DIRECT-MeshWave"
+        override fun getPassphrase(): String = "meshwave123"
+        override fun isGroupOwner(): Boolean = isOwner
+        override fun getOwner(): WifiP2pDevice {
+            val device = WifiP2pDevice()
+            device.deviceAddress = "00:11:22:33:44:55" // Endereço MAC simulado
+            return device
+        }
+        override fun getClientList(): Collection<WifiP2pDevice> = emptyList()
+        override fun getNetworkId(): Int = 1
+        override fun getInterface(): String = "p2p-wlan0-0"
+    }
+}
+
+// WiFiDirectModule.kt
+
+private fun createSimulatedGroup(isOwner: Boolean): WifiP2pGroup {
+    // Esta é uma implementação simulada para testes
+    // Em produção, seria obtida do WifiP2pManager
+    return object : WifiP2pGroup { // <--- Linha 394
+        override fun getNetworkName(): String = "DIRECT-MeshWave"
+        override fun getPassphrase(): String = "meshwave123"
+        override fun isGroupOwner(): Boolean = isOwner
+        override fun getOwner(): WifiP2pDevice {
+            val device = WifiP2pDevice()
+            device.deviceAddress = "00:11:22:33:44:55" // Endereço MAC simulado
+            return device
+        }
+        override fun getClientList(): Collection<WifiP2pDevice> = emptyList()
+        override fun getNetworkId(): Int = 1
+        override fun getInterface(): String = "p2p-wlan0-0"
+    }
+}
+
+WifiP2pGroup
+
+WifiP2pGroup
+
+()
+
+WifiP2pGroup
+
+app/src/main/java/com/meshwave/core/WiFiDirectModule.kt
+
+return object : WifiP2pGroup {
+    // ...
+}
+
+return object : WifiP2pGroup {
+    // ...
+}
+
+return object : WifiP2pGroup() { // Adicione os parênteses aqui
+    // ...
+}
+
+return object : WifiP2pGroup() { // Adicione os parênteses aqui
+    // ...
+}
+
+createSimulatedGroup
+
+WiFiDirectModule.kt
+
+/**
+     * Cria um grupo WiFi P2P simulado para testes
+     */
+    private fun createSimulatedGroup(isOwner: Boolean): WifiP2pGroup {
+        // Esta é uma implementação simulada para testes
+        // Em produção, seria obtida do WifiP2pManager
+        return object : WifiP2pGroup() { // CORREÇÃO: Adicionado () para chamar o construtor
+            override fun getNetworkName(): String = "DIRECT-MeshWave"
+            override fun getPassphrase(): String = "meshwave123"
+            override fun isGroupOwner(): Boolean = isOwner
+            override fun getOwner(): WifiP2pDevice {
+                val device = WifiP2pDevice()
+                device.deviceAddress = "00:11:22:33:44:55" // Endereço MAC simulado
+                return device
+            }
+            override fun getClientList(): Collection<WifiP2pDevice> = emptyList()
+            override fun getNetworkId(): Int = 1
+            override fun getInterface(): String = "p2p-wlan0-0"
+        }
+    }
+
+/**
+     * Cria um grupo WiFi P2P simulado para testes
+     */
+    private fun createSimulatedGroup(isOwner: Boolean): WifiP2pGroup {
+        // Esta é uma implementação simulada para testes
+        // Em produção, seria obtida do WifiP2pManager
+        return object : WifiP2pGroup() { // CORREÇÃO: Adicionado () para chamar o construtor
+            override fun getNetworkName(): String = "DIRECT-MeshWave"
+            override fun getPassphrase(): String = "meshwave123"
+            override fun isGroupOwner(): Boolean = isOwner
+            override fun getOwner(): WifiP2pDevice {
+                val device = WifiP2pDevice()
+                device.deviceAddress = "00:11:22:33:44:55" // Endereço MAC simulado
+                return device
+            }
+            override fun getClientList(): Collection<WifiP2pDevice> = emptyList()
+            override fun getNetworkId(): Int = 1
+            override fun getInterface(): String = "p2p-wlan0-0"
+        }
+    }
+
+:app:compileDebugKotlin
+
+WiFiDirectModule.kt
+
+createSimulatedGroup
+
+object : WifiP2pGroup
+
+object : WifiP2pGroup()
+
+app/src/main/java/com/meshwave/core/WiFiDirectModule.kt
+
+app/src/main/java/com/meshwave/core/WiFiDirectModule.kt
+
+package com.meshwave.core
+
+import android.content.Context
+import android.net.wifi.p2p.*
+import android.net.nsd.NsdManager
+import android.net.nsd.NsdServiceInfo
+import android.util.Log
+import kotlinx.coroutines.*
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import java.net.*
+import java.io.*
+import java.util.concurrent.ConcurrentHashMap
+
+/**
+ * WiFiDirectModule - Gerencia descoberta e conexão Wi-Fi Direct
+ * Versão: 1.0 -> 1.01 (Correção de ANR e reativação da conexão)
+ */
+class WiFiDirectModule(private val context: Context) {
+    private val TAG = "WiFiDirectModule"
+
+    // CORREÇÃO ANR: Escopo dedicado para operações de rede
+    private val moduleScope = CoroutineScope(Dispatchers.IO + SupervisorJob())
+
+    // Managers do Android
+    private val wifiP2pManager: WifiP2pManager by lazy {
+        context.getSystemService(Context.WIFI_P2P_SERVICE) as WifiP2pManager
+    }
+    private val nsdManager: NsdManager by lazy {
+        context.getSystemService(Context.NSD_SERVICE) as NsdManager
+    }
+
+    private var channel: WifiP2pManager.Channel? = null
+    private var discoveryListener: NsdManager.DiscoveryListener? = null
+    private var registrationListener: NsdManager.RegistrationListener? = null
+
+    // Estados do módulo
+    private val _moduleState = MutableStateFlow(ModuleState.IDLE)
+    val moduleState: StateFlow<ModuleState> = _moduleState.asStateFlow()
+
+    private val _discoveredPeers = MutableStateFlow<Map<String, DiscoveredPeer>>(emptyMap())
+    val discoveredPeers: StateFlow<Map<String, DiscoveredPeer>> = _discoveredPeers.asStateFlow()
+
+    // Cache de pares descobertos
+    private val peersCache = ConcurrentHashMap<String, DiscoveredPeer>()
+
+    // Canal para eventos de rede
+    private val networkEvents = Channel<NetworkEvent>(Channel.UNLIMITED)
+
+    enum class ModuleState {
+        IDLE, DISCOVERING, CONNECTING, CONNECTED, ERROR
+    }
+
+    sealed class NetworkEvent {
+        object StartDiscovery : NetworkEvent()
+        data class PeerDiscovered(val peer: DiscoveredPeer) : NetworkEvent()
+        data class ConnectionRequest(val targetMac: String) : NetworkEvent()
+        data class ConnectionEstablished(val groupInfo: WifiP2pGroup) : NetworkEvent()
+        object StopDiscovery : NetworkEvent()
+    }
+
+    /**
+     * Inicializa o módulo WiFi Direct
+     */
+    fun initialize() {
+        Log.d(TAG, "Inicializando WiFiDirectModule v1.01")
+
+        channel = wifiP2pManager.initialize(context, context.mainLooper) {
+            Log.e(TAG, "Canal WiFi P2P desconectado")
+            _moduleState.value = ModuleState.ERROR
+        }
+
+        // CORREÇÃO ANR: Processa eventos em background
+        moduleScope.launch {
+            processNetworkEvents()
+        }
+
+        _moduleState.value = ModuleState.IDLE
+        Log.d(TAG, "WiFiDirectModule inicializado com sucesso")
+    }
+
+    /**
+     * CORREÇÃO ANR: Processa eventos de rede em thread de background
+     */
+    private suspend fun processNetworkEvents() {
+        for (event in networkEvents) {
+            try {
+                when (event) {
+                    is NetworkEvent.StartDiscovery -> handleStartDiscovery()
+                    is NetworkEvent.PeerDiscovered -> handlePeerDiscovered(event.peer)
+                    is NetworkEvent.ConnectionRequest -> handleConnectionRequest(event.targetMac)
+                    is NetworkEvent.ConnectionEstablished -> handleConnectionEstablished(event.groupInfo)
+                    is NetworkEvent.StopDiscovery -> handleStopDiscovery()
+                }
+            } catch (e: Exception) {
+                Log.e(TAG, "Erro ao processar evento de rede: ${e.message}", e)
+                _moduleState.value = ModuleState.ERROR
+            }
+        }
+    }
+
+    /**
+     * Inicia a descoberta de pares
+     */
+    fun startDiscovery() {
+        Log.d(TAG, "Iniciando descoberta de pares")
+        moduleScope.launch {
+            networkEvents.send(NetworkEvent.StartDiscovery)
+        }
+    }
+
+    /**
+     * Para a descoberta de pares
+     */
+    fun stopDiscovery() {
+        Log.d(TAG, "Parando descoberta de pares")
+        moduleScope.launch {
+            networkEvents.send(NetworkEvent.StopDiscovery)
+        }
+    }
+
+    /**
+     * REATIVADO: Inicia tentativa de conexão com um par
+     */
+    fun connectToPeer(targetMac: String) {
+        Log.d(TAG, "Iniciando conexão com par: $targetMac")
+        moduleScope.launch {
+            networkEvents.send(NetworkEvent.ConnectionRequest(targetMac))
+        }
+    }
+
+    /**
+     * Manipula início da descoberta
+     */
+    private suspend fun handleStartDiscovery() {
+        withContext(Dispatchers.Main) {
+            _moduleState.value = ModuleState.DISCOVERING
+        }
+
+        // Inicia descoberta NSD
+        startNsdDiscovery()
+
+        // Inicia descoberta WiFi P2P
+        startWifiP2pDiscovery()
+    }
+
+    /**
+     * Inicia descoberta via NSD (Network Service Discovery)
+     */
+    private fun startNsdDiscovery() {
+        val serviceType = "_meshwave._tcp"
+
+        discoveryListener = object : NsdManager.DiscoveryListener {
+            override fun onStartDiscoveryFailed(serviceType: String?, errorCode: Int) {
+                Log.e(TAG, "Falha ao iniciar descoberta NSD: $errorCode")
+            }
+
+            override fun onStopDiscoveryFailed(serviceType: String?, errorCode: Int) {
+                Log.e(TAG, "Falha ao parar descoberta NSD: $errorCode")
+            }
+
+            override fun onDiscoveryStarted(serviceType: String?) {
+                Log.d(TAG, "Descoberta NSD iniciada")
+            }
+
+            override fun onDiscoveryStopped(serviceType: String?) {
+                Log.d(TAG, "Descoberta NSD parada")
+            }
+
+            override fun onServiceFound(serviceInfo: NsdServiceInfo?) {
+                serviceInfo?.let { info ->
+                    Log.d(TAG, "Serviço NSD encontrado: ${info.serviceName}")
+                    resolveNsdService(info)
+                }
+            }
+
+            override fun onServiceLost(serviceInfo: NsdServiceInfo?) {
+                Log.d(TAG, "Serviço NSD perdido: ${serviceInfo?.serviceName}")
+            }
+        }
+
+        try {
+            nsdManager.discoverServices(serviceType, NsdManager.PROTOCOL_DNS_SD, discoveryListener)
+        } catch (e: Exception) {
+            Log.e(TAG, "Erro ao iniciar descoberta NSD: ${e.message}", e)
+        }
+    }
+
+    /**
+     * Resolve informações de um serviço NSD descoberto
+     */
+    private fun resolveNsdService(serviceInfo: NsdServiceInfo) {
+        val resolveListener = object : NsdManager.ResolveListener {
+            override fun onResolveFailed(serviceInfo: NsdServiceInfo?, errorCode: Int) {
+                Log.e(TAG, "Falha ao resolver serviço NSD: $errorCode")
+            }
+
+            override fun onServiceResolved(serviceInfo: NsdServiceInfo?) {
+                serviceInfo?.let { info ->
+                    val host = info.host?.hostAddress ?: return
+                    val port = info.port
+                    val serviceName = info.serviceName
+
+                    Log.d(TAG, "Serviço NSD resolvido: $serviceName em $host:$port")
+
+                    // Extrai informações do peer do nome do serviço
+                    val peerInfo = parseServiceName(serviceName)
+                    peerInfo?.let { peer ->
+                        moduleScope.launch {
+                            networkEvents.send(NetworkEvent.PeerDiscovered(peer))
+                        }
+                    }
+                }
+            }
+        }
+
+        try {
+            nsdManager.resolveService(serviceInfo, resolveListener)
+        } catch (e: Exception) {
+            Log.e(TAG, "Erro ao resolver serviço NSD: ${e.message}", e)
+        }
+    }
+
+    /**
+     * Extrai informações do peer do nome do serviço NSD
+     */
+    private fun parseServiceName(serviceName: String): DiscoveredPeer? {
+        return try {
+            // Formato esperado: "MeshWave-DID-DeviceName"
+            val parts = serviceName.split("-", limit = 3)
+            if (parts.size >= 3 && parts[0] == "MeshWave") {
+                val did = parts[1]
+                val deviceName = parts[2]
+                val macAddress = generateMacFromDid(did) // Função auxiliar
+
+                DiscoveredPeer(
+                    macAddress = macAddress,
+                    deviceName = deviceName,
+                    did = did,
+                    status = 1,
+                    lastSeenTimestamp = System.currentTimeMillis()
+                )
+            } else null
+        } catch (e: Exception) {
+            Log.e(TAG, "Erro ao parsear nome do serviço: $serviceName", e)
+            null
+        }
+    }
+
+    /**
+     * Gera um MAC address baseado no DID (para compatibilidade)
+     */
+    private fun generateMacFromDid(did: String): String {
+        val hash = did.hashCode()
+        return String.format(
+            "%02x:%02x:%02x:%02x:%02x:%02x",
+            (hash shr 24) and 0xFF,
+            (hash shr 16) and 0xFF,
+            (hash shr 8) and 0xFF,
+            hash and 0xFF,
+            (hash shr 12) and 0xFF,
+            (hash shr 4) and 0xFF
+        )
+    }
+
+    /**
+     * Inicia descoberta via WiFi P2P
+     */
+    private fun startWifiP2pDiscovery() {
+        val channel = this.channel ?: return
+
+        wifiP2pManager.discoverPeers(channel, object : WifiP2pManager.ActionListener {
+            override fun onSuccess() {
+                Log.d(TAG, "Descoberta WiFi P2P iniciada com sucesso")
+            }
+
+            override fun onFailure(reason: Int) {
+                Log.e(TAG, "Falha ao iniciar descoberta WiFi P2P: $reason")
+            }
+        })
+    }
+
+    /**
+     * Manipula peer descoberto
+     */
+    private suspend fun handlePeerDiscovered(peer: DiscoveredPeer) {
+        peersCache[peer.macAddress] = peer
+
+        // Atualiza o IdentityModule
+        IdentityModule.processDiscoveredPeers(mapOf(peer.macAddress to peer))
+
+        // Atualiza o StateFlow
+        withContext(Dispatchers.Main) {
+            _discoveredPeers.value = peersCache.toMap()
+        }
+
+        Log.d(TAG, "Peer processado: ${peer.deviceName} (${peer.macAddress})")
+    }
+
+    /**
+     * REATIVADO: Manipula solicitação de conexão
+     */
+    private suspend fun handleConnectionRequest(targetMac: String) {
+        val targetPeer = peersCache[targetMac]
+        if (targetPeer == null) {
+            Log.e(TAG, "Peer não encontrado para conexão: $targetMac")
+            return
+        }
+
+        withContext(Dispatchers.Main) {
+            _moduleState.value = ModuleState.CONNECTING
+        }
+
+        Log.d(TAG, "Iniciando conexão com ${targetPeer.deviceName}")
+
+        // REATIVADO: Lógica de eleição de líder
+        val shouldInitiate = electLeader(targetPeer)
+
+        if (shouldInitiate) {
+            initiateConnectionAttempt(targetPeer)
+        } else {
+            awaitConnection(targetPeer)
+        }
+    }
+
+    /**
+     * REATIVADO: Eleição de líder para determinar quem inicia a conexão
+     */
+    private fun electLeader(targetPeer: DiscoveredPeer): Boolean {
+        val myIdentity = IdentityModule.getDeviceIdentity()
+        if (myIdentity == null) {
+            Log.e(TAG, "Identidade do dispositivo não definida")
+            return false
+        }
+
+        // Eleição baseada em comparação de DID
+        val result = myIdentity.did.compareTo(targetPeer.did) > 0
+        Log.d(TAG, "Eleição de líder: ${if (result) "INICIAR" else "AGUARDAR"} conexão com ${targetPeer.deviceName}")
+        return result
+    }
+
+    /**
+     * REATIVADO: Inicia tentativa de conexão como líder
+     */
+    private suspend fun initiateConnectionAttempt(targetPeer: DiscoveredPeer) {
+        Log.d(TAG, "Iniciando conexão como líder com ${targetPeer.deviceName}")
+
+        try {
+            // Simula processo de conexão WiFi P2P
+            delay(2000) // Simula tempo de estabelecimento de conexão
+
+            // Cria grupo WiFi P2P simulado
+            val groupInfo = createSimulatedGroup(isOwner = true)
+            networkEvents.send(NetworkEvent.ConnectionEstablished(groupInfo))
+
+        } catch (e: Exception) {
+            Log.e(TAG, "Erro ao iniciar conexão: ${e.message}", e)
+            withContext(Dispatchers.Main) {
+                _moduleState.value = ModuleState.ERROR
+            }
+        }
+    }
+
+    /**
+     * REATIVADO: Aguarda conexão como seguidor
+     */
+    private suspend fun awaitConnection(targetPeer: DiscoveredPeer) {
+        Log.d(TAG, "Aguardando conexão como seguidor de ${targetPeer.deviceName}")
+
+        try {
+            // Simula aguardar conexão
+            delay(3000)
+
+            // Cria grupo WiFi P2P simulado
+            val groupInfo = createSimulatedGroup(isOwner = false)
+            networkEvents.send(NetworkEvent.ConnectionEstablished(groupInfo))
+
+        } catch (e: Exception) {
+            Log.e(TAG, "Erro ao aguardar conexão: ${e.message}", e)
+            withContext(Dispatchers.Main) {
+                _moduleState.value = ModuleState.ERROR
+            }
+        }
+    }
+
+    /**
+     * Cria um grupo WiFi P2P simulado para testes
+     */
+    private fun createSimulatedGroup(isOwner: Boolean): WifiP2pGroup {
+        // Esta é uma implementação simulada para testes
+        // Em produção, seria obtida do WifiP2pManager
+        return object : WifiP2pGroup() { // <<< CORREÇÃO APLICADA AQUI
+            override fun getNetworkName(): String = "DIRECT-MeshWave"
+            override fun getPassphrase(): String = "meshwave123"
+            override fun isGroupOwner(): Boolean = isOwner
+            override fun getOwner(): WifiP2pDevice {
+                val device = WifiP2pDevice()
+                device.deviceAddress = "00:11:22:33:44:55" // Endereço MAC simulado
+                return device
+            }
+            override fun getClientList(): Collection<WifiP2pDevice> = emptyList()
+            override fun getNetworkId(): Int = 1
+            override fun getInterface(): String = "p2p-wlan0-0"
+        }
+    }
+
+    /**
+     * REATIVADO: Manipula conexão estabelecida
+     */
+    private suspend fun handleConnectionEstablished(groupInfo: WifiP2pGroup) {
+        withContext(Dispatchers.Main) {
+            _moduleState.value = ModuleState.CONNECTED
+        }
+
+        Log.d(TAG, "Conexão estabelecida - Grupo: ${groupInfo.networkName}, Owner: ${groupInfo.isGroupOwner}")
+
+        // REATIVADO: Inicia troca de dados
+        if (groupInfo.isGroupOwner) {
+            runServer()
+        } else {
+            runClient(groupInfo.owner.deviceAddress)
+        }
+    }
+
+    /**
+     * REATIVADO: Executa servidor para troca de SituationalCache
+     */
+    private suspend fun runServer() {
+        Log.d(TAG, "Iniciando servidor para troca de dados")
+
+        try {
+            withContext(Dispatchers.IO) {
+                val serverSocket = ServerSocket(8888)
+                Log.d(TAG, "Servidor aguardando conexões na porta 8888")
+
+                val clientSocket = serverSocket.accept()
+                Log.d(TAG, "Cliente conectado: ${clientSocket.inetAddress}")
+
+                // Troca de SituationalCache
+                exchangeSituationalCache(clientSocket)
+
+                clientSocket.close()
+                serverSocket.close()
+            }
+        } catch (e: Exception) {
+            Log.e(TAG, "Erro no servidor: ${e.message}", e)
+        }
+    }
+
+    /**
+     * REATIVADO: Executa cliente para troca de SituationalCache
+     */
+    private suspend fun runClient(serverAddress: String) {
+        Log.d(TAG, "Conectando ao servidor: $serverAddress")
+
+        try {
+            withContext(Dispatchers.IO) {
+                val socket = Socket(serverAddress, 8888)
+                Log.d(TAG, "Conectado ao servidor")
+
+                // Troca de SituationalCache
+                exchangeSituationalCache(socket)
+
+                socket.close()
+            }
+        } catch (e: Exception) {
+            Log.e(TAG, "Erro no cliente: ${e.message}", e)
+        }
+    }
+
+    /**
+     * REATIVADO: Realiza troca de SituationalCache entre nós
+     */
+    private suspend fun exchangeSituationalCache(socket: Socket) {
+        try {
+            val output = ObjectOutputStream(socket.getOutputStream())
+            val input = ObjectInputStream(socket.getInputStream())
+
+            // Envia nosso cache
+            val myCache = IdentityModule.getDiscoveredPeers()
+            output.writeObject(myCache)
+            output.flush()
+            Log.d(TAG, "Cache enviado: ${myCache.size} pares")
+
+            // Recebe cache do peer
+            @Suppress("UNCHECKED_CAST")
+            val receivedCache = input.readObject() as List<DiscoveredPeer>
+            Log.d(TAG, "Cache recebido: ${receivedCache.size} pares")
+
+            // Processa cache recebido
+            val receivedMap = receivedCache.associateBy { it.macAddress }
+            IdentityModule.processDiscoveredPeers(receivedMap)
+
+        } catch (e: Exception) {
+            Log.e(TAG, "Erro na troca de cache: ${e.message}", e)
+        }
+    }
+
+    /**
+     * Manipula parada da descoberta
+     */
+    private suspend fun handleStopDiscovery() {
+        try {
+            discoveryListener?.let { listener ->
+                nsdManager.stopServiceDiscovery(listener)
+            }
+
+            channel?.let { ch ->
+                wifiP2pManager.stopPeerDiscovery(ch, object : WifiP2pManager.ActionListener {
+                    override fun onSuccess() {
+                        Log.d(TAG, "Descoberta WiFi P2P parada com sucesso")
+                    }
+
+                    override fun onFailure(reason: Int) {
+                        Log.e(TAG, "Falha ao parar descoberta WiFi P2P: $reason")
+                    }
+                })
+            }
+
+            withContext(Dispatchers.Main) {
+                _moduleState.value = ModuleState.IDLE
+            }
+
+        } catch (e: Exception) {
+            Log.e(TAG, "Erro ao parar descoberta: ${e.message}", e)
+        }
+    }
+
+    /**
+     * Obtém estatísticas do módulo
+     */
+    fun getModuleStats(): Map<String, Any> {
+        return mapOf(
+            "state" to _moduleState.value.name,
+            "discoveredPeers" to peersCache.size,
+            "cacheSize" to peersCache.values.sumOf { it.toString().length }
+        )
+    }
+
+    /**
+     * Limpa recursos do módulo
+     */
+    fun cleanup() {
+        moduleScope.cancel()
+
+        discoveryListener?.let { listener ->
+            try {
+                nsdManager.stopServiceDiscovery(listener)
+            } catch (e: Exception) {
+                Log.e(TAG, "Erro ao parar descoberta NSD: ${e.message}")
+            }
+        }
+
+        channel?.let { ch ->
+            wifiP2pManager.stopPeerDiscovery(ch, null)
+        }
+
+        peersCache.clear()
+        networkEvents.close()
+
+        Log.d(TAG, "WiFiDirectModule limpo")
+    }
+}
+
+package com.meshwave.core
+
+import android.content.Context
+import android.net.wifi.p2p.*
+import android.net.nsd.NsdManager
+import android.net.nsd.NsdServiceInfo
+import android.util.Log
+import kotlinx.coroutines.*
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import java.net.*
+import java.io.*
+import java.util.concurrent.ConcurrentHashMap
+
+/**
+ * WiFiDirectModule - Gerencia descoberta e conexão Wi-Fi Direct
+ * Versão: 1.0 -> 1.01 (Correção de ANR e reativação da conexão)
+ */
+class WiFiDirectModule(private val context: Context) {
+    private val TAG = "WiFiDirectModule"
+
+    // CORREÇÃO ANR: Escopo dedicado para operações de rede
+    private val moduleScope = CoroutineScope(Dispatchers.IO + SupervisorJob())
+
+    // Managers do Android
+    private val wifiP2pManager: WifiP2pManager by lazy {
+        context.getSystemService(Context.WIFI_P2P_SERVICE) as WifiP2pManager
+    }
+    private val nsdManager: NsdManager by lazy {
+        context.getSystemService(Context.NSD_SERVICE) as NsdManager
+    }
+
+    private var channel: WifiP2pManager.Channel? = null
+    private var discoveryListener: NsdManager.DiscoveryListener? = null
+    private var registrationListener: NsdManager.RegistrationListener? = null
+
+    // Estados do módulo
+    private val _moduleState = MutableStateFlow(ModuleState.IDLE)
+    val moduleState: StateFlow<ModuleState> = _moduleState.asStateFlow()
+
+    private val _discoveredPeers = MutableStateFlow<Map<String, DiscoveredPeer>>(emptyMap())
+    val discoveredPeers: StateFlow<Map<String, DiscoveredPeer>> = _discoveredPeers.asStateFlow()
+
+    // Cache de pares descobertos
+    private val peersCache = ConcurrentHashMap<String, DiscoveredPeer>()
+
+    // Canal para eventos de rede
+    private val networkEvents = Channel<NetworkEvent>(Channel.UNLIMITED)
+
+    enum class ModuleState {
+        IDLE, DISCOVERING, CONNECTING, CONNECTED, ERROR
+    }
+
+    sealed class NetworkEvent {
+        object StartDiscovery : NetworkEvent()
+        data class PeerDiscovered(val peer: DiscoveredPeer) : NetworkEvent()
+        data class ConnectionRequest(val targetMac: String) : NetworkEvent()
+        data class ConnectionEstablished(val groupInfo: WifiP2pGroup) : NetworkEvent()
+        object StopDiscovery : NetworkEvent()
+    }
+
+    /**
+     * Inicializa o módulo WiFi Direct
+     */
+    fun initialize() {
+        Log.d(TAG, "Inicializando WiFiDirectModule v1.01")
+
+        channel = wifiP2pManager.initialize(context, context.mainLooper) {
+            Log.e(TAG, "Canal WiFi P2P desconectado")
+            _moduleState.value = ModuleState.ERROR
+        }
+
+        // CORREÇÃO ANR: Processa eventos em background
+        moduleScope.launch {
+            processNetworkEvents()
+        }
+
+        _moduleState.value = ModuleState.IDLE
+        Log.d(TAG, "WiFiDirectModule inicializado com sucesso")
+    }
+
+    /**
+     * CORREÇÃO ANR: Processa eventos de rede em thread de background
+     */
+    private suspend fun processNetworkEvents() {
+        for (event in networkEvents) {
+            try {
+                when (event) {
+                    is NetworkEvent.StartDiscovery -> handleStartDiscovery()
+                    is NetworkEvent.PeerDiscovered -> handlePeerDiscovered(event.peer)
+                    is NetworkEvent.ConnectionRequest -> handleConnectionRequest(event.targetMac)
+                    is NetworkEvent.ConnectionEstablished -> handleConnectionEstablished(event.groupInfo)
+                    is NetworkEvent.StopDiscovery -> handleStopDiscovery()
+                }
+            } catch (e: Exception) {
+                Log.e(TAG, "Erro ao processar evento de rede: ${e.message}", e)
+                _moduleState.value = ModuleState.ERROR
+            }
+        }
+    }
+
+    /**
+     * Inicia a descoberta de pares
+     */
+    fun startDiscovery() {
+        Log.d(TAG, "Iniciando descoberta de pares")
+        moduleScope.launch {
+            networkEvents.send(NetworkEvent.StartDiscovery)
+        }
+    }
+
+    /**
+     * Para a descoberta de pares
+     */
+    fun stopDiscovery() {
+        Log.d(TAG, "Parando descoberta de pares")
+        moduleScope.launch {
+            networkEvents.send(NetworkEvent.StopDiscovery)
+        }
+    }
+
+    /**
+     * REATIVADO: Inicia tentativa de conexão com um par
+     */
+    fun connectToPeer(targetMac: String) {
+        Log.d(TAG, "Iniciando conexão com par: $targetMac")
+        moduleScope.launch {
+            networkEvents.send(NetworkEvent.ConnectionRequest(targetMac))
+        }
+    }
+
+    /**
+     * Manipula início da descoberta
+     */
+    private suspend fun handleStartDiscovery() {
+        withContext(Dispatchers.Main) {
+            _moduleState.value = ModuleState.DISCOVERING
+        }
+
+        // Inicia descoberta NSD
+        startNsdDiscovery()
+
+        // Inicia descoberta WiFi P2P
+        startWifiP2pDiscovery()
+    }
+
+    /**
+     * Inicia descoberta via NSD (Network Service Discovery)
+     */
+    private fun startNsdDiscovery() {
+        val serviceType = "_meshwave._tcp"
+
+        discoveryListener = object : NsdManager.DiscoveryListener {
+            override fun onStartDiscoveryFailed(serviceType: String?, errorCode: Int) {
+                Log.e(TAG, "Falha ao iniciar descoberta NSD: $errorCode")
+            }
+
+            override fun onStopDiscoveryFailed(serviceType: String?, errorCode: Int) {
+                Log.e(TAG, "Falha ao parar descoberta NSD: $errorCode")
+            }
+
+            override fun onDiscoveryStarted(serviceType: String?) {
+                Log.d(TAG, "Descoberta NSD iniciada")
+            }
+
+            override fun onDiscoveryStopped(serviceType: String?) {
+                Log.d(TAG, "Descoberta NSD parada")
+            }
+
+            override fun onServiceFound(serviceInfo: NsdServiceInfo?) {
+                serviceInfo?.let { info ->
+                    Log.d(TAG, "Serviço NSD encontrado: ${info.serviceName}")
+                    resolveNsdService(info)
+                }
+            }
+
+            override fun onServiceLost(serviceInfo: NsdServiceInfo?) {
+                Log.d(TAG, "Serviço NSD perdido: ${serviceInfo?.serviceName}")
+            }
+        }
+
+        try {
+            nsdManager.discoverServices(serviceType, NsdManager.PROTOCOL_DNS_SD, discoveryListener)
+        } catch (e: Exception) {
+            Log.e(TAG, "Erro ao iniciar descoberta NSD: ${e.message}", e)
+        }
+    }
+
+    /**
+     * Resolve informações de um serviço NSD descoberto
+     */
+    private fun resolveNsdService(serviceInfo: NsdServiceInfo) {
+        val resolveListener = object : NsdManager.ResolveListener {
+            override fun onResolveFailed(serviceInfo: NsdServiceInfo?, errorCode: Int) {
+                Log.e(TAG, "Falha ao resolver serviço NSD: $errorCode")
+            }
+
+            override fun onServiceResolved(serviceInfo: NsdServiceInfo?) {
+                serviceInfo?.let { info ->
+                    val host = info.host?.hostAddress ?: return
+                    val port = info.port
+                    val serviceName = info.serviceName
+
+                    Log.d(TAG, "Serviço NSD resolvido: $serviceName em $host:$port")
+
+                    // Extrai informações do peer do nome do serviço
+                    val peerInfo = parseServiceName(serviceName)
+                    peerInfo?.let { peer ->
+                        moduleScope.launch {
+                            networkEvents.send(NetworkEvent.PeerDiscovered(peer))
+                        }
+                    }
+                }
+            }
+        }
+
+        try {
+            nsdManager.resolveService(serviceInfo, resolveListener)
+        } catch (e: Exception) {
+            Log.e(TAG, "Erro ao resolver serviço NSD: ${e.message}", e)
+        }
+    }
+
+    /**
+     * Extrai informações do peer do nome do serviço NSD
+     */
+    private fun parseServiceName(serviceName: String): DiscoveredPeer? {
+        return try {
+            // Formato esperado: "MeshWave-DID-DeviceName"
+            val parts = serviceName.split("-", limit = 3)
+            if (parts.size >= 3 && parts[0] == "MeshWave") {
+                val did = parts[1]
+                val deviceName = parts[2]
+                val macAddress = generateMacFromDid(did) // Função auxiliar
+
+                DiscoveredPeer(
+                    macAddress = macAddress,
+                    deviceName = deviceName,
+                    did = did,
+                    status = 1,
+                    lastSeenTimestamp = System.currentTimeMillis()
+                )
+            } else null
+        } catch (e: Exception) {
+            Log.e(TAG, "Erro ao parsear nome do serviço: $serviceName", e)
+            null
+        }
+    }
+
+    /**
+     * Gera um MAC address baseado no DID (para compatibilidade)
+     */
+    private fun generateMacFromDid(did: String): String {
+        val hash = did.hashCode()
+        return String.format(
+            "%02x:%02x:%02x:%02x:%02x:%02x",
+            (hash shr 24) and 0xFF,
+            (hash shr 16) and 0xFF,
+            (hash shr 8) and 0xFF,
+            hash and 0xFF,
+            (hash shr 12) and 0xFF,
+            (hash shr 4) and 0xFF
+        )
+    }
+
+    /**
+     * Inicia descoberta via WiFi P2P
+     */
+    private fun startWifiP2pDiscovery() {
+        val channel = this.channel ?: return
+
+        wifiP2pManager.discoverPeers(channel, object : WifiP2pManager.ActionListener {
+            override fun onSuccess() {
+                Log.d(TAG, "Descoberta WiFi P2P iniciada com sucesso")
+            }
+
+            override fun onFailure(reason: Int) {
+                Log.e(TAG, "Falha ao iniciar descoberta WiFi P2P: $reason")
+            }
+        })
+    }
+
+    /**
+     * Manipula peer descoberto
+     */
+    private suspend fun handlePeerDiscovered(peer: DiscoveredPeer) {
+        peersCache[peer.macAddress] = peer
+
+        // Atualiza o IdentityModule
+        IdentityModule.processDiscoveredPeers(mapOf(peer.macAddress to peer))
+
+        // Atualiza o StateFlow
+        withContext(Dispatchers.Main) {
+            _discoveredPeers.value = peersCache.toMap()
+        }
+
+        Log.d(TAG, "Peer processado: ${peer.deviceName} (${peer.macAddress})")
+    }
+
+    /**
+     * REATIVADO: Manipula solicitação de conexão
+     */
+    private suspend fun handleConnectionRequest(targetMac: String) {
+        val targetPeer = peersCache[targetMac]
+        if (targetPeer == null) {
+            Log.e(TAG, "Peer não encontrado para conexão: $targetMac")
+            return
+        }
+
+        withContext(Dispatchers.Main) {
+            _moduleState.value = ModuleState.CONNECTING
+        }
+
+        Log.d(TAG, "Iniciando conexão com ${targetPeer.deviceName}")
+
+        // REATIVADO: Lógica de eleição de líder
+        val shouldInitiate = electLeader(targetPeer)
+
+        if (shouldInitiate) {
+            initiateConnectionAttempt(targetPeer)
+        } else {
+            awaitConnection(targetPeer)
+        }
+    }
+
+    /**
+     * REATIVADO: Eleição de líder para determinar quem inicia a conexão
+     */
+    private fun electLeader(targetPeer: DiscoveredPeer): Boolean {
+        val myIdentity = IdentityModule.getDeviceIdentity()
+        if (myIdentity == null) {
+            Log.e(TAG, "Identidade do dispositivo não definida")
+            return false
+        }
+
+        // Eleição baseada em comparação de DID
+        val result = myIdentity.did.compareTo(targetPeer.did) > 0
+        Log.d(TAG, "Eleição de líder: ${if (result) "INICIAR" else "AGUARDAR"} conexão com ${targetPeer.deviceName}")
+        return result
+    }
+
+    /**
+     * REATIVADO: Inicia tentativa de conexão como líder
+     */
+    private suspend fun initiateConnectionAttempt(targetPeer: DiscoveredPeer) {
+        Log.d(TAG, "Iniciando conexão como líder com ${targetPeer.deviceName}")
+
+        try {
+            // Simula processo de conexão WiFi P2P
+            delay(2000) // Simula tempo de estabelecimento de conexão
+
+            // Cria grupo WiFi P2P simulado
+            val groupInfo = createSimulatedGroup(isOwner = true)
+            networkEvents.send(NetworkEvent.ConnectionEstablished(groupInfo))
+
+        } catch (e: Exception) {
+            Log.e(TAG, "Erro ao iniciar conexão: ${e.message}", e)
+            withContext(Dispatchers.Main) {
+                _moduleState.value = ModuleState.ERROR
+            }
+        }
+    }
+
+    /**
+     * REATIVADO: Aguarda conexão como seguidor
+     */
+    private suspend fun awaitConnection(targetPeer: DiscoveredPeer) {
+        Log.d(TAG, "Aguardando conexão como seguidor de ${targetPeer.deviceName}")
+
+        try {
+            // Simula aguardar conexão
+            delay(3000)
+
+            // Cria grupo WiFi P2P simulado
+            val groupInfo = createSimulatedGroup(isOwner = false)
+            networkEvents.send(NetworkEvent.ConnectionEstablished(groupInfo))
+
+        } catch (e: Exception) {
+            Log.e(TAG, "Erro ao aguardar conexão: ${e.message}", e)
+            withContext(Dispatchers.Main) {
+                _moduleState.value = ModuleState.ERROR
+            }
+        }
+    }
+
+    /**
+     * Cria um grupo WiFi P2P simulado para testes
+     */
+    private fun createSimulatedGroup(isOwner: Boolean): WifiP2pGroup {
+        // Esta é uma implementação simulada para testes
+        // Em produção, seria obtida do WifiP2pManager
+        return object : WifiP2pGroup() { // <<< CORREÇÃO APLICADA AQUI
+            override fun getNetworkName(): String = "DIRECT-MeshWave"
+            override fun getPassphrase(): String = "meshwave123"
+            override fun isGroupOwner(): Boolean = isOwner
+            override fun getOwner(): WifiP2pDevice {
+                val device = WifiP2pDevice()
+                device.deviceAddress = "00:11:22:33:44:55" // Endereço MAC simulado
+                return device
+            }
+            override fun getClientList(): Collection<WifiP2pDevice> = emptyList()
+            override fun getNetworkId(): Int = 1
+            override fun getInterface(): String = "p2p-wlan0-0"
+        }
+    }
+
+    /**
+     * REATIVADO: Manipula conexão estabelecida
+     */
+    private suspend fun handleConnectionEstablished(groupInfo: WifiP2pGroup) {
+        withContext(Dispatchers.Main) {
+            _moduleState.value = ModuleState.CONNECTED
+        }
+
+        Log.d(TAG, "Conexão estabelecida - Grupo: ${groupInfo.networkName}, Owner: ${groupInfo.isGroupOwner}")
+
+        // REATIVADO: Inicia troca de dados
+        if (groupInfo.isGroupOwner) {
+            runServer()
+        } else {
+            runClient(groupInfo.owner.deviceAddress)
+        }
+    }
+
+    /**
+     * REATIVADO: Executa servidor para troca de SituationalCache
+     */
+    private suspend fun runServer() {
+        Log.d(TAG, "Iniciando servidor para troca de dados")
+
+        try {
+            withContext(Dispatchers.IO) {
+                val serverSocket = ServerSocket(8888)
+                Log.d(TAG, "Servidor aguardando conexões na porta 8888")
+
+                val clientSocket = serverSocket.accept()
+                Log.d(TAG, "Cliente conectado: ${clientSocket.inetAddress}")
+
+                // Troca de SituationalCache
+                exchangeSituationalCache(clientSocket)
+
+                clientSocket.close()
+                serverSocket.close()
+            }
+        } catch (e: Exception) {
+            Log.e(TAG, "Erro no servidor: ${e.message}", e)
+        }
+    }
+
+    /**
+     * REATIVADO: Executa cliente para troca de SituationalCache
+     */
+    private suspend fun runClient(serverAddress: String) {
+        Log.d(TAG, "Conectando ao servidor: $serverAddress")
+
+        try {
+            withContext(Dispatchers.IO) {
+                val socket = Socket(serverAddress, 8888)
+                Log.d(TAG, "Conectado ao servidor")
+
+                // Troca de SituationalCache
+                exchangeSituationalCache(socket)
+
+                socket.close()
+            }
+        } catch (e: Exception) {
+            Log.e(TAG, "Erro no cliente: ${e.message}", e)
+        }
+    }
+
+    /**
+     * REATIVADO: Realiza troca de SituationalCache entre nós
+     */
+    private suspend fun exchangeSituationalCache(socket: Socket) {
+        try {
+            val output = ObjectOutputStream(socket.getOutputStream())
+            val input = ObjectInputStream(socket.getInputStream())
+
+            // Envia nosso cache
+            val myCache = IdentityModule.getDiscoveredPeers()
+            output.writeObject(myCache)
+            output.flush()
+            Log.d(TAG, "Cache enviado: ${myCache.size} pares")
+
+            // Recebe cache do peer
+            @Suppress("UNCHECKED_CAST")
+            val receivedCache = input.readObject() as List<DiscoveredPeer>
+            Log.d(TAG, "Cache recebido: ${receivedCache.size} pares")
+
+            // Processa cache recebido
+            val receivedMap = receivedCache.associateBy { it.macAddress }
+            IdentityModule.processDiscoveredPeers(receivedMap)
+
+        } catch (e: Exception) {
+            Log.e(TAG, "Erro na troca de cache: ${e.message}", e)
+        }
+    }
+
+    /**
+     * Manipula parada da descoberta
+     */
+    private suspend fun handleStopDiscovery() {
+        try {
+            discoveryListener?.let { listener ->
+                nsdManager.stopServiceDiscovery(listener)
+            }
+
+            channel?.let { ch ->
+                wifiP2pManager.stopPeerDiscovery(ch, object : WifiP2pManager.ActionListener {
+                    override fun onSuccess() {
+                        Log.d(TAG, "Descoberta WiFi P2P parada com sucesso")
+                    }
+
+                    override fun onFailure(reason: Int) {
+                        Log.e(TAG, "Falha ao parar descoberta WiFi P2P: $reason")
+                    }
+                })
+            }
+
+            withContext(Dispatchers.Main) {
+                _moduleState.value = ModuleState.IDLE
+            }
+
+        } catch (e: Exception) {
+            Log.e(TAG, "Erro ao parar descoberta: ${e.message}", e)
+        }
+    }
+
+    /**
+     * Obtém estatísticas do módulo
+     */
+    fun getModuleStats(): Map<String, Any> {
+        return mapOf(
+            "state" to _moduleState.value.name,
+            "discoveredPeers" to peersCache.size,
+            "cacheSize" to peersCache.values.sumOf { it.toString().length }
+        )
+    }
+
+    /**
+     * Limpa recursos do módulo
+     */
+    fun cleanup() {
+        moduleScope.cancel()
+
+        discoveryListener?.let { listener ->
+            try {
+                nsdManager.stopServiceDiscovery(listener)
+            } catch (e: Exception) {
+                Log.e(TAG, "Erro ao parar descoberta NSD: ${e.message}")
+            }
+        }
+
+        channel?.let { ch ->
+            wifiP2pManager.stopPeerDiscovery(ch, null)
+        }
+
+        peersCache.clear()
+        networkEvents.close()
+
+        Log.d(TAG, "WiFiDirectModule limpo")
+    }
+}
+
+Motorola_E5_Play
+
+/home
+
+userdata-qemu.img
+
+Motorola_E5_Play
+
+Motorola_E5_Play
+
+userdata-qemu.img
+
+C:\Users\<SeuUsuario>\.android
+
+~/.android
+
+/Users/<SeuUsuario>/.android
+
+~/.android
+
+/home/<SeuUsuario>/.android
+
+.android
+
+avd
+
+avd
+
+Motorola_E5_Play
+
+Motorola_E5_Play.avd
+
+Motorola_E5_Play.ini
+
+.gradle
+
+build
+
+C:\Users\<SeuUsuario>\.gradle\caches
+
+~/.gradle/caches
+
+caches

@@ -1,0 +1,139 @@
+
+
+================================================================================F5
+
+Ctrl+R
+
+F5
+
+F5
+
+MW-CORE-20250720-01
+
+v0.3.1
+
+WifiP2pManager
+
+NsdManager
+
+username
+
+WiFiDirectModule
+
+Dispatchers.IO
+
+IdentityModule
+
+username
+
+SituationalCache
+
+DiscoveredPeer.kt
+
+did
+
+package com.meshwave.core
+
+import java.io.Serializable
+
+data class DiscoveredPeer(
+    val macAddress: String,
+    var deviceName: String,
+    val did: String,
+    var status: Int = 1,
+    var lastSeenTimestamp: Long = System.currentTimeMillis()
+) : Serializable
+
+package com.meshwave.core
+
+import java.io.Serializable
+
+data class DiscoveredPeer(
+    val macAddress: String,
+    var deviceName: String,
+    val did: String,
+    var status: Int = 1,
+    var lastSeenTimestamp: Long = System.currentTimeMillis()
+) : Serializable
+
+IdentityModule.kt
+
+package com.meshwave.core
+
+// ... (conteúdo completo fornecido anteriormente)
+// Função principal corrigida: processDiscoveredPeers
+fun processDiscoveredPeers(foundPeers: Map<String, DiscoveredPeer>) {
+    val now = System.currentTimeMillis()
+    var cacheChanged = false
+
+    foundPeers.values.forEach { newPeer ->
+        val existingPeer = situationalCache.discoveredPeers[newPeer.macAddress]
+        
+        if (existingPeer != null) {
+            if (existingPeer.deviceName != newPeer.deviceName || existingPeer.status != 1) {
+                existingPeer.deviceName = newPeer.deviceName
+                existingPeer.status = 1
+                cacheChanged = true
+            }
+            existingPeer.lastSeenTimestamp = now
+        } else {
+            situationalCache.discoveredPeers[newPeer.macAddress] = newPeer
+            cacheChanged = true
+        }
+    }
+    
+    if (cacheChanged) {
+        sendCacheUpdate()
+    }
+}
+// ... (resto do arquivo)
+
+package com.meshwave.core
+
+// ... (conteúdo completo fornecido anteriormente)
+// Função principal corrigida: processDiscoveredPeers
+fun processDiscoveredPeers(foundPeers: Map<String, DiscoveredPeer>) {
+    val now = System.currentTimeMillis()
+    var cacheChanged = false
+
+    foundPeers.values.forEach { newPeer ->
+        val existingPeer = situationalCache.discoveredPeers[newPeer.macAddress]
+        
+        if (existingPeer != null) {
+            if (existingPeer.deviceName != newPeer.deviceName || existingPeer.status != 1) {
+                existingPeer.deviceName = newPeer.deviceName
+                existingPeer.status = 1
+                cacheChanged = true
+            }
+            existingPeer.lastSeenTimestamp = now
+        } else {
+            situationalCache.discoveredPeers[newPeer.macAddress] = newPeer
+            cacheChanged = true
+        }
+    }
+    
+    if (cacheChanged) {
+        sendCacheUpdate()
+    }
+}
+// ... (resto do arquivo)
+
+WiFiDirectModule.kt
+
+package com.meshwave.core
+
+// ... (conteúdo completo fornecido anteriormente)
+// Principais correções:
+// - O loop 'for (event in networkEvents)' agora está dentro de um 'moduleScope.launch'.
+// - As chamadas 'initiateConnectionAttempt' e 'awaitConnection' são reativadas.
+// - A lógica de troca de dados (runServer/runClient) está pronta para ser testada.
+// ... (resto do arquivo)
+
+package com.meshwave.core
+
+// ... (conteúdo completo fornecido anteriormente)
+// Principais correções:
+// - O loop 'for (event in networkEvents)' agora está dentro de um 'moduleScope.launch'.
+// - As chamadas 'initiateConnectionAttempt' e 'awaitConnection' são reativadas.
+// - A lógica de troca de dados (runServer/runClient) está pronta para ser testada.
+// ... (resto do arquivo)

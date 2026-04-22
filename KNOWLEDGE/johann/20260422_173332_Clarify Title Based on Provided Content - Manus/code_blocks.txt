@@ -1,0 +1,649 @@
+
+
+================================================================================.env
+
+architecture.py
+
+indexer_agent.py
+
+The model 'llama3-8b-8192' has been decommissioned and is no longer supported.
+
+llama3-8b-8192
+
+indexer_agent.py
+
+llama3-8b
+
+llama3-70b-8192
+
+indexer_agent.py
+
+generate_meta_chunk
+
+# /media/mesh/MYEBOOK1/manus_extractor/indexer_agent.py
+# Agente Cartógrafo do Conhecimento
+# Versão: 3.1 - CORRIGIDO: Atualiza o modelo do LLM para um modelo ativo na Groq.
+# Responsabilidade: Ler a base de conhecimento local, gerar um "Índice de Índices"
+# e popular uma nova coleção localmente.
+
+import chromadb
+import time
+import os
+import sys
+from groq import Groq
+
+# Adiciona o caminho do projeto SOFIA para encontrar o módulo 'architecture'
+SOFIA_ENGINE_PATH = "/home/mesh/home/sofia/engine"
+if SOFIA_ENGINE_PATH not in sys.path:
+    sys.path.append(SOFIA_ENGINE_PATH)
+
+try:
+    from architecture import GROQ_API_KEY
+except ImportError:
+    print(f"❌ ERRO CRÍTICO: Não foi possível importar 'GROQ_API_KEY' de '{SOFIA_ENGINE_PATH}/architecture.py'.")
+    sys.exit(1)
+
+# Configurações do ChromaDB
+CHROMA_HOST = "localhost"
+CHROMA_PORT = 8000
+
+# Nomes das coleções
+SOURCE_COLLECTION_NAME = "sofia_knowledge_base"
+TARGET_COLLECTION_NAME = "sofia_index_of_indexes"
+
+# Configurações de processamento em lote
+BATCH_SIZE = 50
+
+# --- Funções Auxiliares ---
+
+def get_groq_client():
+    """Inicializa e retorna o cliente da API Groq."""
+    if not GROQ_API_KEY:
+        print("❌ ERRO CRÍTICO: A chave 'GROQ_API_KEY' importada está vazia.")
+        return None
+    try:
+        return Groq(api_key=GROQ_API_KEY)
+    except Exception as e:
+        print(f"❌ Erro ao inicializar o cliente Groq: {e}")
+        return None
+
+def generate_meta_chunk(client: Groq, original_text: str) -> str | None:
+    """Usa o LLM para ler um chunk de texto e gerar o "Meta-Chunk"."""
+    if not client or not original_text:
+        return None
+    prompt = f"""
+    **Sua Tarefa:** Você é um "Indexador Semântico". Sua função é ler o fragmento de texto a seguir e destilá-lo em seus componentes mais essenciais para criar um "Meta-Chunk". O resultado deve ser um único parágrafo de texto denso, contendo apenas:
+    - As 5-7 palavras-chave mais importantes.
+    - Os 2-3 conceitos ou temas principais discutidos.
+    - Nomes próprios de projetos, tecnologias ou pessoas mencionados (ex: SOFIA, MeshWave, Q-CyPIA, ExecutorAgent).
+    - Termos técnicos ou jargões específicos do projeto (ex: "Índice de Índices", "Protocolo de Suficiência", "Fatoração Descendente").
+
+    **Texto do Chunk Original:**
+    "{original_text}"
+
+    Responda APENAS com o parágrafo do Meta-Chunk.
+    """
+    try:
+        completion = client.chat.completions.create(
+            messages=[{"role": "user", "content": prompt}],
+            # --- [CORREÇÃO APLICADA AQUI] ---
+            model="llama3-70b-8192", # Atualizado para o modelo maior e ativo.
+            # ---------------------------------
+            temperature=0.2
+        )
+        return completion.choices[0].message.content.strip()
+    except Exception as e:
+        print(f"  -> ⚠️  Aviso: Falha ao gerar Meta-Chunk com o LLM. Erro: {e}")
+        time.sleep(5)
+        return None
+
+# --- Lógica Principal do Agente (sem alterações) ---
+
+def run_indexer():
+    """
+    Executa o processo completo de criação do Índice de Índices no ambiente LOCAL.
+    """
+    print("--- 🚀 Iniciando Agente Cartógrafo (IndexerAgent) ---")
+    print(f"🎯 Ambiente de destino: ChromaDB LOCAL em {CHROMA_HOST}:{CHROMA_PORT}")
+
+    groq_client = get_groq_client()
+    if not groq_client:
+        return
+
+    print(f"🔌 Conectando ao ChromaDB LOCAL...")
+    try:
+        db_client = chromadb.HttpClient(host=CHROMA_HOST, port=CHROMA_PORT)
+        db_client.heartbeat()
+        print("✅ Conexão com o ChromaDB LOCAL estabelecida.")
+    except Exception as e:
+        print(f"❌ FALHA CRÍTICA: Não foi possível conectar ao ChromaDB LOCAL. Erro: {e}")
+        return
+
+    try:
+        source_collection = db_client.get_collection(name=SOURCE_COLLECTION_NAME)
+        print(f"🔥 Verificando e limpando a coleção de destino '{TARGET_COLLECTION_NAME}' para uma reconstrução limpa...")
+        db_client.delete_collection(name=TARGET_COLLECTION_NAME)
+        time.sleep(2)
+        target_collection = db_client.create_collection(name=TARGET_COLLECTION_NAME)
+        print(f"✅ Coleção de destino '{TARGET_COLLECTION_NAME}' criada/limpa no ambiente LOCAL.")
+    except Exception:
+        try:
+            target_collection = db_client.create_collection(name=TARGET_COLLECTION_NAME)
+            print(f"✅ Coleção de destino '{TARGET_COLLECTION_NAME}' criada no ambiente LOCAL.")
+        except Exception as create_e:
+             print(f"❌ Erro ao acessar/criar coleções: {create_e}")
+             return
+
+    total_source_chunks = source_collection.count()
+    print(f"ℹ️  Total de chunks a processar da coleção local '{SOURCE_COLLECTION_NAME}': {total_source_chunks}")
+
+    for offset in range(0, total_source_chunks, BATCH_SIZE):
+        print(f"\n--- 🔄 Processando lote: chunks {offset} a {offset + BATCH_SIZE - 1} ---")
+        
+        batch = source_collection.get(
+            limit=BATCH_SIZE,
+            offset=offset,
+            include=["documents", "metadatas"]
+        )
+
+        meta_chunks_to_add = []
+        metadata_to_add = []
+        ids_to_add = []
+
+        for i in range(len(batch['ids'])):
+            original_id = batch['ids'][i]
+            original_doc = batch['documents'][i]
+            
+            print(f"  -> 🧠 Gerando Meta-Chunk para o ID: {original_id}...")
+            meta_chunk_text = generate_meta_chunk(groq_client, original_doc)
+
+            if meta_chunk_text:
+                meta_chunks_to_add.append(meta_chunk_text)
+                metadata_to_add.append({
+                    "original_chunk_text": original_doc,
+                    "source_collection_id": original_id
+                })
+                ids_to_add.append(original_id)
+                print(f"  -> ✅ Meta-Chunk gerado.")
+            else:
+                print(f"  -> ❌ Pulo do chunk ID: {original_id} devido a erro na geração.")
+
+        if ids_to_add:
+            try:
+                target_collection.add(
+                    documents=meta_chunks_to_add,
+                    metadatas=metadata_to_add,
+                    ids=ids_to_add
+                )
+                print(f"--- ✅ Lote de {len(ids_to_add)} Meta-Chunks inserido com sucesso na coleção local. ---")
+            except Exception as e:
+                print(f"--- ❌ Erro ao inserir lote no ChromaDB local: {e} ---")
+        
+        time.sleep(2)
+
+    print("\n--- ✨ Processo de Indexação Local Concluído! ✨ ---")
+    print(f"Total de Meta-Chunks criados na coleção '{TARGET_COLLECTION_NAME}': {target_collection.count()}")
+
+if __name__ == "__main__":
+    run_indexer()
+
+# /media/mesh/MYEBOOK1/manus_extractor/indexer_agent.py
+# Agente Cartógrafo do Conhecimento
+# Versão: 3.1 - CORRIGIDO: Atualiza o modelo do LLM para um modelo ativo na Groq.
+# Responsabilidade: Ler a base de conhecimento local, gerar um "Índice de Índices"
+# e popular uma nova coleção localmente.
+
+import chromadb
+import time
+import os
+import sys
+from groq import Groq
+
+# Adiciona o caminho do projeto SOFIA para encontrar o módulo 'architecture'
+SOFIA_ENGINE_PATH = "/home/mesh/home/sofia/engine"
+if SOFIA_ENGINE_PATH not in sys.path:
+    sys.path.append(SOFIA_ENGINE_PATH)
+
+try:
+    from architecture import GROQ_API_KEY
+except ImportError:
+    print(f"❌ ERRO CRÍTICO: Não foi possível importar 'GROQ_API_KEY' de '{SOFIA_ENGINE_PATH}/architecture.py'.")
+    sys.exit(1)
+
+# Configurações do ChromaDB
+CHROMA_HOST = "localhost"
+CHROMA_PORT = 8000
+
+# Nomes das coleções
+SOURCE_COLLECTION_NAME = "sofia_knowledge_base"
+TARGET_COLLECTION_NAME = "sofia_index_of_indexes"
+
+# Configurações de processamento em lote
+BATCH_SIZE = 50
+
+# --- Funções Auxiliares ---
+
+def get_groq_client():
+    """Inicializa e retorna o cliente da API Groq."""
+    if not GROQ_API_KEY:
+        print("❌ ERRO CRÍTICO: A chave 'GROQ_API_KEY' importada está vazia.")
+        return None
+    try:
+        return Groq(api_key=GROQ_API_KEY)
+    except Exception as e:
+        print(f"❌ Erro ao inicializar o cliente Groq: {e}")
+        return None
+
+def generate_meta_chunk(client: Groq, original_text: str) -> str | None:
+    """Usa o LLM para ler um chunk de texto e gerar o "Meta-Chunk"."""
+    if not client or not original_text:
+        return None
+    prompt = f"""
+    **Sua Tarefa:** Você é um "Indexador Semântico". Sua função é ler o fragmento de texto a seguir e destilá-lo em seus componentes mais essenciais para criar um "Meta-Chunk". O resultado deve ser um único parágrafo de texto denso, contendo apenas:
+    - As 5-7 palavras-chave mais importantes.
+    - Os 2-3 conceitos ou temas principais discutidos.
+    - Nomes próprios de projetos, tecnologias ou pessoas mencionados (ex: SOFIA, MeshWave, Q-CyPIA, ExecutorAgent).
+    - Termos técnicos ou jargões específicos do projeto (ex: "Índice de Índices", "Protocolo de Suficiência", "Fatoração Descendente").
+
+    **Texto do Chunk Original:**
+    "{original_text}"
+
+    Responda APENAS com o parágrafo do Meta-Chunk.
+    """
+    try:
+        completion = client.chat.completions.create(
+            messages=[{"role": "user", "content": prompt}],
+            # --- [CORREÇÃO APLICADA AQUI] ---
+            model="llama3-70b-8192", # Atualizado para o modelo maior e ativo.
+            # ---------------------------------
+            temperature=0.2
+        )
+        return completion.choices[0].message.content.strip()
+    except Exception as e:
+        print(f"  -> ⚠️  Aviso: Falha ao gerar Meta-Chunk com o LLM. Erro: {e}")
+        time.sleep(5)
+        return None
+
+# --- Lógica Principal do Agente (sem alterações) ---
+
+def run_indexer():
+    """
+    Executa o processo completo de criação do Índice de Índices no ambiente LOCAL.
+    """
+    print("--- 🚀 Iniciando Agente Cartógrafo (IndexerAgent) ---")
+    print(f"🎯 Ambiente de destino: ChromaDB LOCAL em {CHROMA_HOST}:{CHROMA_PORT}")
+
+    groq_client = get_groq_client()
+    if not groq_client:
+        return
+
+    print(f"🔌 Conectando ao ChromaDB LOCAL...")
+    try:
+        db_client = chromadb.HttpClient(host=CHROMA_HOST, port=CHROMA_PORT)
+        db_client.heartbeat()
+        print("✅ Conexão com o ChromaDB LOCAL estabelecida.")
+    except Exception as e:
+        print(f"❌ FALHA CRÍTICA: Não foi possível conectar ao ChromaDB LOCAL. Erro: {e}")
+        return
+
+    try:
+        source_collection = db_client.get_collection(name=SOURCE_COLLECTION_NAME)
+        print(f"🔥 Verificando e limpando a coleção de destino '{TARGET_COLLECTION_NAME}' para uma reconstrução limpa...")
+        db_client.delete_collection(name=TARGET_COLLECTION_NAME)
+        time.sleep(2)
+        target_collection = db_client.create_collection(name=TARGET_COLLECTION_NAME)
+        print(f"✅ Coleção de destino '{TARGET_COLLECTION_NAME}' criada/limpa no ambiente LOCAL.")
+    except Exception:
+        try:
+            target_collection = db_client.create_collection(name=TARGET_COLLECTION_NAME)
+            print(f"✅ Coleção de destino '{TARGET_COLLECTION_NAME}' criada no ambiente LOCAL.")
+        except Exception as create_e:
+             print(f"❌ Erro ao acessar/criar coleções: {create_e}")
+             return
+
+    total_source_chunks = source_collection.count()
+    print(f"ℹ️  Total de chunks a processar da coleção local '{SOURCE_COLLECTION_NAME}': {total_source_chunks}")
+
+    for offset in range(0, total_source_chunks, BATCH_SIZE):
+        print(f"\n--- 🔄 Processando lote: chunks {offset} a {offset + BATCH_SIZE - 1} ---")
+        
+        batch = source_collection.get(
+            limit=BATCH_SIZE,
+            offset=offset,
+            include=["documents", "metadatas"]
+        )
+
+        meta_chunks_to_add = []
+        metadata_to_add = []
+        ids_to_add = []
+
+        for i in range(len(batch['ids'])):
+            original_id = batch['ids'][i]
+            original_doc = batch['documents'][i]
+            
+            print(f"  -> 🧠 Gerando Meta-Chunk para o ID: {original_id}...")
+            meta_chunk_text = generate_meta_chunk(groq_client, original_doc)
+
+            if meta_chunk_text:
+                meta_chunks_to_add.append(meta_chunk_text)
+                metadata_to_add.append({
+                    "original_chunk_text": original_doc,
+                    "source_collection_id": original_id
+                })
+                ids_to_add.append(original_id)
+                print(f"  -> ✅ Meta-Chunk gerado.")
+            else:
+                print(f"  -> ❌ Pulo do chunk ID: {original_id} devido a erro na geração.")
+
+        if ids_to_add:
+            try:
+                target_collection.add(
+                    documents=meta_chunks_to_add,
+                    metadatas=metadata_to_add,
+                    ids=ids_to_add
+                )
+                print(f"--- ✅ Lote de {len(ids_to_add)} Meta-Chunks inserido com sucesso na coleção local. ---")
+            except Exception as e:
+                print(f"--- ❌ Erro ao inserir lote no ChromaDB local: {e} ---")
+        
+        time.sleep(2)
+
+    print("\n--- ✨ Processo de Indexação Local Concluído! ✨ ---")
+    print(f"Total de Meta-Chunks criados na coleção '{TARGET_COLLECTION_NAME}': {target_collection.count()}")
+
+if __name__ == "__main__":
+    run_indexer()
+
+indexer_agent.py
+
+llama3-70b-8192
+
+agent_groq_test.py
+
+agent_groq_test.py
+
+# ...
+            model="llama3-8b-8192",
+# ...
+
+# ...
+            model="llama3-8b-8192",
+# ...
+
+indexer_agent.py
+
+agent_groq_test.py
+
+agent_groq_test.py
+
+# sofia/engine/agent_groq_test.py
+# Versão: 1.1 - CORRIGIDO: Atualiza o modelo do LLM para um modelo ativo na Groq.
+
+import sys
+import os
+
+# Adiciona o caminho do projeto SOFIA para encontrar o módulo 'architecture'
+# Isso torna o script executável de qualquer lugar, desde que o caminho esteja correto.
+SOFIA_ENGINE_PATH = "/home/mesh/home/sofia/engine"
+if SOFIA_ENGINE_PATH not in sys.path:
+    sys.path.append(SOFIA_ENGINE_PATH)
+
+try:
+    from architecture import GROQ_API_KEY
+except ImportError:
+    print(f"❌ ERRO CRÍTICO: Não foi possível importar 'GROQ_API_KEY' de '{SOFIA_ENGINE_PATH}/architecture.py'.")
+    sys.exit(1)
+
+from groq import Groq
+
+def run_groq_skill(prompt: str):
+    """
+    Executa a "habilidade" de pesquisa usando a API do Groq para testar a conectividade e a chave.
+    """
+    if not GROQ_API_KEY:
+        print("❌ ERRO CRÍTICO: A variável 'GROQ_API_KEY' importada está vazia ou não foi encontrada.")
+        return
+
+    print(f"🤖 Agente ativando skill de teste com Groq...")
+    print(f"   Prompt: '{prompt}'")
+    print("--- Aguardando resposta da IA... ---")
+
+    try:
+        client = Groq(api_key=GROQ_API_KEY)
+        
+        chat_completion = client.chat.completions.create(
+            messages=[
+                {
+                    "role": "system",
+                    "content": "Você é um assistente de diagnóstico para o sistema SOFIA. Sua única tarefa é responder 'OK' para confirmar que a comunicação foi bem-sucedida."
+                },
+                {
+                    "role": "user",
+                    "content": prompt,
+                }
+            ],
+            # --- [CORREÇÃO APLICADA AQUI] ---
+            model="llama3-70b-8192", # Atualizado para o modelo maior e ativo.
+            # ---------------------------------
+        )
+
+        response_content = chat_completion.choices[0].message.content
+        print("\n✅ Resposta da IA (via Groq) recebida:\n")
+        print(response_content)
+        print("\n---")
+        print("✅ CONCLUSÃO: A chave de API e a conexão com a Groq estão funcionando corretamente.")
+
+    except Exception as e:
+        print(f"\n❌ Ocorreu um erro ao chamar a API do Groq: {e}")
+        print("\n---")
+        print("❌ CONCLUSÃO: Há um problema com a chave de API, a conexão de rede ou o serviço da Groq.")
+
+
+if __name__ == "__main__":
+    # Um prompt simples apenas para testar a comunicação.
+    test_prompt = "Teste de comunicação. Por favor, responda apenas 'OK'."
+    
+    run_groq_skill(test_prompt)
+
+# sofia/engine/agent_groq_test.py
+# Versão: 1.1 - CORRIGIDO: Atualiza o modelo do LLM para um modelo ativo na Groq.
+
+import sys
+import os
+
+# Adiciona o caminho do projeto SOFIA para encontrar o módulo 'architecture'
+# Isso torna o script executável de qualquer lugar, desde que o caminho esteja correto.
+SOFIA_ENGINE_PATH = "/home/mesh/home/sofia/engine"
+if SOFIA_ENGINE_PATH not in sys.path:
+    sys.path.append(SOFIA_ENGINE_PATH)
+
+try:
+    from architecture import GROQ_API_KEY
+except ImportError:
+    print(f"❌ ERRO CRÍTICO: Não foi possível importar 'GROQ_API_KEY' de '{SOFIA_ENGINE_PATH}/architecture.py'.")
+    sys.exit(1)
+
+from groq import Groq
+
+def run_groq_skill(prompt: str):
+    """
+    Executa a "habilidade" de pesquisa usando a API do Groq para testar a conectividade e a chave.
+    """
+    if not GROQ_API_KEY:
+        print("❌ ERRO CRÍTICO: A variável 'GROQ_API_KEY' importada está vazia ou não foi encontrada.")
+        return
+
+    print(f"🤖 Agente ativando skill de teste com Groq...")
+    print(f"   Prompt: '{prompt}'")
+    print("--- Aguardando resposta da IA... ---")
+
+    try:
+        client = Groq(api_key=GROQ_API_KEY)
+        
+        chat_completion = client.chat.completions.create(
+            messages=[
+                {
+                    "role": "system",
+                    "content": "Você é um assistente de diagnóstico para o sistema SOFIA. Sua única tarefa é responder 'OK' para confirmar que a comunicação foi bem-sucedida."
+                },
+                {
+                    "role": "user",
+                    "content": prompt,
+                }
+            ],
+            # --- [CORREÇÃO APLICADA AQUI] ---
+            model="llama3-70b-8192", # Atualizado para o modelo maior e ativo.
+            # ---------------------------------
+        )
+
+        response_content = chat_completion.choices[0].message.content
+        print("\n✅ Resposta da IA (via Groq) recebida:\n")
+        print(response_content)
+        print("\n---")
+        print("✅ CONCLUSÃO: A chave de API e a conexão com a Groq estão funcionando corretamente.")
+
+    except Exception as e:
+        print(f"\n❌ Ocorreu um erro ao chamar a API do Groq: {e}")
+        print("\n---")
+        print("❌ CONCLUSÃO: Há um problema com a chave de API, a conexão de rede ou o serviço da Groq.")
+
+
+if __name__ == "__main__":
+    # Um prompt simples apenas para testar a comunicação.
+    test_prompt = "Teste de comunicação. Por favor, responda apenas 'OK'."
+    
+    run_groq_skill(test_prompt)
+
+agent_groq_test.py
+
+python agent_groq_test.py
+
+✅ CONCLUSÃO: A chave de API e a conexão com a Groq estão funcionando corretamente.
+
+indexer_agent.py
+
+llama-3.1-8b-instant
+
+llama-3.1-70b-versatil
+
+llama3-8b-8192
+
+llama3-70b-8192
+
+curl
+
+curl
+
+indexer_agent.py
+
+agent_groq_test.py
+
+llama3-8b-8192
+
+llama-3.1-8b-instant
+
+llama3-70b-8192
+
+llama-3.1-70b-versatil
+
+indexer_agent.py
+
+# /media/mesh/MYEBOOK1/manus_extractor/indexer_agent.py
+# Agente Cartógrafo do Conhecimento
+# Versão: 3.2 - CORRIGIDO: Usa o ID de modelo oficial e atual da Groq.
+# ... (todo o resto do código permanece o mesmo) ...
+
+def generate_meta_chunk(client: Groq, original_text: str) -> str | None:
+    # ... (o prompt permanece o mesmo) ...
+    try:
+        completion = client.chat.completions.create(
+            messages=[{"role": "user", "content": prompt}],
+            # --- [CORREÇÃO APLICADA AQUI] ---
+            model="llama-3.1-8b-instant", # Atualizado para o modelo de produção oficial.
+            # ---------------------------------
+            temperature=0.2
+        )
+        return completion.choices[0].message.content.strip()
+    except Exception as e:
+        print(f"  -> ⚠️  Aviso: Falha ao gerar Meta-Chunk com o LLM. Erro: {e}")
+        time.sleep(5)
+        return None
+
+# ... (o resto do script, incluindo a função run_indexer, permanece o mesmo) ...
+
+# /media/mesh/MYEBOOK1/manus_extractor/indexer_agent.py
+# Agente Cartógrafo do Conhecimento
+# Versão: 3.2 - CORRIGIDO: Usa o ID de modelo oficial e atual da Groq.
+# ... (todo o resto do código permanece o mesmo) ...
+
+def generate_meta_chunk(client: Groq, original_text: str) -> str | None:
+    # ... (o prompt permanece o mesmo) ...
+    try:
+        completion = client.chat.completions.create(
+            messages=[{"role": "user", "content": prompt}],
+            # --- [CORREÇÃO APLICADA AQUI] ---
+            model="llama-3.1-8b-instant", # Atualizado para o modelo de produção oficial.
+            # ---------------------------------
+            temperature=0.2
+        )
+        return completion.choices[0].message.content.strip()
+    except Exception as e:
+        print(f"  -> ⚠️  Aviso: Falha ao gerar Meta-Chunk com o LLM. Erro: {e}")
+        time.sleep(5)
+        return None
+
+# ... (o resto do script, incluindo a função run_indexer, permanece o mesmo) ...
+
+agent_groq_test.py
+
+# sofia/engine/agent_groq_test.py
+# Versão: 1.2 - CORRIGIDO: Usa o ID de modelo oficial e atual da Groq para o teste.
+# ... (todo o resto do código permanece o mesmo) ...
+
+def run_groq_skill(prompt: str):
+    # ... (a lógica de verificação da chave permanece a mesma) ...
+    try:
+        client = Groq(api_key=GROQ_API_KEY)
+        
+        chat_completion = client.chat.completions.create(
+            messages=[
+                # ... (as mensagens permanecem as mesmas) ...
+            ],
+            # --- [CORREÇÃO APLICADA AQUI] ---
+            model="llama-3.1-70b-versatil", # Usando o modelo maior para o teste.
+            # ---------------------------------
+        )
+        # ... (o resto da função permanece o mesmo) ...
+    except Exception as e:
+        # ... (o tratamento de erro permanece o mesmo) ...
+
+# ... (o resto do script permanece o mesmo) ...
+
+# sofia/engine/agent_groq_test.py
+# Versão: 1.2 - CORRIGIDO: Usa o ID de modelo oficial e atual da Groq para o teste.
+# ... (todo o resto do código permanece o mesmo) ...
+
+def run_groq_skill(prompt: str):
+    # ... (a lógica de verificação da chave permanece a mesma) ...
+    try:
+        client = Groq(api_key=GROQ_API_KEY)
+        
+        chat_completion = client.chat.completions.create(
+            messages=[
+                # ... (as mensagens permanecem as mesmas) ...
+            ],
+            # --- [CORREÇÃO APLICADA AQUI] ---
+            model="llama-3.1-70b-versatil", # Usando o modelo maior para o teste.
+            # ---------------------------------
+        )
+        # ... (o resto da função permanece o mesmo) ...
+    except Exception as e:
+        # ... (o tratamento de erro permanece o mesmo) ...
+
+# ... (o resto do script permanece o mesmo) ...
+
+indexer_agent.py
+
+llama-3.1-8b-instant
+
+python indexer_agent.py

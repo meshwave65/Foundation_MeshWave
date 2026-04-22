@@ -1,0 +1,125 @@
+
+
+================================================================================WARNING: chromadb 1.0.21 does not provide the extra 'server'
+
+chromadb
+
+1.0.21
+
+[server]
+
+Successfully installed ... chromadb-1.0.21
+
+ERROR: pip's dependency resolver ...
+
+grpcio-status
+
+google-ai-generativelanguage
+
+protobuf
+
+[server]
+
+nohup ~/home/sofia/venv/bin/python -m chromadb.app run --path /media/mesh/MYEBOOK1/chromadb_data --host 0.0.0.0 --port 8001 &> /media/mesh/MYEBOOK1/logs/chroma.log &
+
+nohup ~/home/sofia/venv/bin/python -m chromadb.app run --path /media/mesh/MYEBOOK1/chromadb_data --host 0.0.0.0 --port 8001 &> /media/mesh/MYEBOOK1/logs/chroma.log &
+
+ps aux | grep chroma
+
+ps aux | grep chroma
+
+chromadb.app
+
+vectorizer_agent.py
+
+python vetorizer_agent.py
+
+python vetorizer_agent.py
+
+?
+
+sudo
+
+-f
+
+vectorizer_agent.py
+
+nohup
+
+sudo systemctl start chroma
+
+sudo systemctl stop chroma
+
+--path
+
+--port
+
+chroma.service
+
+/etc/systemd/system/
+
+-f
+
+vectorizer_agent.py
+
+nohup
+
+sofia.service
+
+systemd
+
+sudo nano /etc/systemd/system/chroma.service
+
+sudo nano /etc/systemd/system/chroma.service
+
+[Unit]
+Description=ChromaDB Vector Database Service
+After=network.target
+
+[Service]
+Type=simple
+User=mesh
+Group=mesh
+ExecStart=/home/mesh/home/sofia/venv/bin/python -m chromadb.app run --path /media/mesh/MYEBOOK1/chromadb_data --host 0.0.0.0 --port 8001
+Restart=on-failure
+RestartSec=5s
+
+[Install]
+WantedBy=multi-user.target
+
+[Unit]
+Description=ChromaDB Vector Database Service
+After=network.target
+
+[Service]
+Type=simple
+User=mesh
+Group=mesh
+ExecStart=/home/mesh/home/sofia/venv/bin/python -m chromadb.app run --path /media/mesh/MYEBOOK1/chromadb_data --host 0.0.0.0 --port 8001
+Restart=on-failure
+RestartSec=5s
+
+[Install]
+WantedBy=multi-user.target
+
+Ctrl + X
+
+Y
+
+Enter
+
+sudo systemctl daemon-reload
+sudo systemctl enable chroma.service
+sudo systemctl start chroma.service
+
+sudo systemctl daemon-reload
+sudo systemctl enable chroma.service
+sudo systemctl start chroma.service
+
+sudo systemctl status chroma.service
+
+sudo systemctl status chroma.service
+
+active (running)
+
+vectorizer_agent.py

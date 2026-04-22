@@ -1,0 +1,701 @@
+
+
+================================================================================MeshWave has stopped
+
+ForegroundService
+
+startForegroundService()
+
+ForegroundServices
+
+MeshWaveService
+
+startForeground()
+
+startForegroundService()
+
+onCreate()
+
+startForeground()
+
+MeshWaveService
+
+MeshWaveService.java
+
+WifiP2pManager
+
+startForeground()
+
+MeshWaveService.java
+
+app/src/main/java/com/example/meshwave/MeshWaveService.java
+
+// v0.3.14-alpha (Correção para API 26)
+package com.example.meshwave;
+
+import android.annotation.SuppressLint;
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.Service;
+import android.content.Intent;
+import android.content.pm.ServiceInfo;
+import android.net.wifi.p2p.WifiP2pConfig;
+import android.net.wifi.p2p.WifiP2pDevice;
+import android.net.wifi.p2p.WifiP2pInfo;
+import android.net.wifi.p2p.WifiP2pManager;
+import android.net.wifi.p2p.nsd.WifiP2pDnsSdServiceInfo;
+import android.net.wifi.p2p.nsd.WifiP2pDnsSdServiceRequest;
+import android.os.Build;
+import android.os.Handler;
+import android.os.IBinder;
+import android.os.Looper;
+import android.util.Log;
+
+import androidx.annotation.Nullable;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.ServiceCompat;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.function.Consumer;
+
+@SuppressLint("MissingPermission")
+public class MeshWaveService extends Service {
+    private static final String TAG = "MeshWaveService_v0.3.14";
+    private static final String CHANNEL_ID = "MeshWaveChannel";
+    private static final int NOTIFICATION_ID = 1;
+    public static final String SERVICE_INSTANCE = "_meshwave";
+    public static final String SERVICE_REG_TYPE = "_meshwave._tcp";
+
+    public static final String ACTION_START_SERVICE = "com.example.meshwave.START_SERVICE";
+    public static final String ACTION_SEND_MESSAGE = "com.example.meshwave.SEND_MESSAGE";
+    public static final String ACTION_CONNECTION_INFO = "com.example.meshwave.CONNECTION_INFO";
+
+    public static final String ACTION_UPDATE_UI = "com.example.meshwave.UPDATE_UI";
+    public static final String ACTION_RECEIVE_MESSAGE = "com.example.meshwave.RECEIVE_MESSAGE";
+
+    public static final String EXTRA_SESSID = "sessid";
+    public static final String EXTRA_IDENTITY = "identity";
+    public static final String EXTRA_MESSAGE = "message";
+    public static final String EXTRA_P2P_INFO = "p2p_info";
+    public static final String EXTRA_STATUS_TEXT = "status_text";
+    public static final String EXTRA_NODE_LIST = "node_list";
+
+    private WifiP2pManager manager;
+    private WifiP2pManager.Channel channel;
+    private WifiP2pDnsSdServiceRequest serviceRequest;
+    private CommunicationThread communicationThread;
+
+    private MeshWaveIdentity myIdentity;
+    private String currentSessid;
+    private boolean isConnected = false;
+
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        Log.d(TAG, "Serviço onCreate: Iniciando...");
+
+        // **CORREÇÃO CRÍTICA PARA API 26**
+        // 1. Criar o canal de notificação primeiro.
+        createNotificationChannel();
+
+        // 2. Promover a primeiro plano IMEDIATAMENTE, antes de qualquer outra lógica.
+        // Usar ServiceCompat para conformidade com APIs mais recentes.
+        Notification notification = createNotification("MeshWave está iniciando...");
+        ServiceCompat.startForeground(this, NOTIFICATION_ID, notification,
+                Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q ? ServiceInfo.FOREGROUND_SERVICE_TYPE_CONNECTED_DEVICE : 0);
+        
+        Log.d(TAG, "Serviço promovido para primeiro plano.");
+
+        // 3. Somente AGORA, inicializar outros componentes.
+        manager = (WifiP2pManager) getSystemService(WIFI_P2P_SERVICE);
+        if (manager != null) {
+            channel = manager.initialize(this, getMainLooper(), null);
+            Log.d(TAG, "WifiP2pManager inicializado.");
+        } else {
+            Log.e(TAG, "WifiP2pManager não está disponível. O serviço não funcionará.");
+            stopSelf(); // Parar o serviço se o P2P não estiver disponível.
+        }
+    }
+
+    @Override
+    public int onStartCommand(Intent intent, int flags, int startId) {
+        if (intent != null && intent.getAction() != null) {
+            Log.d(TAG, "Comando recebido: " + intent.getAction());
+            switch (intent.getAction()) {
+                case ACTION_START_SERVICE:
+                    handleStartService(intent);
+                    break;
+                case ACTION_SEND_MESSAGE:
+                    handleSendMessage(intent);
+                    break;
+                case ACTION_CONNECTION_INFO:
+                    handleConnectionInfo(intent);
+                    break;
+            }
+        }
+        return START_STICKY;
+    }
+
+    @SuppressWarnings("deprecation")
+    private void handleStartService(Intent intent) {
+        if (manager == null || channel == null) {
+            Log.e(TAG, "Tentativa de iniciar serviço sem WifiP2pManager. Abortando.");
+            return;
+        }
+        currentSessid = intent.getStringExtra(EXTRA_SESSID);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            myIdentity = intent.getSerializableExtra(EXTRA_IDENTITY, MeshWaveIdentity.class);
+        } else {
+            myIdentity = (MeshWaveIdentity) intent.getSerializableExtra(EXTRA_IDENTITY);
+        }
+
+        if (myIdentity == null || currentSessid == null) {
+            Log.w(TAG, "Comando START_SERVICE recebido sem identidade ou SESSID. Aguardando dados completos.");
+            return;
+        }
+
+        Log.d(TAG, "Identidade e SESSID recebidos. Iniciando lógica de rede.");
+        startRegistrationAndDiscovery();
+    }
+
+    private void handleSendMessage(Intent intent) {
+        String message = intent.getStringExtra(EXTRA_MESSAGE);
+        if (communicationThread != null && message != null) {
+            communicationThread.write(message.getBytes());
+        } else {
+            Log.w(TAG, "Tentativa de enviar mensagem sem uma conexão ativa.");
+        }
+    }
+
+    @SuppressWarnings("deprecation")
+    private void handleConnectionInfo(Intent intent) {
+        WifiP2pInfo info;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            info = intent.getParcelableExtra(EXTRA_P2P_INFO, WifiP2pInfo.class);
+        } else {
+            info = intent.getParcelableExtra(EXTRA_P2P_INFO);
+        }
+        if (info != null) {
+            handleConnectionChange(info);
+        }
+    }
+
+    private void startRegistrationAndDiscovery() {
+        if (isConnected) {
+            Log.d(TAG, "Já conectado, ignorando nova descoberta.");
+            return;
+        }
+        Log.d(TAG, "Iniciando registro e descoberta de serviço...");
+        stopServiceDiscovery();
+
+        Map<String, String> record = new HashMap<>();
+        record.put("user", myIdentity.getUsername());
+        record.put("sessid", currentSessid);
+        record.put("did", myIdentity.getDid());
+
+        WifiP2pDnsSdServiceInfo serviceInfo = WifiP2pDnsSdServiceInfo.newInstance(SERVICE_INSTANCE, SERVICE_REG_TYPE, record);
+        manager.addLocalService(channel, serviceInfo, new WifiP2pManager.ActionListener() {
+            @Override
+            public void onSuccess() {
+                Log.d(TAG, "Serviço local anunciado com sucesso.");
+                startServiceDiscoveryOnly();
+            }
+            @Override
+            public void onFailure(int reason) {
+                String error = "Falha ao anunciar serviço local. Código: " + reason;
+                Log.e(TAG, error);
+                broadcastStateUpdate("Erro: " + error, "Verifique as permissões e o estado do Wi-Fi.");
+            }
+        });
+    }
+
+    private void startServiceDiscoveryOnly() {
+        WifiP2pManager.DnsSdTxtRecordListener txtListener = (fullDomain, record, device) -> {
+            Log.d(TAG, "Nó P2P encontrado: " + device.deviceName);
+            if (record.containsKey("sessid") && currentSessid.equals(record.get("sessid"))) {
+                Log.d(TAG, "Nó compatível encontrado: " + device.deviceName + " com SESSID correspondente.");
+                connectToDevice(device);
+            }
+        };
+
+        manager.setDnsSdResponseListeners(channel, null, txtListener);
+        serviceRequest = WifiP2pDnsSdServiceRequest.newInstance();
+        manager.addServiceRequest(channel, serviceRequest, new WifiP2pManager.ActionListener() {
+            @Override
+            public void onSuccess() {
+                manager.discoverServices(channel, new WifiP2pManager.ActionListener() {
+                    @Override
+                    public void onSuccess() {
+                        Log.d(TAG, "Descoberta de serviços iniciada.");
+                        broadcastStateUpdate("Procurando...", "Nenhum nó detectado.");
+                    }
+                    @Override
+                    public void onFailure(int reason) {
+                        String error = "Falha ao iniciar descoberta. Código: " + reason;
+                        Log.e(TAG, error);
+                        broadcastStateUpdate("Erro: " + error, "Tente reiniciar o Wi-Fi.");
+                    }
+                });
+            }
+            @Override
+            public void onFailure(int reason) {
+                String error = "Falha ao adicionar requisição de serviço. Código: " + reason;
+                Log.e(TAG, error);
+                broadcastStateUpdate("Erro: " + error, "Falha interna do P2P.");
+            }
+        });
+    }
+
+    private void connectToDevice(WifiP2pDevice device) {
+        if (device == null) return;
+        Log.d(TAG, "Tentando conectar ao dispositivo: " + device.deviceName);
+        WifiP2pConfig config = new WifiP2pConfig();
+        config.deviceAddress = device.deviceAddress;
+        manager.connect(channel, config, new WifiP2pManager.ActionListener() {
+            @Override
+            public void onSuccess() {
+                Log.d(TAG, "Pedido de conexão para " + device.deviceName + " enviado com sucesso.");
+            }
+            @Override
+            public void onFailure(int reason) {
+                Log.e(TAG, "Falha ao conectar com " + device.deviceName + ". Código: " + reason);
+            }
+        });
+    }
+
+    public void handleConnectionChange(WifiP2pInfo info) {
+        if (info.groupFormed) {
+            Log.d(TAG, "Grupo P2P formado. Líder: " + info.isGroupOwner);
+            isConnected = true;
+            stopServiceDiscovery();
+
+            if (communicationThread != null) {
+                communicationThread.close();
+            }
+            Consumer<String> messageConsumer = this::broadcastReceivedMessage;
+            communicationThread = new CommunicationThread(info.groupOwnerAddress, info.isGroupOwner, messageConsumer);
+            communicationThread.start();
+
+            String status = info.isGroupOwner ? "Conectado (Líder)" : "Conectado (Cliente)";
+            String nodeList = "Conectado a " + (info.isGroupOwner ? "um ou mais clientes" : "líder do grupo");
+            broadcastStateUpdate(status, nodeList);
+        } else {
+            Log.d(TAG, "Conexão P2P perdida ou desfeita.");
+            isConnected = false;
+            if (communicationThread != null) {
+                communicationThread.close();
+                communicationThread = null;
+            }
+            broadcastStateUpdate("Desconectado", "Nenhum nó detectado.");
+            startRegistrationAndDiscovery();
+        }
+    }
+
+    private void stopServiceDiscovery() {
+        if (manager != null && channel != null) {
+            manager.clearLocalServices(channel, null);
+            if (serviceRequest != null) {
+                manager.removeServiceRequest(channel, serviceRequest, null);
+                serviceRequest = null;
+            }
+            manager.stopPeerDiscovery(channel, null);
+            Log.d(TAG, "Descoberta de serviços e peers parada.");
+        }
+    }
+
+    private void broadcastReceivedMessage(String message) {
+        Intent intent = new Intent(ACTION_RECEIVE_MESSAGE);
+        intent.putExtra(EXTRA_MESSAGE, message);
+        LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
+    }
+
+    private void broadcastStateUpdate(String status, String nodeList) {
+        Intent intent = new Intent(ACTION_UPDATE_UI);
+        intent.putExtra(EXTRA_STATUS_TEXT, status);
+        intent.putExtra(EXTRA_NODE_LIST, nodeList);
+        intent.putExtra(EXTRA_SESSID, currentSessid);
+        LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
+        
+        Notification notification = createNotification(status);
+        ServiceCompat.startForeground(this, NOTIFICATION_ID, notification,
+                Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q ? ServiceInfo.FOREGROUND_SERVICE_TYPE_CONNECTED_DEVICE : 0);
+    }
+
+    private void createNotificationChannel() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            NotificationChannel serviceChannel = new NotificationChannel(
+                    CHANNEL_ID, "MeshWave Service Channel", NotificationManager.IMPORTANCE_LOW);
+            getSystemService(NotificationManager.class).createNotificationChannel(serviceChannel);
+        }
+    }
+
+    private Notification createNotification(String text) {
+        return new NotificationCompat.Builder(this, CHANNEL_ID)
+                .setContentTitle("MeshWave Ativo")
+                .setContentText(text)
+                .setSmallIcon(R.drawable.ic_meshwave_logo)
+                .build();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Log.d(TAG, "Serviço destruído. Limpando recursos.");
+        if (communicationThread != null) {
+            communicationThread.close();
+        }
+        stopServiceDiscovery();
+        if (manager != null && channel != null) {
+            manager.removeGroup(channel, null);
+        }
+    }
+
+    @Nullable
+    @Override
+    public IBinder onBind(Intent intent) {
+        return null;
+    }
+}
+
+// v0.3.14-alpha (Correção para API 26)
+package com.example.meshwave;
+
+import android.annotation.SuppressLint;
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.Service;
+import android.content.Intent;
+import android.content.pm.ServiceInfo;
+import android.net.wifi.p2p.WifiP2pConfig;
+import android.net.wifi.p2p.WifiP2pDevice;
+import android.net.wifi.p2p.WifiP2pInfo;
+import android.net.wifi.p2p.WifiP2pManager;
+import android.net.wifi.p2p.nsd.WifiP2pDnsSdServiceInfo;
+import android.net.wifi.p2p.nsd.WifiP2pDnsSdServiceRequest;
+import android.os.Build;
+import android.os.Handler;
+import android.os.IBinder;
+import android.os.Looper;
+import android.util.Log;
+
+import androidx.annotation.Nullable;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.ServiceCompat;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.function.Consumer;
+
+@SuppressLint("MissingPermission")
+public class MeshWaveService extends Service {
+    private static final String TAG = "MeshWaveService_v0.3.14";
+    private static final String CHANNEL_ID = "MeshWaveChannel";
+    private static final int NOTIFICATION_ID = 1;
+    public static final String SERVICE_INSTANCE = "_meshwave";
+    public static final String SERVICE_REG_TYPE = "_meshwave._tcp";
+
+    public static final String ACTION_START_SERVICE = "com.example.meshwave.START_SERVICE";
+    public static final String ACTION_SEND_MESSAGE = "com.example.meshwave.SEND_MESSAGE";
+    public static final String ACTION_CONNECTION_INFO = "com.example.meshwave.CONNECTION_INFO";
+
+    public static final String ACTION_UPDATE_UI = "com.example.meshwave.UPDATE_UI";
+    public static final String ACTION_RECEIVE_MESSAGE = "com.example.meshwave.RECEIVE_MESSAGE";
+
+    public static final String EXTRA_SESSID = "sessid";
+    public static final String EXTRA_IDENTITY = "identity";
+    public static final String EXTRA_MESSAGE = "message";
+    public static final String EXTRA_P2P_INFO = "p2p_info";
+    public static final String EXTRA_STATUS_TEXT = "status_text";
+    public static final String EXTRA_NODE_LIST = "node_list";
+
+    private WifiP2pManager manager;
+    private WifiP2pManager.Channel channel;
+    private WifiP2pDnsSdServiceRequest serviceRequest;
+    private CommunicationThread communicationThread;
+
+    private MeshWaveIdentity myIdentity;
+    private String currentSessid;
+    private boolean isConnected = false;
+
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        Log.d(TAG, "Serviço onCreate: Iniciando...");
+
+        // **CORREÇÃO CRÍTICA PARA API 26**
+        // 1. Criar o canal de notificação primeiro.
+        createNotificationChannel();
+
+        // 2. Promover a primeiro plano IMEDIATAMENTE, antes de qualquer outra lógica.
+        // Usar ServiceCompat para conformidade com APIs mais recentes.
+        Notification notification = createNotification("MeshWave está iniciando...");
+        ServiceCompat.startForeground(this, NOTIFICATION_ID, notification,
+                Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q ? ServiceInfo.FOREGROUND_SERVICE_TYPE_CONNECTED_DEVICE : 0);
+        
+        Log.d(TAG, "Serviço promovido para primeiro plano.");
+
+        // 3. Somente AGORA, inicializar outros componentes.
+        manager = (WifiP2pManager) getSystemService(WIFI_P2P_SERVICE);
+        if (manager != null) {
+            channel = manager.initialize(this, getMainLooper(), null);
+            Log.d(TAG, "WifiP2pManager inicializado.");
+        } else {
+            Log.e(TAG, "WifiP2pManager não está disponível. O serviço não funcionará.");
+            stopSelf(); // Parar o serviço se o P2P não estiver disponível.
+        }
+    }
+
+    @Override
+    public int onStartCommand(Intent intent, int flags, int startId) {
+        if (intent != null && intent.getAction() != null) {
+            Log.d(TAG, "Comando recebido: " + intent.getAction());
+            switch (intent.getAction()) {
+                case ACTION_START_SERVICE:
+                    handleStartService(intent);
+                    break;
+                case ACTION_SEND_MESSAGE:
+                    handleSendMessage(intent);
+                    break;
+                case ACTION_CONNECTION_INFO:
+                    handleConnectionInfo(intent);
+                    break;
+            }
+        }
+        return START_STICKY;
+    }
+
+    @SuppressWarnings("deprecation")
+    private void handleStartService(Intent intent) {
+        if (manager == null || channel == null) {
+            Log.e(TAG, "Tentativa de iniciar serviço sem WifiP2pManager. Abortando.");
+            return;
+        }
+        currentSessid = intent.getStringExtra(EXTRA_SESSID);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            myIdentity = intent.getSerializableExtra(EXTRA_IDENTITY, MeshWaveIdentity.class);
+        } else {
+            myIdentity = (MeshWaveIdentity) intent.getSerializableExtra(EXTRA_IDENTITY);
+        }
+
+        if (myIdentity == null || currentSessid == null) {
+            Log.w(TAG, "Comando START_SERVICE recebido sem identidade ou SESSID. Aguardando dados completos.");
+            return;
+        }
+
+        Log.d(TAG, "Identidade e SESSID recebidos. Iniciando lógica de rede.");
+        startRegistrationAndDiscovery();
+    }
+
+    private void handleSendMessage(Intent intent) {
+        String message = intent.getStringExtra(EXTRA_MESSAGE);
+        if (communicationThread != null && message != null) {
+            communicationThread.write(message.getBytes());
+        } else {
+            Log.w(TAG, "Tentativa de enviar mensagem sem uma conexão ativa.");
+        }
+    }
+
+    @SuppressWarnings("deprecation")
+    private void handleConnectionInfo(Intent intent) {
+        WifiP2pInfo info;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            info = intent.getParcelableExtra(EXTRA_P2P_INFO, WifiP2pInfo.class);
+        } else {
+            info = intent.getParcelableExtra(EXTRA_P2P_INFO);
+        }
+        if (info != null) {
+            handleConnectionChange(info);
+        }
+    }
+
+    private void startRegistrationAndDiscovery() {
+        if (isConnected) {
+            Log.d(TAG, "Já conectado, ignorando nova descoberta.");
+            return;
+        }
+        Log.d(TAG, "Iniciando registro e descoberta de serviço...");
+        stopServiceDiscovery();
+
+        Map<String, String> record = new HashMap<>();
+        record.put("user", myIdentity.getUsername());
+        record.put("sessid", currentSessid);
+        record.put("did", myIdentity.getDid());
+
+        WifiP2pDnsSdServiceInfo serviceInfo = WifiP2pDnsSdServiceInfo.newInstance(SERVICE_INSTANCE, SERVICE_REG_TYPE, record);
+        manager.addLocalService(channel, serviceInfo, new WifiP2pManager.ActionListener() {
+            @Override
+            public void onSuccess() {
+                Log.d(TAG, "Serviço local anunciado com sucesso.");
+                startServiceDiscoveryOnly();
+            }
+            @Override
+            public void onFailure(int reason) {
+                String error = "Falha ao anunciar serviço local. Código: " + reason;
+                Log.e(TAG, error);
+                broadcastStateUpdate("Erro: " + error, "Verifique as permissões e o estado do Wi-Fi.");
+            }
+        });
+    }
+
+    private void startServiceDiscoveryOnly() {
+        WifiP2pManager.DnsSdTxtRecordListener txtListener = (fullDomain, record, device) -> {
+            Log.d(TAG, "Nó P2P encontrado: " + device.deviceName);
+            if (record.containsKey("sessid") && currentSessid.equals(record.get("sessid"))) {
+                Log.d(TAG, "Nó compatível encontrado: " + device.deviceName + " com SESSID correspondente.");
+                connectToDevice(device);
+            }
+        };
+
+        manager.setDnsSdResponseListeners(channel, null, txtListener);
+        serviceRequest = WifiP2pDnsSdServiceRequest.newInstance();
+        manager.addServiceRequest(channel, serviceRequest, new WifiP2pManager.ActionListener() {
+            @Override
+            public void onSuccess() {
+                manager.discoverServices(channel, new WifiP2pManager.ActionListener() {
+                    @Override
+                    public void onSuccess() {
+                        Log.d(TAG, "Descoberta de serviços iniciada.");
+                        broadcastStateUpdate("Procurando...", "Nenhum nó detectado.");
+                    }
+                    @Override
+                    public void onFailure(int reason) {
+                        String error = "Falha ao iniciar descoberta. Código: " + reason;
+                        Log.e(TAG, error);
+                        broadcastStateUpdate("Erro: " + error, "Tente reiniciar o Wi-Fi.");
+                    }
+                });
+            }
+            @Override
+            public void onFailure(int reason) {
+                String error = "Falha ao adicionar requisição de serviço. Código: " + reason;
+                Log.e(TAG, error);
+                broadcastStateUpdate("Erro: " + error, "Falha interna do P2P.");
+            }
+        });
+    }
+
+    private void connectToDevice(WifiP2pDevice device) {
+        if (device == null) return;
+        Log.d(TAG, "Tentando conectar ao dispositivo: " + device.deviceName);
+        WifiP2pConfig config = new WifiP2pConfig();
+        config.deviceAddress = device.deviceAddress;
+        manager.connect(channel, config, new WifiP2pManager.ActionListener() {
+            @Override
+            public void onSuccess() {
+                Log.d(TAG, "Pedido de conexão para " + device.deviceName + " enviado com sucesso.");
+            }
+            @Override
+            public void onFailure(int reason) {
+                Log.e(TAG, "Falha ao conectar com " + device.deviceName + ". Código: " + reason);
+            }
+        });
+    }
+
+    public void handleConnectionChange(WifiP2pInfo info) {
+        if (info.groupFormed) {
+            Log.d(TAG, "Grupo P2P formado. Líder: " + info.isGroupOwner);
+            isConnected = true;
+            stopServiceDiscovery();
+
+            if (communicationThread != null) {
+                communicationThread.close();
+            }
+            Consumer<String> messageConsumer = this::broadcastReceivedMessage;
+            communicationThread = new CommunicationThread(info.groupOwnerAddress, info.isGroupOwner, messageConsumer);
+            communicationThread.start();
+
+            String status = info.isGroupOwner ? "Conectado (Líder)" : "Conectado (Cliente)";
+            String nodeList = "Conectado a " + (info.isGroupOwner ? "um ou mais clientes" : "líder do grupo");
+            broadcastStateUpdate(status, nodeList);
+        } else {
+            Log.d(TAG, "Conexão P2P perdida ou desfeita.");
+            isConnected = false;
+            if (communicationThread != null) {
+                communicationThread.close();
+                communicationThread = null;
+            }
+            broadcastStateUpdate("Desconectado", "Nenhum nó detectado.");
+            startRegistrationAndDiscovery();
+        }
+    }
+
+    private void stopServiceDiscovery() {
+        if (manager != null && channel != null) {
+            manager.clearLocalServices(channel, null);
+            if (serviceRequest != null) {
+                manager.removeServiceRequest(channel, serviceRequest, null);
+                serviceRequest = null;
+            }
+            manager.stopPeerDiscovery(channel, null);
+            Log.d(TAG, "Descoberta de serviços e peers parada.");
+        }
+    }
+
+    private void broadcastReceivedMessage(String message) {
+        Intent intent = new Intent(ACTION_RECEIVE_MESSAGE);
+        intent.putExtra(EXTRA_MESSAGE, message);
+        LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
+    }
+
+    private void broadcastStateUpdate(String status, String nodeList) {
+        Intent intent = new Intent(ACTION_UPDATE_UI);
+        intent.putExtra(EXTRA_STATUS_TEXT, status);
+        intent.putExtra(EXTRA_NODE_LIST, nodeList);
+        intent.putExtra(EXTRA_SESSID, currentSessid);
+        LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
+        
+        Notification notification = createNotification(status);
+        ServiceCompat.startForeground(this, NOTIFICATION_ID, notification,
+                Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q ? ServiceInfo.FOREGROUND_SERVICE_TYPE_CONNECTED_DEVICE : 0);
+    }
+
+    private void createNotificationChannel() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            NotificationChannel serviceChannel = new NotificationChannel(
+                    CHANNEL_ID, "MeshWave Service Channel", NotificationManager.IMPORTANCE_LOW);
+            getSystemService(NotificationManager.class).createNotificationChannel(serviceChannel);
+        }
+    }
+
+    private Notification createNotification(String text) {
+        return new NotificationCompat.Builder(this, CHANNEL_ID)
+                .setContentTitle("MeshWave Ativo")
+                .setContentText(text)
+                .setSmallIcon(R.drawable.ic_meshwave_logo)
+                .build();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Log.d(TAG, "Serviço destruído. Limpando recursos.");
+        if (communicationThread != null) {
+            communicationThread.close();
+        }
+        stopServiceDiscovery();
+        if (manager != null && channel != null) {
+            manager.removeGroup(channel, null);
+        }
+    }
+
+    @Nullable
+    @Override
+    public IBinder onBind(Intent intent) {
+        return null;
+    }
+}
+
+MeshWaveService
+
+ClaChain
+
+minSdkVersion
+
+minSdkVersion
+
+ClaCache

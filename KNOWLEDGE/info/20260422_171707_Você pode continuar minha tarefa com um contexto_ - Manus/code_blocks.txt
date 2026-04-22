@@ -1,0 +1,1769 @@
+
+
+================================================================================error: invalid method reference
+
+method onConnectionInfoAvailable(WifiP2pInfo)
+
+WiFiDirectBroadcastReceiver.java
+
+MainActivity.java
+
+onConnectionInfoAvailable
+
+MainActivity
+
+WiFiDirectBroadcastReceiver
+
+WiFiDirectBroadcastReceiver
+
+MainActivity
+
+Receiver
+
+WiFiDirectBroadcastReceiver
+
+MainActivity
+
+MainActivity.java
+
+initializeP2pConnectionListener()
+
+onCreate
+
+app/src/main/java/com/example/meshwave/MainActivity.java
+
+// v0.3.16-alpha (Bootstrap Híbrido - Correção do P2P Listener)
+package com.example.meshwave;
+
+import android.Manifest;
+import android.annotation.SuppressLint;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.content.pm.PackageManager;
+import android.location.Location;
+import android.os.Build;
+import android.os.Bundle;
+import android.util.Log;
+import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
+
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class MainActivity extends AppCompatActivity implements ChatFragmentListener {
+
+    private static final String TAG = "MainActivity_v0.3.16";
+    private static final int ALL_PERMISSIONS_REQUEST_CODE = 101;
+
+    private FragmentManager fragmentManager;
+    private StatusFragment statusFragment;
+    private ChatFragment chatFragment;
+
+    private BroadcastReceiver uiUpdateReceiver;
+    private boolean serviceStarted = false;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        initializeViewsAndFragments(savedInstanceState);
+        setupUiUpdateReceiver();
+        
+        // A inicialização do P2P Listener foi removida para esta fase de teste.
+        checkPermissionsAndBootstrap();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(uiUpdateReceiver);
+    }
+
+    private void checkPermissionsAndBootstrap() {
+        String[] requiredPermissions = getRequiredPermissions();
+        boolean allPermissionsGranted = true;
+        for (String permission : requiredPermissions) {
+            if (ContextCompat.checkSelfPermission(this, permission) != PackageManager.PERMISSION_GRANTED) {
+                allPermissionsGranted = false;
+                break;
+            }
+        }
+
+        if (allPermissionsGranted) {
+            bootstrap();
+        } else {
+            ActivityCompat.requestPermissions(this, requiredPermissions, ALL_PERMISSIONS_REQUEST_CODE);
+        }
+    }
+
+    private String[] getRequiredPermissions() {
+        List<String> permissions = new ArrayList<>();
+        permissions.add(Manifest.permission.ACCESS_FINE_LOCATION);
+        
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            permissions.add(Manifest.permission.NEARBY_WIFI_DEVICES);
+            permissions.add(Manifest.permission.BLUETOOTH_SCAN);
+            permissions.add(Manifest.permission.BLUETOOTH_CONNECT);
+            permissions.add(Manifest.permission.BLUETOOTH_ADVERTISE);
+        } else {
+            permissions.add(Manifest.permission.BLUETOOTH);
+            permissions.add(Manifest.permission.BLUETOOTH_ADMIN);
+            permissions.add(Manifest.permission.ACCESS_COARSE_LOCATION);
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            permissions.add(Manifest.permission.POST_NOTIFICATIONS);
+        }
+        return permissions.toArray(new String[0]);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == ALL_PERMISSIONS_REQUEST_CODE) {
+            boolean allGranted = true;
+            for (int grantResult : grantResults) {
+                if (grantResult != PackageManager.PERMISSION_GRANTED) {
+                    allGranted = false;
+                    break;
+                }
+            }
+            if (allGranted) {
+                bootstrap();
+            } else {
+                Toast.makeText(this, "Todas as permissões são essenciais.", Toast.LENGTH_LONG).show();
+                updateStatusUI(null, "Erro", "Permissões negadas", "Cache indisponível.");
+            }
+        }
+    }
+
+    @SuppressLint("MissingPermission")
+    private void bootstrap() {
+        if (serviceStarted) return;
+
+        Log.d(TAG, "Permissões OK. Iniciando bootstrap: obtendo localização...");
+        updateStatusUI(null, "Inicializando", "Obtendo localização...", null);
+
+        FusedLocationProviderClient fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+        fusedLocationClient.getLastLocation().addOnSuccessListener(this, location -> {
+            if (location != null) {
+                Log.d(TAG, "Localização obtida. Entregando para o serviço.");
+                startMeshWaveService(location);
+            } else {
+                Toast.makeText(this, "Não foi possível obter a localização. Ative o GPS e reinicie o app.", Toast.LENGTH_LONG).show();
+                updateStatusUI(null, "Erro", "Localização indisponível", null);
+            }
+        }).addOnFailureListener(this, e -> {
+            Log.e(TAG, "Falha ao obter localização.", e);
+            Toast.makeText(this, "Falha ao obter localização.", Toast.LENGTH_SHORT).show();
+            updateStatusUI(null, "Erro", "Falha na localização", null);
+        });
+    }
+
+    private void startMeshWaveService(Location location) {
+        Intent serviceIntent = new Intent(this, MeshWaveService.class);
+        serviceIntent.setAction(MeshWaveService.ACTION_START_SERVICE);
+        serviceIntent.putExtra("location_data", location);
+        
+        ContextCompat.startForegroundService(this, serviceIntent);
+        serviceStarted = true;
+    }
+
+    @Override
+    public void onSendMessage(String message) {
+        // A funcionalidade de chat está desativada nesta fase de teste
+    }
+
+    private void initializeViewsAndFragments(Bundle savedInstanceState) {
+        fragmentManager = getSupportFragmentManager();
+        statusFragment = new StatusFragment();
+        chatFragment = new ChatFragment();
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
+        bottomNavigationView.setOnItemSelectedListener(item -> {
+            Fragment selectedFragment = null;
+            int itemId = item.getItemId();
+            if (itemId == R.id.nav_status) {
+                selectedFragment = statusFragment;
+            } else if (itemId == R.id.nav_chat) {
+                selectedFragment = chatFragment;
+            }
+            if (selectedFragment != null) {
+                fragmentManager.beginTransaction().replace(R.id.fragment_container, selectedFragment).commit();
+            }
+            return true;
+        });
+        if (savedInstanceState == null) {
+            fragmentManager.beginTransaction().replace(R.id.fragment_container, statusFragment).commit();
+        }
+    }
+
+    private void setupUiUpdateReceiver() {
+        uiUpdateReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                final String action = intent.getAction();
+                if (action != null && action.equals(MeshWaveService.ACTION_UPDATE_UI)) {
+                    String status = intent.getStringExtra(MeshWaveService.EXTRA_STATUS_TEXT);
+                    String sessid = intent.getStringExtra(MeshWaveService.EXTRA_SESSID);
+                    String user = intent.getStringExtra(MeshWaveService.EXTRA_USER_TEXT);
+                    String cacheContent = intent.getStringExtra(MeshWaveService.EXTRA_CACHE_CONTENT);
+                    updateStatusUI(sessid, status, user, cacheContent);
+                }
+            }
+        };
+        IntentFilter filter = new IntentFilter(MeshWaveService.ACTION_UPDATE_UI);
+        LocalBroadcastManager.getInstance(this).registerReceiver(uiUpdateReceiver, filter);
+    }
+
+    private void updateStatusUI(String sessid, String status, String user, String cacheContent) {
+        runOnUiThread(() -> {
+            if (statusFragment != null && statusFragment.isAdded()) {
+                statusFragment.updateStatus(sessid, status, user, cacheContent);
+            }
+        });
+    }
+}
+
+// v0.3.16-alpha (Bootstrap Híbrido - Correção do P2P Listener)
+package com.example.meshwave;
+
+import android.Manifest;
+import android.annotation.SuppressLint;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.content.pm.PackageManager;
+import android.location.Location;
+import android.os.Build;
+import android.os.Bundle;
+import android.util.Log;
+import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
+
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class MainActivity extends AppCompatActivity implements ChatFragmentListener {
+
+    private static final String TAG = "MainActivity_v0.3.16";
+    private static final int ALL_PERMISSIONS_REQUEST_CODE = 101;
+
+    private FragmentManager fragmentManager;
+    private StatusFragment statusFragment;
+    private ChatFragment chatFragment;
+
+    private BroadcastReceiver uiUpdateReceiver;
+    private boolean serviceStarted = false;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        initializeViewsAndFragments(savedInstanceState);
+        setupUiUpdateReceiver();
+        
+        // A inicialização do P2P Listener foi removida para esta fase de teste.
+        checkPermissionsAndBootstrap();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(uiUpdateReceiver);
+    }
+
+    private void checkPermissionsAndBootstrap() {
+        String[] requiredPermissions = getRequiredPermissions();
+        boolean allPermissionsGranted = true;
+        for (String permission : requiredPermissions) {
+            if (ContextCompat.checkSelfPermission(this, permission) != PackageManager.PERMISSION_GRANTED) {
+                allPermissionsGranted = false;
+                break;
+            }
+        }
+
+        if (allPermissionsGranted) {
+            bootstrap();
+        } else {
+            ActivityCompat.requestPermissions(this, requiredPermissions, ALL_PERMISSIONS_REQUEST_CODE);
+        }
+    }
+
+    private String[] getRequiredPermissions() {
+        List<String> permissions = new ArrayList<>();
+        permissions.add(Manifest.permission.ACCESS_FINE_LOCATION);
+        
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            permissions.add(Manifest.permission.NEARBY_WIFI_DEVICES);
+            permissions.add(Manifest.permission.BLUETOOTH_SCAN);
+            permissions.add(Manifest.permission.BLUETOOTH_CONNECT);
+            permissions.add(Manifest.permission.BLUETOOTH_ADVERTISE);
+        } else {
+            permissions.add(Manifest.permission.BLUETOOTH);
+            permissions.add(Manifest.permission.BLUETOOTH_ADMIN);
+            permissions.add(Manifest.permission.ACCESS_COARSE_LOCATION);
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            permissions.add(Manifest.permission.POST_NOTIFICATIONS);
+        }
+        return permissions.toArray(new String[0]);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == ALL_PERMISSIONS_REQUEST_CODE) {
+            boolean allGranted = true;
+            for (int grantResult : grantResults) {
+                if (grantResult != PackageManager.PERMISSION_GRANTED) {
+                    allGranted = false;
+                    break;
+                }
+            }
+            if (allGranted) {
+                bootstrap();
+            } else {
+                Toast.makeText(this, "Todas as permissões são essenciais.", Toast.LENGTH_LONG).show();
+                updateStatusUI(null, "Erro", "Permissões negadas", "Cache indisponível.");
+            }
+        }
+    }
+
+    @SuppressLint("MissingPermission")
+    private void bootstrap() {
+        if (serviceStarted) return;
+
+        Log.d(TAG, "Permissões OK. Iniciando bootstrap: obtendo localização...");
+        updateStatusUI(null, "Inicializando", "Obtendo localização...", null);
+
+        FusedLocationProviderClient fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+        fusedLocationClient.getLastLocation().addOnSuccessListener(this, location -> {
+            if (location != null) {
+                Log.d(TAG, "Localização obtida. Entregando para o serviço.");
+                startMeshWaveService(location);
+            } else {
+                Toast.makeText(this, "Não foi possível obter a localização. Ative o GPS e reinicie o app.", Toast.LENGTH_LONG).show();
+                updateStatusUI(null, "Erro", "Localização indisponível", null);
+            }
+        }).addOnFailureListener(this, e -> {
+            Log.e(TAG, "Falha ao obter localização.", e);
+            Toast.makeText(this, "Falha ao obter localização.", Toast.LENGTH_SHORT).show();
+            updateStatusUI(null, "Erro", "Falha na localização", null);
+        });
+    }
+
+    private void startMeshWaveService(Location location) {
+        Intent serviceIntent = new Intent(this, MeshWaveService.class);
+        serviceIntent.setAction(MeshWaveService.ACTION_START_SERVICE);
+        serviceIntent.putExtra("location_data", location);
+        
+        ContextCompat.startForegroundService(this, serviceIntent);
+        serviceStarted = true;
+    }
+
+    @Override
+    public void onSendMessage(String message) {
+        // A funcionalidade de chat está desativada nesta fase de teste
+    }
+
+    private void initializeViewsAndFragments(Bundle savedInstanceState) {
+        fragmentManager = getSupportFragmentManager();
+        statusFragment = new StatusFragment();
+        chatFragment = new ChatFragment();
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
+        bottomNavigationView.setOnItemSelectedListener(item -> {
+            Fragment selectedFragment = null;
+            int itemId = item.getItemId();
+            if (itemId == R.id.nav_status) {
+                selectedFragment = statusFragment;
+            } else if (itemId == R.id.nav_chat) {
+                selectedFragment = chatFragment;
+            }
+            if (selectedFragment != null) {
+                fragmentManager.beginTransaction().replace(R.id.fragment_container, selectedFragment).commit();
+            }
+            return true;
+        });
+        if (savedInstanceState == null) {
+            fragmentManager.beginTransaction().replace(R.id.fragment_container, statusFragment).commit();
+        }
+    }
+
+    private void setupUiUpdateReceiver() {
+        uiUpdateReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                final String action = intent.getAction();
+                if (action != null && action.equals(MeshWaveService.ACTION_UPDATE_UI)) {
+                    String status = intent.getStringExtra(MeshWaveService.EXTRA_STATUS_TEXT);
+                    String sessid = intent.getStringExtra(MeshWaveService.EXTRA_SESSID);
+                    String user = intent.getStringExtra(MeshWaveService.EXTRA_USER_TEXT);
+                    String cacheContent = intent.getStringExtra(MeshWaveService.EXTRA_CACHE_CONTENT);
+                    updateStatusUI(sessid, status, user, cacheContent);
+                }
+            }
+        };
+        IntentFilter filter = new IntentFilter(MeshWaveService.ACTION_UPDATE_UI);
+        LocalBroadcastManager.getInstance(this).registerReceiver(uiUpdateReceiver, filter);
+    }
+
+    private void updateStatusUI(String sessid, String status, String user, String cacheContent) {
+        runOnUiThread(() -> {
+            if (statusFragment != null && statusFragment.isAdded()) {
+                statusFragment.updateStatus(sessid, status, user, cacheContent);
+            }
+        });
+    }
+}
+
+error: invalid method reference
+
+method onConnectionInfoAvailable(WifiP2pInfo)
+
+WiFiDirectBroadcastReceiver.java
+
+MainActivity.java
+
+onConnectionInfoAvailable
+
+MainActivity
+
+WiFiDirectBroadcastReceiver
+
+WiFiDirectBroadcastReceiver
+
+MainActivity
+
+Receiver
+
+WiFiDirectBroadcastReceiver
+
+MainActivity
+
+MainActivity.java
+
+initializeP2pConnectionListener()
+
+onCreate
+
+app/src/main/java/com/example/meshwave/MainActivity.java
+
+// v0.3.16-alpha (Bootstrap Híbrido - Correção do P2P Listener)
+package com.example.meshwave;
+
+import android.Manifest;
+import android.annotation.SuppressLint;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.content.pm.PackageManager;
+import android.location.Location;
+import android.os.Build;
+import android.os.Bundle;
+import android.util.Log;
+import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
+
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class MainActivity extends AppCompatActivity implements ChatFragmentListener {
+
+    private static final String TAG = "MainActivity_v0.3.16";
+    private static final int ALL_PERMISSIONS_REQUEST_CODE = 101;
+
+    private FragmentManager fragmentManager;
+    private StatusFragment statusFragment;
+    private ChatFragment chatFragment;
+
+    private BroadcastReceiver uiUpdateReceiver;
+    private boolean serviceStarted = false;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        initializeViewsAndFragments(savedInstanceState);
+        setupUiUpdateReceiver();
+        
+        // A inicialização do P2P Listener foi removida para esta fase de teste.
+        checkPermissionsAndBootstrap();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(uiUpdateReceiver);
+    }
+
+    private void checkPermissionsAndBootstrap() {
+        String[] requiredPermissions = getRequiredPermissions();
+        boolean allPermissionsGranted = true;
+        for (String permission : requiredPermissions) {
+            if (ContextCompat.checkSelfPermission(this, permission) != PackageManager.PERMISSION_GRANTED) {
+                allPermissionsGranted = false;
+                break;
+            }
+        }
+
+        if (allPermissionsGranted) {
+            bootstrap();
+        } else {
+            ActivityCompat.requestPermissions(this, requiredPermissions, ALL_PERMISSIONS_REQUEST_CODE);
+        }
+    }
+
+    private String[] getRequiredPermissions() {
+        List<String> permissions = new ArrayList<>();
+        permissions.add(Manifest.permission.ACCESS_FINE_LOCATION);
+        
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            permissions.add(Manifest.permission.NEARBY_WIFI_DEVICES);
+            permissions.add(Manifest.permission.BLUETOOTH_SCAN);
+            permissions.add(Manifest.permission.BLUETOOTH_CONNECT);
+            permissions.add(Manifest.permission.BLUETOOTH_ADVERTISE);
+        } else {
+            permissions.add(Manifest.permission.BLUETOOTH);
+            permissions.add(Manifest.permission.BLUETOOTH_ADMIN);
+            permissions.add(Manifest.permission.ACCESS_COARSE_LOCATION);
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            permissions.add(Manifest.permission.POST_NOTIFICATIONS);
+        }
+        return permissions.toArray(new String[0]);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == ALL_PERMISSIONS_REQUEST_CODE) {
+            boolean allGranted = true;
+            for (int grantResult : grantResults) {
+                if (grantResult != PackageManager.PERMISSION_GRANTED) {
+                    allGranted = false;
+                    break;
+                }
+            }
+            if (allGranted) {
+                bootstrap();
+            } else {
+                Toast.makeText(this, "Todas as permissões são essenciais.", Toast.LENGTH_LONG).show();
+                updateStatusUI(null, "Erro", "Permissões negadas", "Cache indisponível.");
+            }
+        }
+    }
+
+    @SuppressLint("MissingPermission")
+    private void bootstrap() {
+        if (serviceStarted) return;
+
+        Log.d(TAG, "Permissões OK. Iniciando bootstrap: obtendo localização...");
+        updateStatusUI(null, "Inicializando", "Obtendo localização...", null);
+
+        FusedLocationProviderClient fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+        fusedLocationClient.getLastLocation().addOnSuccessListener(this, location -> {
+            if (location != null) {
+                Log.d(TAG, "Localização obtida. Entregando para o serviço.");
+                startMeshWaveService(location);
+            } else {
+                Toast.makeText(this, "Não foi possível obter a localização. Ative o GPS e reinicie o app.", Toast.LENGTH_LONG).show();
+                updateStatusUI(null, "Erro", "Localização indisponível", null);
+            }
+        }).addOnFailureListener(this, e -> {
+            Log.e(TAG, "Falha ao obter localização.", e);
+            Toast.makeText(this, "Falha ao obter localização.", Toast.LENGTH_SHORT).show();
+            updateStatusUI(null, "Erro", "Falha na localização", null);
+        });
+    }
+
+    private void startMeshWaveService(Location location) {
+        Intent serviceIntent = new Intent(this, MeshWaveService.class);
+        serviceIntent.setAction(MeshWaveService.ACTION_START_SERVICE);
+        serviceIntent.putExtra("location_data", location);
+        
+        ContextCompat.startForegroundService(this, serviceIntent);
+        serviceStarted = true;
+    }
+
+    @Override
+    public void onSendMessage(String message) {
+        // A funcionalidade de chat está desativada nesta fase de teste
+    }
+
+    private void initializeViewsAndFragments(Bundle savedInstanceState) {
+        fragmentManager = getSupportFragmentManager();
+        statusFragment = new StatusFragment();
+        chatFragment = new ChatFragment();
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
+        bottomNavigationView.setOnItemSelectedListener(item -> {
+            Fragment selectedFragment = null;
+            int itemId = item.getItemId();
+            if (itemId == R.id.nav_status) {
+                selectedFragment = statusFragment;
+            } else if (itemId == R.id.nav_chat) {
+                selectedFragment = chatFragment;
+            }
+            if (selectedFragment != null) {
+                fragmentManager.beginTransaction().replace(R.id.fragment_container, selectedFragment).commit();
+            }
+            return true;
+        });
+        if (savedInstanceState == null) {
+            fragmentManager.beginTransaction().replace(R.id.fragment_container, statusFragment).commit();
+        }
+    }
+
+    private void setupUiUpdateReceiver() {
+        uiUpdateReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                final String action = intent.getAction();
+                if (action != null && action.equals(MeshWaveService.ACTION_UPDATE_UI)) {
+                    String status = intent.getStringExtra(MeshWaveService.EXTRA_STATUS_TEXT);
+                    String sessid = intent.getStringExtra(MeshWaveService.EXTRA_SESSID);
+                    String user = intent.getStringExtra(MeshWaveService.EXTRA_USER_TEXT);
+                    String cacheContent = intent.getStringExtra(MeshWaveService.EXTRA_CACHE_CONTENT);
+                    updateStatusUI(sessid, status, user, cacheContent);
+                }
+            }
+        };
+        IntentFilter filter = new IntentFilter(MeshWaveService.ACTION_UPDATE_UI);
+        LocalBroadcastManager.getInstance(this).registerReceiver(uiUpdateReceiver, filter);
+    }
+
+    private void updateStatusUI(String sessid, String status, String user, String cacheContent) {
+        runOnUiThread(() -> {
+            if (statusFragment != null && statusFragment.isAdded()) {
+                statusFragment.updateStatus(sessid, status, user, cacheContent);
+            }
+        });
+    }
+}
+
+// v0.3.16-alpha (Bootstrap Híbrido - Correção do P2P Listener)
+package com.example.meshwave;
+
+import android.Manifest;
+import android.annotation.SuppressLint;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.content.pm.PackageManager;
+import android.location.Location;
+import android.os.Build;
+import android.os.Bundle;
+import android.util.Log;
+import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
+
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class MainActivity extends AppCompatActivity implements ChatFragmentListener {
+
+    private static final String TAG = "MainActivity_v0.3.16";
+    private static final int ALL_PERMISSIONS_REQUEST_CODE = 101;
+
+    private FragmentManager fragmentManager;
+    private StatusFragment statusFragment;
+    private ChatFragment chatFragment;
+
+    private BroadcastReceiver uiUpdateReceiver;
+    private boolean serviceStarted = false;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        initializeViewsAndFragments(savedInstanceState);
+        setupUiUpdateReceiver();
+        
+        // A inicialização do P2P Listener foi removida para esta fase de teste.
+        checkPermissionsAndBootstrap();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(uiUpdateReceiver);
+    }
+
+    private void checkPermissionsAndBootstrap() {
+        String[] requiredPermissions = getRequiredPermissions();
+        boolean allPermissionsGranted = true;
+        for (String permission : requiredPermissions) {
+            if (ContextCompat.checkSelfPermission(this, permission) != PackageManager.PERMISSION_GRANTED) {
+                allPermissionsGranted = false;
+                break;
+            }
+        }
+
+        if (allPermissionsGranted) {
+            bootstrap();
+        } else {
+            ActivityCompat.requestPermissions(this, requiredPermissions, ALL_PERMISSIONS_REQUEST_CODE);
+        }
+    }
+
+    private String[] getRequiredPermissions() {
+        List<String> permissions = new ArrayList<>();
+        permissions.add(Manifest.permission.ACCESS_FINE_LOCATION);
+        
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            permissions.add(Manifest.permission.NEARBY_WIFI_DEVICES);
+            permissions.add(Manifest.permission.BLUETOOTH_SCAN);
+            permissions.add(Manifest.permission.BLUETOOTH_CONNECT);
+            permissions.add(Manifest.permission.BLUETOOTH_ADVERTISE);
+        } else {
+            permissions.add(Manifest.permission.BLUETOOTH);
+            permissions.add(Manifest.permission.BLUETOOTH_ADMIN);
+            permissions.add(Manifest.permission.ACCESS_COARSE_LOCATION);
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            permissions.add(Manifest.permission.POST_NOTIFICATIONS);
+        }
+        return permissions.toArray(new String[0]);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == ALL_PERMISSIONS_REQUEST_CODE) {
+            boolean allGranted = true;
+            for (int grantResult : grantResults) {
+                if (grantResult != PackageManager.PERMISSION_GRANTED) {
+                    allGranted = false;
+                    break;
+                }
+            }
+            if (allGranted) {
+                bootstrap();
+            } else {
+                Toast.makeText(this, "Todas as permissões são essenciais.", Toast.LENGTH_LONG).show();
+                updateStatusUI(null, "Erro", "Permissões negadas", "Cache indisponível.");
+            }
+        }
+    }
+
+    @SuppressLint("MissingPermission")
+    private void bootstrap() {
+        if (serviceStarted) return;
+
+        Log.d(TAG, "Permissões OK. Iniciando bootstrap: obtendo localização...");
+        updateStatusUI(null, "Inicializando", "Obtendo localização...", null);
+
+        FusedLocationProviderClient fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+        fusedLocationClient.getLastLocation().addOnSuccessListener(this, location -> {
+            if (location != null) {
+                Log.d(TAG, "Localização obtida. Entregando para o serviço.");
+                startMeshWaveService(location);
+            } else {
+                Toast.makeText(this, "Não foi possível obter a localização. Ative o GPS e reinicie o app.", Toast.LENGTH_LONG).show();
+                updateStatusUI(null, "Erro", "Localização indisponível", null);
+            }
+        }).addOnFailureListener(this, e -> {
+            Log.e(TAG, "Falha ao obter localização.", e);
+            Toast.makeText(this, "Falha ao obter localização.", Toast.LENGTH_SHORT).show();
+            updateStatusUI(null, "Erro", "Falha na localização", null);
+        });
+    }
+
+    private void startMeshWaveService(Location location) {
+        Intent serviceIntent = new Intent(this, MeshWaveService.class);
+        serviceIntent.setAction(MeshWaveService.ACTION_START_SERVICE);
+        serviceIntent.putExtra("location_data", location);
+        
+        ContextCompat.startForegroundService(this, serviceIntent);
+        serviceStarted = true;
+    }
+
+    @Override
+    public void onSendMessage(String message) {
+        // A funcionalidade de chat está desativada nesta fase de teste
+    }
+
+    private void initializeViewsAndFragments(Bundle savedInstanceState) {
+        fragmentManager = getSupportFragmentManager();
+        statusFragment = new StatusFragment();
+        chatFragment = new ChatFragment();
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
+        bottomNavigationView.setOnItemSelectedListener(item -> {
+            Fragment selectedFragment = null;
+            int itemId = item.getItemId();
+            if (itemId == R.id.nav_status) {
+                selectedFragment = statusFragment;
+            } else if (itemId == R.id.nav_chat) {
+                selectedFragment = chatFragment;
+            }
+            if (selectedFragment != null) {
+                fragmentManager.beginTransaction().replace(R.id.fragment_container, selectedFragment).commit();
+            }
+            return true;
+        });
+        if (savedInstanceState == null) {
+            fragmentManager.beginTransaction().replace(R.id.fragment_container, statusFragment).commit();
+        }
+    }
+
+    private void setupUiUpdateReceiver() {
+        uiUpdateReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                final String action = intent.getAction();
+                if (action != null && action.equals(MeshWaveService.ACTION_UPDATE_UI)) {
+                    String status = intent.getStringExtra(MeshWaveService.EXTRA_STATUS_TEXT);
+                    String sessid = intent.getStringExtra(MeshWaveService.EXTRA_SESSID);
+                    String user = intent.getStringExtra(MeshWaveService.EXTRA_USER_TEXT);
+                    String cacheContent = intent.getStringExtra(MeshWaveService.EXTRA_CACHE_CONTENT);
+                    updateStatusUI(sessid, status, user, cacheContent);
+                }
+            }
+        };
+        IntentFilter filter = new IntentFilter(MeshWaveService.ACTION_UPDATE_UI);
+        LocalBroadcastManager.getInstance(this).registerReceiver(uiUpdateReceiver, filter);
+    }
+
+    private void updateStatusUI(String sessid, String status, String user, String cacheContent) {
+        runOnUiThread(() -> {
+            if (statusFragment != null && statusFragment.isAdded()) {
+                statusFragment.updateStatus(sessid, status, user, cacheContent);
+            }
+        });
+    }
+}
+
+error: invalid method reference
+
+method onConnectionInfoAvailable(WifiP2pInfo)
+
+WiFiDirectBroadcastReceiver.java
+
+MainActivity.java
+
+onConnectionInfoAvailable
+
+MainActivity
+
+WiFiDirectBroadcastReceiver
+
+WiFiDirectBroadcastReceiver
+
+MainActivity
+
+Receiver
+
+WiFiDirectBroadcastReceiver
+
+MainActivity
+
+MainActivity.java
+
+initializeP2pConnectionListener()
+
+onCreate
+
+app/src/main/java/com/example/meshwave/MainActivity.java
+
+// v0.3.16-alpha (Bootstrap Híbrido - Correção do P2P Listener)
+package com.example.meshwave;
+
+import android.Manifest;
+import android.annotation.SuppressLint;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.content.pm.PackageManager;
+import android.location.Location;
+import android.os.Build;
+import android.os.Bundle;
+import android.util.Log;
+import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
+
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class MainActivity extends AppCompatActivity implements ChatFragmentListener {
+
+    private static final String TAG = "MainActivity_v0.3.16";
+    private static final int ALL_PERMISSIONS_REQUEST_CODE = 101;
+
+    private FragmentManager fragmentManager;
+    private StatusFragment statusFragment;
+    private ChatFragment chatFragment;
+
+    private BroadcastReceiver uiUpdateReceiver;
+    private boolean serviceStarted = false;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        initializeViewsAndFragments(savedInstanceState);
+        setupUiUpdateReceiver();
+        
+        // A inicialização do P2P Listener foi removida para esta fase de teste.
+        checkPermissionsAndBootstrap();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(uiUpdateReceiver);
+    }
+
+    private void checkPermissionsAndBootstrap() {
+        String[] requiredPermissions = getRequiredPermissions();
+        boolean allPermissionsGranted = true;
+        for (String permission : requiredPermissions) {
+            if (ContextCompat.checkSelfPermission(this, permission) != PackageManager.PERMISSION_GRANTED) {
+                allPermissionsGranted = false;
+                break;
+            }
+        }
+
+        if (allPermissionsGranted) {
+            bootstrap();
+        } else {
+            ActivityCompat.requestPermissions(this, requiredPermissions, ALL_PERMISSIONS_REQUEST_CODE);
+        }
+    }
+
+    private String[] getRequiredPermissions() {
+        List<String> permissions = new ArrayList<>();
+        permissions.add(Manifest.permission.ACCESS_FINE_LOCATION);
+        
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            permissions.add(Manifest.permission.NEARBY_WIFI_DEVICES);
+            permissions.add(Manifest.permission.BLUETOOTH_SCAN);
+            permissions.add(Manifest.permission.BLUETOOTH_CONNECT);
+            permissions.add(Manifest.permission.BLUETOOTH_ADVERTISE);
+        } else {
+            permissions.add(Manifest.permission.BLUETOOTH);
+            permissions.add(Manifest.permission.BLUETOOTH_ADMIN);
+            permissions.add(Manifest.permission.ACCESS_COARSE_LOCATION);
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            permissions.add(Manifest.permission.POST_NOTIFICATIONS);
+        }
+        return permissions.toArray(new String[0]);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == ALL_PERMISSIONS_REQUEST_CODE) {
+            boolean allGranted = true;
+            for (int grantResult : grantResults) {
+                if (grantResult != PackageManager.PERMISSION_GRANTED) {
+                    allGranted = false;
+                    break;
+                }
+            }
+            if (allGranted) {
+                bootstrap();
+            } else {
+                Toast.makeText(this, "Todas as permissões são essenciais.", Toast.LENGTH_LONG).show();
+                updateStatusUI(null, "Erro", "Permissões negadas", "Cache indisponível.");
+            }
+        }
+    }
+
+    @SuppressLint("MissingPermission")
+    private void bootstrap() {
+        if (serviceStarted) return;
+
+        Log.d(TAG, "Permissões OK. Iniciando bootstrap: obtendo localização...");
+        updateStatusUI(null, "Inicializando", "Obtendo localização...", null);
+
+        FusedLocationProviderClient fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+        fusedLocationClient.getLastLocation().addOnSuccessListener(this, location -> {
+            if (location != null) {
+                Log.d(TAG, "Localização obtida. Entregando para o serviço.");
+                startMeshWaveService(location);
+            } else {
+                Toast.makeText(this, "Não foi possível obter a localização. Ative o GPS e reinicie o app.", Toast.LENGTH_LONG).show();
+                updateStatusUI(null, "Erro", "Localização indisponível", null);
+            }
+        }).addOnFailureListener(this, e -> {
+            Log.e(TAG, "Falha ao obter localização.", e);
+            Toast.makeText(this, "Falha ao obter localização.", Toast.LENGTH_SHORT).show();
+            updateStatusUI(null, "Erro", "Falha na localização", null);
+        });
+    }
+
+    private void startMeshWaveService(Location location) {
+        Intent serviceIntent = new Intent(this, MeshWaveService.class);
+        serviceIntent.setAction(MeshWaveService.ACTION_START_SERVICE);
+        serviceIntent.putExtra("location_data", location);
+        
+        ContextCompat.startForegroundService(this, serviceIntent);
+        serviceStarted = true;
+    }
+
+    @Override
+    public void onSendMessage(String message) {
+        // A funcionalidade de chat está desativada nesta fase de teste
+    }
+
+    private void initializeViewsAndFragments(Bundle savedInstanceState) {
+        fragmentManager = getSupportFragmentManager();
+        statusFragment = new StatusFragment();
+        chatFragment = new ChatFragment();
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
+        bottomNavigationView.setOnItemSelectedListener(item -> {
+            Fragment selectedFragment = null;
+            int itemId = item.getItemId();
+            if (itemId == R.id.nav_status) {
+                selectedFragment = statusFragment;
+            } else if (itemId == R.id.nav_chat) {
+                selectedFragment = chatFragment;
+            }
+            if (selectedFragment != null) {
+                fragmentManager.beginTransaction().replace(R.id.fragment_container, selectedFragment).commit();
+            }
+            return true;
+        });
+        if (savedInstanceState == null) {
+            fragmentManager.beginTransaction().replace(R.id.fragment_container, statusFragment).commit();
+        }
+    }
+
+    private void setupUiUpdateReceiver() {
+        uiUpdateReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                final String action = intent.getAction();
+                if (action != null && action.equals(MeshWaveService.ACTION_UPDATE_UI)) {
+                    String status = intent.getStringExtra(MeshWaveService.EXTRA_STATUS_TEXT);
+                    String sessid = intent.getStringExtra(MeshWaveService.EXTRA_SESSID);
+                    String user = intent.getStringExtra(MeshWaveService.EXTRA_USER_TEXT);
+                    String cacheContent = intent.getStringExtra(MeshWaveService.EXTRA_CACHE_CONTENT);
+                    updateStatusUI(sessid, status, user, cacheContent);
+                }
+            }
+        };
+        IntentFilter filter = new IntentFilter(MeshWaveService.ACTION_UPDATE_UI);
+        LocalBroadcastManager.getInstance(this).registerReceiver(uiUpdateReceiver, filter);
+    }
+
+    private void updateStatusUI(String sessid, String status, String user, String cacheContent) {
+        runOnUiThread(() -> {
+            if (statusFragment != null && statusFragment.isAdded()) {
+                statusFragment.updateStatus(sessid, status, user, cacheContent);
+            }
+        });
+    }
+}
+
+// v0.3.16-alpha (Bootstrap Híbrido - Correção do P2P Listener)
+package com.example.meshwave;
+
+import android.Manifest;
+import android.annotation.SuppressLint;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.content.pm.PackageManager;
+import android.location.Location;
+import android.os.Build;
+import android.os.Bundle;
+import android.util.Log;
+import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
+
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class MainActivity extends AppCompatActivity implements ChatFragmentListener {
+
+    private static final String TAG = "MainActivity_v0.3.16";
+    private static final int ALL_PERMISSIONS_REQUEST_CODE = 101;
+
+    private FragmentManager fragmentManager;
+    private StatusFragment statusFragment;
+    private ChatFragment chatFragment;
+
+    private BroadcastReceiver uiUpdateReceiver;
+    private boolean serviceStarted = false;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        initializeViewsAndFragments(savedInstanceState);
+        setupUiUpdateReceiver();
+        
+        // A inicialização do P2P Listener foi removida para esta fase de teste.
+        checkPermissionsAndBootstrap();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(uiUpdateReceiver);
+    }
+
+    private void checkPermissionsAndBootstrap() {
+        String[] requiredPermissions = getRequiredPermissions();
+        boolean allPermissionsGranted = true;
+        for (String permission : requiredPermissions) {
+            if (ContextCompat.checkSelfPermission(this, permission) != PackageManager.PERMISSION_GRANTED) {
+                allPermissionsGranted = false;
+                break;
+            }
+        }
+
+        if (allPermissionsGranted) {
+            bootstrap();
+        } else {
+            ActivityCompat.requestPermissions(this, requiredPermissions, ALL_PERMISSIONS_REQUEST_CODE);
+        }
+    }
+
+    private String[] getRequiredPermissions() {
+        List<String> permissions = new ArrayList<>();
+        permissions.add(Manifest.permission.ACCESS_FINE_LOCATION);
+        
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            permissions.add(Manifest.permission.NEARBY_WIFI_DEVICES);
+            permissions.add(Manifest.permission.BLUETOOTH_SCAN);
+            permissions.add(Manifest.permission.BLUETOOTH_CONNECT);
+            permissions.add(Manifest.permission.BLUETOOTH_ADVERTISE);
+        } else {
+            permissions.add(Manifest.permission.BLUETOOTH);
+            permissions.add(Manifest.permission.BLUETOOTH_ADMIN);
+            permissions.add(Manifest.permission.ACCESS_COARSE_LOCATION);
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            permissions.add(Manifest.permission.POST_NOTIFICATIONS);
+        }
+        return permissions.toArray(new String[0]);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == ALL_PERMISSIONS_REQUEST_CODE) {
+            boolean allGranted = true;
+            for (int grantResult : grantResults) {
+                if (grantResult != PackageManager.PERMISSION_GRANTED) {
+                    allGranted = false;
+                    break;
+                }
+            }
+            if (allGranted) {
+                bootstrap();
+            } else {
+                Toast.makeText(this, "Todas as permissões são essenciais.", Toast.LENGTH_LONG).show();
+                updateStatusUI(null, "Erro", "Permissões negadas", "Cache indisponível.");
+            }
+        }
+    }
+
+    @SuppressLint("MissingPermission")
+    private void bootstrap() {
+        if (serviceStarted) return;
+
+        Log.d(TAG, "Permissões OK. Iniciando bootstrap: obtendo localização...");
+        updateStatusUI(null, "Inicializando", "Obtendo localização...", null);
+
+        FusedLocationProviderClient fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+        fusedLocationClient.getLastLocation().addOnSuccessListener(this, location -> {
+            if (location != null) {
+                Log.d(TAG, "Localização obtida. Entregando para o serviço.");
+                startMeshWaveService(location);
+            } else {
+                Toast.makeText(this, "Não foi possível obter a localização. Ative o GPS e reinicie o app.", Toast.LENGTH_LONG).show();
+                updateStatusUI(null, "Erro", "Localização indisponível", null);
+            }
+        }).addOnFailureListener(this, e -> {
+            Log.e(TAG, "Falha ao obter localização.", e);
+            Toast.makeText(this, "Falha ao obter localização.", Toast.LENGTH_SHORT).show();
+            updateStatusUI(null, "Erro", "Falha na localização", null);
+        });
+    }
+
+    private void startMeshWaveService(Location location) {
+        Intent serviceIntent = new Intent(this, MeshWaveService.class);
+        serviceIntent.setAction(MeshWaveService.ACTION_START_SERVICE);
+        serviceIntent.putExtra("location_data", location);
+        
+        ContextCompat.startForegroundService(this, serviceIntent);
+        serviceStarted = true;
+    }
+
+    @Override
+    public void onSendMessage(String message) {
+        // A funcionalidade de chat está desativada nesta fase de teste
+    }
+
+    private void initializeViewsAndFragments(Bundle savedInstanceState) {
+        fragmentManager = getSupportFragmentManager();
+        statusFragment = new StatusFragment();
+        chatFragment = new ChatFragment();
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
+        bottomNavigationView.setOnItemSelectedListener(item -> {
+            Fragment selectedFragment = null;
+            int itemId = item.getItemId();
+            if (itemId == R.id.nav_status) {
+                selectedFragment = statusFragment;
+            } else if (itemId == R.id.nav_chat) {
+                selectedFragment = chatFragment;
+            }
+            if (selectedFragment != null) {
+                fragmentManager.beginTransaction().replace(R.id.fragment_container, selectedFragment).commit();
+            }
+            return true;
+        });
+        if (savedInstanceState == null) {
+            fragmentManager.beginTransaction().replace(R.id.fragment_container, statusFragment).commit();
+        }
+    }
+
+    private void setupUiUpdateReceiver() {
+        uiUpdateReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                final String action = intent.getAction();
+                if (action != null && action.equals(MeshWaveService.ACTION_UPDATE_UI)) {
+                    String status = intent.getStringExtra(MeshWaveService.EXTRA_STATUS_TEXT);
+                    String sessid = intent.getStringExtra(MeshWaveService.EXTRA_SESSID);
+                    String user = intent.getStringExtra(MeshWaveService.EXTRA_USER_TEXT);
+                    String cacheContent = intent.getStringExtra(MeshWaveService.EXTRA_CACHE_CONTENT);
+                    updateStatusUI(sessid, status, user, cacheContent);
+                }
+            }
+        };
+        IntentFilter filter = new IntentFilter(MeshWaveService.ACTION_UPDATE_UI);
+        LocalBroadcastManager.getInstance(this).registerReceiver(uiUpdateReceiver, filter);
+    }
+
+    private void updateStatusUI(String sessid, String status, String user, String cacheContent) {
+        runOnUiThread(() -> {
+            if (statusFragment != null && statusFragment.isAdded()) {
+                statusFragment.updateStatus(sessid, status, user, cacheContent);
+            }
+        });
+    }
+}
+
+error: invalid method reference
+
+method onConnectionInfoAvailable(WifiP2pInfo)
+
+WiFiDirectBroadcastReceiver.java
+
+MainActivity.java
+
+onConnectionInfoAvailable
+
+MainActivity
+
+WiFiDirectBroadcastReceiver
+
+WiFiDirectBroadcastReceiver
+
+MainActivity
+
+Receiver
+
+WiFiDirectBroadcastReceiver
+
+MainActivity
+
+MainActivity.java
+
+initializeP2pConnectionListener()
+
+onCreate
+
+app/src/main/java/com/example/meshwave/MainActivity.java
+
+// v0.3.16-alpha (Bootstrap Híbrido - Correção do P2P Listener)
+package com.example.meshwave;
+
+import android.Manifest;
+import android.annotation.SuppressLint;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.content.pm.PackageManager;
+import android.location.Location;
+import android.os.Build;
+import android.os.Bundle;
+import android.util.Log;
+import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
+
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class MainActivity extends AppCompatActivity implements ChatFragmentListener {
+
+    private static final String TAG = "MainActivity_v0.3.16";
+    private static final int ALL_PERMISSIONS_REQUEST_CODE = 101;
+
+    private FragmentManager fragmentManager;
+    private StatusFragment statusFragment;
+    private ChatFragment chatFragment;
+
+    private BroadcastReceiver uiUpdateReceiver;
+    private boolean serviceStarted = false;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        initializeViewsAndFragments(savedInstanceState);
+        setupUiUpdateReceiver();
+        
+        // A inicialização do P2P Listener foi removida para esta fase de teste.
+        checkPermissionsAndBootstrap();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(uiUpdateReceiver);
+    }
+
+    private void checkPermissionsAndBootstrap() {
+        String[] requiredPermissions = getRequiredPermissions();
+        boolean allPermissionsGranted = true;
+        for (String permission : requiredPermissions) {
+            if (ContextCompat.checkSelfPermission(this, permission) != PackageManager.PERMISSION_GRANTED) {
+                allPermissionsGranted = false;
+                break;
+            }
+        }
+
+        if (allPermissionsGranted) {
+            bootstrap();
+        } else {
+            ActivityCompat.requestPermissions(this, requiredPermissions, ALL_PERMISSIONS_REQUEST_CODE);
+        }
+    }
+
+    private String[] getRequiredPermissions() {
+        List<String> permissions = new ArrayList<>();
+        permissions.add(Manifest.permission.ACCESS_FINE_LOCATION);
+        
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            permissions.add(Manifest.permission.NEARBY_WIFI_DEVICES);
+            permissions.add(Manifest.permission.BLUETOOTH_SCAN);
+            permissions.add(Manifest.permission.BLUETOOTH_CONNECT);
+            permissions.add(Manifest.permission.BLUETOOTH_ADVERTISE);
+        } else {
+            permissions.add(Manifest.permission.BLUETOOTH);
+            permissions.add(Manifest.permission.BLUETOOTH_ADMIN);
+            permissions.add(Manifest.permission.ACCESS_COARSE_LOCATION);
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            permissions.add(Manifest.permission.POST_NOTIFICATIONS);
+        }
+        return permissions.toArray(new String[0]);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == ALL_PERMISSIONS_REQUEST_CODE) {
+            boolean allGranted = true;
+            for (int grantResult : grantResults) {
+                if (grantResult != PackageManager.PERMISSION_GRANTED) {
+                    allGranted = false;
+                    break;
+                }
+            }
+            if (allGranted) {
+                bootstrap();
+            } else {
+                Toast.makeText(this, "Todas as permissões são essenciais.", Toast.LENGTH_LONG).show();
+                updateStatusUI(null, "Erro", "Permissões negadas", "Cache indisponível.");
+            }
+        }
+    }
+
+    @SuppressLint("MissingPermission")
+    private void bootstrap() {
+        if (serviceStarted) return;
+
+        Log.d(TAG, "Permissões OK. Iniciando bootstrap: obtendo localização...");
+        updateStatusUI(null, "Inicializando", "Obtendo localização...", null);
+
+        FusedLocationProviderClient fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+        fusedLocationClient.getLastLocation().addOnSuccessListener(this, location -> {
+            if (location != null) {
+                Log.d(TAG, "Localização obtida. Entregando para o serviço.");
+                startMeshWaveService(location);
+            } else {
+                Toast.makeText(this, "Não foi possível obter a localização. Ative o GPS e reinicie o app.", Toast.LENGTH_LONG).show();
+                updateStatusUI(null, "Erro", "Localização indisponível", null);
+            }
+        }).addOnFailureListener(this, e -> {
+            Log.e(TAG, "Falha ao obter localização.", e);
+            Toast.makeText(this, "Falha ao obter localização.", Toast.LENGTH_SHORT).show();
+            updateStatusUI(null, "Erro", "Falha na localização", null);
+        });
+    }
+
+    private void startMeshWaveService(Location location) {
+        Intent serviceIntent = new Intent(this, MeshWaveService.class);
+        serviceIntent.setAction(MeshWaveService.ACTION_START_SERVICE);
+        serviceIntent.putExtra("location_data", location);
+        
+        ContextCompat.startForegroundService(this, serviceIntent);
+        serviceStarted = true;
+    }
+
+    @Override
+    public void onSendMessage(String message) {
+        // A funcionalidade de chat está desativada nesta fase de teste
+    }
+
+    private void initializeViewsAndFragments(Bundle savedInstanceState) {
+        fragmentManager = getSupportFragmentManager();
+        statusFragment = new StatusFragment();
+        chatFragment = new ChatFragment();
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
+        bottomNavigationView.setOnItemSelectedListener(item -> {
+            Fragment selectedFragment = null;
+            int itemId = item.getItemId();
+            if (itemId == R.id.nav_status) {
+                selectedFragment = statusFragment;
+            } else if (itemId == R.id.nav_chat) {
+                selectedFragment = chatFragment;
+            }
+            if (selectedFragment != null) {
+                fragmentManager.beginTransaction().replace(R.id.fragment_container, selectedFragment).commit();
+            }
+            return true;
+        });
+        if (savedInstanceState == null) {
+            fragmentManager.beginTransaction().replace(R.id.fragment_container, statusFragment).commit();
+        }
+    }
+
+    private void setupUiUpdateReceiver() {
+        uiUpdateReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                final String action = intent.getAction();
+                if (action != null && action.equals(MeshWaveService.ACTION_UPDATE_UI)) {
+                    String status = intent.getStringExtra(MeshWaveService.EXTRA_STATUS_TEXT);
+                    String sessid = intent.getStringExtra(MeshWaveService.EXTRA_SESSID);
+                    String user = intent.getStringExtra(MeshWaveService.EXTRA_USER_TEXT);
+                    String cacheContent = intent.getStringExtra(MeshWaveService.EXTRA_CACHE_CONTENT);
+                    updateStatusUI(sessid, status, user, cacheContent);
+                }
+            }
+        };
+        IntentFilter filter = new IntentFilter(MeshWaveService.ACTION_UPDATE_UI);
+        LocalBroadcastManager.getInstance(this).registerReceiver(uiUpdateReceiver, filter);
+    }
+
+    private void updateStatusUI(String sessid, String status, String user, String cacheContent) {
+        runOnUiThread(() -> {
+            if (statusFragment != null && statusFragment.isAdded()) {
+                statusFragment.updateStatus(sessid, status, user, cacheContent);
+            }
+        });
+    }
+}
+
+// v0.3.16-alpha (Bootstrap Híbrido - Correção do P2P Listener)
+package com.example.meshwave;
+
+import android.Manifest;
+import android.annotation.SuppressLint;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.content.pm.PackageManager;
+import android.location.Location;
+import android.os.Build;
+import android.os.Bundle;
+import android.util.Log;
+import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
+
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class MainActivity extends AppCompatActivity implements ChatFragmentListener {
+
+    private static final String TAG = "MainActivity_v0.3.16";
+    private static final int ALL_PERMISSIONS_REQUEST_CODE = 101;
+
+    private FragmentManager fragmentManager;
+    private StatusFragment statusFragment;
+    private ChatFragment chatFragment;
+
+    private BroadcastReceiver uiUpdateReceiver;
+    private boolean serviceStarted = false;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        initializeViewsAndFragments(savedInstanceState);
+        setupUiUpdateReceiver();
+        
+        // A inicialização do P2P Listener foi removida para esta fase de teste.
+        checkPermissionsAndBootstrap();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(uiUpdateReceiver);
+    }
+
+    private void checkPermissionsAndBootstrap() {
+        String[] requiredPermissions = getRequiredPermissions();
+        boolean allPermissionsGranted = true;
+        for (String permission : requiredPermissions) {
+            if (ContextCompat.checkSelfPermission(this, permission) != PackageManager.PERMISSION_GRANTED) {
+                allPermissionsGranted = false;
+                break;
+            }
+        }
+
+        if (allPermissionsGranted) {
+            bootstrap();
+        } else {
+            ActivityCompat.requestPermissions(this, requiredPermissions, ALL_PERMISSIONS_REQUEST_CODE);
+        }
+    }
+
+    private String[] getRequiredPermissions() {
+        List<String> permissions = new ArrayList<>();
+        permissions.add(Manifest.permission.ACCESS_FINE_LOCATION);
+        
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            permissions.add(Manifest.permission.NEARBY_WIFI_DEVICES);
+            permissions.add(Manifest.permission.BLUETOOTH_SCAN);
+            permissions.add(Manifest.permission.BLUETOOTH_CONNECT);
+            permissions.add(Manifest.permission.BLUETOOTH_ADVERTISE);
+        } else {
+            permissions.add(Manifest.permission.BLUETOOTH);
+            permissions.add(Manifest.permission.BLUETOOTH_ADMIN);
+            permissions.add(Manifest.permission.ACCESS_COARSE_LOCATION);
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            permissions.add(Manifest.permission.POST_NOTIFICATIONS);
+        }
+        return permissions.toArray(new String[0]);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == ALL_PERMISSIONS_REQUEST_CODE) {
+            boolean allGranted = true;
+            for (int grantResult : grantResults) {
+                if (grantResult != PackageManager.PERMISSION_GRANTED) {
+                    allGranted = false;
+                    break;
+                }
+            }
+            if (allGranted) {
+                bootstrap();
+            } else {
+                Toast.makeText(this, "Todas as permissões são essenciais.", Toast.LENGTH_LONG).show();
+                updateStatusUI(null, "Erro", "Permissões negadas", "Cache indisponível.");
+            }
+        }
+    }
+
+    @SuppressLint("MissingPermission")
+    private void bootstrap() {
+        if (serviceStarted) return;
+
+        Log.d(TAG, "Permissões OK. Iniciando bootstrap: obtendo localização...");
+        updateStatusUI(null, "Inicializando", "Obtendo localização...", null);
+
+        FusedLocationProviderClient fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+        fusedLocationClient.getLastLocation().addOnSuccessListener(this, location -> {
+            if (location != null) {
+                Log.d(TAG, "Localização obtida. Entregando para o serviço.");
+                startMeshWaveService(location);
+            } else {
+                Toast.makeText(this, "Não foi possível obter a localização. Ative o GPS e reinicie o app.", Toast.LENGTH_LONG).show();
+                updateStatusUI(null, "Erro", "Localização indisponível", null);
+            }
+        }).addOnFailureListener(this, e -> {
+            Log.e(TAG, "Falha ao obter localização.", e);
+            Toast.makeText(this, "Falha ao obter localização.", Toast.LENGTH_SHORT).show();
+            updateStatusUI(null, "Erro", "Falha na localização", null);
+        });
+    }
+
+    private void startMeshWaveService(Location location) {
+        Intent serviceIntent = new Intent(this, MeshWaveService.class);
+        serviceIntent.setAction(MeshWaveService.ACTION_START_SERVICE);
+        serviceIntent.putExtra("location_data", location);
+        
+        ContextCompat.startForegroundService(this, serviceIntent);
+        serviceStarted = true;
+    }
+
+    @Override
+    public void onSendMessage(String message) {
+        // A funcionalidade de chat está desativada nesta fase de teste
+    }
+
+    private void initializeViewsAndFragments(Bundle savedInstanceState) {
+        fragmentManager = getSupportFragmentManager();
+        statusFragment = new StatusFragment();
+        chatFragment = new ChatFragment();
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
+        bottomNavigationView.setOnItemSelectedListener(item -> {
+            Fragment selectedFragment = null;
+            int itemId = item.getItemId();
+            if (itemId == R.id.nav_status) {
+                selectedFragment = statusFragment;
+            } else if (itemId == R.id.nav_chat) {
+                selectedFragment = chatFragment;
+            }
+            if (selectedFragment != null) {
+                fragmentManager.beginTransaction().replace(R.id.fragment_container, selectedFragment).commit();
+            }
+            return true;
+        });
+        if (savedInstanceState == null) {
+            fragmentManager.beginTransaction().replace(R.id.fragment_container, statusFragment).commit();
+        }
+    }
+
+    private void setupUiUpdateReceiver() {
+        uiUpdateReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                final String action = intent.getAction();
+                if (action != null && action.equals(MeshWaveService.ACTION_UPDATE_UI)) {
+                    String status = intent.getStringExtra(MeshWaveService.EXTRA_STATUS_TEXT);
+                    String sessid = intent.getStringExtra(MeshWaveService.EXTRA_SESSID);
+                    String user = intent.getStringExtra(MeshWaveService.EXTRA_USER_TEXT);
+                    String cacheContent = intent.getStringExtra(MeshWaveService.EXTRA_CACHE_CONTENT);
+                    updateStatusUI(sessid, status, user, cacheContent);
+                }
+            }
+        };
+        IntentFilter filter = new IntentFilter(MeshWaveService.ACTION_UPDATE_UI);
+        LocalBroadcastManager.getInstance(this).registerReceiver(uiUpdateReceiver, filter);
+    }
+
+    private void updateStatusUI(String sessid, String status, String user, String cacheContent) {
+        runOnUiThread(() -> {
+            if (statusFragment != null && statusFragment.isAdded()) {
+                statusFragment.updateStatus(sessid, status, user, cacheContent);
+            }
+        });
+    }
+}

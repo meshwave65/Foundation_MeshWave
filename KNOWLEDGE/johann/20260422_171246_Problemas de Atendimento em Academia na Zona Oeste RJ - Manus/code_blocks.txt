@@ -1,0 +1,1205 @@
+
+
+================================================================================.html
+
+fluxograma.html
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fluxograma de Gestão - Real Shape Academia</title>
+    <style>
+        body {
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f7f9;
+            min-height: 100%;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background: #1c1c1c; /* Fundo escuro para combinar com o logo */
+            color: white;
+            padding: 20px 30px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .header img {
+            max-height: 80px; /* Tamanho do logo */
+            margin-bottom: 15px;
+        }
+
+        .header h1 {
+            margin: 0;
+            font-size: 2em;
+            font-weight: 600;
+            color: #FFC107; /* Cor dourada do logo */
+        }
+        
+        .header p {
+            margin: 5px 0 0 0;
+            font-size: 1.1em;
+            color: #e0e0e0;
+            font-weight: 300;
+        }
+
+        .legend {
+            background: #f8f9fa;
+            padding: 20px;
+            border-bottom: 1px solid #e9ecef;
+        }
+
+        .legend h3 {
+            margin: 0 0 15px 0;
+            color: #2c3e50;
+            font-size: 1.2em;
+        }
+
+        .legend-items {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 12px;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            font-size: 0.9em;
+        }
+
+        .flowchart {
+            padding: 30px 20px;
+            overflow-x: auto;
+        }
+
+        .node {
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 10px;
+            min-width: 220px;
+            max-width: 320px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            border-left: 5px solid #ccc;
+        }
+
+        .node:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+        }
+
+        .node.active {
+            box-shadow: 0 6px 20px rgba(0, 123, 255, 0.3);
+        }
+
+        .node-start { border-left-color: #007bff; }
+        .node-positive { border-left-color: #28a745; }
+        .node-warning { border-left-color: #ffc107; }
+        .node-serious { border-left-color: #fd7e14; }
+        .node-critical { border-left-color: #dc3545; }
+
+        .node h4 {
+            margin: 0 0 10px 0;
+            font-size: 1.1em;
+        }
+
+        .node p {
+            margin: 5px 0;
+            font-size: 0.9em;
+            line-height: 1.4;
+        }
+
+        .flow-section {
+            margin: 30px 0;
+        }
+
+        .flow-section h3 {
+            margin: 0 0 15px 10px;
+            color: #2c3e50;
+            font-size: 1.4em;
+            border-left: 4px solid #007bff;
+            padding-left: 10px;
+        }
+
+        .level-indicator {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 15px;
+            font-size: 0.8em;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: white;
+        }
+
+        .level-1 { background: #ffc107; }
+        .level-2 { background: #fd7e14; }
+        .level-3 { background: #dc3545; }
+        .level-4 { background: #8B0000; }
+
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 0.9em;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary { background: #007bff; color: white; }
+        .btn-success { background: #28a745; color: white; }
+        .btn-warning { background: #ffc107; color: #212529; }
+        .btn-danger { background: #dc3545; color: white; }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+
+        .simulation-panel {
+            background: #f8f9fa;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 10px;
+            border: 1px solid #dee2e6;
+        }
+
+        .current-step {
+            background: #e3f2fd;
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 4px solid #2196f3;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <!-- LOGOTIPO INSERIDO AQUI -->
+            <img src="https://i.imgur.com/83u5o0s.png" alt="Logotipo Real Shape Academia">
+            <h1>REAL SHAPE ACADEMIA</h1>
+            <p>Fluxograma Interativo de Gestão de Conduta</p>
+        </div>
+
+        <div class="legend">
+            <h3>📋 Legenda</h3>
+            <div class="legend-items">
+                <div class="legend-item"><span>✅</span> Reforço Positivo</div>
+                <div class="legend-item"><span>⚠️</span> Alerta / Correção</div>
+                <div class="legend-item"><span>🚨</span> Sanção Disciplinar</div>
+                <div class="legend-item"><span>📄</span> Documentação Obrigatória</div>
+                <div class="legend-item"><span>❌</span> Desligamento</div>
+            </div>
+        </div>
+
+        <div class="flowchart">
+            <div class="simulation-panel">
+                <h3>🎯 Simulador de Cenários</h3>
+                <p>Clique nos botões para simular uma situação e ver o fluxo de ação correspondente.</p>
+                <div class="action-buttons">
+                    <button class="btn btn-success" onclick="simulateScenario('positive' )">✅ Conduta Exemplar</button>
+                    <button class="btn btn-warning" onclick="simulateScenario('light')">⚠️ Falha Leve</button>
+                    <button class="btn btn-warning" onclick="simulateScenario('serious')">🚨 Falha Grave</button>
+                    <button class="btn btn-danger" onclick="simulateScenario('critical')">❌ Falha Gravíssima</button>
+                    <button class="btn btn-primary" onclick="resetSimulation()">🔄 Reiniciar</button>
+                </div>
+                <div id="currentStep" class="current-step" style="display: none;">
+                    <strong>Passo Atual:</strong> <span id="stepDescription"></span>
+                </div>
+            </div>
+
+            <div class="flow-section">
+                <h3>Início do Processo</h3>
+                <div class="node node-start" id="start">
+                    <h4>📊 Observação do Colaborador</h4>
+                    <p>Monitoramento contínuo da conduta no ambiente de trabalho.</p>
+                </div>
+            </div>
+
+            <div class="flow-section">
+                <h3>✅ Ação Corretiva</h3>
+                <div class="node node-positive" id="positive">
+                    <h4>🌟 Conduta Exemplar</h4>
+                    <p><strong>Ação:</strong> Elogiar publicamente ou em particular para reforçar o comportamento desejado e motivar a equipe.</p>
+                </div>
+            </div>
+
+            <div class="flow-section">
+                <h3>⚠️ Sanções Disciplinares</h3>
+                <div class="node node-warning" id="level1">
+                    <div class="level-indicator level-1">NÍVEL 1</div>
+                    <h4>Falha Leve (Correção Imediata)</h4>
+                    <p><strong>Exemplos:</strong> Distração, uso de celular, conversa paralela.</p>
+                    <p><strong>Ação:</strong> Abordagem verbal discreta. <em>"Fulano, foco nos alunos, por favor."</em></p>
+                </div>
+                <div class="node node-serious" id="level2">
+                    <div class="level-indicator level-2">NÍVEL 2</div>
+                    <h4>Falha Grave (Advertência Verbal)</h4>
+                    <p><strong>Exemplos:</strong> Atenção seletiva, piadas inadequadas, reincidência de falha leve.</p>
+                    <p><strong>Ação:</strong> Reunião privada formal. 📄 Documentar data e motivo.</p>
+                </div>
+                <div class="node node-serious" id="level3">
+                    <div class="level-indicator level-3">NÍVEL 3</div>
+                    <h4>Reincidência Grave (Advertência Escrita)</h4>
+                    <p><strong>Ação:</strong> Documento formal com assinatura. <em>"Apesar dos avisos, o erro se repetiu."</em> 📄 Arquivo permanente.</p>
+                </div>
+                <div class="node node-critical" id="level4">
+                    <div class="level-indicator level-4">NÍVEL 4/5</div>
+                    <h4>Falha Gravíssima (Afastamento)</h4>
+                    <p><strong>Exemplos:</strong> Assédio, agressão, atos ilegais.</p>
+                    <p><strong>Ação:</strong> Retirada imediata do ambiente e ⚖️ acionamento jurídico para suspensão ou justa causa.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentLevel = 0;
+
+        function updateCurrentStep(description) {
+            const stepElement = document.getElementById('currentStep');
+            const descElement = document.getElementById('stepDescription');
+            stepElement.style.display = 'block';
+            descElement.innerHTML = description;
+        }
+
+        function highlightNode(nodeId) {
+            document.querySelectorAll('.node').forEach(node => node.classList.remove('active'));
+            const node = document.getElementById(nodeId);
+            if (node) {
+                node.classList.add('active');
+                node.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+        }
+
+        function simulateScenario(scenario) {
+            switch(scenario) {
+                case 'positive':
+                    highlightNode('positive');
+                    updateCurrentStep('<strong>Cenário:</strong> Conduta exemplar identificada.  
+<strong>Ação:</strong> Aplicar reforço positivo, elogiando o colaborador.');
+                    currentLevel = 0;
+                    break;
+                case 'light':
+                    highlightNode('level1');
+                    updateCurrentStep('<strong>Cenário:</strong> Falha leve detectada (Ex: no celular).  
+<strong>Ação:</strong> Aplicar correção imediata (Nível 1).');
+                    currentLevel = 1;
+                    break;
+                case 'serious':
+                    if (currentLevel < 2) {
+                        highlightNode('level2');
+                        updateCurrentStep('<strong>Cenário:</strong> Falha grave ou reincidência de falha leve.  
+<strong>Ação:</strong> Aplicar advertência verbal formal (Nível 2).');
+                        currentLevel = 2;
+                    } else if (currentLevel === 2) {
+                        highlightNode('level3');
+                        updateCurrentStep('<strong>Cenário:</strong> Nova reincidência após advertência verbal.  
+<strong>Ação:</strong> Aplicar advertência por escrito (Nível 3).');
+                        currentLevel = 3;
+                    } else {
+                        highlightNode('level4');
+                        updateCurrentStep('<strong>Cenário:</strong> Múltiplas reincidências.  
+<strong>Ação:</strong> Iniciar processo de afastamento (Nível 4).');
+                        currentLevel = 4;
+                    }
+                    break;
+                case 'critical':
+                    highlightNode('level4');
+                    updateCurrentStep('<strong>Cenário:</strong> Falha gravíssima detectada (Ex: assédio).  
+<strong>Ação:</strong> Afastamento imediato e acionamento jurídico (Nível 4/5).');
+                    currentLevel = 5;
+                    break;
+            }
+        }
+
+        function resetSimulation() {
+            document.querySelectorAll('.node').forEach(node => node.classList.remove('active'));
+            document.getElementById('currentStep').style.display = 'none';
+            currentLevel = 0;
+            highlightNode('start');
+        }
+
+        document.addEventListener('DOMContentLoaded', () => highlightNode('start'));
+    </script>
+</body>
+</html>
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fluxograma de Gestão - Real Shape Academia</title>
+    <style>
+        body {
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f7f9;
+            min-height: 100%;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background: #1c1c1c; /* Fundo escuro para combinar com o logo */
+            color: white;
+            padding: 20px 30px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .header img {
+            max-height: 80px; /* Tamanho do logo */
+            margin-bottom: 15px;
+        }
+
+        .header h1 {
+            margin: 0;
+            font-size: 2em;
+            font-weight: 600;
+            color: #FFC107; /* Cor dourada do logo */
+        }
+        
+        .header p {
+            margin: 5px 0 0 0;
+            font-size: 1.1em;
+            color: #e0e0e0;
+            font-weight: 300;
+        }
+
+        .legend {
+            background: #f8f9fa;
+            padding: 20px;
+            border-bottom: 1px solid #e9ecef;
+        }
+
+        .legend h3 {
+            margin: 0 0 15px 0;
+            color: #2c3e50;
+            font-size: 1.2em;
+        }
+
+        .legend-items {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 12px;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            font-size: 0.9em;
+        }
+
+        .flowchart {
+            padding: 30px 20px;
+            overflow-x: auto;
+        }
+
+        .node {
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 10px;
+            min-width: 220px;
+            max-width: 320px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            border-left: 5px solid #ccc;
+        }
+
+        .node:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+        }
+
+        .node.active {
+            box-shadow: 0 6px 20px rgba(0, 123, 255, 0.3);
+        }
+
+        .node-start { border-left-color: #007bff; }
+        .node-positive { border-left-color: #28a745; }
+        .node-warning { border-left-color: #ffc107; }
+        .node-serious { border-left-color: #fd7e14; }
+        .node-critical { border-left-color: #dc3545; }
+
+        .node h4 {
+            margin: 0 0 10px 0;
+            font-size: 1.1em;
+        }
+
+        .node p {
+            margin: 5px 0;
+            font-size: 0.9em;
+            line-height: 1.4;
+        }
+
+        .flow-section {
+            margin: 30px 0;
+        }
+
+        .flow-section h3 {
+            margin: 0 0 15px 10px;
+            color: #2c3e50;
+            font-size: 1.4em;
+            border-left: 4px solid #007bff;
+            padding-left: 10px;
+        }
+
+        .level-indicator {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 15px;
+            font-size: 0.8em;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: white;
+        }
+
+        .level-1 { background: #ffc107; }
+        .level-2 { background: #fd7e14; }
+        .level-3 { background: #dc3545; }
+        .level-4 { background: #8B0000; }
+
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 0.9em;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary { background: #007bff; color: white; }
+        .btn-success { background: #28a745; color: white; }
+        .btn-warning { background: #ffc107; color: #212529; }
+        .btn-danger { background: #dc3545; color: white; }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+
+        .simulation-panel {
+            background: #f8f9fa;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 10px;
+            border: 1px solid #dee2e6;
+        }
+
+        .current-step {
+            background: #e3f2fd;
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 4px solid #2196f3;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <!-- LOGOTIPO INSERIDO AQUI -->
+            <img src="https://i.imgur.com/83u5o0s.png" alt="Logotipo Real Shape Academia">
+            <h1>REAL SHAPE ACADEMIA</h1>
+            <p>Fluxograma Interativo de Gestão de Conduta</p>
+        </div>
+
+        <div class="legend">
+            <h3>📋 Legenda</h3>
+            <div class="legend-items">
+                <div class="legend-item"><span>✅</span> Reforço Positivo</div>
+                <div class="legend-item"><span>⚠️</span> Alerta / Correção</div>
+                <div class="legend-item"><span>🚨</span> Sanção Disciplinar</div>
+                <div class="legend-item"><span>📄</span> Documentação Obrigatória</div>
+                <div class="legend-item"><span>❌</span> Desligamento</div>
+            </div>
+        </div>
+
+        <div class="flowchart">
+            <div class="simulation-panel">
+                <h3>🎯 Simulador de Cenários</h3>
+                <p>Clique nos botões para simular uma situação e ver o fluxo de ação correspondente.</p>
+                <div class="action-buttons">
+                    <button class="btn btn-success" onclick="simulateScenario('positive' )">✅ Conduta Exemplar</button>
+                    <button class="btn btn-warning" onclick="simulateScenario('light')">⚠️ Falha Leve</button>
+                    <button class="btn btn-warning" onclick="simulateScenario('serious')">🚨 Falha Grave</button>
+                    <button class="btn btn-danger" onclick="simulateScenario('critical')">❌ Falha Gravíssima</button>
+                    <button class="btn btn-primary" onclick="resetSimulation()">🔄 Reiniciar</button>
+                </div>
+                <div id="currentStep" class="current-step" style="display: none;">
+                    <strong>Passo Atual:</strong> <span id="stepDescription"></span>
+                </div>
+            </div>
+
+            <div class="flow-section">
+                <h3>Início do Processo</h3>
+                <div class="node node-start" id="start">
+                    <h4>📊 Observação do Colaborador</h4>
+                    <p>Monitoramento contínuo da conduta no ambiente de trabalho.</p>
+                </div>
+            </div>
+
+            <div class="flow-section">
+                <h3>✅ Ação Corretiva</h3>
+                <div class="node node-positive" id="positive">
+                    <h4>🌟 Conduta Exemplar</h4>
+                    <p><strong>Ação:</strong> Elogiar publicamente ou em particular para reforçar o comportamento desejado e motivar a equipe.</p>
+                </div>
+            </div>
+
+            <div class="flow-section">
+                <h3>⚠️ Sanções Disciplinares</h3>
+                <div class="node node-warning" id="level1">
+                    <div class="level-indicator level-1">NÍVEL 1</div>
+                    <h4>Falha Leve (Correção Imediata)</h4>
+                    <p><strong>Exemplos:</strong> Distração, uso de celular, conversa paralela.</p>
+                    <p><strong>Ação:</strong> Abordagem verbal discreta. <em>"Fulano, foco nos alunos, por favor."</em></p>
+                </div>
+                <div class="node node-serious" id="level2">
+                    <div class="level-indicator level-2">NÍVEL 2</div>
+                    <h4>Falha Grave (Advertência Verbal)</h4>
+                    <p><strong>Exemplos:</strong> Atenção seletiva, piadas inadequadas, reincidência de falha leve.</p>
+                    <p><strong>Ação:</strong> Reunião privada formal. 📄 Documentar data e motivo.</p>
+                </div>
+                <div class="node node-serious" id="level3">
+                    <div class="level-indicator level-3">NÍVEL 3</div>
+                    <h4>Reincidência Grave (Advertência Escrita)</h4>
+                    <p><strong>Ação:</strong> Documento formal com assinatura. <em>"Apesar dos avisos, o erro se repetiu."</em> 📄 Arquivo permanente.</p>
+                </div>
+                <div class="node node-critical" id="level4">
+                    <div class="level-indicator level-4">NÍVEL 4/5</div>
+                    <h4>Falha Gravíssima (Afastamento)</h4>
+                    <p><strong>Exemplos:</strong> Assédio, agressão, atos ilegais.</p>
+                    <p><strong>Ação:</strong> Retirada imediata do ambiente e ⚖️ acionamento jurídico para suspensão ou justa causa.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentLevel = 0;
+
+        function updateCurrentStep(description) {
+            const stepElement = document.getElementById('currentStep');
+            const descElement = document.getElementById('stepDescription');
+            stepElement.style.display = 'block';
+            descElement.innerHTML = description;
+        }
+
+        function highlightNode(nodeId) {
+            document.querySelectorAll('.node').forEach(node => node.classList.remove('active'));
+            const node = document.getElementById(nodeId);
+            if (node) {
+                node.classList.add('active');
+                node.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+        }
+
+        function simulateScenario(scenario) {
+            switch(scenario) {
+                case 'positive':
+                    highlightNode('positive');
+                    updateCurrentStep('<strong>Cenário:</strong> Conduta exemplar identificada.  
+<strong>Ação:</strong> Aplicar reforço positivo, elogiando o colaborador.');
+                    currentLevel = 0;
+                    break;
+                case 'light':
+                    highlightNode('level1');
+                    updateCurrentStep('<strong>Cenário:</strong> Falha leve detectada (Ex: no celular).  
+<strong>Ação:</strong> Aplicar correção imediata (Nível 1).');
+                    currentLevel = 1;
+                    break;
+                case 'serious':
+                    if (currentLevel < 2) {
+                        highlightNode('level2');
+                        updateCurrentStep('<strong>Cenário:</strong> Falha grave ou reincidência de falha leve.  
+<strong>Ação:</strong> Aplicar advertência verbal formal (Nível 2).');
+                        currentLevel = 2;
+                    } else if (currentLevel === 2) {
+                        highlightNode('level3');
+                        updateCurrentStep('<strong>Cenário:</strong> Nova reincidência após advertência verbal.  
+<strong>Ação:</strong> Aplicar advertência por escrito (Nível 3).');
+                        currentLevel = 3;
+                    } else {
+                        highlightNode('level4');
+                        updateCurrentStep('<strong>Cenário:</strong> Múltiplas reincidências.  
+<strong>Ação:</strong> Iniciar processo de afastamento (Nível 4).');
+                        currentLevel = 4;
+                    }
+                    break;
+                case 'critical':
+                    highlightNode('level4');
+                    updateCurrentStep('<strong>Cenário:</strong> Falha gravíssima detectada (Ex: assédio).  
+<strong>Ação:</strong> Afastamento imediato e acionamento jurídico (Nível 4/5).');
+                    currentLevel = 5;
+                    break;
+            }
+        }
+
+        function resetSimulation() {
+            document.querySelectorAll('.node').forEach(node => node.classList.remove('active'));
+            document.getElementById('currentStep').style.display = 'none';
+            currentLevel = 0;
+            highlightNode('start');
+        }
+
+        document.addEventListener('DOMContentLoaded', () => highlightNode('start'));
+    </script>
+</body>
+</html>
+
+<div style="margin-bottom: 20px; display: flex; align-items: center;">
+    <div style="font-size: 40px; margin-right: 20px;">🤝</div>
+    <div>
+        <h3 style="color: #333; margin: 0 0 5px 0; font-size: 20px;">1. ATENÇÃO IGUALITÁRIA</h3>
+        <p style="color: #666; margin: 0; font-size: 15px;">Do iniciante ao avançado, do jovem à família. Todos os alunos merecem 100% da nossa dedicação. **Seja a referência que eles procuram.**</p>
+    </div>
+</div>
+
+<div style="margin-bottom: 20px; display: flex; align-items: center;">
+    <div style="font-size: 40px; margin-right: 20px;">🎯</div>
+    <div>
+        <h3 style="color: #333; margin: 0 0 5px 0; font-size: 20px;">2. PROATIVIDADE CONSTANTE</h3>
+        <p style="color: #666; margin: 0; font-size: 15px;">Não espere ser chamado. Circule, corrija, ensine e motive. **Faça a diferença no treino de alguém hoje.**</p>
+    </div>
+</div>
+
+<div style="display: flex; align-items: center;">
+    <div style="font-size: 40px; margin-right: 20px;">🛡️</div>
+    <div>
+        <h3 style="color: #333; margin: 0 0 5px 0; font-size: 20px;">3. POSTURA PROFISSIONAL</h3>
+        <p style="color: #666; margin: 0; font-size: 15px;">Sua conduta, sua linguagem e seu foco representam a marca. **Construa respeito e confiança em cada interação.**</p>
+    </div>
+</div>
+
+<div style="margin-bottom: 20px; display: flex; align-items: center;">
+    <div style="font-size: 40px; margin-right: 20px;">🤝</div>
+    <div>
+        <h3 style="color: #333; margin: 0 0 5px 0; font-size: 20px;">1. ATENÇÃO IGUALITÁRIA</h3>
+        <p style="color: #666; margin: 0; font-size: 15px;">Do iniciante ao avançado, do jovem à família. Todos os alunos merecem 100% da nossa dedicação. **Seja a referência que eles procuram.**</p>
+    </div>
+</div>
+
+<div style="margin-bottom: 20px; display: flex; align-items: center;">
+    <div style="font-size: 40px; margin-right: 20px;">🎯</div>
+    <div>
+        <h3 style="color: #333; margin: 0 0 5px 0; font-size: 20px;">2. PROATIVIDADE CONSTANTE</h3>
+        <p style="color: #666; margin: 0; font-size: 15px;">Não espere ser chamado. Circule, corrija, ensine e motive. **Faça a diferença no treino de alguém hoje.**</p>
+    </div>
+</div>
+
+<div style="display: flex; align-items: center;">
+    <div style="font-size: 40px; margin-right: 20px;">🛡️</div>
+    <div>
+        <h3 style="color: #333; margin: 0 0 5px 0; font-size: 20px;">3. POSTURA PROFISSIONAL</h3>
+        <p style="color: #666; margin: 0; font-size: 15px;">Sua conduta, sua linguagem e seu foco representam a marca. **Construa respeito e confiança em cada interação.**</p>
+    </div>
+</div>
+
+<div style="text-align: center;">
+    <h2 style="margin: 0; font-size: 24px; text-transform: uppercase; letter-spacing: 1px;">O COMPROMISSO <span style="color: #FFC107;">REAL SHAPE</span></h2>
+    <hr style="border: 1px solid #FFC107; width: 80px; margin: 15px auto;">
+</div>
+
+<div style="text-align: center; margin-bottom: 25px;">
+    <h3 style="color: #FFC107; margin: 0; font-size: 22px;">IGUALDADE</h3>
+    <p style="margin: 5px 0 0 0; font-size: 16px;">Atenção total para todos, sempre.</p>
+</div>
+
+<div style="text-align: center; margin-bottom: 25px;">
+    <h3 style="color: #FFC107; margin: 0; font-size: 22px;">INICIATIVA</h3>
+    <p style="margin: 5px 0 0 0; font-size: 16px;">Seu movimento inspira o movimento deles.</p>
+</div>
+
+<div style="text-align: center;">
+    <h3 style="color: #FFC107; margin: 0; font-size: 22px;">INTEGRIDADE</h3>
+    <p style="margin: 5px 0 0 0; font-size: 16px;">Somos profissionais que geram confiança.</p>
+</div>
+
+<div style="text-align: center;">
+    <h2 style="margin: 0; font-size: 24px; text-transform: uppercase; letter-spacing: 1px;">O COMPROMISSO <span style="color: #FFC107;">REAL SHAPE</span></h2>
+    <hr style="border: 1px solid #FFC107; width: 80px; margin: 15px auto;">
+</div>
+
+<div style="text-align: center; margin-bottom: 25px;">
+    <h3 style="color: #FFC107; margin: 0; font-size: 22px;">IGUALDADE</h3>
+    <p style="margin: 5px 0 0 0; font-size: 16px;">Atenção total para todos, sempre.</p>
+</div>
+
+<div style="text-align: center; margin-bottom: 25px;">
+    <h3 style="color: #FFC107; margin: 0; font-size: 22px;">INICIATIVA</h3>
+    <p style="margin: 5px 0 0 0; font-size: 16px;">Seu movimento inspira o movimento deles.</p>
+</div>
+
+<div style="text-align: center;">
+    <h3 style="color: #FFC107; margin: 0; font-size: 22px;">INTEGRIDADE</h3>
+    <p style="margin: 5px 0 0 0; font-size: 16px;">Somos profissionais que geram confiança.</p>
+</div>
+
+placeholder
+
+logo_realshape.jpeg
+
+<img>
+
+logo_realshape.jpeg
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Princípios do Instrutor - Real Shape Academia</title>
+    <style>
+        body {
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 40px 20px;
+            background: #1c1c1c; /* Fundo escuro para combinar com o logo */
+            min-height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .container {
+            max-width: 800px;
+            width: 100%;
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+            animation: slideUp 0.8s ease-out;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding-bottom: 20px;
+            border-bottom: 3px solid #FFC107; /* Cor dourada do logo */
+        }
+
+        .logo-container {
+            margin-bottom: 20px;
+        }
+
+        .logo-real {
+            width: 150px; /* Largura definida para 150px */
+            height: auto; /* Altura automática para manter a proporção */
+            transition: transform 0.3s ease;
+        }
+
+        .logo-real:hover {
+            transform: scale(1.05);
+        }
+
+        .header h1 {
+            color: #333;
+            font-size: 32px;
+            margin: 10px 0 10px 0;
+            font-weight: 700;
+        }
+
+        .header p {
+            color: #666;
+            font-size: 18px;
+            margin: 0;
+            font-style: italic;
+        }
+
+        .principle {
+            margin-bottom: 30px;
+            display: flex;
+            align-items: flex-start;
+            padding: 25px;
+            border-radius: 15px;
+            background: #f8f9fa;
+            border-left: 5px solid #555;
+            transition: all 0.3s ease;
+            animation: fadeIn 0.6s ease-out forwards;
+            opacity: 0;
+        }
+
+        .principle:nth-child(2) { animation-delay: 0.2s; }
+        .principle:nth-child(3) { animation-delay: 0.4s; }
+        .principle:nth-child(4) { animation-delay: 0.6s; }
+
+        @keyframes fadeIn {
+            to {
+                opacity: 1;
+            }
+        }
+
+        .principle:hover {
+            transform: translateX(10px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            border-left-color: #FFC107;
+        }
+
+        .principle:last-child {
+            margin-bottom: 0;
+        }
+
+        .icon {
+            font-size: 45px;
+            margin-right: 25px;
+            flex-shrink: 0;
+            line-height: 1;
+            color: #FFC107;
+        }
+
+        .content h3 {
+            color: #333;
+            margin: 0 0 10px 0;
+            font-size: 22px;
+            font-weight: 700;
+        }
+
+        .content p {
+            color: #555;
+            margin: 0;
+            font-size: 16px;
+            line-height: 1.6;
+        }
+
+        .highlight {
+            color: #333;
+            font-weight: 600;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 30px;
+            border-top: 2px solid #eee;
+        }
+
+        .footer p {
+            color: #888;
+            font-size: 14px;
+            margin: 0;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 30px 20px;
+                margin: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="logo-container">
+                <!-- LOGOTIPO REAL APLICADO AQUI -->
+                <img src="logo_realshape.jpeg" alt="Logotipo Real Shape Academia" class="logo-real">
+            </div>
+            <h1>Princípios do Instrutor Real Shape</h1>
+            <p>Excelência em cada treino, dedicação a cada aluno.</p>
+        </div>
+
+        <div class="principle">
+            <div class="icon">🤝</div>
+            <div class="content">
+                <h3>1. ATENÇÃO IGUALITÁRIA</h3>
+                <p>Do iniciante ao avançado, do jovem à família. Todos os alunos merecem 100% da nossa dedicação. <span class="highlight">Seja a referência que eles procuram.</span></p>
+            </div>
+        </div>
+
+        <div class="principle">
+            <div class="icon">🎯</div>
+            <div class="content">
+                <h3>2. PROATIVIDADE CONSTANTE</h3>
+                <p>Não espere ser chamado. Circule, corrija, ensine e motive. <span class="highlight">Faça a diferença no treino de alguém hoje.</span></p>
+            </div>
+        </div>
+
+        <div class="principle">
+            <div class="icon">🛡️</div>
+            <div class="content">
+                <h3>3. POSTURA PROFISSIONAL</h3>
+                <p>Sua conduta, sua linguagem e seu foco representam a marca. <span class="highlight">Construa respeito e confiança em cada interação.</span></p>
+            </div>
+        </div>
+
+        <div class="footer">
+            <p><strong>Real Shape Academia:</strong> Transformando vidas através do movimento e da dedicação.</p>
+        </div>
+    </div>
+</body>
+</html>
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Princípios do Instrutor - Real Shape Academia</title>
+    <style>
+        body {
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 40px 20px;
+            background: #1c1c1c; /* Fundo escuro para combinar com o logo */
+            min-height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .container {
+            max-width: 800px;
+            width: 100%;
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+            animation: slideUp 0.8s ease-out;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding-bottom: 20px;
+            border-bottom: 3px solid #FFC107; /* Cor dourada do logo */
+        }
+
+        .logo-container {
+            margin-bottom: 20px;
+        }
+
+        .logo-real {
+            width: 150px; /* Largura definida para 150px */
+            height: auto; /* Altura automática para manter a proporção */
+            transition: transform 0.3s ease;
+        }
+
+        .logo-real:hover {
+            transform: scale(1.05);
+        }
+
+        .header h1 {
+            color: #333;
+            font-size: 32px;
+            margin: 10px 0 10px 0;
+            font-weight: 700;
+        }
+
+        .header p {
+            color: #666;
+            font-size: 18px;
+            margin: 0;
+            font-style: italic;
+        }
+
+        .principle {
+            margin-bottom: 30px;
+            display: flex;
+            align-items: flex-start;
+            padding: 25px;
+            border-radius: 15px;
+            background: #f8f9fa;
+            border-left: 5px solid #555;
+            transition: all 0.3s ease;
+            animation: fadeIn 0.6s ease-out forwards;
+            opacity: 0;
+        }
+
+        .principle:nth-child(2) { animation-delay: 0.2s; }
+        .principle:nth-child(3) { animation-delay: 0.4s; }
+        .principle:nth-child(4) { animation-delay: 0.6s; }
+
+        @keyframes fadeIn {
+            to {
+                opacity: 1;
+            }
+        }
+
+        .principle:hover {
+            transform: translateX(10px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            border-left-color: #FFC107;
+        }
+
+        .principle:last-child {
+            margin-bottom: 0;
+        }
+
+        .icon {
+            font-size: 45px;
+            margin-right: 25px;
+            flex-shrink: 0;
+            line-height: 1;
+            color: #FFC107;
+        }
+
+        .content h3 {
+            color: #333;
+            margin: 0 0 10px 0;
+            font-size: 22px;
+            font-weight: 700;
+        }
+
+        .content p {
+            color: #555;
+            margin: 0;
+            font-size: 16px;
+            line-height: 1.6;
+        }
+
+        .highlight {
+            color: #333;
+            font-weight: 600;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 30px;
+            border-top: 2px solid #eee;
+        }
+
+        .footer p {
+            color: #888;
+            font-size: 14px;
+            margin: 0;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 30px 20px;
+                margin: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="logo-container">
+                <!-- LOGOTIPO REAL APLICADO AQUI -->
+                <img src="logo_realshape.jpeg" alt="Logotipo Real Shape Academia" class="logo-real">
+            </div>
+            <h1>Princípios do Instrutor Real Shape</h1>
+            <p>Excelência em cada treino, dedicação a cada aluno.</p>
+        </div>
+
+        <div class="principle">
+            <div class="icon">🤝</div>
+            <div class="content">
+                <h3>1. ATENÇÃO IGUALITÁRIA</h3>
+                <p>Do iniciante ao avançado, do jovem à família. Todos os alunos merecem 100% da nossa dedicação. <span class="highlight">Seja a referência que eles procuram.</span></p>
+            </div>
+        </div>
+
+        <div class="principle">
+            <div class="icon">🎯</div>
+            <div class="content">
+                <h3>2. PROATIVIDADE CONSTANTE</h3>
+                <p>Não espere ser chamado. Circule, corrija, ensine e motive. <span class="highlight">Faça a diferença no treino de alguém hoje.</span></p>
+            </div>
+        </div>
+
+        <div class="principle">
+            <div class="icon">🛡️</div>
+            <div class="content">
+                <h3>3. POSTURA PROFISSIONAL</h3>
+                <p>Sua conduta, sua linguagem e seu foco representam a marca. <span class="highlight">Construa respeito e confiança em cada interação.</span></p>
+            </div>
+        </div>
+
+        <div class="footer">
+            <p><strong>Real Shape Academia:</strong> Transformando vidas através do movimento e da dedicação.</p>
+        </div>
+    </div>
+</body>
+</html>

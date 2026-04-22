@@ -1,0 +1,987 @@
+
+
+================================================================================0,0
+
+templates/index.html
+
+app.py
+
+geo_logic.py
+
+/api/generate_manual_grid
+
+app.py
+
+geohash_origem
+
+geo_logic.py
+
+static/js/main.js
+
+templates/index.html
+
+templates/index.html
+
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Gerador de Grade Geográfica</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <style>
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; display: flex; flex-direction: column; height: 100vh; margin: 0; background-color: #f4f4f4; }
+        #controls { background-color: white; box-shadow: 0 2px 4px rgba(0,0,0,0.1 ); z-index: 1001; padding: 0; }
+        .tab-buttons { display: flex; border-bottom: 1px solid #ccc; }
+        .tab-button { padding: 10px 20px; cursor: pointer; background-color: #e9ecef; color: #495057; border: 1px solid #ccc; border-bottom: none; margin-bottom: -1px; font-size: 16px; outline: none; }
+        .tab-button.active { background-color: white; color: #000; font-weight: bold; border-bottom-color: white; }
+        .tab-content { display: none; padding: 15px 20px; border-top: 1px solid #ccc; }
+        .tab-content.active { display: block; }
+        .form-group { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+        label { font-weight: bold; font-size: 14px; min-width: 150px; }
+        input { padding: 8px 12px; border: 1px solid #ced4da; border-radius: 4px; font-size: 14px; }
+        button { background-color: #007bff; color: white; border: 1px solid #007bff; cursor: pointer; padding: 10px 15px; border-radius: 4px; font-size: 16px; }
+        button:hover { background-color: #0056b3; }
+        #export-btn { background-color: #28a745; border-color: #28a745; text-decoration: none; color: white; display: none; padding: 8px 12px; font-size: 14px; border-radius: 4px; margin-top: 10px; }
+        #map-container { position: relative; flex-grow: 1; }
+        #map { height: 100%; width: 100%; }
+    </style>
+</head>
+<body>
+    <div id="controls">
+        <div class="tab-buttons">
+            <button class="tab-button active" onclick="openTab(event, 'auto-mode')">1. Explorar por Cidade</button>
+            <button class="tab-button" onclick="openTab(event, 'manual-mode')">2. Gerar por Geohash</button>
+        </div>
+
+        <div id="auto-mode" class="tab-content active">
+            <h3>Explorar e Encontrar Geohashes</h3>
+            <div class="form-group">
+                <label for="cidade">Cidade:</label>
+                <input type="text" id="cidade" value="Rio de Janeiro" size="25">
+                <label for="pais">País:</label>
+                <input type="text" id="pais" value="Brasil" size="20">
+            </div>
+            <button id="generate-auto-btn">Explorar Cidade</button>
+        </div>
+
+        <div id="manual-mode" class="tab-content">
+            <h3>Gerar Grade a Partir de um Geohash</h3>
+            <div class="form-group">
+                <label for="geohash_origem">Geohash de Origem (0,0):</label>
+                <input type="text" id="geohash_origem" value="6gyf7k" size="20">
+            </div>
+            <div class="form-group">
+                <label for="raio_x">CLAs (Esq/Dir):</label>
+                <input type="number" id="raio_x" value="5">
+            </div>
+            <div class="form-group">
+                <label for="raio_y">CLAs (Cima/Baixo):</label>
+                <input type="number" id="raio_y" value="5">
+            </div>
+            <button id="generate-manual-btn">Gerar Grade Manual</button>
+        </div>
+        
+        <div style="padding: 0 20px 15px;">
+            <a id="export-btn" href="/api/export_excel" class="button">Exportar para Excel</a>
+        </div>
+    </div>
+    <div id="map-container">
+        <div id="map"></div>
+    </div>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="/static/js/main.js"></script>
+</body>
+</html>
+
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Gerador de Grade Geográfica</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <style>
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; display: flex; flex-direction: column; height: 100vh; margin: 0; background-color: #f4f4f4; }
+        #controls { background-color: white; box-shadow: 0 2px 4px rgba(0,0,0,0.1 ); z-index: 1001; padding: 0; }
+        .tab-buttons { display: flex; border-bottom: 1px solid #ccc; }
+        .tab-button { padding: 10px 20px; cursor: pointer; background-color: #e9ecef; color: #495057; border: 1px solid #ccc; border-bottom: none; margin-bottom: -1px; font-size: 16px; outline: none; }
+        .tab-button.active { background-color: white; color: #000; font-weight: bold; border-bottom-color: white; }
+        .tab-content { display: none; padding: 15px 20px; border-top: 1px solid #ccc; }
+        .tab-content.active { display: block; }
+        .form-group { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+        label { font-weight: bold; font-size: 14px; min-width: 150px; }
+        input { padding: 8px 12px; border: 1px solid #ced4da; border-radius: 4px; font-size: 14px; }
+        button { background-color: #007bff; color: white; border: 1px solid #007bff; cursor: pointer; padding: 10px 15px; border-radius: 4px; font-size: 16px; }
+        button:hover { background-color: #0056b3; }
+        #export-btn { background-color: #28a745; border-color: #28a745; text-decoration: none; color: white; display: none; padding: 8px 12px; font-size: 14px; border-radius: 4px; margin-top: 10px; }
+        #map-container { position: relative; flex-grow: 1; }
+        #map { height: 100%; width: 100%; }
+    </style>
+</head>
+<body>
+    <div id="controls">
+        <div class="tab-buttons">
+            <button class="tab-button active" onclick="openTab(event, 'auto-mode')">1. Explorar por Cidade</button>
+            <button class="tab-button" onclick="openTab(event, 'manual-mode')">2. Gerar por Geohash</button>
+        </div>
+
+        <div id="auto-mode" class="tab-content active">
+            <h3>Explorar e Encontrar Geohashes</h3>
+            <div class="form-group">
+                <label for="cidade">Cidade:</label>
+                <input type="text" id="cidade" value="Rio de Janeiro" size="25">
+                <label for="pais">País:</label>
+                <input type="text" id="pais" value="Brasil" size="20">
+            </div>
+            <button id="generate-auto-btn">Explorar Cidade</button>
+        </div>
+
+        <div id="manual-mode" class="tab-content">
+            <h3>Gerar Grade a Partir de um Geohash</h3>
+            <div class="form-group">
+                <label for="geohash_origem">Geohash de Origem (0,0):</label>
+                <input type="text" id="geohash_origem" value="6gyf7k" size="20">
+            </div>
+            <div class="form-group">
+                <label for="raio_x">CLAs (Esq/Dir):</label>
+                <input type="number" id="raio_x" value="5">
+            </div>
+            <div class="form-group">
+                <label for="raio_y">CLAs (Cima/Baixo):</label>
+                <input type="number" id="raio_y" value="5">
+            </div>
+            <button id="generate-manual-btn">Gerar Grade Manual</button>
+        </div>
+        
+        <div style="padding: 0 20px 15px;">
+            <a id="export-btn" href="/api/export_excel" class="button">Exportar para Excel</a>
+        </div>
+    </div>
+    <div id="map-container">
+        <div id="map"></div>
+    </div>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="/static/js/main.js"></script>
+</body>
+</html>
+
+app.py
+
+app.py
+
+# app.py (VERSÃO FINAL COM ENTRADA POR GEOHASH )
+
+from flask import Flask, render_template, request, jsonify, send_file
+import pandas as pd
+import io
+import geo_logic
+import pygeohash
+
+app = Flask(__name__)
+
+@app.route('/')
+def index():
+    return render_template('index.html')
+
+# ROTA PARA O MODO AUTOMÁTICO (EXPLORAÇÃO)
+@app.route('/api/generate_auto_grid', methods=['POST'])
+def generate_auto_grid_api():
+    data = request.json
+    cidade = data.get('cidade')
+    pais = data.get('pais')
+    if not cidade or not pais:
+        return jsonify({'error': 'Cidade e país são obrigatórios.'}), 400
+
+    dados_cidade = geo_logic.buscar_dados_cidade(cidade, pais)
+    if not dados_cidade:
+        return jsonify({'error': f'Não foi possível encontrar dados detalhados para "{cidade}".'}), 400
+
+    ponto_origem = dados_cidade['ponto_central']
+    geohash_origem = pygeohash.encode(ponto_origem['lat'], ponto_origem['lon'], precision=geo_logic.PRECISAO_GEOHASH)
+    lista_geohashes = geo_logic.gerar_geohashes_por_poligono(dados_cidade['limites'], dados_cidade['poligono'])
+    
+    return processar_e_retornar_grade(lista_geohashes, geohash_origem)
+
+# ROTA PARA O MODO MANUAL (POR GEOHASH)
+@app.route('/api/generate_manual_grid', methods=['POST'])
+def generate_manual_grid_api():
+    data = request.json
+    try:
+        geohash_origem = data['geohash_origem'].strip().lower()
+        raio_x, raio_y = int(data['raio_x']), int(data['raio_y'])
+        
+        # Decodifica o geohash para obter a lat/lon central
+        lat, lon = pygeohash.decode(geohash_origem)
+
+    except (ValueError, TypeError, KeyError):
+        return jsonify({'error': 'Dados inválidos. Verifique o Geohash e os raios inseridos.'}), 400
+
+    lista_geohashes = geo_logic.gerar_geohashes_por_raio(lat, lon, raio_x, raio_y)
+
+    return processar_e_retornar_grade(lista_geohashes, geohash_origem)
+
+def processar_e_retornar_grade(lista_geohashes, geohash_origem):
+    """Função auxiliar comum para processar a lista de geohashes e retornar o JSON."""
+    dados_grade = []
+    for gh in lista_geohashes:
+        coords = geo_logic.converter_para_grade_customizada(gh, geohash_origem)
+        if coords[0] is None: continue
+        try:
+            bbox = pygeohash.decode_exactly(gh)
+            bounds_leaflet = [[bbox[0] - bbox[2], bbox[1] - bbox[3]], [bbox[0] + bbox[2], bbox[1] + bbox[3]]]
+            dados_grade.append({
+                'geohash': gh, 'coord_x': coords[0], 'coord_y': coords[1], 'bounds': bounds_leaflet
+            })
+        except Exception:
+            continue
+    
+    app.config['LAST_GRID_DATA'] = dados_grade
+    return jsonify({'geohash_origem': geohash_origem, 'dados_grade': dados_grade})
+
+@app.route('/api/export_excel')
+def export_excel():
+    dados_grade = app.config.get('LAST_GRID_DATA')
+    if not dados_grade:
+        return "Nenhum dado de grade para exportar.", 404
+    df = pd.DataFrame(dados_grade)
+    df = df[['geohash', 'coord_x', 'coord_y']]
+    output = io.BytesIO()
+    with pd.ExcelWriter(output, engine='xlsxwriter') as writer:
+        df.to_excel(writer, index=False, sheet_name='Grade')
+    output.seek(0)
+    return send_file(
+        output,
+        mimetype='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+        as_attachment=True,
+        download_name='grade_geografica.xlsx'
+    )
+
+if __name__ == '__main__':
+    app.run(debug=True)
+
+# app.py (VERSÃO FINAL COM ENTRADA POR GEOHASH )
+
+from flask import Flask, render_template, request, jsonify, send_file
+import pandas as pd
+import io
+import geo_logic
+import pygeohash
+
+app = Flask(__name__)
+
+@app.route('/')
+def index():
+    return render_template('index.html')
+
+# ROTA PARA O MODO AUTOMÁTICO (EXPLORAÇÃO)
+@app.route('/api/generate_auto_grid', methods=['POST'])
+def generate_auto_grid_api():
+    data = request.json
+    cidade = data.get('cidade')
+    pais = data.get('pais')
+    if not cidade or not pais:
+        return jsonify({'error': 'Cidade e país são obrigatórios.'}), 400
+
+    dados_cidade = geo_logic.buscar_dados_cidade(cidade, pais)
+    if not dados_cidade:
+        return jsonify({'error': f'Não foi possível encontrar dados detalhados para "{cidade}".'}), 400
+
+    ponto_origem = dados_cidade['ponto_central']
+    geohash_origem = pygeohash.encode(ponto_origem['lat'], ponto_origem['lon'], precision=geo_logic.PRECISAO_GEOHASH)
+    lista_geohashes = geo_logic.gerar_geohashes_por_poligono(dados_cidade['limites'], dados_cidade['poligono'])
+    
+    return processar_e_retornar_grade(lista_geohashes, geohash_origem)
+
+# ROTA PARA O MODO MANUAL (POR GEOHASH)
+@app.route('/api/generate_manual_grid', methods=['POST'])
+def generate_manual_grid_api():
+    data = request.json
+    try:
+        geohash_origem = data['geohash_origem'].strip().lower()
+        raio_x, raio_y = int(data['raio_x']), int(data['raio_y'])
+        
+        # Decodifica o geohash para obter a lat/lon central
+        lat, lon = pygeohash.decode(geohash_origem)
+
+    except (ValueError, TypeError, KeyError):
+        return jsonify({'error': 'Dados inválidos. Verifique o Geohash e os raios inseridos.'}), 400
+
+    lista_geohashes = geo_logic.gerar_geohashes_por_raio(lat, lon, raio_x, raio_y)
+
+    return processar_e_retornar_grade(lista_geohashes, geohash_origem)
+
+def processar_e_retornar_grade(lista_geohashes, geohash_origem):
+    """Função auxiliar comum para processar a lista de geohashes e retornar o JSON."""
+    dados_grade = []
+    for gh in lista_geohashes:
+        coords = geo_logic.converter_para_grade_customizada(gh, geohash_origem)
+        if coords[0] is None: continue
+        try:
+            bbox = pygeohash.decode_exactly(gh)
+            bounds_leaflet = [[bbox[0] - bbox[2], bbox[1] - bbox[3]], [bbox[0] + bbox[2], bbox[1] + bbox[3]]]
+            dados_grade.append({
+                'geohash': gh, 'coord_x': coords[0], 'coord_y': coords[1], 'bounds': bounds_leaflet
+            })
+        except Exception:
+            continue
+    
+    app.config['LAST_GRID_DATA'] = dados_grade
+    return jsonify({'geohash_origem': geohash_origem, 'dados_grade': dados_grade})
+
+@app.route('/api/export_excel')
+def export_excel():
+    dados_grade = app.config.get('LAST_GRID_DATA')
+    if not dados_grade:
+        return "Nenhum dado de grade para exportar.", 404
+    df = pd.DataFrame(dados_grade)
+    df = df[['geohash', 'coord_x', 'coord_y']]
+    output = io.BytesIO()
+    with pd.ExcelWriter(output, engine='xlsxwriter') as writer:
+        df.to_excel(writer, index=False, sheet_name='Grade')
+    output.seek(0)
+    return send_file(
+        output,
+        mimetype='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+        as_attachment=True,
+        download_name='grade_geografica.xlsx'
+    )
+
+if __name__ == '__main__':
+    app.run(debug=True)
+
+static/js/main.js
+
+static/js/main.js
+
+// static/js/main.js (VERSÃO FINAL COM ENTRADA POR GEOHASH)
+
+function openTab(evt, tabName) {
+    let i, tabcontent, tablinks;
+    tabcontent = document.getElementsByClassName("tab-content");
+    for (i = 0; i < tabcontent.length; i++) {
+        tabcontent[i].style.display = "none";
+    }
+    tablinks = document.getElementsByClassName("tab-button");
+    for (i = 0; i < tablinks.length; i++) {
+        tablinks[i].className = tablinks[i].className.replace(" active", "");
+    }
+    document.getElementById(tabName).style.display = "block";
+    evt.currentTarget.className += " active";
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    const exportBtn = document.getElementById('export-btn');
+    const map = L.map('map').setView([-22.906, -43.172], 13);
+    let featureGroup = L.featureGroup().addTo(map);
+    
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+    } ).addTo(map);
+
+    // Modo Automático
+    const generateAutoBtn = document.getElementById('generate-auto-btn');
+    const cidadeInput = document.getElementById('cidade');
+    const paisInput = document.getElementById('pais');
+
+    // Modo Manual
+    const generateManualBtn = document.getElementById('generate-manual-btn');
+    const geohashOrigemInput = document.getElementById('geohash_origem');
+    const raioXInput = document.getElementById('raio_x');
+    const raioYInput = document.getElementById('raio_y');
+
+    // Listeners dos Botões
+    generateAutoBtn.addEventListener('click', () => {
+        const payload = { cidade: cidadeInput.value, pais: paisInput.value };
+        gerarGrade('/api/generate_auto_grid', payload);
+    });
+
+    generateManualBtn.addEventListener('click', () => {
+        const payload = {
+            geohash_origem: geohashOrigemInput.value,
+            raio_x: raioXInput.value,
+            raio_y: raioYInput.value
+        };
+        gerarGrade('/api/generate_manual_grid', payload);
+    });
+
+    // Função Genérica para Gerar a Grade
+    async function gerarGrade(apiUrl, payload) {
+        featureGroup.clearLayers();
+        exportBtn.style.display = 'none';
+        alert('Gerando a grade... Por favor, aguarde.');
+
+        try {
+            const response = await fetch(apiUrl, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
+
+            const data = await response.json();
+            if (!response.ok) throw new Error(data.error || 'Erro desconhecido');
+
+            data.dados_grade.forEach(cell => {
+                const isOrigem = cell.geohash === data.geohash_origem;
+                const color = isOrigem ? "#FF0000" : "#ff7800";
+                const rectangle = L.rectangle(cell.bounds, {
+                    color: color,
+                    weight: isOrigem ? 2 : 1,
+                    fillOpacity: 0.2
+                });
+                
+                // Adiciona um evento de clique para copiar o geohash
+                rectangle.on('click', () => {
+                    navigator.clipboard.writeText(cell.geohash).then(() => {
+                        alert(`Geohash "${cell.geohash}" copiado para a área de transferência!`);
+                    });
+                });
+
+                const tooltipContent = `<b>CLA: (${cell.coord_x}, ${cell.coord_y})</b>  
+Geohash: ${cell.geohash}  
+<i>(clique para copiar)</i>`;
+                rectangle.bindTooltip(tooltipContent).addTo(featureGroup);
+            });
+            
+            if (data.dados_grade.length > 0) {
+                map.fitBounds(featureGroup.getBounds().pad(0.1));
+                exportBtn.style.display = 'inline-block';
+            } else {
+                alert("Nenhuma célula foi gerada para os parâmetros informados.");
+            }
+
+        } catch (error) {
+            alert(`Erro ao gerar a grade: ${error.message}`);
+        }
+    }
+});
+
+// static/js/main.js (VERSÃO FINAL COM ENTRADA POR GEOHASH)
+
+function openTab(evt, tabName) {
+    let i, tabcontent, tablinks;
+    tabcontent = document.getElementsByClassName("tab-content");
+    for (i = 0; i < tabcontent.length; i++) {
+        tabcontent[i].style.display = "none";
+    }
+    tablinks = document.getElementsByClassName("tab-button");
+    for (i = 0; i < tablinks.length; i++) {
+        tablinks[i].className = tablinks[i].className.replace(" active", "");
+    }
+    document.getElementById(tabName).style.display = "block";
+    evt.currentTarget.className += " active";
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    const exportBtn = document.getElementById('export-btn');
+    const map = L.map('map').setView([-22.906, -43.172], 13);
+    let featureGroup = L.featureGroup().addTo(map);
+    
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+    } ).addTo(map);
+
+    // Modo Automático
+    const generateAutoBtn = document.getElementById('generate-auto-btn');
+    const cidadeInput = document.getElementById('cidade');
+    const paisInput = document.getElementById('pais');
+
+    // Modo Manual
+    const generateManualBtn = document.getElementById('generate-manual-btn');
+    const geohashOrigemInput = document.getElementById('geohash_origem');
+    const raioXInput = document.getElementById('raio_x');
+    const raioYInput = document.getElementById('raio_y');
+
+    // Listeners dos Botões
+    generateAutoBtn.addEventListener('click', () => {
+        const payload = { cidade: cidadeInput.value, pais: paisInput.value };
+        gerarGrade('/api/generate_auto_grid', payload);
+    });
+
+    generateManualBtn.addEventListener('click', () => {
+        const payload = {
+            geohash_origem: geohashOrigemInput.value,
+            raio_x: raioXInput.value,
+            raio_y: raioYInput.value
+        };
+        gerarGrade('/api/generate_manual_grid', payload);
+    });
+
+    // Função Genérica para Gerar a Grade
+    async function gerarGrade(apiUrl, payload) {
+        featureGroup.clearLayers();
+        exportBtn.style.display = 'none';
+        alert('Gerando a grade... Por favor, aguarde.');
+
+        try {
+            const response = await fetch(apiUrl, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
+
+            const data = await response.json();
+            if (!response.ok) throw new Error(data.error || 'Erro desconhecido');
+
+            data.dados_grade.forEach(cell => {
+                const isOrigem = cell.geohash === data.geohash_origem;
+                const color = isOrigem ? "#FF0000" : "#ff7800";
+                const rectangle = L.rectangle(cell.bounds, {
+                    color: color,
+                    weight: isOrigem ? 2 : 1,
+                    fillOpacity: 0.2
+                });
+                
+                // Adiciona um evento de clique para copiar o geohash
+                rectangle.on('click', () => {
+                    navigator.clipboard.writeText(cell.geohash).then(() => {
+                        alert(`Geohash "${cell.geohash}" copiado para a área de transferência!`);
+                    });
+                });
+
+                const tooltipContent = `<b>CLA: (${cell.coord_x}, ${cell.coord_y})</b>  
+Geohash: ${cell.geohash}  
+<i>(clique para copiar)</i>`;
+                rectangle.bindTooltip(tooltipContent).addTo(featureGroup);
+            });
+            
+            if (data.dados_grade.length > 0) {
+                map.fitBounds(featureGroup.getBounds().pad(0.1));
+                exportBtn.style.display = 'inline-block';
+            } else {
+                alert("Nenhuma célula foi gerada para os parâmetros informados.");
+            }
+
+        } catch (error) {
+            alert(`Erro ao gerar a grade: ${error.message}`);
+        }
+    }
+});
+
+app.run(debug=True)
+
+seusite.com.br
+
+ssh seu_usuario@seu_servidor_ip
+
+ssh seu_usuario@seu_servidor_ip
+
+sudo apt-get update
+sudo apt-get install python3-pip python3-dev python3-venv nginx
+
+sudo apt-get update
+sudo apt-get install python3-pip python3-dev python3-venv nginx
+
+python3-pip
+
+python3-dev
+
+python3-venv
+
+nginx
+
+mkdir ~/geo_grid_app
+
+mkdir ~/geo_grid_app
+
+scp
+
+app.py
+
+geo_logic.py
+
+templates/index.html
+
+static/js/main.js
+
+# Exemplo com scp (execute do seu computador local)
+scp -r /caminho/local/para/geo_grid_app/* seu_usuario@seu_servidor_ip:~/geo_grid_app/
+
+# Exemplo com scp (execute do seu computador local)
+scp -r /caminho/local/para/geo_grid_app/* seu_usuario@seu_servidor_ip:~/geo_grid_app/
+
+cd ~/geo_grid_app
+
+cd ~/geo_grid_app
+
+python3 -m venv venv
+source venv/bin/activate
+
+python3 -m venv venv
+source venv/bin/activate
+
+(venv)
+
+pip install flask pandas xlsxwriter pygeohash shapely requests gunicorn
+
+pip install flask pandas xlsxwriter pygeohash shapely requests gunicorn
+
+gunicorn
+
+gunicorn --bind 0.0.0.0:5000 app:app
+
+gunicorn --bind 0.0.0.0:5000 app:app
+
+app:app
+
+app
+
+app.py
+
+app
+
+app = Flask(__name__)
+
+CTRL+C
+
+systemd
+
+systemd
+
+sudo nano /etc/systemd/system/geogrid.service
+
+sudo nano /etc/systemd/system/geogrid.service
+
+seu_usuario
+
+[Unit]
+Description=Gunicorn instance to serve Geo Grid App
+After=network.target
+
+[Service]
+User=seu_usuario
+Group=www-data
+WorkingDirectory=/home/seu_usuario/geo_grid_app
+Environment="PATH=/home/seu_usuario/geo_grid_app/venv/bin"
+ExecStart=/home/seu_usuario/geo_grid_app/venv/bin/gunicorn --workers 3 --bind unix:geogrid.sock -m 007 app:app
+
+[Install]
+WantedBy=multi-user.target
+
+[Unit]
+Description=Gunicorn instance to serve Geo Grid App
+After=network.target
+
+[Service]
+User=seu_usuario
+Group=www-data
+WorkingDirectory=/home/seu_usuario/geo_grid_app
+Environment="PATH=/home/seu_usuario/geo_grid_app/venv/bin"
+ExecStart=/home/seu_usuario/geo_grid_app/venv/bin/gunicorn --workers 3 --bind unix:geogrid.sock -m 007 app:app
+
+[Install]
+WantedBy=multi-user.target
+
+User
+
+WorkingDirectory
+
+--workers 3
+
+(2 * número de núcleos da CPU) + 1
+
+--bind unix:geogrid.sock
+
+sudo systemctl start geogrid
+sudo systemctl enable geogrid
+
+sudo systemctl start geogrid
+sudo systemctl enable geogrid
+
+sudo systemctl status geogrid
+
+sudo systemctl status geogrid
+
+active (running)
+
+sudo journalctl -u geogrid
+
+sudo nano /etc/nginx/sites-available/geogrid
+
+sudo nano /etc/nginx/sites-available/geogrid
+
+seusite.com.br
+
+server {
+    listen 80;
+    server_name seusite.com.br www.seusite.com.br;
+
+    location /static {
+        alias /home/seu_usuario/geo_grid_app/static;
+    }
+
+    location / {
+        proxy_pass http://unix:/home/seu_usuario/geo_grid_app/geogrid.sock;
+        include proxy_params;
+        proxy_redirect off;
+    }
+}
+
+server {
+    listen 80;
+    server_name seusite.com.br www.seusite.com.br;
+
+    location /static {
+        alias /home/seu_usuario/geo_grid_app/static;
+    }
+
+    location / {
+        proxy_pass http://unix:/home/seu_usuario/geo_grid_app/geogrid.sock;
+        include proxy_params;
+        proxy_redirect off;
+    }
+}
+
+listen 80
+
+server_name
+
+location /static
+
+static
+
+location /
+
+sites-enabled
+
+sudo ln -s /etc/nginx/sites-available/geogrid /etc/nginx/sites-enabled
+
+sudo ln -s /etc/nginx/sites-available/geogrid /etc/nginx/sites-enabled
+
+sudo nginx -t
+
+sudo nginx -t
+
+syntax is ok
+
+test is successful
+
+sudo systemctl restart nginx
+
+sudo systemctl restart nginx
+
+sudo ufw allow 'Nginx Full'
+
+sudo ufw allow 'Nginx Full'
+
+http://seusite.com.br
+
+sudo apt-get install certbot python3-certbot-nginx
+sudo certbot --nginx -d seusite.com.br -d www.seusite.com.br
+
+sudo apt-get install certbot python3-certbot-nginx
+sudo certbot --nginx -d seusite.com.br -d www.seusite.com.br
+
+.md
+
+Usuário → Internet → Nginx → Gunicorn → Sua Aplicação Flask
+
+ssh seu_usuario@seu_servidor_ip
+
+ssh seu_usuario@seu_servidor_ip
+
+sudo apt-get update
+sudo apt-get install python3-pip python3-dev python3-venv nginx
+
+sudo apt-get update
+sudo apt-get install python3-pip python3-dev python3-venv nginx
+
+python3-pip
+
+python3-dev
+
+python3-venv
+
+nginx
+
+mkdir ~/geo_grid_app
+
+mkdir ~/geo_grid_app
+
+scp
+
+# Sintaxe: scp -r /pasta/local/* usuario@servidor:/pasta/remota/
+scp -r /caminho/local/para/geo_grid_app/* seu_usuario@seu_servidor_ip:~/geo_grid_app/
+
+# Sintaxe: scp -r /pasta/local/* usuario@servidor:/pasta/remota/
+scp -r /caminho/local/para/geo_grid_app/* seu_usuario@seu_servidor_ip:~/geo_grid_app/
+
+app.py
+
+geo_logic.py
+
+index.html
+
+main.js
+
+templates
+
+static
+
+~/geo_grid_app
+
+cd ~/geo_grid_app
+
+cd ~/geo_grid_app
+
+python3 -m venv venv
+source venv/bin/activate
+
+python3 -m venv venv
+source venv/bin/activate
+
+(venv)
+
+pip install flask pandas xlsxwriter pygeohash shapely requests gunicorn
+
+pip install flask pandas xlsxwriter pygeohash shapely requests gunicorn
+
+# Sintaxe: gunicorn --bind ip:porta nome_arquivo:nome_variavel_flask
+gunicorn --bind 0.0.0.0:5000 app:app
+
+# Sintaxe: gunicorn --bind ip:porta nome_arquivo:nome_variavel_flask
+gunicorn --bind 0.0.0.0:5000 app:app
+
+CTRL+C
+
+systemd
+
+systemd
+
+nano
+
+sudo nano /etc/systemd/system/geogrid.service
+
+sudo nano /etc/systemd/system/geogrid.service
+
+seu_usuario
+
+[Unit]
+Description=Gunicorn instance to serve Geo Grid App
+After=network.target
+
+[Service]
+User=seu_usuario
+Group=www-data
+WorkingDirectory=/home/seu_usuario/geo_grid_app
+Environment="PATH=/home/seu_usuario/geo_grid_app/venv/bin"
+ExecStart=/home/seu_usuario/geo_grid_app/venv/bin/gunicorn --workers 3 --bind unix:geogrid.sock -m 007 app:app
+
+[Install]
+WantedBy=multi-user.target
+
+[Unit]
+Description=Gunicorn instance to serve Geo Grid App
+After=network.target
+
+[Service]
+User=seu_usuario
+Group=www-data
+WorkingDirectory=/home/seu_usuario/geo_grid_app
+Environment="PATH=/home/seu_usuario/geo_grid_app/venv/bin"
+ExecStart=/home/seu_usuario/geo_grid_app/venv/bin/gunicorn --workers 3 --bind unix:geogrid.sock -m 007 app:app
+
+[Install]
+WantedBy=multi-user.target
+
+WorkingDirectory
+
+templates
+
+static
+
+ExecStart
+
+--bind unix:geogrid.sock
+
+sudo systemctl start geogrid  # Inicia o serviço agora
+sudo systemctl enable geogrid # Habilita para iniciar junto com o boot do servidor
+
+sudo systemctl start geogrid  # Inicia o serviço agora
+sudo systemctl enable geogrid # Habilita para iniciar junto com o boot do servidor
+
+sudo systemctl status geogrid
+
+sudo systemctl status geogrid
+
+active (running)
+
+sudo journalctl -u geogrid
+
+sudo nano /etc/nginx/sites-available/geogrid
+
+sudo nano /etc/nginx/sites-available/geogrid
+
+seusite.com.br
+
+seu_usuario
+
+server {
+    listen 80;
+    server_name seusite.com.br www.seusite.com.br;
+
+    # Servir arquivos estáticos diretamente para máxima performance
+    location /static {
+        alias /home/seu_usuario/geo_grid_app/static;
+    }
+
+    # Repassar todas as outras requisições para a aplicação
+    location / {
+        proxy_pass http://unix:/home/seu_usuario/geo_grid_app/geogrid.sock;
+        include proxy_params;
+        proxy_redirect off;
+    }
+}
+
+server {
+    listen 80;
+    server_name seusite.com.br www.seusite.com.br;
+
+    # Servir arquivos estáticos diretamente para máxima performance
+    location /static {
+        alias /home/seu_usuario/geo_grid_app/static;
+    }
+
+    # Repassar todas as outras requisições para a aplicação
+    location / {
+        proxy_pass http://unix:/home/seu_usuario/geo_grid_app/geogrid.sock;
+        include proxy_params;
+        proxy_redirect off;
+    }
+}
+
+sites-available
+
+sites-enabled
+
+sudo ln -s /etc/nginx/sites-available/geogrid /etc/nginx/sites-enabled/
+
+sudo ln -s /etc/nginx/sites-available/geogrid /etc/nginx/sites-enabled/
+
+sudo nginx -t
+
+sudo nginx -t
+
+syntax is ok
+
+test is successful
+
+sudo systemctl restart nginx
+
+sudo systemctl restart nginx
+
+sudo ufw allow 'Nginx Full'
+
+sudo ufw allow 'Nginx Full'
+
+http://seusite.com.br
+
+sudo apt-get install certbot python3-certbot-nginx
+
+sudo apt-get install certbot python3-certbot-nginx
+
+sudo certbot --nginx -d seusite.com.br -d www.seusite.com.br
+
+sudo certbot --nginx -d seusite.com.br -d www.seusite.com.br
+
+https://seusite.com.br
