@@ -7,13 +7,13 @@
 | Campo | Valor |
 |---|---|
 | Status global | `EM_ANDAMENTO — FASE 2: mapa curatorial e documentos de domínio` |
-| Última atualização | 2026-10-08 16:24 (-03:00) |
+| Última atualização | 2026-10-08 16:25 (-03:00) |
 | Último commit de conteúdo/checkpoint confirmado | `e47275a` — `chore(bce): fechar F2.3 e apontar F2.4` (inclui índice, controle e checkpoint; conteúdo em `86c5cda`) |
 | Commits locais não publicados | Nenhum; `main` sincronizada com `origin/main` |
 | Branch de trabalho | `main` |
 | Último item concluído | `F2.3` — DOM-03 v0.1.0 publicado como primeira síntese; permanece em `REVISÃO` por ausência de implementação, build, teste físico e protocolo de transporte verificáveis |
-| Item em andamento | Nenhum; F2.3 fechado com 12/12 fontes do lote lidas em texto, blocos, links e imagens quando presentes |
-| Próximo item | `F2.4` — identidade, identificação de equipamento e DIDs; antes, atualizar o registro operacional com os hashes publicados de conteúdo, índice e checkpoint |
+| Item em andamento | `F2.4` — lote fechado em `BCE/fontes/ESCOPO_F2_4_IDENTIDADE_DIDS.md`; leitura dos sete artefatos brutos ainda não iniciada |
+| Próximo item | Ler, para cada um dos sete caminhos do escopo F2.4, `content.txt`, `code_blocks.txt`, `links.txt` e imagens associadas; produzir DOM-04 distinguindo esquema proposto, identidade soberana, identificador de equipamento, DID, implementação e lacuna. |
 | Impedimento atual | Nenhum operacional. Permanecem 244/273 conjuntos fora da amostra semântica integrada e 0/41 fontes amostradas com implementação verificável após o lote F2.3. O documento `01_arquitetura_geral_meshwave.md` contém um campo de contato pessoal; seu valor não foi reproduzido na BCE e deve ser revisado no original antes de redistribuição. DOM-01/DOM-02/DOM-03 continuam provisórios. |
 | Responsável pela sessão | Agente BCE MeshWave |
 
@@ -69,7 +69,7 @@
 | F2.1 | Documento de visão geral do ecossistema MeshWave | REVISÃO — v0.2.1 provisória (`d0f61f5`; referência cruzada F2.2 `be965f6`; índice `507f6f5`/`eccf754`; checkpoint `bdeec49`) | F1.7; ampliar fontes e validar relações; mantém-se a distinção entre visão e implementação |
 | F2.2 | Arquitetura geral e implantação | REVISÃO — DOM-02 v0.1.0 (`864d357`); índice `eccf754`; checkpoint `e47c1a6` | Primeira síntese das quatro fontes; confirmar especificação/versão, localizar alegado protótipo e roteiros, e validar deployment antes de elevar status |
 | F2.3 | Mesh networking, comunicação e roteamento | REVISÃO — DOM-03 v0.1.0; lote de 12 fontes processado; sem implementação verificável | F1.7; DOM-01/DOM-02; consultar DOM-03 para evidências, conflitos, hipóteses e lacunas |
-| F2.4 | Identidade, identificação de equipamento e DIDs | PENDENTE | F1.7 |
+| F2.4 | Identidade, identificação de equipamento e DIDs | EM_ANDAMENTO — lote fechado; leitura pendente | F1.7; DOM-01/DOM-03; escopo registrado em `BCE/fontes/ESCOPO_F2_4_IDENTIDADE_DIDS.md` |
 | F2.5 | ARC, autenticação contextual e inferência bayesiana | PENDENTE | F1.7 |
 | F2.6 | SOFIA, agentes, missões e persistência de conhecimento | PENDENTE | F1.7 |
 | F2.7 | Aplicações, simuladores e interfaces | PENDENTE | F1.7 |
@@ -208,6 +208,7 @@ O agente atual só deve declarar a tarefa transferível quando:
 | 2026-10-08 | Manus — F2.1 | DOM-01 revisado para v0.2.0 provisória; índice, checkpoint e controle atualizados | `d0f61f5` conteúdo; `507f6f5` índice; `bdeec49` checkpoint | Iniciar F2.2 com as três fontes e os critérios listados em DOM-01 §13; manter DOM-01 em revisão |
 | 2026-10-08 | Manus — F2.2 | DOM-02 v0.1.0 publicado; DOM-01 atualizado para v0.2.1; índice e checkpoint publicados; roadmap/arquitetura mantidos como propostas não verificadas | `864d357` DOM-02; `be965f6` DOM-01; `eccf754` índice; `e47c1a6` checkpoint | Iniciar F2.3 — rede mesh, comunicação e roteamento; continuar DOM-02 em revisão |
 | 2026-10-08 | Manus — F2.3 | DOM-03 v0.1.0 criado a partir das 12 fontes do lote; índice, controle e checkpoint publicados; propostas, protótipos alegados, hipóteses GSM/LTE e lacunas separados | `86c5cda` conteúdo; `e47275a` fechamento operacional | Iniciar F2.4 — identidade, identificação de equipamento e DIDs; manter DOM-03 em revisão |
+| 2026-10-08 | Manus — F2.4 | Lote de sete fontes fechado e checkpoint inicial criado antes da leitura | A publicar nesta unidade | Ler o lote e produzir DOM-04; manter distinção entre DID normativo, identificador interno, GeoID e identidade de hardware |
 
 
 ## Lote F1.5 registrado antes da leitura — catálogo de código
