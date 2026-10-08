@@ -8,7 +8,7 @@
 |---|---|
 | Status global | `EM_ANDAMENTO — FASE 1: inventário e classificação das fontes` |
 | Última atualização | 2026-10-08 |
-| Último commit de conteúdo/checkpoint confirmado | `75f4af5` — `chore(bce): indexar catalogo de codigo F1.5` |
+| Último commit de conteúdo/checkpoint confirmado | `5e56a8a` — `docs(bce): registrar checkpoint F1.5` |
 | Commits locais não publicados | Nenhum; `main` sincronizada com `origin/main` na última verificação |
 | Branch de trabalho | `main` |
 | Último item concluído | `F1.5` — catalogar código e evidências de implementação dos 29 diretórios físicos únicos dos Lotes 001–003 |
@@ -202,7 +202,7 @@ O agente atual só deve declarar a tarefa transferível quando:
 | 2026-10-08 | Manus — retomada F1.3 | Reconciliado commit apontado e registrados 19 caminhos antes da leitura; push inicialmente bloqueado, depois resolvido e commits publicados | `e03134e`, `ed855ca`, `fb0f995` (publicados em seguida) | Processar os 19 caminhos registrados |
 | 2026-10-08 | Manus — Lote 003 | Concluída classificação de 19 fontes; índice e checkpoint publicados; conector GitHub reabilitado | `705645d`, `daa3308`, `7ad5404` | Criar o catálogo de imagens F1.4 para os 19 caminhos do Lote 003 |
 | 2026-10-08 | Manus — F1.4 | Catalogadas 35 imagens dos 19 conjuntos; nenhuma duplicata exata; índice, checkpoint e controle publicados | `1340fc8`, `693b2ff`, `764d9e6` | Iniciar F1.5: catalogar código e evidências de implementação |
-| 2026-10-08 | Manus — F1.5 | Registradas 30 referências (29 diretórios físicos únicos, um repetido entre L001/L003); catálogo de código e índice publicados | `cae17ce`, `53f32ca`, `75f4af5`; controle e checkpoint desta sessão em commits próprios subsequentes | Iniciar F1.6 nos `links.txt` dos mesmos 29 diretórios físicos e catalogar links sem tratar presença como validação |
+| 2026-10-08 | Manus — F1.5 | Registradas 30 referências (29 diretórios físicos únicos, um repetido entre L001/L003); catálogo, índice, controle e checkpoint publicados | `cae17ce` registro; `53f32ca` catálogo; `75f4af5` índice; `894a61d` controle; `5e56a8a` checkpoint | Iniciar F1.6 nos `links.txt` dos mesmos 29 diretórios físicos e catalogar links sem tratar presença como validação |
 
 
 ## Lote F1.5 registrado antes da leitura — catálogo de código
