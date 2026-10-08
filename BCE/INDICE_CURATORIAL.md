@@ -45,7 +45,7 @@ Este índice define a arquitetura documental da Base de Conhecimento Evolutivo. 
 
 | ID | Documento-alvo | Pergunta central | Fontes candidatas observadas | Status |
 |---|---|---|---|---|
-| DOM-06 | `BCE/temas/sofia-agentes-missoes-e-oraculo.md` | O que é SOFIA, como agentes recebem/executam missões e como o conhecimento persiste? | “SOFIA and MeshWave Ecosystem Documents/Overview”, instruções da Sofia API, relatórios de passagem de contexto, sistema de persistência | EM_CURADORIA |
+| DOM-06 | `BCE/temas/sofia-agentes-missoes-e-oraculo.md` | O que é SOFIA, como agentes recebem/executam missões e como o conhecimento persiste? | Escopo F2.6: 23 fontes prioritárias de visão SOFIA, agentes, API, missões, oráculo, contexto, reabilitação e onboarding | EM_CURADORIA — lote físico fechado; leitura profunda pendente |
 | DOM-07 | `BCE/temas/persistencia-memoria-e-base-vetorial.md` | Como são armazenados, sincronizados, recuperados e atualizados os conhecimentos? | “Sistema de Persistência e Sincronização”, Chroma deployment, DB vetorial e Sofia API | PENDENTE |
 | DOM-08 | `BCE/temas/aplicacao-appmeshwave-e-interfaces.md` | Quais são as funcionalidades, telas, fluxos e decisões de UX do aplicativo/site? | “AppMeshWave Funcionalidades”, protótipos Android, site colaborativo, mockups e imagens | PENDENTE |
 | DOM-09 | `BCE/temas/simuladores-e-visualizacoes.md` | Quais simuladores existem, que modelos executam e como os resultados são visualizados? | “Criar site com simulador”, “Como criar um simulador gráfico”, inconsistências entre simulador e código, gráficos não exibidos | PENDENTE |
