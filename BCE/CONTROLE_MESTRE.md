@@ -8,7 +8,7 @@
 |---|---|
 | Status global | `EM_ANDAMENTO — FASE 2: mapa curatorial e documentos de domínio` |
 | Última atualização | 2026-10-08 19:14 (-03:00) |
-| Último commit de conteúdo/checkpoint confirmado | `4f7465e` — `curation(dom-04): concluir reconciliacao da F2.4` (DOM-04 v0.2.0 e folha de contato publicados) |
+| Último commit de conteúdo/checkpoint confirmado | `6ec80a9` — `chore(bce): fechar F2.4 e abrir F2.6` (controle, índice e checkpoint publicados) |
 | Commits locais não publicados | Nenhum; `main` sincronizada com `origin/main` |
 | Branch de trabalho | `main` |
 | Último item concluído | `F2.4` — DOM-04 v0.2.0 reconciliado e unidade concluída; o documento permanece `REVISÃO` por ausência de método DID aprovado e implementação verificável |
@@ -210,7 +210,7 @@ O agente atual só deve declarar a tarefa transferível quando:
 | 2026-10-08 | Manus — F2.3 | DOM-03 v0.1.0 criado a partir das 12 fontes do lote; índice, controle e checkpoint publicados; propostas, protótipos alegados, hipóteses GSM/LTE e lacunas separados | `86c5cda` conteúdo; `e47275a` fechamento operacional | Iniciar F2.4 — identidade, identificação de equipamento e DIDs; manter DOM-03 em revisão |
 | 2026-10-08 | Manus — F2.4 | Lote de sete fontes fechado e checkpoint inicial criado antes da leitura | A publicar nesta unidade | Ler o lote e produzir DOM-04; manter distinção entre DID normativo, identificador interno, GeoID e identidade de hardware |
 | 2026-10-08 | Manus — F2.5 paralela | Lote ARC/PGC/Bayes fechado, lido e DOM-05 publicado em revisão sem alterar F2.4 `EM_ANDAMENTO` | `d6c6108`, `e349070` | Retomar e fechar explicitamente F2.4 antes de avançar para F2.6 |
-| 2026-10-08 | Agente BCE MeshWave — fechamento F2.4 | Sete fontes e 12 imagens conferidas; DOM-04 v0.2.0 publicado; F2.4 concluída como unidade de curadoria e F2.6 aberta como próximo passo | `4f7465e`; checkpoint a publicar | Registrar checkpoint e iniciar escopo físico da F2.6 |
+| 2026-10-08 | Agente BCE MeshWave — fechamento F2.4 | Sete fontes e 12 imagens conferidas; DOM-04 v0.2.0 publicado; F2.4 concluída como unidade de curadoria e F2.6 aberta como próximo passo | `4f7465e`, `6ec80a9` | Iniciar escopo físico da F2.6 |
 
 
 ## Lote F1.5 registrado antes da leitura — catálogo de código
