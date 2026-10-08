@@ -8,11 +8,11 @@
 |---|---|
 | Status global | `EM_ANDAMENTO — FASE 0: fundação operacional` |
 | Última atualização | 2026-10-08 |
-| Último commit confirmado | `1402184` — `docs(bce): criar orientação operacional para agentes` |
+| Último commit confirmado | `4a0b1e3` — `docs(bce): registrar decisoes curatoriais iniciais` |
 | Branch de trabalho | `main` |
-| Último item concluído | `F0.1` — orientação operacional para agentes |
-| Item em andamento | `F0.2` — criação deste controle mestre |
-| Próximo item | `F0.3` — criar índice curatorial inicial |
+| Último item concluído | `F0.4` — registro inicial de decisões curatoriais |
+| Item em andamento | `F0.5` — inventário técnico de `KNOWLEDGE` |
+| Próximo item | `F0.6` — criar template de documento de tema |
 | Impedimento atual | Nenhum para leitura/escrita GitHub; curadoria de conteúdo ainda não iniciada |
 | Responsável pela sessão | Agente BCE MeshWave |
 
@@ -42,10 +42,10 @@
 | ID | Prioridade | Entrega | Status | Evidência/commit | Próxima ação exata |
 |---|---:|---|---|---|---|
 | F0.1 | P0 | Orientação de agentes | CONCLUÍDO | `1402184` | Nenhuma |
-| F0.2 | P0 | Controle mestre | EM_ANDAMENTO | Este commit | Atualizar `Estado atual` após publicar |
-| F0.3 | P0 | Índice curatorial inicial | PENDENTE | — | Inventariar domínios e documentos-alvo |
-| F0.4 | P0 | Registro de decisões | PENDENTE | — | Criar log inicial de decisões curatoriais |
-| F0.5 | P0 | Inventário técnico de `KNOWLEDGE` | PENDENTE | — | Gerar contagens, grupos, hashes e lista de fontes |
+| F0.2 | P0 | Controle mestre | CONCLUÍDO | `2e6a935` | Atualizado por este checkpoint |
+| F0.3 | P0 | Índice curatorial inicial | CONCLUÍDO | `849a31b` | Revisar após inventário de conteúdo |
+| F0.4 | P0 | Registro de decisões | CONCLUÍDO | `4a0b1e3` | Registrar decisões técnicas nos documentos de tema |
+| F0.5 | P0 | Inventário técnico de `KNOWLEDGE` | EM_ANDAMENTO | levantamento preliminar | Gerar contagens, grupos, hashes e lista de fontes |
 | F0.6 | P1 | Modelo/template de documento de tema | PENDENTE | — | Criar template reutilizável em `BCE/temas/_TEMPLATE.md` |
 | F0.7 | P1 | Primeiro checkpoint de sessão | PENDENTE | — | Registrar a sessão após concluir F0.1–F0.6 |
 
@@ -159,4 +159,7 @@ O agente atual só deve declarar a tarefa transferível quando:
 
 | Data | Agente | Evento | Commit | Próximo passo |
 |---|---|---|---|---|
-| 2026-10-08 | Agente BCE MeshWave | Criada orientação operacional | `1402184` | Publicar este controle mestre |
+| 2026-10-08 | Agente BCE MeshWave | Criada orientação operacional | `1402184` | Criar controle mestre |
+| 2026-10-08 | Agente BCE MeshWave | Criado controle mestre | `2e6a935` | Criar índice curatorial |
+| 2026-10-08 | Agente BCE MeshWave | Criado índice curatorial | `849a31b` | Criar registro de decisões |
+| 2026-10-08 | Agente BCE MeshWave | Criado registro de decisões | `4a0b1e3` | Iniciar inventário técnico de `KNOWLEDGE` |
