@@ -202,3 +202,46 @@ O agente atual só deve declarar a tarefa transferível quando:
 | 2026-10-08 | Manus — retomada F1.3 | Reconciliado commit apontado e registrados 19 caminhos antes da leitura; push inicialmente bloqueado, depois resolvido e commits publicados | `e03134e`, `ed855ca`, `fb0f995` (publicados em seguida) | Processar os 19 caminhos registrados |
 | 2026-10-08 | Manus — Lote 003 | Concluída classificação de 19 fontes; índice e checkpoint publicados; conector GitHub reabilitado | `705645d`, `daa3308`, `7ad5404` | Criar o catálogo de imagens F1.4 para os 19 caminhos do Lote 003 |
 | 2026-10-08 | Manus — F1.4 | Catalogadas 35 imagens dos 19 conjuntos; nenhuma duplicata exata; índice, checkpoint e controle publicados | `1340fc8`, `693b2ff`, `764d9e6` | Iniciar F1.5: catalogar código e evidências de implementação |
+
+
+## Lote F1.5 registrado antes da leitura — catálogo de código
+
+Registro prévio realizado em 2026-10-08, antes da leitura dos `content.txt`, `code_blocks.txt`, `links.txt` e imagens brutas para esta unidade. Escopo fechado: fontes dos Lotes 001–003 nas classificações existentes. A fonte `KNOWLEDGE/info/20260422_173802_Identificador Único do Equipamento na Rede - Manus` aparece em L001-05 e L003-10; será analisada uma vez como fonte física e relacionada às duas entradas históricas.
+
+### Lote 001
+1. `KNOWLEDGE/info/20260422_171119_O que é o projeto Meshwave_ - Manus`
+2. `KNOWLEDGE/info/20260422_165052_Fonte para Arquitetura e Operação da Rede MeshWave - Manus`
+3. `KNOWLEDGE/info/20260422_165701_Hierarquia de CLA Continental e Roteamento - Manus`
+4. `KNOWLEDGE/info/20260422_165745_ARC - Autenticação Recessiva Contextual com inferência Bayesiana - Manus`
+5. `KNOWLEDGE/info/20260422_173802_Identificador Único do Equipamento na Rede - Manus`
+6. `KNOWLEDGE/johann/20260422_174331_Conhecimento sobre Meshwave, Sofia e módulos ARC-Bayes_ - Manus`
+
+### Lote 002
+1. `KNOWLEDGE/info/20260422_173855_Identificador Único do Equipamento na Rede - Manus`
+2. `KNOWLEDGE/info/20260422_174130_Definição do identificador único do equipamento na rede - Manus`
+3. `KNOWLEDGE/info/20260422_174348_Complementar Módulos Faltantes do Diagrama de Implantação - Manus`
+4. `KNOWLEDGE/johann/20260422_175016_SOFIA and MeshWave Ecosystem Overview - Manus`
+5. `KNOWLEDGE/johann/20260422_175100_SOFIA and MeshWave Ecosystem Documents - Manus`
+
+### Lote 003
+1. `KNOWLEDGE/andressa/20260422_162449_Desenvolvimento do Aplicativo MeshWave para Android - Manus`
+2. `KNOWLEDGE/andressa/20260422_161744_Title unclear without content - Manus`
+3. `KNOWLEDGE/andressa/20260422_161931_Como acessar e concluir missões na API Sofia - Manus`
+4. `KNOWLEDGE/dinecy/20260422_171255_Diretrizes para execução da tarefa no Sofia API - Manus`
+5. `KNOWLEDGE/dinelson/20260422_154208_Sistema de Persistência e Sincronização para Agentes Manus - Manus`
+6. `KNOWLEDGE/filipe/20260422_164903_Instruções para a missão via Sofia API - Manus`
+7. `KNOWLEDGE/filipe/20260422_165238_Criar interface para projeto no Android Studio - Manus`
+8. `KNOWLEDGE/info/20260422_170852_Prosseguimento no Projeto Android Bluetooth - Manus`
+9. `KNOWLEDGE/info/20260422_172056_Análise e continuidade sobre dispositivos Android antigos - Manus`
+10. `KNOWLEDGE/info/20260422_173802_Identificador Único do Equipamento na Rede - Manus` — mesma fonte física de L001-05
+11. `KNOWLEDGE/iury/20260422_161704_Access Sofia API to Receive and Complete Missions - Manus`
+12. `KNOWLEDGE/iury/20260422_161913_Instruções para a Tarefa no Sofia API Oráculo - Manus`
+13. `KNOWLEDGE/iury/20260422_162213_Resource Not Found Error in Android Build - Manus`
+14. `KNOWLEDGE/iury/20260422_162301_Resource Not Found Error in Android Build Process - Manus`
+15. `KNOWLEDGE/nadir/20260422_173034_Melhor forma de criar DIDs para rede mesh global - Manus`
+16. `KNOWLEDGE/natalia/20260422_171420_Instruções para Missão via Sofia API Manual - Manus`
+17. `KNOWLEDGE/natalia/20260422_171728_Erro no Prototipo Android_ Análise dos Arquivos - Manus`
+18. `KNOWLEDGE/meshwave65/20260422_Analise do erro com arquivos do projeto Android - Manus`
+19. `KNOWLEDGE/iury/20260422_161432_Como sincronizar repositório local com GitHub via SSH - Manus`
+
+Nenhum conteúdo bruto foi lido ao criar este registro. Próxima ação: processar os artefatos listados sem modificá-los; descrever códigos e arquivos anexos por evidência, nunca copiar segredos.
