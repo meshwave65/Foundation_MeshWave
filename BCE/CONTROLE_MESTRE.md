@@ -8,11 +8,11 @@
 |---|---|
 | Status global | `EM_ANDAMENTO — FASE 0: fundação operacional` |
 | Última atualização | 2026-10-08 |
-| Último commit confirmado | `4a0b1e3` — `docs(bce): registrar decisoes curatoriais iniciais` |
+| Último commit confirmado | `a67c36f` — `data(bce): adicionar inventario csv das fontes` |
 | Branch de trabalho | `main` |
-| Último item concluído | `F0.4` — registro inicial de decisões curatoriais |
-| Item em andamento | `F0.5` — inventário técnico de `KNOWLEDGE` |
-| Próximo item | `F0.6` — criar template de documento de tema |
+| Último item concluído | `F0.6` — template e inventário técnico inicial |
+| Item em andamento | `F0.7` — checkpoint detalhado da sessão |
+| Próximo item | `F1.1` — catalogar e classificar os 273 conjuntos de extração |
 | Impedimento atual | Nenhum para leitura/escrita GitHub; curadoria de conteúdo ainda não iniciada |
 | Responsável pela sessão | Agente BCE MeshWave |
 
@@ -45,9 +45,9 @@
 | F0.2 | P0 | Controle mestre | CONCLUÍDO | `2e6a935` | Atualizado por este checkpoint |
 | F0.3 | P0 | Índice curatorial inicial | CONCLUÍDO | `849a31b` | Revisar após inventário de conteúdo |
 | F0.4 | P0 | Registro de decisões | CONCLUÍDO | `4a0b1e3` | Registrar decisões técnicas nos documentos de tema |
-| F0.5 | P0 | Inventário técnico de `KNOWLEDGE` | EM_ANDAMENTO | levantamento preliminar | Gerar contagens, grupos, hashes e lista de fontes |
-| F0.6 | P1 | Modelo/template de documento de tema | PENDENTE | — | Criar template reutilizável em `BCE/temas/_TEMPLATE.md` |
-| F0.7 | P1 | Primeiro checkpoint de sessão | PENDENTE | — | Registrar a sessão após concluir F0.1–F0.6 |
+| F0.5 | P0 | Inventário técnico de `KNOWLEDGE` | CONCLUÍDO | `c6d0ad1`, `a67c36f` | Classificar conjuntos e iniciar leitura semântica |
+| F0.6 | P1 | Modelo/template de documento de tema | CONCLUÍDO | `53a9523` | Usar template no primeiro documento curado |
+| F0.7 | P1 | Primeiro checkpoint de sessão | EM_ANDAMENTO | este checkpoint | Registrar a sessão e transferir para F1.1 |
 
 ### Fase 1 — Inventário e classificação das fontes
 
@@ -163,3 +163,5 @@ O agente atual só deve declarar a tarefa transferível quando:
 | 2026-10-08 | Agente BCE MeshWave | Criado controle mestre | `2e6a935` | Criar índice curatorial |
 | 2026-10-08 | Agente BCE MeshWave | Criado índice curatorial | `849a31b` | Criar registro de decisões |
 | 2026-10-08 | Agente BCE MeshWave | Criado registro de decisões | `4a0b1e3` | Iniciar inventário técnico de `KNOWLEDGE` |
+| 2026-10-08 | Agente BCE MeshWave | Criado template de tema | `53a9523` | Gerar inventário técnico |
+| 2026-10-08 | Agente BCE MeshWave | Publicados inventários Markdown e CSV | `c6d0ad1`, `a67c36f` | Criar checkpoint e iniciar F1.1 |
