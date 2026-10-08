@@ -6,14 +6,14 @@
 
 | Campo | Valor |
 |---|---|
-| Status global | `EM_ANDAMENTO — FASE 1: inventário e classificação das fontes` |
+| Status global | `EM_ANDAMENTO — FASE 2: mapa curatorial e documentos de domínio` |
 | Última atualização | 2026-10-08 |
-| Último commit de conteúdo/checkpoint confirmado | `95a5dfd` — `docs(bce): registrar checkpoint F1.6` |
+| Último commit de conteúdo/checkpoint confirmado | `b9d1539` — `docs(bce): registrar checkpoint F1.7` |
 | Commits locais não publicados | Nenhum; `main` sincronizada com `origin/main` na última verificação |
 | Branch de trabalho | `main` |
-| Último item concluído | `F1.6` — mapear links e referências externas nos 29 diretórios físicos únicos dos Lotes 001–003 |
-| Item em andamento | Nenhum; F1.1–F1.6 concluídos |
-| Próximo item | Iniciar `F1.7`: reconciliar lacunas/qualidade em `BCE/fontes/CLASSIFICACAO_LOTE_001.md`, `_002.md`, `_003.md`, `BCE/artefatos/INDICE_IMAGENS_E_DIAGRAMAS.md`, `BCE/fontes/CATALOGO_CODIGO_E_IMPLEMENTACAO_LOTES_001_003.md`, `BCE/fontes/CATALOGO_LINKS_LOTES_001_003.md` e `BCE/fontes/INVENTARIO_FONTES.md`/`.csv`; criar relatório consolidado com evidência, prioridade, impacto e investigação seguinte; atualizar índice e controle. Não iniciar F2 antes da publicação de F1.7. |
+| Último item concluído | `F1.7` — relatório consolidado de lacunas e qualidade das fontes F1.2–F1.6 |
+| Item em andamento | Nenhum; F1.1–F1.7 concluídos |
+| Próximo item | Iniciar `F2.1` revisando e aprofundando o documento DOM-01 existente `BCE/temas/visao-geral-ecossistema-meshwave.md` à luz de `BCE/fontes/RELATORIO_LACUNAS_E_QUALIDADE_F1_7.md`, `BCE/fontes/CLASSIFICACAO_LOTE_001.md`–`_003.md` e fontes primárias selecionadas para visão geral. Distinguir evidência, proposta, hipótese e decisão; manter o documento provisório enquanto cobertura relevante permanecer incompleta. |
 | Impedimento atual | Nenhum; integração GitHub habilitada e commits publicados |
 | Responsável pela sessão | Agente BCE MeshWave |
 
@@ -60,13 +60,13 @@
 | F1.4 | Catálogo de imagens e relação com textos | CONCLUÍDO | `1340fc8` catálogo; `693b2ff` índice; `764d9e6` checkpoint | 35 imagens de 19 fontes; sem SHA-256 duplicado; origem/licença e OCR permanecem lacunas onde não confirmados; prosseguir F1.5 |
 | F1.5 | Catálogo de códigos e evidências de implementação | CONCLUÍDO | `cae17ce` registro prévio; `53f32ca` catálogo; `75f4af5` índice | 29 diretórios físicos únicos; 0 código executável anexado confirmado; 0/29 fontes com sucesso verificável de build/teste/execução/upload/produção. Uma leitura de transcrição longa ficou limitada e está marcada no catálogo como lacuna, sem impedir o inventário da evidência disponível. F1.6 encontrou 13/29 `links.txt` não vazios e 27 URLs, corrigindo estimativas anteriores aproximadas. |
 | F1.6 | Mapa de links e referências externas | CONCLUÍDO | `e256d43` pré-registro; `c323b74` catálogo; `381391b` índice; `d59ea96` correção de caminho; `b935cc0`, `872b27c` reconciliações; `95a5dfd` checkpoint | Catálogo cobre 29 diretórios físicos: 13 `links.txt` não vazios, 16 vazios, 27 URLs e 18 referências distintas. 11 destinos HEAD sem autenticação; conteúdo remoto não validado. Redirecionadores opacos, links de ação e localhost não seguidos. F1.7 pendente. |
-| F1.7 | Relatório de lacunas e qualidade das fontes | PENDENTE | F1.2–F1.6 | Ler os artefatos listados em `Próximo item`, consolidar lacunas/qualidade com evidências e prioridades, publicar relatório, atualizar índice e controle. |
+| F1.7 | Relatório de lacunas e qualidade das fontes | CONCLUÍDO | `2c8f3d5` relatório; `5536213` índice; `b9d1539` checkpoint | 29/273 conjuntos (10,62%) na amostra semântica integrada; 244 fora da amostra. 0/29 com implementação verificável nos artefatos revisados. Ver relatório para lacunas priorizadas; iniciar F2.1 sem alegar que lacunas estão resolvidas. |
 
 ### Fase 2 — Mapa curatorial e documentos de domínio
 
 | ID | Entrega | Status | Dependência |
 |---|---|---|---|
-| F2.1 | Documento de visão geral do ecossistema MeshWave | PENDENTE | F1.7 |
+| F2.1 | Documento de visão geral do ecossistema MeshWave | PENDENTE | F1.7 concluída; aprofundar/revisar o DOM-01 existente e ampliar evidências |
 | F2.2 | Arquitetura geral e implantação | PENDENTE | F1.7 |
 | F2.3 | Mesh networking, comunicação e roteamento | PENDENTE | F1.7 |
 | F2.4 | Identidade, identificação de equipamento e DIDs | PENDENTE | F1.7 |
@@ -203,6 +203,8 @@ O agente atual só deve declarar a tarefa transferível quando:
 | 2026-10-08 | Manus — Lote 003 | Concluída classificação de 19 fontes; índice e checkpoint publicados; conector GitHub reabilitado | `705645d`, `daa3308`, `7ad5404` | Criar o catálogo de imagens F1.4 para os 19 caminhos do Lote 003 |
 | 2026-10-08 | Manus — F1.4 | Catalogadas 35 imagens dos 19 conjuntos; nenhuma duplicata exata; índice, checkpoint e controle publicados | `1340fc8`, `693b2ff`, `764d9e6` | Iniciar F1.5: catalogar código e evidências de implementação |
 | 2026-10-08 | Manus — F1.5 | Registradas 30 referências (29 diretórios físicos únicos, um repetido entre L001/L003); catálogo, índice, controle e checkpoint publicados | `cae17ce` registro; `53f32ca` catálogo; `75f4af5` índice; `894a61d` controle; `5e56a8a` checkpoint | Iniciar F1.6 nos `links.txt` dos mesmos 29 diretórios físicos e catalogar links sem tratar presença como validação |
+| 2026-10-08 | Manus — F1.6 | Catálogo de links em 29 diretórios; contagens HEAD e proveniência DID reconciliadas; controle e checkpoint publicados | `e256d43`, `c323b74`, `381391b`, `d59ea96`, `b935cc0`, `872b27c`, `95a5dfd`, `f4490e0` | Consolidar lacunas/qualidade F1.2–F1.6 na F1.7 |
+| 2026-10-08 | Manus — F1.7 | Relatório consolidado publicado e indexado; controle e checkpoint atualizados | `2c8f3d5` relatório; `5536213` índice; `b9d1539` checkpoint; controle a publicar | Revisar/aprofundar o DOM-01 existente em F2.1; não extrapolar a amostra de 29/273 |
 
 
 ## Lote F1.5 registrado antes da leitura — catálogo de código
@@ -279,3 +281,15 @@ Critérios: registrar a referência exatamente sem reproduzir credenciais ou dad
 - **Commits publicados antes deste controle:** `e256d43`, `c323b74`, `381391b`, `d59ea96`, `b935cc0`, `872b27c`, `95a5dfd`; este controle será commitado/push em unidade própria.
 - **Último ponto concluído:** F1.6. **Próximo passo exato:** iniciar F1.7 com os artefatos indicados na tabela de estado atual; sintetizar relatório de lacunas/qualidade com evidências e prioridades, indexar e atualizar controle antes de considerar F1.7 concluída.
 - **Impedimentos:** nenhum operacional. A leitura parcial da transcrição Johann na F1.5 permanece explicitada nos catálogos/checkpoints.
+
+## Resultado da unidade F1.7 — lacunas e qualidade
+
+- **Escopo:** síntese dos documentos `BCE/fontes/CLASSIFICACAO_LOTE_001.md`–`_003.md`, `BCE/artefatos/INDICE_IMAGENS_E_DIAGRAMAS.md`, catálogos F1.5/F1.6, inventários `.md`/`.csv`, orientação, índice, decisões, template e checkpoint F1.6. Não foram reabertos os arquivos brutos dos 273 conjuntos.
+- **Cobertura:** 30 referências dos lotes correspondem a 29 caminhos físicos únicos, de 273 conjuntos no inventário (10,62%); 244 não receberam a mesma análise semântica. A amostra prioritária não é estatística nem permite generalizar qualidade ou funcionamento.
+- **Qualidade:** 0/29 fontes do catálogo F1.5 demonstram código executável anexado ou resultado positivo verificável de build/teste/execução/upload/produção; a conclusão vale somente para os artefatos revisados. F1.4 cobre 35 imagens em 19 fontes e não confirma OCR/licenças em geral; o ≈52 estimado pela F1.5 abrange outra população e não foi reconciliado. F1.6 registra 27 ocorrências de URL, mas respostas HEAD não validam conteúdo.
+- **Lacunas prioritárias registradas:** cobertura; proveniência/reprodutibilidade; contratos/API SOFIA; identidade/roteamento; segurança/privacidade; Android; imagens/licenças/OCR; links; duplicação/cronologia; separação de contexto externo. O relatório fornece evidência, impacto, ação verificável e estado para cada uma.
+- **Conflitos preservados:** rótulos de conclusão versus erros/créditos/artefatos ausentes; código de transcript versus execução não demonstrada; divergências de versão/endpoints/DID; sobreposição temática sem duplicata comprovada. O caminho DID `omaci2008/` permanece como o caminho físico corrigido. DEC-BCE-008 e DEC-BCE-009 permanecem pendentes de validação.
+- **Arquivos criados/alterados:** `BCE/fontes/RELATORIO_LACUNAS_E_QUALIDADE_F1_7.md`, `BCE/INDICE_CURATORIAL.md`, `BCE/sessoes/2026-10-08_f1-7.md` e este controle. Nenhum arquivo em `KNOWLEDGE/` foi alterado.
+- **Commits de conteúdo/índice/checkpoint já publicados:** `2c8f3d5` relatório; `5536213` índice; `b9d1539` checkpoint. Este controle mestre será commitado e enviado em unidade própria.
+- **Próximo passo inequívoco:** F2.1 — revisar e aprofundar o documento DOM-01 já existente em `BCE/temas/visao-geral-ecossistema-meshwave.md`, confrontando-o com o relatório F1.7, classificações e fontes primárias selecionadas. Manter DOM-01 provisório até ampliar a cobertura relevante; não declarar as lacunas F1.7 resolvidas pelo início de F2.
+- **Impedimentos:** nenhum operacional; lacunas de cobertura e validação técnica continuam abertas conforme o relatório.
