@@ -7,13 +7,13 @@
 | Campo | Valor |
 |---|---|
 | Status global | `EM_ANDAMENTO — FASE 2: mapa curatorial e documentos de domínio` |
-| Última atualização | 2026-10-08 |
-| Último commit de conteúdo/checkpoint confirmado | `e47c1a6` — `docs(bce): registrar checkpoint F2.2` |
+| Última atualização | 2026-10-08 16:19 (-03:00) |
+| Último commit de conteúdo/checkpoint confirmado | `bc602b9` — `chore(bce): fechar F2.2 e apontar F2.3` |
 | Commits locais não publicados | Nenhum; `main` sincronizada com `origin/main` após publicação das unidades desta sessão |
 | Branch de trabalho | `main` |
 | Último item concluído | `F2.2` — DOM-02 v0.1.0 e DOM-01 v0.2.1 publicados como sínteses provisórias; DOM-01/DOM-02 permanecem em `REVISÃO` por validação/cobertura incompletas |
-| Item em andamento | Nenhum; F2.2 entregue como primeira síntese `REVISÃO`; F2.3 pendente |
-| Próximo item | Iniciar `F2.3` — rede mesh, comunicação e roteamento: processar as fontes dedicadas a descoberta de vizinhos, enlaces, encaminhamento, CLA/CPA/Geohash, cache e fallback, confrontando implementação versus proposta conforme DOM-02 §13 e checkpoint F2.2. |
+| Item em andamento | `F2.3` — lote fechado e registrado em `BCE/fontes/ESCOPO_F2_3_REDE_MESH.md`; leitura dos artefatos brutos ainda não iniciada |
+| Próximo item | Ler, para cada um dos 12 caminhos do escopo F2.3, `content.txt`, `code_blocks.txt`, `links.txt` e imagens associadas; produzir/atualizar DOM-03 distinguindo implementação, protótipo, especificação, hipótese e lacuna. |
 | Impedimento atual | Nenhum operacional. Permanecem 244/273 conjuntos fora da amostra semântica integrada e 0/29 fontes amostradas com implementação verificável no material F1.5/F1.7. O documento `01_arquitetura_geral_meshwave.md` contém um campo de contato pessoal; seu valor não foi reproduzido na BCE e deve ser revisado no original antes de redistribuição. DOM-01/DOM-02 continuam provisórios. |
 | Responsável pela sessão | Agente BCE MeshWave |
 
@@ -68,7 +68,7 @@
 |---|---|---|---|
 | F2.1 | Documento de visão geral do ecossistema MeshWave | REVISÃO — v0.2.1 provisória (`d0f61f5`; referência cruzada F2.2 `be965f6`; índice `507f6f5`/`eccf754`; checkpoint `bdeec49`) | F1.7; ampliar fontes e validar relações; mantém-se a distinção entre visão e implementação |
 | F2.2 | Arquitetura geral e implantação | REVISÃO — DOM-02 v0.1.0 (`864d357`); índice `eccf754`; checkpoint `e47c1a6` | Primeira síntese das quatro fontes; confirmar especificação/versão, localizar alegado protótipo e roteiros, e validar deployment antes de elevar status |
-| F2.3 | Mesh networking, comunicação e roteamento | PENDENTE | F1.7; DOM-01/DOM-02; escopo, evidências e conflitos de rota/CLA/fallback registrados em DOM-02 §13 |
+| F2.3 | Mesh networking, comunicação e roteamento | EM_ANDAMENTO — lote registrado; leitura pendente | F1.7; DOM-01/DOM-02; escopo, evidências e conflitos de rota/CLA/fallback registrados em DOM-02 §13 |
 | F2.4 | Identidade, identificação de equipamento e DIDs | PENDENTE | F1.7 |
 | F2.5 | ARC, autenticação contextual e inferência bayesiana | PENDENTE | F1.7 |
 | F2.6 | SOFIA, agentes, missões e persistência de conhecimento | PENDENTE | F1.7 |
