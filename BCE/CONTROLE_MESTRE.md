@@ -8,13 +8,13 @@
 |---|---|
 | Status global | `EM_ANDAMENTO — FASE 2: mapa curatorial e documentos de domínio` |
 | Última atualização | 2026-10-08 |
-| Último commit de conteúdo/checkpoint confirmado | `bdeec49` — `docs(bce): registrar checkpoint F2.1` |
-| Commits locais não publicados | Nenhum; `main` sincronizada com `origin/main` na última verificação |
+| Último commit de conteúdo/checkpoint confirmado | `e47c1a6` — `docs(bce): registrar checkpoint F2.2` |
+| Commits locais não publicados | Nenhum; `main` sincronizada com `origin/main` após publicação das unidades desta sessão |
 | Branch de trabalho | `main` |
-| Último item concluído | `F2.1` — DOM-01 v0.2.0 revisado e publicado como versão provisória; permanece em revisão por cobertura/validação incompletas |
-| Item em andamento | Nenhum; F2.1 entregue em `REVISÃO`; F2.2 pendente |
-| Próximo item | Iniciar `F2.2` — arquitetura geral e implantação, processando as três fontes indicadas em `BCE/temas/visao-geral-ecossistema-meshwave.md` §13; distinguir diagrama/roadmap de implementação e registrar evidência rastreável. |
-| Impedimento atual | Nenhum operacional. Permanecem lacunas de cobertura (244/273 conjuntos fora da análise semântica integrada) e ausência, na amostra F1.5, de implementação verificável; DOM-01 segue provisório. |
+| Último item concluído | `F2.2` — DOM-02 v0.1.0 e DOM-01 v0.2.1 publicados como sínteses provisórias; DOM-01/DOM-02 permanecem em `REVISÃO` por validação/cobertura incompletas |
+| Item em andamento | Nenhum; F2.2 entregue como primeira síntese `REVISÃO`; F2.3 pendente |
+| Próximo item | Iniciar `F2.3` — rede mesh, comunicação e roteamento: processar as fontes dedicadas a descoberta de vizinhos, enlaces, encaminhamento, CLA/CPA/Geohash, cache e fallback, confrontando implementação versus proposta conforme DOM-02 §13 e checkpoint F2.2. |
+| Impedimento atual | Nenhum operacional. Permanecem 244/273 conjuntos fora da amostra semântica integrada e 0/29 fontes amostradas com implementação verificável no material F1.5/F1.7. O documento `01_arquitetura_geral_meshwave.md` contém um campo de contato pessoal; seu valor não foi reproduzido na BCE e deve ser revisado no original antes de redistribuição. DOM-01/DOM-02 continuam provisórios. |
 | Responsável pela sessão | Agente BCE MeshWave |
 
 ## Como retomar em cinco minutos
@@ -66,9 +66,9 @@
 
 | ID | Entrega | Status | Dependência |
 |---|---|---|---|
-| F2.1 | Documento de visão geral do ecossistema MeshWave | REVISÃO — v0.2.0 provisória publicada (`d0f61f5`; índice `507f6f5`; checkpoint `bdeec49`) | F1.7; manter distinção entre visão e implementação, ampliar fontes e validar relações |
-| F2.2 | Arquitetura geral e implantação | PENDENTE | F1.7; DOM-01 v0.2.0 provisório; fontes exatas e método listados em DOM-01 §13 e checkpoint F2.1 |
-| F2.3 | Mesh networking, comunicação e roteamento | PENDENTE | F1.7 |
+| F2.1 | Documento de visão geral do ecossistema MeshWave | REVISÃO — v0.2.1 provisória (`d0f61f5`; referência cruzada F2.2 `be965f6`; índice `507f6f5`/`eccf754`; checkpoint `bdeec49`) | F1.7; ampliar fontes e validar relações; mantém-se a distinção entre visão e implementação |
+| F2.2 | Arquitetura geral e implantação | REVISÃO — DOM-02 v0.1.0 (`864d357`); índice `eccf754`; checkpoint `e47c1a6` | Primeira síntese das quatro fontes; confirmar especificação/versão, localizar alegado protótipo e roteiros, e validar deployment antes de elevar status |
+| F2.3 | Mesh networking, comunicação e roteamento | PENDENTE | F1.7; DOM-01/DOM-02; escopo, evidências e conflitos de rota/CLA/fallback registrados em DOM-02 §13 |
 | F2.4 | Identidade, identificação de equipamento e DIDs | PENDENTE | F1.7 |
 | F2.5 | ARC, autenticação contextual e inferência bayesiana | PENDENTE | F1.7 |
 | F2.6 | SOFIA, agentes, missões e persistência de conhecimento | PENDENTE | F1.7 |
@@ -206,6 +206,7 @@ O agente atual só deve declarar a tarefa transferível quando:
 | 2026-10-08 | Manus — F1.6 | Catálogo de links em 29 diretórios; contagens HEAD e proveniência DID reconciliadas; controle e checkpoint publicados | `e256d43`, `c323b74`, `381391b`, `d59ea96`, `b935cc0`, `872b27c`, `95a5dfd`, `f4490e0` | Consolidar lacunas/qualidade F1.2–F1.6 na F1.7 |
 | 2026-10-08 | Manus — F1.7 | Relatório consolidado publicado e indexado; controle e checkpoint atualizados | `2c8f3d5` relatório; `5536213` índice; `b9d1539` checkpoint; `bf59e02` controle | Revisar/aprofundar o DOM-01 existente em F2.1; não extrapolar a amostra de 29/273 |
 | 2026-10-08 | Manus — F2.1 | DOM-01 revisado para v0.2.0 provisória; índice, checkpoint e controle atualizados | `d0f61f5` conteúdo; `507f6f5` índice; `bdeec49` checkpoint | Iniciar F2.2 com as três fontes e os critérios listados em DOM-01 §13; manter DOM-01 em revisão |
+| 2026-10-08 | Manus — F2.2 | DOM-02 v0.1.0 publicado; DOM-01 atualizado para v0.2.1; índice e checkpoint publicados; roadmap/arquitetura mantidos como propostas não verificadas | `864d357` DOM-02; `be965f6` DOM-01; `eccf754` índice; `e47c1a6` checkpoint | Iniciar F2.3 — rede mesh, comunicação e roteamento; continuar DOM-02 em revisão |
 
 
 ## Lote F1.5 registrado antes da leitura — catálogo de código
