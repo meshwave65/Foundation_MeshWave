@@ -8,12 +8,12 @@
 |---|---|
 | Status global | `EM_ANDAMENTO — FASE 0: fundação operacional` |
 | Última atualização | 2026-10-08 |
-| Último commit confirmado | `b611a6f` — `docs(dom-06): criar estado preliminar de sofia` |
+| Último commit confirmado | `9a6098b` — `docs(bce): registrar checkpoint do lote 002` |
 | Branch de trabalho | `main` |
 | Último item concluído | `F1.2` — classificar e curar o Lote 002 |
 | Item em andamento | `F1.3` — detectar duplicatas, fontes genéricas e qualidade |
-| Próximo item | Processar fontes adicionais de DID/Android, Sofia API, persistência e estados de missão |
-| Impedimento atual | Nenhum para leitura/escrita GitHub; curadoria de conteúdo ainda não iniciada |
+| Próximo item | Comparar os conjuntos listados em “Lote F1.3 registrado” abaixo; não abrir outros conjuntos antes de fechar esse lote |
+| Impedimento atual | Push ainda precisa ser verificado nesta sessão; conector GitHub está desativado, embora o repositório público esteja acessível |
 | Responsável pela sessão | Agente BCE MeshWave |
 
 ## Como retomar em cinco minutos
@@ -113,6 +113,32 @@ Levantamento preliminar do clone em 2026-10-08:
 - existem fontes potencialmente alheias ao escopo MeshWave, que deverão ser classificadas como fora de escopo, contexto externo ou ruído — nunca apagadas sem decisão registrada.
 
 Esses números são uma fotografia inicial, não um inventário definitivo. F0.5 deve gerar a contagem reproduzível e versionada.
+
+## Lote F1.3 registrado
+
+Registrado em 2026-10-08 antes da leitura dos conteúdos. Comparar duplicatas, títulos genéricos, qualidade e classificação semântica somente nestes conjuntos, além dos cinco já processados no Lote 002:
+
+1. `KNOWLEDGE/andressa/20260422_162449_Desenvolvimento do Aplicativo MeshWave para Android - Manus`
+2. `KNOWLEDGE/andressa/20260422_161744_Title unclear without content - Manus`
+3. `KNOWLEDGE/andressa/20260422_161931_Como acessar e concluir missões na API Sofia - Manus`
+4. `KNOWLEDGE/dinecy/20260422_171255_Diretrizes para execução da tarefa no Sofia API - Manus`
+5. `KNOWLEDGE/dinelson/20260422_154208_Sistema de Persistência e Sincronização para Agentes Manus - Manus`
+6. `KNOWLEDGE/filipe/20260422_164903_Instruções para a missão via Sofia API - Manus`
+7. `KNOWLEDGE/filipe/20260422_165238_Criar interface para projeto no Android Studio - Manus`
+8. `KNOWLEDGE/info/20260422_170852_Prosseguimento no Projeto Android Bluetooth - Manus`
+9. `KNOWLEDGE/info/20260422_172056_Análise e continuidade sobre dispositivos Android antigos - Manus`
+10. `KNOWLEDGE/info/20260422_173802_Identificador Único do Equipamento na Rede - Manus`
+11. `KNOWLEDGE/iury/20260422_161704_Access Sofia API to Receive and Complete Missions - Manus`
+12. `KNOWLEDGE/iury/20260422_161913_Instruções para a Tarefa no Sofia API Oráculo - Manus`
+13. `KNOWLEDGE/iury/20260422_162213_Resource Not Found Error in Android Build - Manus`
+14. `KNOWLEDGE/iury/20260422_162301_Resource Not Found Error in Android Build Process - Manus`
+15. `KNOWLEDGE/nadir/20260422_173034_Melhor forma de criar DIDs para rede mesh global - Manus`
+16. `KNOWLEDGE/natalia/20260422_171420_Instruções para Missão via Sofia API Manual - Manus`
+17. `KNOWLEDGE/natalia/20260422_171728_Erro no Prototipo Android_ Análise dos Arquivos - Manus`
+18. `KNOWLEDGE/meshwave65/20260422_Analise do erro com arquivos do projeto Android - Manus`
+19. `KNOWLEDGE/iury/20260422_161432_Como sincronizar repositório local com GitHub via SSH - Manus` — candidato a ruído/contexto operacional, confirmar pelo conteúdo
+
+Para cada conjunto, ler `content.txt`, `code_blocks.txt`, `links.txt` e todas as imagens associadas. Os caminhos acima foram selecionados pelo índice de inventário; títulos ainda não são evidência de conteúdo.
 
 ## Protocolo de checkpoint da sessão
 
