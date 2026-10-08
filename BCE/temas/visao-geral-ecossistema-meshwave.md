@@ -6,11 +6,11 @@
 |---|---|
 | ID curatorial | `DOM-01` |
 | Status | `REVISÃO` — versão provisória; cobertura não abrangente |
-| Versão do documento | `0.2.0` |
+| Versão do documento | `0.2.1` |
 | Última atualização | `2026-10-08` |
 | Curador | `Manus — curadoria BCE MeshWave` |
 | Confiança geral | `baixa a média` para intenção conceitual; baixa para arquitetura vigente e estado do produto |
-| Fontes desta versão | Classificações L001–L003, relatório F1.7 e fontes primárias indicadas na seção 8 |
+| Fontes desta versão | Classificações L001–L003, relatório F1.7, fontes primárias da seção 8 e especificação arquitetural E011 |
 
 ## 1. Resumo executivo
 
@@ -57,6 +57,8 @@ Os nomes ARC, PGC, Q-CyPIA, MeshBlockchain e outros termos variam entre fontes e
 **Registrado como proposta de integração:** uma formulação relaciona IA de roteamento, SDN e Q-CyPIA à seleção de caminhos múltiplos que atendam a requisitos de anonimato/diversidade. Outra formulação relaciona MeshWave (infraestrutura) e SOFIA (agentes/orquestração), além de ARC, PGC e Q-CyPIA. As fontes não apresentam contratos entre esses elementos, medições, ameaça de segurança formalizada ou teste de ponta a ponta.
 
 **Não confirmado:** rede implantada entre dispositivos, roteamento dinâmico funcional, anonimato mensurado, presença física provada por PGC, aprendizagem federada, IA generativa integrada, operação autônoma ou interoperabilidade MeshWave–SOFIA.
+
+**Aprofundamento arquitetural F2.2 (E011/DOM-02):** uma especificação documental de 2025 organiza a proposta em cinco camadas (Aplicação, Rede Mesh, Otimização/IA Distribuída, Integração, Segurança/Blockchain) e acrescenta um controlador SDN transversal. Essa decomposição expande o mapa conceitual desta visão, mas não comprova arquitetura vigente, implantação ou execução; ver `BCE/temas/arquitetura-geral-e-implantacao.md`.
 
 ### 4.2 Componentes e responsabilidades candidatas
 
@@ -132,8 +134,8 @@ A fonte ARC do Lote 001 registra uma escolha de design para evitar que ausência
 | ID | Caminho relativo | Tipo | O que sustenta | Limitações |
 |---|---|---|---|---|
 | E001 / L001-01 | `KNOWLEDGE/info/20260422_171119_O que é o projeto Meshwave_ - Manus/` (`content.txt`, `code_blocks.txt`, `FULL.png`) | Transcrição/captura/fragmentos | Visão de rede mesh, roadmap e tensão de identidade `ANDROID_ID` → “DNA do Equipamento”. | Conteúdo repetitivo e parcialmente explicativo/gerado; blocos são rótulos, não código executável; associação de versão não confirmada. |
-| E002 / L001-02 | `KNOWLEDGE/info/20260422_165052_Fonte para Arquitetura e Operação da Rede MeshWave - Manus/` | Texto/imagens | Existência de material candidato de arquitetura. | Extração textual insuficiente; conferir imagem em DOM-02. |
-| E003 / L001-03 | `KNOWLEDGE/info/20260422_165701_Hierarquia de CLA Continental e Roteamento - Manus/` | Contexto/imagem | Hipótese visual CLA/CPA/Geohash e roteamento regional. | Sem algoritmo, cardinalidade ou parâmetros normativos. |
+| E002 / L001-02 | `KNOWLEDGE/info/20260422_165052_Fonte para Arquitetura e Operação da Rede MeshWave - Manus/` | Captura e imagem de roadmap | Alegação de protótipo Python e plano de Fase 1/Fase 2 na captura; figura de evolução por segmentos/fases. | Analisado em DOM-02; não há código/resultado do protótipo nem prova de implementação. |
+| E003 / L001-03 | `KNOWLEDGE/info/20260422_165701_Hierarquia de CLA Continental e Roteamento - Manus/` | Contexto/imagem | Referência visual de grade/polígonos e aprovação conversacional como representação CLA/regional. | Analisado em DOM-02; sem legenda, algoritmo, cardinalidade, CRS ou parâmetros normativos. |
 | E004 / L001-04 | `KNOWLEDGE/info/20260422_165745_ARC - Autenticação Recessiva Contextual com inferência Bayesiana - Manus/` | Texto/código transcrito | Proposta `ResilientValue`, sincronização e inferência condicionada à qualidade da evidência. | Código não comprovado em repositório/build/teste; segurança formal não avaliada. |
 | E005 / L001-06 | `KNOWLEDGE/johann/20260422_174331_Conhecimento sobre Meshwave, Sofia e módulos ARC-Bayes_ - Manus/` | Transcrição/captura/comandos editoriais | Intenção de dossiê integrado, papéis conceituais e exemplo de sinergia. | Predominam curadoria, instruções de Git e plano editorial; exemplos não são arquitetura implementada. |
 | E006 / L002-02 | `KNOWLEDGE/info/20260422_174130_Definição do identificador único do equipamento na rede - Manus/` | Plano textual/visual | Geohash, CPA/CLA, cache e organização como elementos considerados para identidade/localização. | Sem contrato de dados ou interoperabilidade; classificado como planejamento conceitual. |
@@ -141,6 +143,7 @@ A fonte ARC do Lote 001 registra uma escolha de design para evitar que ausência
 | E008 | `BCE/fontes/CLASSIFICACAO_LOTE_001.md`, `BCE/fontes/CLASSIFICACAO_LOTE_002.md`, `BCE/fontes/CLASSIFICACAO_LOTE_003.md` | Sínteses curatoriais | Classificações semânticas, conflitos e limites de confiança dos lotes. | Cobertura integrada parcial; consultar originais para cada afirmação. |
 | E009 | `BCE/fontes/CATALOGO_CODIGO_E_IMPLEMENTACAO_LOTES_001_003.md`; `BCE/fontes/CATALOGO_LINKS_LOTES_001_003.md`; `BCE/artefatos/INDICE_IMAGENS_E_DIAGRAMAS.md` | Catálogos derivados | Evidência de código/imagens/links na amostra e método de verificação. | Escopos diferentes: F1.4 cobre 19 fontes; F1.5/F1.6 29 diretórios. Links remotos não lidos. |
 | E010 | `BCE/fontes/RELATORIO_LACUNAS_E_QUALIDADE_F1_7.md` | Síntese de qualidade/cobertura | Denominadores, prioridades e impossibilidade de generalizar a amostra. | Síntese dos artefatos anteriores; não é validação externa. |
+| E011 | `01_arquitetura_geral_meshwave.md` | Especificação arquitetural em Markdown | Modelo conceitual de cinco camadas e controlador SDN; ver DOM-02 §4. | Documento propositivo; versão declarada não ligada a release/código. Campo de contato existente no original foi omitido das sínteses BCE. |
 
 Os `links.txt` das fontes estão representados pelo catálogo F1.6, que distingue ocorrências, destinos e limitações sem reproduzir parâmetros opacos. Nenhuma página externa foi usada nesta revisão como confirmação independente.
 
@@ -155,6 +158,7 @@ Os `links.txt` das fontes estão representados pelo catálogo F1.6, que distingu
 | C05 | Versões `v0.1.0-alpha` e `v0.2.0-alpha` não estão ligadas a commits/releases verificáveis. | E001 | A evolução arqueológica pode ser confundida com histórico de software. | Procurar tags, commits, APKs e changelogs identificáveis em DOM-12. |
 | C06 | O documento referenciado como `GLOBALMESHWAVE-Consolidado11Maio2025.md` não foi localizado na busca desta cópia. | E007 | A síntese de 2025 permanece indireta e pode estar incompleta. | Localizar a fonte e registrar proveniência antes de usar seus detalhes. |
 | C07 | Um fragmento/captura de código ARC não prova compilação ou proteção contra ataque. | E004; F1.5/F1.7 | Risco de classificar desenho como recurso seguro implementado. | Verificar repositório/commit, testes, parâmetros estatísticos e threat model em DOM-05. |
+| C08 | A especificação E011 acrescenta uma decomposição de cinco camadas e controlador SDN ao mapa conceitual, mas não demonstra vigência nem relação operacional com SOFIA/ARC/Q-CyPIA. | E011; DOM-02 | A visão de ecossistema pode ser interpretada como arquitetura implantada ou compatível sem interfaces. | Manter a relação como proposta até validar versão, interfaces, componentes e evidência operacional em DOM-02/DOM-15. |
 
 ## 10. Lacunas e perguntas abertas
 
@@ -184,7 +188,8 @@ Os `links.txt` das fontes estão representados pelo catálogo F1.6, que distingu
 |---|---|---|---|
 | `0.1.0` | 2026-10-08 | Estado da arte inicial, baseado principalmente no Lote 001. | `854f90d` |
 | `0.2.0` | 2026-10-08 | Revisão de visão e sinergia contra F1.7, Lotes 001–003 e fontes primárias L001-01/L001-06/L002-04; adiciona Q-CyPIA/PGC, limitações de cobertura e modelo explícito provisório. | F2.1; commit a registrar no checkpoint. |
+| `0.2.1` | 2026-10-08 | Referencia a especificação de cinco camadas descoberta em F2.2, liga DOM-01 a DOM-02 e passa a F2.3 sem promover arquitetura proposta a estado implementado. | F2.2; commits relacionados registrados em `BCE/sessoes/2026-10-08_f2-2.md` e no controle mestre. |
 
 ## 13. Próximo passo de curadoria
 
-Executar **F2.2 — arquitetura geral e implantação**: confrontar `KNOWLEDGE/info/20260422_165052_Fonte para Arquitetura e Operação da Rede MeshWave - Manus/`, `KNOWLEDGE/info/20260422_174348_Complementar Módulos Faltantes do Diagrama de Implantação - Manus/` e `KNOWLEDGE/info/20260422_165701_Hierarquia de CLA Continental e Roteamento - Manus/` com os achados aqui registrados. Inspecionar texto, imagens e código associados; classificar cada elemento como observado, proposto ou não confirmado e, ao final, corrigir as relações de DOM-01 somente quando houver evidência rastreável. Manter DOM-01 em `REVISÃO` até a ampliação de cobertura e validação das relações de arquitetura.
+Executar **F2.3 — mesh networking, comunicação e roteamento**: confrontar fontes dedicadas a descoberta de vizinhos, enlaces, encaminhamento, roteamento, CLA/CPA/Geohash, cache e fallback com DOM-02 e DOM-01. Manter DOM-01 em `REVISÃO` até a ampliação de cobertura e validação das relações de arquitetura; manter a separação entre especificação conceitual, roadmap e implementação comprovada.
