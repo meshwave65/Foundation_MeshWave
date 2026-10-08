@@ -121,3 +121,13 @@ Fontes que apenas mencionam o projeto sem conteúdo técnico devem ser registrad
 - A classificação deve ser revisada após a leitura integral de `content.txt`, `code_blocks.txt`, `links.txt` e imagens.
 - Um documento-alvo pode ser dividido ou fundido somente com decisão registrada em `BCE/REGISTRO_DECISOES.md`.
 - Nenhuma fonte deve ser considerada processada apenas porque seu título aparece neste índice.
+
+## Classificações de fontes publicadas
+
+| Artefato | Escopo | Resultado e limites |
+|---|---|---|
+| `BCE/fontes/CLASSIFICACAO_LOTE_001.md` | Lote 001 | Classificação semântica inicial; consultar o documento para os caminhos e limites de cada fonte. |
+| `BCE/fontes/CLASSIFICACAO_LOTE_002.md` | Lote 002 | Identidade, implantação e SOFIA; planos e alegações não são tratados como implementação confirmada. |
+| `BCE/fontes/CLASSIFICACAO_LOTE_003.md` | Lote 003 (19 conjuntos de DID/Android, Sofia API, persistência e contexto operacional) | F1.3 concluído em 2026-10-08. Há repetição interna nos conjuntos; nenhuma duplicata entre fontes foi comprovada. Relações entre grupos são apenas sobreposição/continuação candidata. F1.4 — catálogo de imagens permanece pendente. |
+
+As classificações são inventários de evidência e qualidade, não documentos de estado da arte. Elas não promovem alegações de conversa, capturas de interface, código incompleto ou rótulos de conclusão a fatos de implementação, build, upload ou produção. Consultar cada documento para conflitos, fontes ausentes e próximas verificações.
