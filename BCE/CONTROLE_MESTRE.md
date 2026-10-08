@@ -8,11 +8,11 @@
 |---|---|
 | Status global | `EM_ANDAMENTO — FASE 0: fundação operacional` |
 | Última atualização | 2026-10-08 |
-| Último commit confirmado | `a67c36f` — `data(bce): adicionar inventario csv das fontes` |
+| Último commit confirmado | `be68214` — `docs(bce): registrar checkpoint da sessao inicial` |
 | Branch de trabalho | `main` |
-| Último item concluído | `F0.6` — template e inventário técnico inicial |
-| Item em andamento | `F0.7` — checkpoint detalhado da sessão |
-| Próximo item | `F1.1` — catalogar e classificar os 273 conjuntos de extração |
+| Último item concluído | `F0.7` — checkpoint detalhado da sessão |
+| Item em andamento | `F1.1` — catalogar e classificar os 273 conjuntos de extração |
+| Próximo item | Processar o primeiro lote prioritário de fontes e registrar o último caminho |
 | Impedimento atual | Nenhum para leitura/escrita GitHub; curadoria de conteúdo ainda não iniciada |
 | Responsável pela sessão | Agente BCE MeshWave |
 
@@ -47,7 +47,7 @@
 | F0.4 | P0 | Registro de decisões | CONCLUÍDO | `4a0b1e3` | Registrar decisões técnicas nos documentos de tema |
 | F0.5 | P0 | Inventário técnico de `KNOWLEDGE` | CONCLUÍDO | `c6d0ad1`, `a67c36f` | Classificar conjuntos e iniciar leitura semântica |
 | F0.6 | P1 | Modelo/template de documento de tema | CONCLUÍDO | `53a9523` | Usar template no primeiro documento curado |
-| F0.7 | P1 | Primeiro checkpoint de sessão | EM_ANDAMENTO | este checkpoint | Registrar a sessão e transferir para F1.1 |
+| F0.7 | P1 | Primeiro checkpoint de sessão | CONCLUÍDO | `be68214` | Iniciar F1.1 pelo lote prioritário |
 
 ### Fase 1 — Inventário e classificação das fontes
 
@@ -165,3 +165,4 @@ O agente atual só deve declarar a tarefa transferível quando:
 | 2026-10-08 | Agente BCE MeshWave | Criado registro de decisões | `4a0b1e3` | Iniciar inventário técnico de `KNOWLEDGE` |
 | 2026-10-08 | Agente BCE MeshWave | Criado template de tema | `53a9523` | Gerar inventário técnico |
 | 2026-10-08 | Agente BCE MeshWave | Publicados inventários Markdown e CSV | `c6d0ad1`, `a67c36f` | Criar checkpoint e iniciar F1.1 |
+| 2026-10-08 | Agente BCE MeshWave | Publicado checkpoint detalhado da sessão | `be68214` | Processar primeiro lote prioritário de F1.1 |
