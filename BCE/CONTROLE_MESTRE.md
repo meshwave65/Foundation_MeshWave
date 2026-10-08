@@ -8,13 +8,13 @@
 |---|---|
 | Status global | `EM_ANDAMENTO — FASE 2: mapa curatorial e documentos de domínio` |
 | Última atualização | 2026-10-08 |
-| Último commit de conteúdo/checkpoint confirmado | `b9d1539` — `docs(bce): registrar checkpoint F1.7` |
+| Último commit de conteúdo/checkpoint confirmado | `bdeec49` — `docs(bce): registrar checkpoint F2.1` |
 | Commits locais não publicados | Nenhum; `main` sincronizada com `origin/main` na última verificação |
 | Branch de trabalho | `main` |
-| Último item concluído | `F1.7` — relatório consolidado de lacunas e qualidade das fontes F1.2–F1.6 |
-| Item em andamento | Nenhum; F1.1–F1.7 concluídos |
-| Próximo item | Iniciar `F2.1` revisando e aprofundando o documento DOM-01 existente `BCE/temas/visao-geral-ecossistema-meshwave.md` à luz de `BCE/fontes/RELATORIO_LACUNAS_E_QUALIDADE_F1_7.md`, `BCE/fontes/CLASSIFICACAO_LOTE_001.md`–`_003.md` e fontes primárias selecionadas para visão geral. Distinguir evidência, proposta, hipótese e decisão; manter o documento provisório enquanto cobertura relevante permanecer incompleta. |
-| Impedimento atual | Nenhum; integração GitHub habilitada e commits publicados |
+| Último item concluído | `F2.1` — DOM-01 v0.2.0 revisado e publicado como versão provisória; permanece em revisão por cobertura/validação incompletas |
+| Item em andamento | Nenhum; F2.1 entregue em `REVISÃO`; F2.2 pendente |
+| Próximo item | Iniciar `F2.2` — arquitetura geral e implantação, processando as três fontes indicadas em `BCE/temas/visao-geral-ecossistema-meshwave.md` §13; distinguir diagrama/roadmap de implementação e registrar evidência rastreável. |
+| Impedimento atual | Nenhum operacional. Permanecem lacunas de cobertura (244/273 conjuntos fora da análise semântica integrada) e ausência, na amostra F1.5, de implementação verificável; DOM-01 segue provisório. |
 | Responsável pela sessão | Agente BCE MeshWave |
 
 ## Como retomar em cinco minutos
@@ -66,8 +66,8 @@
 
 | ID | Entrega | Status | Dependência |
 |---|---|---|---|
-| F2.1 | Documento de visão geral do ecossistema MeshWave | PENDENTE | F1.7 concluída; aprofundar/revisar o DOM-01 existente e ampliar evidências |
-| F2.2 | Arquitetura geral e implantação | PENDENTE | F1.7 |
+| F2.1 | Documento de visão geral do ecossistema MeshWave | REVISÃO — v0.2.0 provisória publicada (`d0f61f5`; índice `507f6f5`; checkpoint `bdeec49`) | F1.7; manter distinção entre visão e implementação, ampliar fontes e validar relações |
+| F2.2 | Arquitetura geral e implantação | PENDENTE | F1.7; DOM-01 v0.2.0 provisório; fontes exatas e método listados em DOM-01 §13 e checkpoint F2.1 |
 | F2.3 | Mesh networking, comunicação e roteamento | PENDENTE | F1.7 |
 | F2.4 | Identidade, identificação de equipamento e DIDs | PENDENTE | F1.7 |
 | F2.5 | ARC, autenticação contextual e inferência bayesiana | PENDENTE | F1.7 |
@@ -204,7 +204,8 @@ O agente atual só deve declarar a tarefa transferível quando:
 | 2026-10-08 | Manus — F1.4 | Catalogadas 35 imagens dos 19 conjuntos; nenhuma duplicata exata; índice, checkpoint e controle publicados | `1340fc8`, `693b2ff`, `764d9e6` | Iniciar F1.5: catalogar código e evidências de implementação |
 | 2026-10-08 | Manus — F1.5 | Registradas 30 referências (29 diretórios físicos únicos, um repetido entre L001/L003); catálogo, índice, controle e checkpoint publicados | `cae17ce` registro; `53f32ca` catálogo; `75f4af5` índice; `894a61d` controle; `5e56a8a` checkpoint | Iniciar F1.6 nos `links.txt` dos mesmos 29 diretórios físicos e catalogar links sem tratar presença como validação |
 | 2026-10-08 | Manus — F1.6 | Catálogo de links em 29 diretórios; contagens HEAD e proveniência DID reconciliadas; controle e checkpoint publicados | `e256d43`, `c323b74`, `381391b`, `d59ea96`, `b935cc0`, `872b27c`, `95a5dfd`, `f4490e0` | Consolidar lacunas/qualidade F1.2–F1.6 na F1.7 |
-| 2026-10-08 | Manus — F1.7 | Relatório consolidado publicado e indexado; controle e checkpoint atualizados | `2c8f3d5` relatório; `5536213` índice; `b9d1539` checkpoint; controle a publicar | Revisar/aprofundar o DOM-01 existente em F2.1; não extrapolar a amostra de 29/273 |
+| 2026-10-08 | Manus — F1.7 | Relatório consolidado publicado e indexado; controle e checkpoint atualizados | `2c8f3d5` relatório; `5536213` índice; `b9d1539` checkpoint; `bf59e02` controle | Revisar/aprofundar o DOM-01 existente em F2.1; não extrapolar a amostra de 29/273 |
+| 2026-10-08 | Manus — F2.1 | DOM-01 revisado para v0.2.0 provisória; índice, checkpoint e controle atualizados | `d0f61f5` conteúdo; `507f6f5` índice; `bdeec49` checkpoint | Iniciar F2.2 com as três fontes e os critérios listados em DOM-01 §13; manter DOM-01 em revisão |
 
 
 ## Lote F1.5 registrado antes da leitura — catálogo de código
