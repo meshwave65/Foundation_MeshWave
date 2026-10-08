@@ -35,7 +35,7 @@ Este índice define a arquitetura documental da Base de Conhecimento Evolutivo. 
 
 | ID | Documento-alvo | Pergunta central | Fontes candidatas observadas | Status |
 |---|---|---|---|---|
-| DOM-01 | `BCE/temas/visao-geral-ecossistema-meshwave.md` | O que é o MeshWave, quais problemas resolve e como seus módulos se relacionam? | títulos contendo “O que é o projeto Meshwave”, “SOFIA and MeshWave Ecosystem Overview”, revisões/apresentações | EM_CURADORIA |
+| DOM-01 | `BCE/temas/visao-geral-ecossistema-meshwave.md` | O que é o MeshWave, quais problemas resolve e como seus módulos se relacionam? | Lote 001–003; `info/20260422_171119_O que é o projeto Meshwave`, `johann/20260422_174331_Conhecimento sobre Meshwave, Sofia e módulos ARC-Bayes`, `johann/20260422_175016_SOFIA and MeshWave Ecosystem Overview`; relatório F1.7 | REVISÃO — versão 0.2.0 provisória; cobertura/amplitude ainda incompletas |
 | DOM-02 | `BCE/temas/arquitetura-geral-e-implantacao.md` | Qual é a arquitetura lógica/física e como ocorre a implantação? | `01_arquitetura_geral_meshwave.md`, diagramas de arquitetura, “Fonte para Arquitetura e Operação”, “Complementar Módulos Faltantes do Diagrama de Implantação” | PENDENTE |
 | DOM-03 | `BCE/temas/rede-mesh-comunicacao-e-roteamento.md` | Como nós, enlaces, CLA e roteamento operam em uma rede mesh? | “Hierarquia de CLA e Roteamento”, “Roteamento preditivo”, “Capacidade de uma rede GSM Mesh”, estudos de laser e Briar | PENDENTE |
 | DOM-04 | `BCE/temas/identidade-dids-e-identificador-de-equipamento.md` | Como pessoas, dispositivos e nós são identificados e verificados? | “Definição do identificador único”, “Melhor forma de criar DIDs”, imagens de identidade soberana | EM_CURADORIA |
@@ -118,6 +118,7 @@ Fontes que apenas mencionam o projeto sem conteúdo técnico devem ser registrad
 ## Estado do índice
 
 - Este é um mapa inicial baseado em títulos e inventário preliminar.
+- DOM-01 recebeu revisão F2.1 (`0.2.0`), mas permanece em `REVISÃO`: descreve visão e relações propostas, não estado de arte implementado, e se apoia em amostra semântica de 29/273 conjuntos.
 - A classificação deve ser revisada após a leitura integral de `content.txt`, `code_blocks.txt`, `links.txt` e imagens.
 - Um documento-alvo pode ser dividido ou fundido somente com decisão registrada em `BCE/REGISTRO_DECISOES.md`.
 - Nenhuma fonte deve ser considerada processada apenas porque seu título aparece neste índice.
