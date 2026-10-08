@@ -27,6 +27,7 @@ Este índice define a arquitetura documental da Base de Conhecimento Evolutivo. 
 | GOV-06 | `BCE/fontes/INVENTARIO_FONTES.md` | Catálogo reproduzível das fontes | PENDENTE |
 | GOV-07 | `BCE/artefatos/INDICE_IMAGENS_E_DIAGRAMAS.md` | Relação entre imagens e conceitos | PENDENTE |
 | GOV-08 | `BCE/sessoes/` | Checkpoints de sessões e transferências | PENDENTE |
+| GOV-09 | `BCE/PROMPT_RETOMADA_AGENTE.md` | Prompt reutilizável para iniciar agentes sucessores | CONCLUÍDO |
 
 ## Documentos de estado da arte
 
@@ -34,7 +35,7 @@ Este índice define a arquitetura documental da Base de Conhecimento Evolutivo. 
 
 | ID | Documento-alvo | Pergunta central | Fontes candidatas observadas | Status |
 |---|---|---|---|---|
-| DOM-01 | `BCE/temas/visao-geral-ecossistema-meshwave.md` | O que é o MeshWave, quais problemas resolve e como seus módulos se relacionam? | títulos contendo “O que é o projeto Meshwave”, “SOFIA and MeshWave Ecosystem Overview”, revisões/apresentações | PENDENTE |
+| DOM-01 | `BCE/temas/visao-geral-ecossistema-meshwave.md` | O que é o MeshWave, quais problemas resolve e como seus módulos se relacionam? | títulos contendo “O que é o projeto Meshwave”, “SOFIA and MeshWave Ecosystem Overview”, revisões/apresentações | EM_CURADORIA |
 | DOM-02 | `BCE/temas/arquitetura-geral-e-implantacao.md` | Qual é a arquitetura lógica/física e como ocorre a implantação? | `01_arquitetura_geral_meshwave.md`, diagramas de arquitetura, “Fonte para Arquitetura e Operação”, “Complementar Módulos Faltantes do Diagrama de Implantação” | PENDENTE |
 | DOM-03 | `BCE/temas/rede-mesh-comunicacao-e-roteamento.md` | Como nós, enlaces, CLA e roteamento operam em uma rede mesh? | “Hierarquia de CLA e Roteamento”, “Roteamento preditivo”, “Capacidade de uma rede GSM Mesh”, estudos de laser e Briar | PENDENTE |
 | DOM-04 | `BCE/temas/identidade-dids-e-identificador-de-equipamento.md` | Como pessoas, dispositivos e nós são identificados e verificados? | “Definição do identificador único”, “Melhor forma de criar DIDs”, imagens de identidade soberana | PENDENTE |
