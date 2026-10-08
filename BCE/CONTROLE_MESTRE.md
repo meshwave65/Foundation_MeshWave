@@ -8,11 +8,11 @@
 |---|---|
 | Status global | `EM_ANDAMENTO — FASE 0: fundação operacional` |
 | Última atualização | 2026-10-08 |
-| Último commit confirmado | `854f90d` — `docs(dom-01): criar visao geral curada do ecossistema` |
+| Último commit confirmado | `b611a6f` — `docs(dom-06): criar estado preliminar de sofia` |
 | Branch de trabalho | `main` |
-| Último item concluído | `F1.1` — classificar e curar o Lote 001 |
-| Item em andamento | `F1.2` — classificação por conta, tema e tipo de artefato |
-| Próximo item | Processar as cinco fontes do Lote 002 indicadas no checkpoint |
+| Último item concluído | `F1.2` — classificar e curar o Lote 002 |
+| Item em andamento | `F1.3` — detectar duplicatas, fontes genéricas e qualidade |
+| Próximo item | Processar fontes adicionais de DID/Android, Sofia API, persistência e estados de missão |
 | Impedimento atual | Nenhum para leitura/escrita GitHub; curadoria de conteúdo ainda não iniciada |
 | Responsável pela sessão | Agente BCE MeshWave |
 
@@ -54,8 +54,8 @@
 | ID | Entrega | Status | Dependência |
 |---|---|---|---|
 | F1.1 | Catálogo de todos os conjuntos de extração | CONCLUÍDO | `c6d0ad1`, `a67c36f`, `95dae8a` | A classificação semântica inicial cobriu seis fontes prioritárias |
-| F1.2 | Classificação por conta, tema e tipo de artefato | EM_ANDAMENTO | `BCE/fontes/CLASSIFICACAO_LOTE_001.md` | Processar o Lote 002 e atualizar classificações |
-| F1.3 | Detecção de títulos genéricos, duplicatas e fontes vazias | PENDENTE | F1.1 |
+| F1.2 | Classificação por conta, tema e tipo de artefato | CONCLUÍDO | `3eb1601`, `f5d5cde`, `b611a6f` | Continuar com F1.3 |
+| F1.3 | Detecção de títulos genéricos, duplicatas e fontes vazias | EM_ANDAMENTO | Lote 002 revelou fontes com ruído de reprodução | Comparar fontes de DID/Android, Sofia API e persistência |
 | F1.4 | Catálogo de imagens e relação com textos | PENDENTE | F1.1 |
 | F1.5 | Catálogo de códigos e evidências de implementação | PENDENTE | F1.1 |
 | F1.6 | Mapa de links e referências externas | PENDENTE | F1.1 |
@@ -169,3 +169,6 @@ O agente atual só deve declarar a tarefa transferível quando:
 | 2026-10-08 | Agente BCE MeshWave | Criado prompt reutilizável de retomada | `9636e47` | Usar o prompt para iniciar agentes sucessores |
 | 2026-10-08 | Agente BCE MeshWave | Classificado Lote 001 | `95dae8a` | Criar/atualizar documento DOM-01 |
 | 2026-10-08 | Agente BCE MeshWave | Criado primeiro documento curado DOM-01 | `854f90d` | Processar Lote 002 e continuar F1.2 |
+| 2026-10-08 | Agente BCE MeshWave | Classificado Lote 002 | `3eb1601` | Criar documentos DOM-04 e DOM-06 |
+| 2026-10-08 | Agente BCE MeshWave | Criado documento preliminar DOM-04 | `f5d5cde` | Criar documento preliminar DOM-06 |
+| 2026-10-08 | Agente BCE MeshWave | Criado documento preliminar DOM-06 | `b611a6f` | Processar fontes adicionais e detectar duplicatas |
