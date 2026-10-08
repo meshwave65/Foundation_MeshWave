@@ -21,7 +21,7 @@
 | Formas de referência distintas | 18 | Inclui quatro redirecionadores Google com identificadores ocultados; URLs repetidas normalizadas por destino literal |
 | Destinos submetidos a HEAD público | 11 | Somente leitura; sem autenticação, corpo ou redirecionamento seguido |
 | Respostas HEAD 200 | 6 | Resposta HTTP do host/path no instante da consulta; conteúdo não examinado |
-| Respostas HEAD 301/302 | 3 | Redirecionamento identificado; destino final não seguido |
+| Respostas HEAD 301/302 | 2 | Redirecionamento identificado; destino final não seguido |
 | Respostas HEAD 403/404 | 2 | Bloqueio do servidor / não encontrado na resposta HEAD, respectivamente |
 | Falha de conexão/DNS | 1 | Destino não confirmado por indisponibilidade/erro de rede |
 | Redirecionadores opacos não consultados | 4 | Estado do destino final não confirmado |
