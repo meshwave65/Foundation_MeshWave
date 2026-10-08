@@ -8,12 +8,13 @@
 |---|---|
 | Status global | `EM_ANDAMENTO — FASE 0: fundação operacional` |
 | Última atualização | 2026-10-08 |
-| Último commit confirmado | `9a6098b` — `docs(bce): registrar checkpoint do lote 002` |
+| Último commit remoto confirmado | `9a6098b` — `docs(bce): registrar checkpoint do lote 002` |
+| Commits locais não publicados | `e03134e` — correção de continuidade; `ed855ca` — checkpoint da retomada bloqueada |
 | Branch de trabalho | `main` |
 | Último item concluído | `F1.2` — classificar e curar o Lote 002 |
 | Item em andamento | `F1.3` — detectar duplicatas, fontes genéricas e qualidade |
-| Próximo item | Comparar os conjuntos listados em “Lote F1.3 registrado” abaixo; não abrir outros conjuntos antes de fechar esse lote |
-| Impedimento atual | Push ainda precisa ser verificado nesta sessão; conector GitHub está desativado, embora o repositório público esteja acessível |
+| Próximo item | Após habilitar autenticação de escrita e publicar os commits locais, iniciar F1.3 somente nos conjuntos listados em “Lote F1.3 registrado” abaixo |
+| Impedimento atual | `git push` bloqueado: conector GitHub permaneceu desativado após o fluxo de autorização; não há credencial de escrita disponível nesta sessão |
 | Responsável pela sessão | Agente BCE MeshWave |
 
 ## Como retomar em cinco minutos
@@ -198,3 +199,4 @@ O agente atual só deve declarar a tarefa transferível quando:
 | 2026-10-08 | Agente BCE MeshWave | Classificado Lote 002 | `3eb1601` | Criar documentos DOM-04 e DOM-06 |
 | 2026-10-08 | Agente BCE MeshWave | Criado documento preliminar DOM-04 | `f5d5cde` | Criar documento preliminar DOM-06 |
 | 2026-10-08 | Agente BCE MeshWave | Criado documento preliminar DOM-06 | `b611a6f` | Processar fontes adicionais e detectar duplicatas |
+| 2026-10-08 | Manus — retomada F1.3 | Reconciliado commit apontado e registrados 19 caminhos para o lote; nenhum conteúdo novo de KNOWLEDGE processado por bloqueio de push | `e03134e`, checkpoint `ed855ca`, ambos locais e não publicados | Habilitar autenticação GitHub, publicar commits e iniciar os 19 caminhos registrados |
