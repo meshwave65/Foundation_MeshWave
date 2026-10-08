@@ -6,15 +6,15 @@
 
 | Campo | Valor |
 |---|---|
-| Status global | `EM_ANDAMENTO — FASE 0: fundação operacional` |
+| Status global | `EM_ANDAMENTO — FASE 1: inventário e classificação das fontes` |
 | Última atualização | 2026-10-08 |
-| Último commit remoto confirmado | `9a6098b` — `docs(bce): registrar checkpoint do lote 002` |
-| Commits locais não publicados | `e03134e` — correção de continuidade; `ed855ca` — checkpoint da retomada bloqueada |
+| Último commit de conteúdo/checkpoint confirmado | `7ad5404` — `docs(bce): registrar checkpoint do lote 003` |
+| Commits locais não publicados | Nenhum; `main` sincronizada com `origin/main` na última verificação |
 | Branch de trabalho | `main` |
-| Último item concluído | `F1.2` — classificar e curar o Lote 002 |
-| Item em andamento | `F1.3` — detectar duplicatas, fontes genéricas e qualidade |
-| Próximo item | Após habilitar autenticação de escrita e publicar os commits locais, iniciar F1.3 somente nos conjuntos listados em “Lote F1.3 registrado” abaixo |
-| Impedimento atual | `git push` bloqueado: conector GitHub permaneceu desativado após o fluxo de autorização; não há credencial de escrita disponível nesta sessão |
+| Último item concluído | `F1.3` — classificar 19 fontes no Lote 003 |
+| Item em andamento | `F1.4` — catalogar imagens e relacioná-las a textos/conceitos |
+| Próximo item | Criar `BCE/artefatos/INDICE_IMAGENS_E_DIAGRAMAS.md` catalogando as imagens dos 19 caminhos de `BCE/fontes/CLASSIFICACAO_LOTE_003.md`, com caminho, dimensões, bytes, SHA-256, hash perceptual, descrição visual, vínculo textual e lacunas de origem/licença |
+| Impedimento atual | Nenhum; conector GitHub habilitado e commits pendentes publicados |
 | Responsável pela sessão | Agente BCE MeshWave |
 
 ## Como retomar em cinco minutos
@@ -52,15 +52,15 @@
 
 ### Fase 1 — Inventário e classificação das fontes
 
-| ID | Entrega | Status | Dependência |
-|---|---|---|---|
-| F1.1 | Catálogo de todos os conjuntos de extração | CONCLUÍDO | `c6d0ad1`, `a67c36f`, `95dae8a` | A classificação semântica inicial cobriu seis fontes prioritárias |
-| F1.2 | Classificação por conta, tema e tipo de artefato | CONCLUÍDO | `3eb1601`, `f5d5cde`, `b611a6f` | Continuar com F1.3 |
-| F1.3 | Detecção de títulos genéricos, duplicatas e fontes vazias | EM_ANDAMENTO | Lote 002 revelou fontes com ruído de reprodução | Comparar fontes de DID/Android, Sofia API e persistência |
-| F1.4 | Catálogo de imagens e relação com textos | PENDENTE | F1.1 |
-| F1.5 | Catálogo de códigos e evidências de implementação | PENDENTE | F1.1 |
-| F1.6 | Mapa de links e referências externas | PENDENTE | F1.1 |
-| F1.7 | Relatório de lacunas e qualidade das fontes | PENDENTE | F1.2–F1.6 |
+| ID | Entrega | Status | Evidência/commit | Próxima ação exata |
+|---|---|---|---|---|
+| F1.1 | Catálogo de todos os conjuntos de extração | CONCLUÍDO | `c6d0ad1`, `a67c36f`, `95dae8a` | Classificação semântica inicial cobriu seis fontes prioritárias |
+| F1.2 | Classificação por conta, tema e tipo de artefato | CONCLUÍDO | `3eb1601`, `f5d5cde`, `b611a6f` | Aprofundar fontes conforme F1.3–F1.7 |
+| F1.3 | Detecção de títulos genéricos, duplicatas e fontes vazias/ruidosas | CONCLUÍDO | `705645d` relatório; `daa3308` índice; `7ad5404` checkpoint | Duplicação interna registrada; nenhuma duplicata entre fontes comprovada; prosseguir com F1.4 |
+| F1.4 | Catálogo de imagens e relação com textos | EM_ANDAMENTO | Depende do inventário F1.1 e classificação F1.3 | Catalogar imagens dos 19 caminhos no `CLASSIFICACAO_LOTE_003.md`; criar `BCE/artefatos/INDICE_IMAGENS_E_DIAGRAMAS.md` conforme o próximo item acima |
+| F1.5 | Catálogo de códigos e evidências de implementação | PENDENTE | F1.1 | Usar os vínculos de código do inventário e dos Lotes 001–003 |
+| F1.6 | Mapa de links e referências externas | PENDENTE | F1.1 | Usar os vínculos de links do inventário e dos Lotes 001–003 |
+| F1.7 | Relatório de lacunas e qualidade das fontes | PENDENTE | F1.2–F1.6 | Consolidar lacunas somente após F1.4–F1.6 |
 
 ### Fase 2 — Mapa curatorial e documentos de domínio
 
@@ -199,4 +199,5 @@ O agente atual só deve declarar a tarefa transferível quando:
 | 2026-10-08 | Agente BCE MeshWave | Classificado Lote 002 | `3eb1601` | Criar documentos DOM-04 e DOM-06 |
 | 2026-10-08 | Agente BCE MeshWave | Criado documento preliminar DOM-04 | `f5d5cde` | Criar documento preliminar DOM-06 |
 | 2026-10-08 | Agente BCE MeshWave | Criado documento preliminar DOM-06 | `b611a6f` | Processar fontes adicionais e detectar duplicatas |
-| 2026-10-08 | Manus — retomada F1.3 | Reconciliado commit apontado e registrados 19 caminhos para o lote; nenhum conteúdo novo de KNOWLEDGE processado por bloqueio de push | `e03134e`, checkpoint `ed855ca`, ambos locais e não publicados | Habilitar autenticação GitHub, publicar commits e iniciar os 19 caminhos registrados |
+| 2026-10-08 | Manus — retomada F1.3 | Reconciliado commit apontado e registrados 19 caminhos antes da leitura; push inicialmente bloqueado, depois resolvido e commits publicados | `e03134e`, `ed855ca`, `fb0f995` (publicados em seguida) | Processar os 19 caminhos registrados |
+| 2026-10-08 | Manus — Lote 003 | Concluída classificação de 19 fontes; índice e checkpoint publicados; conector GitHub reabilitado | `705645d`, `daa3308`, `7ad5404` | Criar o catálogo de imagens F1.4 para os 19 caminhos do Lote 003 |
