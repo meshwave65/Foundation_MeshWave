@@ -8,13 +8,13 @@
 |---|---|
 | Status global | `EM_ANDAMENTO — FASE 1: inventário e classificação das fontes` |
 | Última atualização | 2026-10-08 |
-| Último commit de conteúdo/checkpoint confirmado | `5e56a8a` — `docs(bce): registrar checkpoint F1.5` |
+| Último commit de conteúdo/checkpoint confirmado | `95a5dfd` — `docs(bce): registrar checkpoint F1.6` |
 | Commits locais não publicados | Nenhum; `main` sincronizada com `origin/main` na última verificação |
 | Branch de trabalho | `main` |
-| Último item concluído | `F1.5` — catalogar código e evidências de implementação dos 29 diretórios físicos únicos dos Lotes 001–003 |
-| Item em andamento | `F1.6` — mapear links e referências externas dos 29 diretórios físicos registrados em `## Lote F1.5 registrado antes da leitura` abaixo |
-| Próximo item | Examinar `links.txt` dos 29 diretórios físicos registrados para F1.5; inventariar cada URL/referência, origem, destino textual, repetição entre fontes, tipo, relação com o tema e se o destino foi verificado. Distinguir URL listada de conteúdo consultado; não inferir acesso/sucesso a partir de um link e não incluir segredos. Atualizar catálogo de links e índice. |
-| Impedimento atual | Nenhum; conector GitHub habilitado e commits pendentes publicados |
+| Último item concluído | `F1.6` — mapear links e referências externas nos 29 diretórios físicos únicos dos Lotes 001–003 |
+| Item em andamento | Nenhum; F1.1–F1.6 concluídos |
+| Próximo item | Iniciar `F1.7`: reconciliar lacunas/qualidade em `BCE/fontes/CLASSIFICACAO_LOTE_001.md`, `_002.md`, `_003.md`, `BCE/artefatos/INDICE_IMAGENS_E_DIAGRAMAS.md`, `BCE/fontes/CATALOGO_CODIGO_E_IMPLEMENTACAO_LOTES_001_003.md`, `BCE/fontes/CATALOGO_LINKS_LOTES_001_003.md` e `BCE/fontes/INVENTARIO_FONTES.md`/`.csv`; criar relatório consolidado com evidência, prioridade, impacto e investigação seguinte; atualizar índice e controle. Não iniciar F2 antes da publicação de F1.7. |
+| Impedimento atual | Nenhum; integração GitHub habilitada e commits publicados |
 | Responsável pela sessão | Agente BCE MeshWave |
 
 ## Como retomar em cinco minutos
@@ -58,9 +58,9 @@
 | F1.2 | Classificação por conta, tema e tipo de artefato | CONCLUÍDO | `3eb1601`, `f5d5cde`, `b611a6f` | Aprofundar fontes conforme F1.3–F1.7 |
 | F1.3 | Detecção de títulos genéricos, duplicatas e fontes vazias/ruidosas | CONCLUÍDO | `705645d` relatório; `daa3308` índice; `7ad5404` checkpoint | Duplicação interna registrada; nenhuma duplicata entre fontes comprovada; prosseguir com F1.4 |
 | F1.4 | Catálogo de imagens e relação com textos | CONCLUÍDO | `1340fc8` catálogo; `693b2ff` índice; `764d9e6` checkpoint | 35 imagens de 19 fontes; sem SHA-256 duplicado; origem/licença e OCR permanecem lacunas onde não confirmados; prosseguir F1.5 |
-| F1.5 | Catálogo de códigos e evidências de implementação | CONCLUÍDO | `cae17ce` registro prévio; `53f32ca` catálogo; `75f4af5` índice | 29 diretórios físicos únicos; 0 código executável anexado confirmado; 0/29 fontes com sucesso verificável de build/teste/execução/upload/produção. Uma leitura de transcrição longa ficou limitada e está marcada no catálogo como lacuna, sem impedir o inventário da evidência disponível. Prosseguir F1.6. |
-| F1.6 | Mapa de links e referências externas | EM_ANDAMENTO | F1.1; caminhos físicos registrados antes da leitura para F1.5 | Examinar `links.txt` nos 29 diretórios únicos registrados; catalogar URLs e referências, repetições, origem/destino textual e estado de verificação; não tratar URL listada como conteúdo validado; criar artefato e atualizar índice. |
-| F1.7 | Relatório de lacunas e qualidade das fontes | PENDENTE | F1.2–F1.6 | Consolidar lacunas somente após F1.4–F1.6 |
+| F1.5 | Catálogo de códigos e evidências de implementação | CONCLUÍDO | `cae17ce` registro prévio; `53f32ca` catálogo; `75f4af5` índice | 29 diretórios físicos únicos; 0 código executável anexado confirmado; 0/29 fontes com sucesso verificável de build/teste/execução/upload/produção. Uma leitura de transcrição longa ficou limitada e está marcada no catálogo como lacuna, sem impedir o inventário da evidência disponível. F1.6 encontrou 13/29 `links.txt` não vazios e 27 URLs, corrigindo estimativas anteriores aproximadas. |
+| F1.6 | Mapa de links e referências externas | CONCLUÍDO | `e256d43` pré-registro; `c323b74` catálogo; `381391b` índice; `d59ea96` correção de caminho; `b935cc0`, `872b27c` reconciliações; `95a5dfd` checkpoint | Catálogo cobre 29 diretórios físicos: 13 `links.txt` não vazios, 16 vazios, 27 URLs e 18 referências distintas. 11 destinos HEAD sem autenticação; conteúdo remoto não validado. Redirecionadores opacos, links de ação e localhost não seguidos. F1.7 pendente. |
+| F1.7 | Relatório de lacunas e qualidade das fontes | PENDENTE | F1.2–F1.6 | Ler os artefatos listados em `Próximo item`, consolidar lacunas/qualidade com evidências e prioridades, publicar relatório, atualizar índice e controle. |
 
 ### Fase 2 — Mapa curatorial e documentos de domínio
 
@@ -133,7 +133,7 @@ Registrado em 2026-10-08 antes da leitura dos conteúdos. Comparar duplicatas, t
 12. `KNOWLEDGE/iury/20260422_161913_Instruções para a Tarefa no Sofia API Oráculo - Manus`
 13. `KNOWLEDGE/iury/20260422_162213_Resource Not Found Error in Android Build - Manus`
 14. `KNOWLEDGE/iury/20260422_162301_Resource Not Found Error in Android Build Process - Manus`
-15. `KNOWLEDGE/nadir/20260422_173034_Melhor forma de criar DIDs para rede mesh global - Manus`
+15. `KNOWLEDGE/omaci2008/20260422_173034_Melhor forma de criar DIDs para rede mesh global - Manus` — caminho físico confirmado; registro anterior usava `nadir/`.
 16. `KNOWLEDGE/natalia/20260422_171420_Instruções para Missão via Sofia API Manual - Manus`
 17. `KNOWLEDGE/natalia/20260422_171728_Erro no Prototipo Android_ Análise dos Arquivos - Manus`
 18. `KNOWLEDGE/meshwave65/20260422_Analise do erro com arquivos do projeto Android - Manus`
@@ -239,7 +239,7 @@ Registro prévio realizado em 2026-10-08, antes da leitura dos `content.txt`, `c
 12. `KNOWLEDGE/iury/20260422_161913_Instruções para a Tarefa no Sofia API Oráculo - Manus`
 13. `KNOWLEDGE/iury/20260422_162213_Resource Not Found Error in Android Build - Manus`
 14. `KNOWLEDGE/iury/20260422_162301_Resource Not Found Error in Android Build Process - Manus`
-15. `KNOWLEDGE/nadir/20260422_173034_Melhor forma de criar DIDs para rede mesh global - Manus`
+15. `KNOWLEDGE/omaci2008/20260422_173034_Melhor forma de criar DIDs para rede mesh global - Manus` — caminho físico confirmado; registro anterior usava `nadir/`.
 16. `KNOWLEDGE/natalia/20260422_171420_Instruções para Missão via Sofia API Manual - Manus`
 17. `KNOWLEDGE/natalia/20260422_171728_Erro no Prototipo Android_ Análise dos Arquivos - Manus`
 18. `KNOWLEDGE/meshwave65/20260422_Analise do erro com arquivos do projeto Android - Manus`
@@ -267,3 +267,15 @@ Nenhum conteúdo bruto foi lido ao criar este registro. Próxima ação: process
 Registro prévio em 2026-10-08. O escopo de F1.6 reutiliza, sem ampliação, os mesmos **29 diretórios físicos únicos** enumerados individualmente nas seções de Lote 001, Lote 002 e Lote 003 sob `Lote F1.5 registrado antes da leitura` (linhas imediatamente anteriores neste arquivo). Cada diretório será avaliado pelo seu `links.txt`; arquivos ausentes/vazios serão registrados como tal. Nenhum `links.txt` bruto foi aberto ao realizar este registro.
 
 Critérios: registrar a referência exatamente sem reproduzir credenciais ou dados pessoais; distinguir URL literal, texto de URL truncado, redirecionador, link interno e arquivo local; detectar ocorrências repetidas entre fontes; classificar destino/tipo e estado de verificação (não verificado, acessível, redirecionamento identificado, falha, bloqueado por risco/credencial ou não confirmado). Para links web, só fazer requisições de leitura sem autenticação a endereços públicos; não seguir URLs contendo tokens, assinaturas, identificadores pessoais ou parâmetros de acesso, e não enviar dados a formulários/endpoints. Presença do link ou miniatura/captura não valida o conteúdo do destino.
+
+## Resultado da unidade F1.6 — mapa de links
+
+- **Escopo concluído:** 29 diretórios físicos únicos pré-registrados em `BCE/fontes/ESCOPO_LINKS_F1_6.md`; 30 referências de lote, com a fonte repetida contada uma vez.
+- **Resultado:** 13 `links.txt` não vazios, 16 vazios, nenhum ausente; 27 ocorrências de URL e 18 referências distintas. A estimativa F1.5 anterior (14 fontes/≈28 URLs) foi reconciliada por contagem direta.
+- **Verificação:** 11 destinos receberam HEAD público sem autenticação: 6 respostas 200, 2 respostas 301/302, 2 respostas 403/404 e 1 falha de rede. Os códigos HTTP não validam conteúdo. Quatro redirecionadores Google com IDs opacos, seis links de ação de subscrição, localhost e o caminho GitHub truncado não foram seguidos/consultados; nenhum dado foi enviado.
+- **Conflito de proveniência resolvido documentalmente:** `nadir/` não existe no checkout; inventário CSV, catálogo F1.5 e checkout confirmam `KNOWLEDGE/omaci2008/20260422_173034_Melhor forma de criar DIDs para rede mesh global - Manus`. Controle e classificação L003 corrigidos; fonte bruta intacta.
+- **Fontes lidas nesta retomada:** orientações, controle, índice, registro de decisões, checkpoint F1.5, inventários `.csv`/`.md`, catálogo F1.5, classificação L003 e os 29 `links.txt`. Outros artefatos brutos foram cobertos pela F1.5 e consultados apenas via inventários curatoriais.
+- **Arquivos criados/alterados:** `BCE/fontes/ESCOPO_LINKS_F1_6.md`, `BCE/fontes/CATALOGO_LINKS_LOTES_001_003.md`, `BCE/INDICE_CURATORIAL.md`, `BCE/fontes/CLASSIFICACAO_LOTE_003.md`, `BCE/fontes/CATALOGO_CODIGO_E_IMPLEMENTACAO_LOTES_001_003.md`, `BCE/sessoes/2026-10-08_f1-6.md` e este controle. Nenhum arquivo em `KNOWLEDGE/` foi alterado.
+- **Commits publicados antes deste controle:** `e256d43`, `c323b74`, `381391b`, `d59ea96`, `b935cc0`, `872b27c`, `95a5dfd`; este controle será commitado/push em unidade própria.
+- **Último ponto concluído:** F1.6. **Próximo passo exato:** iniciar F1.7 com os artefatos indicados na tabela de estado atual; sintetizar relatório de lacunas/qualidade com evidências e prioridades, indexar e atualizar controle antes de considerar F1.7 concluída.
+- **Impedimentos:** nenhum operacional. A leitura parcial da transcrição Johann na F1.5 permanece explicitada nos catálogos/checkpoints.
