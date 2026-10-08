@@ -38,14 +38,14 @@ Este índice define a arquitetura documental da Base de Conhecimento Evolutivo. 
 | DOM-01 | `BCE/temas/visao-geral-ecossistema-meshwave.md` | O que é o MeshWave, quais problemas resolve e como seus módulos se relacionam? | títulos contendo “O que é o projeto Meshwave”, “SOFIA and MeshWave Ecosystem Overview”, revisões/apresentações | EM_CURADORIA |
 | DOM-02 | `BCE/temas/arquitetura-geral-e-implantacao.md` | Qual é a arquitetura lógica/física e como ocorre a implantação? | `01_arquitetura_geral_meshwave.md`, diagramas de arquitetura, “Fonte para Arquitetura e Operação”, “Complementar Módulos Faltantes do Diagrama de Implantação” | PENDENTE |
 | DOM-03 | `BCE/temas/rede-mesh-comunicacao-e-roteamento.md` | Como nós, enlaces, CLA e roteamento operam em uma rede mesh? | “Hierarquia de CLA e Roteamento”, “Roteamento preditivo”, “Capacidade de uma rede GSM Mesh”, estudos de laser e Briar | PENDENTE |
-| DOM-04 | `BCE/temas/identidade-dids-e-identificador-de-equipamento.md` | Como pessoas, dispositivos e nós são identificados e verificados? | “Definição do identificador único”, “Melhor forma de criar DIDs”, imagens de identidade soberana | PENDENTE |
+| DOM-04 | `BCE/temas/identidade-dids-e-identificador-de-equipamento.md` | Como pessoas, dispositivos e nós são identificados e verificados? | “Definição do identificador único”, “Melhor forma de criar DIDs”, imagens de identidade soberana | EM_CURADORIA |
 | DOM-05 | `BCE/temas/arc-autenticacao-contextual-e-bayes.md` | Qual é o modelo ARC/PGC e como a inferência bayesiana participa da autenticação/roteamento? | “ARC - Autenticação Recessiva Contextual”, “DNA do Hardware”, “Roteamento Preditivo com Autenticação Contextual” | PENDENTE |
 
 ### P1 — Sistemas e módulos centrais
 
 | ID | Documento-alvo | Pergunta central | Fontes candidatas observadas | Status |
 |---|---|---|---|---|
-| DOM-06 | `BCE/temas/sofia-agentes-missoes-e-oraculo.md` | O que é SOFIA, como agentes recebem/executam missões e como o conhecimento persiste? | “SOFIA and MeshWave Ecosystem Documents/Overview”, instruções da Sofia API, relatórios de passagem de contexto, sistema de persistência | PENDENTE |
+| DOM-06 | `BCE/temas/sofia-agentes-missoes-e-oraculo.md` | O que é SOFIA, como agentes recebem/executam missões e como o conhecimento persiste? | “SOFIA and MeshWave Ecosystem Documents/Overview”, instruções da Sofia API, relatórios de passagem de contexto, sistema de persistência | EM_CURADORIA |
 | DOM-07 | `BCE/temas/persistencia-memoria-e-base-vetorial.md` | Como são armazenados, sincronizados, recuperados e atualizados os conhecimentos? | “Sistema de Persistência e Sincronização”, Chroma deployment, DB vetorial e Sofia API | PENDENTE |
 | DOM-08 | `BCE/temas/aplicacao-appmeshwave-e-interfaces.md` | Quais são as funcionalidades, telas, fluxos e decisões de UX do aplicativo/site? | “AppMeshWave Funcionalidades”, protótipos Android, site colaborativo, mockups e imagens | PENDENTE |
 | DOM-09 | `BCE/temas/simuladores-e-visualizacoes.md` | Quais simuladores existem, que modelos executam e como os resultados são visualizados? | “Criar site com simulador”, “Como criar um simulador gráfico”, inconsistências entre simulador e código, gráficos não exibidos | PENDENTE |
