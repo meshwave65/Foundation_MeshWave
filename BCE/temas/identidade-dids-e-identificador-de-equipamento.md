@@ -5,9 +5,9 @@
 | Campo | Valor |
 |---|---|
 | ID curatorial | `DOM-04` |
-| Status | `REVISÃO` — propostas conceituais; nenhum esquema, método DID ou implementação verificável confirmado |
-| Versão do documento | `0.1.0` |
-| Última atualização | `2026-10-08` |
+| Status | `REVISÃO` — curadoria F2.4 concluída; propostas conceituais, sem esquema DID aprovado ou implementação verificável |
+| Versão do documento | `0.2.0` |
+| Última atualização | `2026-10-08 19:14 (-03:00)` |
 | Curador | `Manus — curadoria BCE MeshWave` |
 | Confiança geral | Média para a existência das propostas e imagens; baixa para unicidade, segurança, conformidade DID, ciclo de vida e operação |
 | Documento relacionado no índice | `BCE/INDICE_CURATORIAL.md` — DOM-04 |
@@ -149,6 +149,22 @@ Nenhum trecho de geração de dígito verificador, hash, assinatura, derivação
 | E04-08 | texto | `KNOWLEDGE/info/20260422_172056_Análise e continuidade sobre dispositivos Android antigos - Manus/` | Recomendação estratégica de manter suporte até Android 8.0 | Arquivos-base ausentes/vazios; não prova compatibilidade de identidade |
 | E04-09 | texto relacionado | `BCE/temas/rede-mesh-comunicacao-e-roteamento.md` | Geohash/CLA/CPA aparecem como indexação e cache propostos | DOM-03 também marca ausência de contrato formal e implementação |
 
+## 9. Fechamento explícito da F2.4
+
+A unidade F2.4 foi reconciliada em 2026-10-08. As sete fontes previstas no `BCE/fontes/ESCOPO_F2_4_IDENTIDADE_DIDS.md` foram processadas em `content.txt`, `code_blocks.txt`, `links.txt` e imagens associadas quando presentes. A inspeção confirmou 12 imagens no total: capturas de interface, esquemas de identificador, arte conceitual de DNA/ARC/PGC e uma imagem de identidade auto-soberana. O artefato de conferência visual está em `BCE/artefatos/f2-4-imagens-contato.jpg`.
+
+| Fonte do lote | Resultado da conferência | Classificação final |
+|---|---|---|
+| `174130_Definição do identificador único...` | Planejamento de 14 elementos gráficos e imagem de registro composto com Geohash/CLA, Geohash/CFA, fabricante, perfil, timestamp e verificador; execução interrompida por erros/contexto | Evidência de planejamento visual; não é esquema normativo |
+| `173855_Identificador Único...` | Organização de abas, cronologias, histórico e downloads para um site; CSS e estrutura de interface transcritos, sem módulo de identidade | Contexto operacional/documental; não é implementação de identificador |
+| `173034_Melhor forma de criar DIDs...` | Proposta histórica 4+8+1 e proposta posterior `GGGGGGFFFEEEE-V`; relatório final anexado apenas como referência na conversa | Especificação conceitual conflitante; não é DID demonstrado |
+| `164535_DNA do Hardware...` | Apresentação sobre identidade resiliente, DNA do hardware e ARC/PGC; imagens de apresentação e arte conceitual | Hipótese arquitetural/visual; sem atestado ou protocolo |
+| `172158_Imagem para Identidade...` | Imagem de escudo/biometria visual e descrição de identidade auto-soberana com ARC/PGC | Arte conceitual; sem SSI, chave, carteira ou verificação |
+| `173802_Identificador Único...` | Histórico de compactação, exportação e estrutura de site; artefatos de código são caminhos/saída de ZIP e CSS | Proveniência operacional; sem especificação técnica |
+| `172056_Análise...Android antigos` | Análise de suporte estratégico a Android antigo, recomendando alcance até Android 8.0; arquivos-base ausentes/vazios | Requisito de compatibilidade não validado |
+
+**Conclusão da unidade:** o critério operacional da F2.4 está satisfeito: fontes previstas processadas, DOM-04 atualizado, evidências e conflitos registrados, índice e controle a atualizar, e checkpoint de transferência a publicar. O documento de domínio permanece `REVISÃO` deliberadamente, pois “F2.4 concluída” significa conclusão da curadoria da unidade, não aprovação técnica do identificador ou conformidade DID.
+
 ## 9. Evolução arqueológica
 
 | Período/versão | Formulação/estado | Mudança | Motivo/evidência | Resultado |
@@ -235,8 +251,9 @@ Nenhuma dessas melhorias foi implementada no lote; são requisitos para a próxi
 
 | Versão | Data | Alteração | Fontes/commit |
 |---|---|---|---|
-| `0.1.0` | `2026-10-08` | Primeira síntese do lote F2.4; separação entre identidade, localização, autenticação e roteamento; conflitos e lacunas registrados | Sete caminhos do `ESCOPO_F2_4_IDENTIDADE_DIDS.md`; commit a publicar |
+| `0.1.0` | `2026-10-08` | Primeira síntese do lote F2.4; separação entre identidade, localização, autenticação e roteamento; conflitos e lacunas registrados | Sete caminhos do `ESCOPO_F2_4_IDENTIDADE_DIDS.md` |
+| `0.2.0` | `2026-10-08` | Fechamento explícito da F2.4; sete fontes e 12 imagens conferidas; fontes operacionais/visuais separadas de especificação; DOM-04 permanece em `REVISÃO` por ausência de método DID aprovado e implementação | `BCE/sessoes/2026-10-08_f2-4-fechamento.md`; commit de fechamento |
 
 ## 17. Próximo passo de curadoria
 
-Processar a F2.5 lendo integralmente as fontes de ARC, autenticação contextual, DNA do hardware e inferência bayesiana, e produzir `BCE/temas/arc-autenticacao-contextual-e-bayes.md` distinguindo claramente metáfora de “DNA”, especificação ARC/PGC, algoritmo, evidência criptográfica, código executável e testes; depois revisar DOM-04 apenas se a nova fonte resolver C04-05 ou alterar o modelo de verificação.
+Iniciar a F2.6, sobre SOFIA, agentes, missões e persistência de conhecimento, conforme o controle mestre. Revisar DOM-04 somente se fontes futuras resolverem algum conflito de identidade ou alterarem o modelo de verificação.
