@@ -8,8 +8,8 @@
 |---|---|
 | Status global | `EM_ANDAMENTO — FASE 2: mapa curatorial e documentos de domínio` |
 | Última atualização | 2026-10-08 16:24 (-03:00) |
-| Último commit de conteúdo/checkpoint confirmado | `86c5cda` — `docs(bce): criar DOM-03 sobre rede mesh e roteamento`; checkpoint/índice/controle desta unidade ainda serão publicados |
-| Commits locais não publicados | Índice, controle e checkpoint de F2.3 |
+| Último commit de conteúdo/checkpoint confirmado | `e47275a` — `chore(bce): fechar F2.3 e apontar F2.4` (inclui índice, controle e checkpoint; conteúdo em `86c5cda`) |
+| Commits locais não publicados | Nenhum; `main` sincronizada com `origin/main` |
 | Branch de trabalho | `main` |
 | Último item concluído | `F2.3` — DOM-03 v0.1.0 publicado como primeira síntese; permanece em `REVISÃO` por ausência de implementação, build, teste físico e protocolo de transporte verificáveis |
 | Item em andamento | Nenhum; F2.3 fechado com 12/12 fontes do lote lidas em texto, blocos, links e imagens quando presentes |
@@ -207,7 +207,7 @@ O agente atual só deve declarar a tarefa transferível quando:
 | 2026-10-08 | Manus — F1.7 | Relatório consolidado publicado e indexado; controle e checkpoint atualizados | `2c8f3d5` relatório; `5536213` índice; `b9d1539` checkpoint; `bf59e02` controle | Revisar/aprofundar o DOM-01 existente em F2.1; não extrapolar a amostra de 29/273 |
 | 2026-10-08 | Manus — F2.1 | DOM-01 revisado para v0.2.0 provisória; índice, checkpoint e controle atualizados | `d0f61f5` conteúdo; `507f6f5` índice; `bdeec49` checkpoint | Iniciar F2.2 com as três fontes e os critérios listados em DOM-01 §13; manter DOM-01 em revisão |
 | 2026-10-08 | Manus — F2.2 | DOM-02 v0.1.0 publicado; DOM-01 atualizado para v0.2.1; índice e checkpoint publicados; roadmap/arquitetura mantidos como propostas não verificadas | `864d357` DOM-02; `be965f6` DOM-01; `eccf754` índice; `e47c1a6` checkpoint | Iniciar F2.3 — rede mesh, comunicação e roteamento; continuar DOM-02 em revisão |
-| 2026-10-08 | Manus — F2.3 | DOM-03 v0.1.0 criado a partir das 12 fontes do lote; índice e checkpoint atualizados; propostas, protótipos alegados, hipóteses GSM/LTE e lacunas separados | `86c5cda` conteúdo; checkpoint/índice/controle a publicar | Iniciar F2.4 — identidade, identificação de equipamento e DIDs; manter DOM-03 em revisão |
+| 2026-10-08 | Manus — F2.3 | DOM-03 v0.1.0 criado a partir das 12 fontes do lote; índice, controle e checkpoint publicados; propostas, protótipos alegados, hipóteses GSM/LTE e lacunas separados | `86c5cda` conteúdo; `e47275a` fechamento operacional | Iniciar F2.4 — identidade, identificação de equipamento e DIDs; manter DOM-03 em revisão |
 
 
 ## Lote F1.5 registrado antes da leitura — catálogo de código
