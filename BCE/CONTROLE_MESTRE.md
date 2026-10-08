@@ -8,12 +8,12 @@
 |---|---|
 | Status global | `EM_ANDAMENTO — FASE 1: inventário e classificação das fontes` |
 | Última atualização | 2026-10-08 |
-| Último commit de conteúdo/checkpoint confirmado | `764d9e6` — `docs(bce): registrar checkpoint F1.4` |
+| Último commit de conteúdo/checkpoint confirmado | `75f4af5` — `chore(bce): indexar catalogo de codigo F1.5` |
 | Commits locais não publicados | Nenhum; `main` sincronizada com `origin/main` na última verificação |
 | Branch de trabalho | `main` |
-| Último item concluído | `F1.4` — catalogar 35 imagens dos 19 conjuntos do Lote 003 |
-| Item em andamento | `F1.5` — catalogar códigos e evidências de implementação |
-| Próximo item | Usar o inventário e as classificações dos Lotes 001–003 para localizar `code_blocks.txt` e artefatos de código; registrar caminho, linguagem/artefato, completude, estado demonstrado versus alegado e lacunas de build/teste/execução, sem tratar transcrições como prova |
+| Último item concluído | `F1.5` — catalogar código e evidências de implementação dos 29 diretórios físicos únicos dos Lotes 001–003 |
+| Item em andamento | `F1.6` — mapear links e referências externas dos 29 diretórios físicos registrados em `## Lote F1.5 registrado antes da leitura` abaixo |
+| Próximo item | Examinar `links.txt` dos 29 diretórios físicos registrados para F1.5; inventariar cada URL/referência, origem, destino textual, repetição entre fontes, tipo, relação com o tema e se o destino foi verificado. Distinguir URL listada de conteúdo consultado; não inferir acesso/sucesso a partir de um link e não incluir segredos. Atualizar catálogo de links e índice. |
 | Impedimento atual | Nenhum; conector GitHub habilitado e commits pendentes publicados |
 | Responsável pela sessão | Agente BCE MeshWave |
 
@@ -58,8 +58,8 @@
 | F1.2 | Classificação por conta, tema e tipo de artefato | CONCLUÍDO | `3eb1601`, `f5d5cde`, `b611a6f` | Aprofundar fontes conforme F1.3–F1.7 |
 | F1.3 | Detecção de títulos genéricos, duplicatas e fontes vazias/ruidosas | CONCLUÍDO | `705645d` relatório; `daa3308` índice; `7ad5404` checkpoint | Duplicação interna registrada; nenhuma duplicata entre fontes comprovada; prosseguir com F1.4 |
 | F1.4 | Catálogo de imagens e relação com textos | CONCLUÍDO | `1340fc8` catálogo; `693b2ff` índice; `764d9e6` checkpoint | 35 imagens de 19 fontes; sem SHA-256 duplicado; origem/licença e OCR permanecem lacunas onde não confirmados; prosseguir F1.5 |
-| F1.5 | Catálogo de códigos e evidências de implementação | EM_ANDAMENTO | F1.1 e classificações dos Lotes 001–003 | Localizar `code_blocks.txt` e artefatos de código; registrar completude, estado demonstrado/alegado e lacunas de build, teste e execução |
-| F1.6 | Mapa de links e referências externas | PENDENTE | F1.1 | Usar os vínculos de links do inventário e dos Lotes 001–003 |
+| F1.5 | Catálogo de códigos e evidências de implementação | CONCLUÍDO | `cae17ce` registro prévio; `53f32ca` catálogo; `75f4af5` índice | 29 diretórios físicos únicos; 0 código executável anexado confirmado; 0/29 fontes com sucesso verificável de build/teste/execução/upload/produção. Uma leitura de transcrição longa ficou limitada e está marcada no catálogo como lacuna, sem impedir o inventário da evidência disponível. Prosseguir F1.6. |
+| F1.6 | Mapa de links e referências externas | EM_ANDAMENTO | F1.1; caminhos físicos registrados antes da leitura para F1.5 | Examinar `links.txt` nos 29 diretórios únicos registrados; catalogar URLs e referências, repetições, origem/destino textual e estado de verificação; não tratar URL listada como conteúdo validado; criar artefato e atualizar índice. |
 | F1.7 | Relatório de lacunas e qualidade das fontes | PENDENTE | F1.2–F1.6 | Consolidar lacunas somente após F1.4–F1.6 |
 
 ### Fase 2 — Mapa curatorial e documentos de domínio
@@ -202,6 +202,7 @@ O agente atual só deve declarar a tarefa transferível quando:
 | 2026-10-08 | Manus — retomada F1.3 | Reconciliado commit apontado e registrados 19 caminhos antes da leitura; push inicialmente bloqueado, depois resolvido e commits publicados | `e03134e`, `ed855ca`, `fb0f995` (publicados em seguida) | Processar os 19 caminhos registrados |
 | 2026-10-08 | Manus — Lote 003 | Concluída classificação de 19 fontes; índice e checkpoint publicados; conector GitHub reabilitado | `705645d`, `daa3308`, `7ad5404` | Criar o catálogo de imagens F1.4 para os 19 caminhos do Lote 003 |
 | 2026-10-08 | Manus — F1.4 | Catalogadas 35 imagens dos 19 conjuntos; nenhuma duplicata exata; índice, checkpoint e controle publicados | `1340fc8`, `693b2ff`, `764d9e6` | Iniciar F1.5: catalogar código e evidências de implementação |
+| 2026-10-08 | Manus — F1.5 | Registradas 30 referências (29 diretórios físicos únicos, um repetido entre L001/L003); catálogo de código e índice publicados | `cae17ce`, `53f32ca`, `75f4af5`; controle e checkpoint desta sessão em commits próprios subsequentes | Iniciar F1.6 nos `links.txt` dos mesmos 29 diretórios físicos e catalogar links sem tratar presença como validação |
 
 
 ## Lote F1.5 registrado antes da leitura — catálogo de código
@@ -245,3 +246,17 @@ Registro prévio realizado em 2026-10-08, antes da leitura dos `content.txt`, `c
 19. `KNOWLEDGE/iury/20260422_161432_Como sincronizar repositório local com GitHub via SSH - Manus`
 
 Nenhum conteúdo bruto foi lido ao criar este registro. Próxima ação: processar os artefatos listados sem modificá-los; descrever códigos e arquivos anexos por evidência, nunca copiar segredos.
+
+
+## Resultado da unidade F1.5 — catálogo de código
+
+- **Escopo concluído:** 30 referências dos Lotes 001–003, correspondentes a **29 diretórios físicos únicos**; `KNOWLEDGE/info/20260422_173802_Identificador Único do Equipamento na Rede - Manus` aparece em L001-05 e L003-10 e foi analisada uma única vez.
+- **Resultado:** nenhum código executável anexado foi confirmado; nenhuma das 29 fontes demonstrou de forma verificável build, teste, execução bem-sucedida, upload ou produção. Em 15/29 há material code-like em transcrição (inclui comandos e fragmentos); três fontes contêm blocos relativamente substanciais, ainda sem comprovação de aplicação/compilação/execução. Uma fonte tem captura explícita de build Android falho com 16 erros.
+- **Limitação explícita:** no conjunto `KNOWLEDGE/johann/20260422_175100_SOFIA and MeshWave Ecosystem Documents - Manus`, o agente de análise reportou não conseguir ler integralmente os arquivos longos `content.txt`/`code_blocks.txt` devido a limites de leitura. A classificação é parcial nessa fonte, indicada como lacuna no catálogo; não se inferiu conteúdo ausente.
+- **Conflitos:** cartões de interface/declarações de conclusão versus falta de evidência técnica; alegações de protótipo funcional versus erros, trechos incompletos e testes futuros; versões divergentes de launcher/worker Python, AGP Android, formato de DID e fluxo de API/upload.
+- **Material sensível:** duas fontes sinalizaram referências a identificador de conta/host/caminho local com nome de usuário e a identificador pessoal de contato. Nenhum valor foi copiado; os resultados não indicaram token, senha ou chave privada reproduzidos. Tratar dados pessoais com restrição e, caso credenciais reais sejam encontradas em outra revisão, promover rotação/revogação sem reproduzir valores.
+- **Fontes lidas:** documentos mandatórios `ORIENTACAO_AGENTES.md`, `CONTROLE_MESTRE.md`, `INDICE_CURATORIAL.md`, `REGISTRO_DECISOES.md`; checkpoint mais recente `BCE/sessoes/2026-10-08_f1-4.md`; inventários `BCE/fontes/INVENTARIO_FONTES.csv` e `.md`; template `BCE/temas/_TEMPLATE.md`; classificações `CLASSIFICACAO_LOTE_001.md` a `_003.md`; nos 29 diretórios físicos, `content.txt`, `code_blocks.txt`, `links.txt` e imagens associadas, observada a limitação explicitada acima.
+- **Arquivos alterados/criados nesta unidade:** `BCE/CONTROLE_MESTRE.md`, `BCE/fontes/CATALOGO_CODIGO_E_IMPLEMENTACAO_LOTES_001_003.md`, `BCE/INDICE_CURATORIAL.md` e checkpoint próprio em `BCE/sessoes/2026-10-08_f1-5.md`.
+- **Commits de conteúdo/índice já publicados:** `cae17ce` (registro prévio dos caminhos), `53f32ca` (catálogo F1.5), `75f4af5` (índice). O controle e o checkpoint desta sessão serão publicados em commits próprios imediatamente após esta atualização.
+- **Impedimentos:** nenhum para iniciar F1.6; a leitura incompleta da fonte longa permanece registrada como lacuna do F1.5 e deve ser retomada em validação de proveniência/reprodução se esse conjunto se tornar prioritário.
+- **Próximo passo inequívoco:** iniciar F1.6 examinando `links.txt` dos 29 diretórios físicos únicos já listados no registro prévio desta unidade; criar o mapa de URLs/referências com repetição, tipo, origem, destino textual e estado de verificação, sem assumir que presença de URL valida seu conteúdo; atualizar `BCE/INDICE_CURATORIAL.md` e o controle mestre.
