@@ -8,11 +8,11 @@
 |---|---|
 | Status global | `EM_ANDAMENTO — FASE 0: fundação operacional` |
 | Última atualização | 2026-10-08 |
-| Último commit confirmado | `be68214` — `docs(bce): registrar checkpoint da sessao inicial` |
+| Último commit confirmado | `854f90d` — `docs(dom-01): criar visao geral curada do ecossistema` |
 | Branch de trabalho | `main` |
-| Último item concluído | `F0.7` — checkpoint detalhado da sessão |
-| Item em andamento | `F1.1` — catalogar e classificar os 273 conjuntos de extração |
-| Próximo item | Processar o primeiro lote prioritário de fontes e registrar o último caminho |
+| Último item concluído | `F1.1` — classificar e curar o Lote 001 |
+| Item em andamento | `F1.2` — classificação por conta, tema e tipo de artefato |
+| Próximo item | Processar as cinco fontes do Lote 002 indicadas no checkpoint |
 | Impedimento atual | Nenhum para leitura/escrita GitHub; curadoria de conteúdo ainda não iniciada |
 | Responsável pela sessão | Agente BCE MeshWave |
 
@@ -53,8 +53,8 @@
 
 | ID | Entrega | Status | Dependência |
 |---|---|---|---|
-| F1.1 | Catálogo de todos os conjuntos de extração | PENDENTE | F0.5 |
-| F1.2 | Classificação por conta, tema e tipo de artefato | PENDENTE | F1.1 |
+| F1.1 | Catálogo de todos os conjuntos de extração | CONCLUÍDO | `c6d0ad1`, `a67c36f`, `95dae8a` | A classificação semântica inicial cobriu seis fontes prioritárias |
+| F1.2 | Classificação por conta, tema e tipo de artefato | EM_ANDAMENTO | `BCE/fontes/CLASSIFICACAO_LOTE_001.md` | Processar o Lote 002 e atualizar classificações |
 | F1.3 | Detecção de títulos genéricos, duplicatas e fontes vazias | PENDENTE | F1.1 |
 | F1.4 | Catálogo de imagens e relação com textos | PENDENTE | F1.1 |
 | F1.5 | Catálogo de códigos e evidências de implementação | PENDENTE | F1.1 |
@@ -166,3 +166,6 @@ O agente atual só deve declarar a tarefa transferível quando:
 | 2026-10-08 | Agente BCE MeshWave | Criado template de tema | `53a9523` | Gerar inventário técnico |
 | 2026-10-08 | Agente BCE MeshWave | Publicados inventários Markdown e CSV | `c6d0ad1`, `a67c36f` | Criar checkpoint e iniciar F1.1 |
 | 2026-10-08 | Agente BCE MeshWave | Publicado checkpoint detalhado da sessão | `be68214` | Processar primeiro lote prioritário de F1.1 |
+| 2026-10-08 | Agente BCE MeshWave | Criado prompt reutilizável de retomada | `9636e47` | Usar o prompt para iniciar agentes sucessores |
+| 2026-10-08 | Agente BCE MeshWave | Classificado Lote 001 | `95dae8a` | Criar/atualizar documento DOM-01 |
+| 2026-10-08 | Agente BCE MeshWave | Criado primeiro documento curado DOM-01 | `854f90d` | Processar Lote 002 e continuar F1.2 |
