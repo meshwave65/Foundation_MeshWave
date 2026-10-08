@@ -56,11 +56,11 @@ Critério F1.5 aplicado:
 | Fontes sem bloco de código substancial | **14/29 (≈48,3%)** | Predominam especificações, roadmaps, imagens, narrativas ou rótulos |
 | Fontes com captura/imagem associada no inventário | **29/29** | Imagens são interface, roadmap, diagrama ou erro; nenhuma prova de produto em operação |
 | Imagens associadas relatadas, sem deduplicação | **≈52** | Contagem dos itens descritos nos inventários; inclui `FULL.png`, duplicatas e extensões/formatos inconsistentes |
-| `links.txt` não vazio | **14/29** | URLs foram registradas, mas não abertas por restrição de escopo |
-| Linhas/URLs explicitamente listadas nesses `links.txt` não vazios | **≈28** | Contagem derivada dos inventários; inclui redirecionamentos, ajuda, GitHub e referências externas |
+| `links.txt` não vazio | **13/29** | Contagem direta na F1.6; arquivos vazios e fontes contadas no catálogo F1.6 |
+| Ocorrências de URLs explicitamente listadas | **27** | Contagem direta na F1.6; inclui referências repetidas e redirecionadores |
 | Fontes marcadas com material sensível | **2/29 (≈6,9%)** | Ocorrências categorizadas sem reproduzir valores |
 
-A contagem de “código em transcript” inclui comandos Bash/Git, Gradle, CSS, Python/Java/XML parciais, HTTP/JSON e fragmentos de terminal. **Não equivale a implementação.** A contagem de imagens não deduplica cópias nem resolve discrepâncias de extensão/formato apontadas pelos próprios resultados.
+A contagem de “código em transcript” inclui comandos Bash/Git, Gradle, CSS, Python/Java/XML parciais, HTTP/JSON e fragmentos de terminal. **Não equivale a implementação.** A contagem de imagens não deduplica cópias nem resolve discrepâncias de extensão/formato apontadas pelos próprios resultados. Os valores de links publicados originalmente como `14/29` e `≈28` eram aproximações derivadas; a leitura direta F1.6 de `links.txt` nos 29 caminhos encontrou 13 arquivos não vazios e 27 ocorrências de URL. Ver `BCE/fontes/CATALOGO_LINKS_LOTES_001_003.md` para o método e as limitações.
 
 ## 4. Evidências positivas, negativas e limites do código
 
