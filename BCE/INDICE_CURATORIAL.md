@@ -22,11 +22,11 @@ Este índice define a arquitetura documental da Base de Conhecimento Evolutivo. 
 | GOV-01 | `BCE/ORIENTACAO_AGENTES.md` | Regras de operação, continuidade, evidências e commits | CONCLUÍDO |
 | GOV-02 | `BCE/CONTROLE_MESTRE.md` | Backlog, status, checkpoints e próximo passo | CONCLUÍDO |
 | GOV-03 | `BCE/INDICE_CURATORIAL.md` | Este mapa documental | EM_CURADORIA |
-| GOV-04 | `BCE/REGISTRO_DECISOES.md` | Log de decisões e justificativas | PENDENTE |
-| GOV-05 | `BCE/temas/_TEMPLATE.md` | Modelo padrão de documento curado | PENDENTE |
-| GOV-06 | `BCE/fontes/INVENTARIO_FONTES.md` | Catálogo reproduzível das fontes | PENDENTE |
+| GOV-04 | `BCE/REGISTRO_DECISOES.md` | Log de decisões e justificativas; DEC-BCE-008/009 permanecem pendentes de validação | CONCLUÍDO |
+| GOV-05 | `BCE/temas/_TEMPLATE.md` | Modelo padrão de documento curado | CONCLUÍDO |
+| GOV-06 | `BCE/fontes/INVENTARIO_FONTES.md` | Inventário técnico reproduzível de 273 conjuntos; não equivale a classificação semântica integral | CONCLUÍDO |
 | GOV-07 | `BCE/artefatos/INDICE_IMAGENS_E_DIAGRAMAS.md` | Relação entre imagens e conceitos | CONCLUÍDO |
-| GOV-08 | `BCE/sessoes/` | Checkpoints de sessões e transferências | PENDENTE |
+| GOV-08 | `BCE/sessoes/` | Checkpoints de sessões e transferências; atualizar a cada retomada | EM_CURADORIA |
 | GOV-09 | `BCE/PROMPT_RETOMADA_AGENTE.md` | Prompt reutilizável para iniciar agentes sucessores | CONCLUÍDO |
 
 ## Documentos de estado da arte
@@ -132,5 +132,6 @@ Fontes que apenas mencionam o projeto sem conteúdo técnico devem ser registrad
 | `BCE/artefatos/INDICE_IMAGENS_E_DIAGRAMAS.md` | F1.4 — 35 imagens dos 19 caminhos do Lote 003 | SHA-256, pHash, dimensões e descrições catalogados; origem/licença não confirmadas quando ausentes e OCR automático não executado. Capturas semelhantes por moldura de interface não foram promovidas a duplicatas. |
 | `BCE/fontes/CATALOGO_CODIGO_E_IMPLEMENTACAO_LOTES_001_003.md` | F1.5 — 29 diretórios físicos únicos referenciados pelos Lotes 001–003 | 30 referências registradas, com `KNOWLEDGE/info/20260422_173802_Identificador Único do Equipamento na Rede - Manus` repetida entre L001/L003 e analisada uma vez. Nenhum código executável anexado ou resultado verificável de build/teste/execução/upload/produção foi confirmado; trechos em transcrições, inclusive código substancial, não comprovam implementação. Uma leitura integral ficou limitada pelo tamanho da transcrição em uma fonte e está explicitamente marcada no catálogo. |
 | `BCE/fontes/CATALOGO_LINKS_LOTES_001_003.md` | F1.6 — `links.txt` dos mesmos 29 diretórios físicos únicos | 13 arquivos não vazios, 16 vazios; 27 ocorrências e 18 referências distintas. HEAD público foi usado apenas em 11 destinos sem autenticação; páginas não foram lidas. Redirecionadores opacos, links de ação e `localhost` não foram seguidos. Contagens F1.5 anteriores eram estimativas aproximadas. Caminho DID `nadir/` em registros anteriores conflita com o caminho físico `omaci2008/` do inventário/catalogação. |
+| `BCE/fontes/RELATORIO_LACUNAS_E_QUALIDADE_F1_7.md` | F1.7 — síntese F1.2–F1.6 contra inventário de 273 conjuntos | Amostra integrada de 29/273 (10,62%); 0/29 com implementação verificável no material revisado; lacunas priorizadas por cobertura, reprodutibilidade, API, identidade, privacidade, Android, imagens, links, duplicatas e contexto externo. Não generalizar a amostra nem interpretar ausência de evidência como prova de inexistência do produto. |
 
 As classificações são inventários de evidência e qualidade, não documentos de estado da arte. Elas não promovem alegações de conversa, capturas de interface, código incompleto ou rótulos de conclusão a fatos de implementação, build, upload ou produção. Consultar cada documento para conflitos, fontes ausentes e próximas verificações.
