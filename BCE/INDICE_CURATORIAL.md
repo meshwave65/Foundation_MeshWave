@@ -25,7 +25,7 @@ Este índice define a arquitetura documental da Base de Conhecimento Evolutivo. 
 | GOV-04 | `BCE/REGISTRO_DECISOES.md` | Log de decisões e justificativas | PENDENTE |
 | GOV-05 | `BCE/temas/_TEMPLATE.md` | Modelo padrão de documento curado | PENDENTE |
 | GOV-06 | `BCE/fontes/INVENTARIO_FONTES.md` | Catálogo reproduzível das fontes | PENDENTE |
-| GOV-07 | `BCE/artefatos/INDICE_IMAGENS_E_DIAGRAMAS.md` | Relação entre imagens e conceitos | PENDENTE |
+| GOV-07 | `BCE/artefatos/INDICE_IMAGENS_E_DIAGRAMAS.md` | Relação entre imagens e conceitos | CONCLUÍDO |
 | GOV-08 | `BCE/sessoes/` | Checkpoints de sessões e transferências | PENDENTE |
 | GOV-09 | `BCE/PROMPT_RETOMADA_AGENTE.md` | Prompt reutilizável para iniciar agentes sucessores | CONCLUÍDO |
 
@@ -128,6 +128,7 @@ Fontes que apenas mencionam o projeto sem conteúdo técnico devem ser registrad
 |---|---|---|
 | `BCE/fontes/CLASSIFICACAO_LOTE_001.md` | Lote 001 | Classificação semântica inicial; consultar o documento para os caminhos e limites de cada fonte. |
 | `BCE/fontes/CLASSIFICACAO_LOTE_002.md` | Lote 002 | Identidade, implantação e SOFIA; planos e alegações não são tratados como implementação confirmada. |
-| `BCE/fontes/CLASSIFICACAO_LOTE_003.md` | Lote 003 (19 conjuntos de DID/Android, Sofia API, persistência e contexto operacional) | F1.3 concluído em 2026-10-08. Há repetição interna nos conjuntos; nenhuma duplicata entre fontes foi comprovada. Relações entre grupos são apenas sobreposição/continuação candidata. F1.4 — catálogo de imagens permanece pendente. |
+| `BCE/fontes/CLASSIFICACAO_LOTE_003.md` | Lote 003 (19 conjuntos de DID/Android, Sofia API, persistência e contexto operacional) | F1.3 concluído em 2026-10-08. Há repetição interna nos conjuntos; nenhuma duplicata entre fontes foi comprovada. Relações entre grupos são apenas sobreposição/continuação candidata. F1.4 concluído: 35 imagens catalogadas em `BCE/artefatos/INDICE_IMAGENS_E_DIAGRAMAS.md`; nenhuma duplicata exata confirmada. |
+| `BCE/artefatos/INDICE_IMAGENS_E_DIAGRAMAS.md` | F1.4 — 35 imagens dos 19 caminhos do Lote 003 | SHA-256, pHash, dimensões e descrições catalogados; origem/licença não confirmadas quando ausentes e OCR automático não executado. Capturas semelhantes por moldura de interface não foram promovidas a duplicatas. |
 
 As classificações são inventários de evidência e qualidade, não documentos de estado da arte. Elas não promovem alegações de conversa, capturas de interface, código incompleto ou rótulos de conclusão a fatos de implementação, build, upload ou produção. Consultar cada documento para conflitos, fontes ausentes e próximas verificações.
