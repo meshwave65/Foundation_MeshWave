@@ -260,3 +260,10 @@ Nenhum conteúdo bruto foi lido ao criar este registro. Próxima ação: process
 - **Commits de conteúdo/índice já publicados:** `cae17ce` (registro prévio dos caminhos), `53f32ca` (catálogo F1.5), `75f4af5` (índice). O controle e o checkpoint desta sessão serão publicados em commits próprios imediatamente após esta atualização.
 - **Impedimentos:** nenhum para iniciar F1.6; a leitura incompleta da fonte longa permanece registrada como lacuna do F1.5 e deve ser retomada em validação de proveniência/reprodução se esse conjunto se tornar prioritário.
 - **Próximo passo inequívoco:** iniciar F1.6 examinando `links.txt` dos 29 diretórios físicos únicos já listados no registro prévio desta unidade; criar o mapa de URLs/referências com repetição, tipo, origem, destino textual e estado de verificação, sem assumir que presença de URL valida seu conteúdo; atualizar `BCE/INDICE_CURATORIAL.md` e o controle mestre.
+
+
+## Lote F1.6 registrado antes da leitura — mapa de links
+
+Registro prévio em 2026-10-08. O escopo de F1.6 reutiliza, sem ampliação, os mesmos **29 diretórios físicos únicos** enumerados individualmente nas seções de Lote 001, Lote 002 e Lote 003 sob `Lote F1.5 registrado antes da leitura` (linhas imediatamente anteriores neste arquivo). Cada diretório será avaliado pelo seu `links.txt`; arquivos ausentes/vazios serão registrados como tal. Nenhum `links.txt` bruto foi aberto ao realizar este registro.
+
+Critérios: registrar a referência exatamente sem reproduzir credenciais ou dados pessoais; distinguir URL literal, texto de URL truncado, redirecionador, link interno e arquivo local; detectar ocorrências repetidas entre fontes; classificar destino/tipo e estado de verificação (não verificado, acessível, redirecionamento identificado, falha, bloqueado por risco/credencial ou não confirmado). Para links web, só fazer requisições de leitura sem autenticação a endereços públicos; não seguir URLs contendo tokens, assinaturas, identificadores pessoais ou parâmetros de acesso, e não enviar dados a formulários/endpoints. Presença do link ou miniatura/captura não valida o conteúdo do destino.
