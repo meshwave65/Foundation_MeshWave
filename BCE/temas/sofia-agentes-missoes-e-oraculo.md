@@ -5,126 +5,251 @@
 | Campo | Valor |
 |---|---|
 | ID curatorial | `DOM-06` |
-| Status | `EM_CURADORIA` |
-| Versão | `0.1.0` |
+| Status | `REVISÃO` |
+| Versão do documento | `0.2.0` |
 | Última atualização | `2026-10-08` |
+| Curador(es) | Agente BCE MeshWave |
 | Confiança geral | `média-baixa` |
-| Fontes principais | `CLASSIFICACAO_LOTE_002.md` e fontes do Lote 002 |
+| Documento relacionado no índice | [`BCE/INDICE_CURATORIAL.md`](../INDICE_CURATORIAL.md) |
+
+> **Limite de cobertura desta revisão:** F2.6 fechou fisicamente 23 fontes prioritárias. O checkpoint anterior registra primeira passagem textual em 15 delas, mas não atesta auditoria completa de `code_blocks.txt`, `links.txt` e imagens para esse subconjunto. Nesta sessão, os oito diretórios finais (F2.6-16 a F2.6-23) tiveram seus três arquivos textuais lidos integralmente e todas as imagens raster inspecionadas. Portanto, esta síntese integra achados das 23 fontes com evidência desigual; não declara auditoria de artefatos completa das 23.
 
 ## 1. Resumo executivo
 
-As fontes do Lote 002 descrevem SOFIA como um ecossistema de agentes que recebe missões, enriquece contexto, decide um modo de execução, executa tarefas e produz artefatos de relatório. O pipeline histórico citado contém, pelo menos, Executor, Escriba, RH, Worker e, em alguns casos, uma tarefa supervisora que coordena subtarefas.
+As fontes descrevem SOFIA como um sistema de obtenção e execução de missões com agentes e supervisão, mas não há, no material consolidado, contrato autoritativo da API, implementação completa ou trilha transacional que confirme o comportamento atual. O modelo operacional anteriormente relatado — Executor → Escriba → RH → Worker, com possibilidade de decomposição em tarefa-mãe/tarefas-filhas — permanece **modelo histórico/proposto**, não arquitetura de produção verificada.
 
-O material também registra falhas de projeto e correções propostas: fatoração automática indesejada de uma missão em subtarefas; perda de links e contexto entre blocos; geração de relatórios rasos; e ausência de relatório operacional no caminho supervisor. Essas falhas são evidência valiosa da evolução arqueológica, mas os trechos analisados não provam que os patches propostos sejam a versão atualmente implantada.
+Os oito conjuntos finais reforçam um problema recorrente: transcrições e capturas de interface narram obtenção de tarefas, consulta de rotas, execução, geração de relatórios, upload e finalização, mas geralmente não incluem método HTTP, requisição e resposta integrais, autenticação, timestamp, request-id, status numérico, payload ou verificação posterior. Uma fonte contém tentativas narradas com `HTTP Error 404: Not Found`; outras mencionam `Not Found`, sem status numérico demonstrável. Essas evidências demonstram o que foi relatado/mostrado, não que as rotas estejam ou não implementadas hoje.
 
-## 2. Pipeline conceitual
+Endpoints concorrentes, estados semânticos não definidos, alegações de sucesso incompatíveis com falhas/espera e duplicações internas extensas mantêm o documento em `REVISÃO`. A classificação distingue **fato observado no artefato**, **implementação alegada**, **protótipo/UI**, **especificação**, **hipótese**, **decisão**, **alternativa**, **descarte**, **conflito** e **lacuna**; repetições de um transcript não são contadas como execuções independentes.
+
+## 2. Escopo e limites
+
+**Inclui:** papéis e fluxo de agentes; obtenção/reivindicação de missão; estados e transições mencionados; API/oráculo; passagem de contexto; relatórios; upload/finalização; falhas relatadas; segurança ligada ao fluxo; evidências e lacunas.
+
+**Fora do escopo principal:** desenho detalhado de persistência, sincronização, ChromaDB e banco vetorial (DOM-07); operação e recuperação de infraestrutura (DOM-13); Android (DOM-10); identidade e ARC/Bayes (DOM-04/DOM-05); topologia mesh (DOM-03). Fontes com conteúdo médico, financeiro ou de outra tarefa externa são contexto das missões, não requisitos do MeshWave sem evidência independente.
+
+**Cobertura e proveniência:** o escopo está registrado em `BCE/fontes/ESCOPO_F2_6_SOFIA_AGENTES_MISSOES.md`. Os 23 caminhos foram validados fisicamente. O checkpoint `BCE/sessoes/2026-10-08_f2-6-abertura.md` registra uma primeira passagem textual anterior em 15/23. A leitura profunda descrita nesta atualização cobre os oito últimos diretórios e seus `content.txt`, `code_blocks.txt`, `links.txt` e imagens; os outros 15 não são aqui declarados como auditados em seus arquivos auxiliares/imagens. Os nove conjuntos reservados de persistência/Chroma permanecem fora do lote, salvo dependência direta.
+
+## 3. Terminologia
+
+| Termo | Definição de trabalho | Estado / fonte |
+|---|---|---|
+| SOFIA | Serviço/oráculo descrito como fonte de missões e instruções. | Nome e uso narrado; contrato atual não confirmado. Escopo F2.6 e fontes abaixo. |
+| Missão/tarefa | Unidade de trabalho que seria consultada, reivindicada, executada, reportada e finalizada. | Procedimentos variam; schema e lifecycle não confirmados. |
+| Tarefa-mãe / filha | Relação de decomposição atribuída ao RH, com referência histórica a `parent_task_id`. | Diagnóstico/proposta do checkpoint F2.6; sem contrato/API validado. |
+| Executor | Componente referido como iniciador/portador do contexto original. | Nome e função narrados; implementação atual não verificada. |
+| Escriba | Agente descrito como enriquecedor de contexto. | Proposta/diagnóstico histórico; contrato não confirmado. |
+| RH | Componente que decide atribuição/persona e pode decompor tarefa. | Comportamento relatado em fontes anteriores; não validado no backend. |
+| Worker / agente atômico | Agente que executaria a tarefa e produziria relatórios. | Implementação completa e execução reproduzível ausentes. |
+| `GenesisPrompt` | Contexto original da missão/fontes. | Nome observado em fontes anteriores; estrutura e persistência desconhecidas. |
+| `EnrichedDescription` | Descrição enriquecida atribuída ao Escriba. | Nome observado em fontes anteriores; contrato desconhecido. |
+| `FinalReport.md` | Relatório de conteúdo mencionado como saída. | Previsto/alegado; arquivo e confirmação de persistência não são demonstrados por esta amostra. |
+| `OperationalReport.md` | Relatório da jornada operacional, inclusive supervisão. | Correção proposta historicamente; cobertura efetiva desconhecida. |
+| Oráculo/API | Conjunto de caminhos chamados `/oracle`, `/api/v1/oracle/...`, `/api/v1/tasks/...` ou semelhantes nos registros. | Referências incompatíveis; nenhum endpoint canônico validado. |
+| “Concluída” | Texto exibido em transcrição/cartão/UI/replay. | Não equivale, sem confirmação de servidor, a missão finalizada ou artefato persistido. |
+
+## 4. Estado da arte atual
+
+### 4.1 Capacidades e comportamento
+
+As fontes sustentam que houve instruções e tentativas narradas para consultar um oráculo, localizar/assumir tarefas, executar análise, criar relatórios e salvá-los/finalizá-los. Em uma fonte, o transcript descreve buscas por rotas de tarefa que retornariam `HTTP Error 404: Not Found`; em outros, aparecem `Not Found` textual ou ausência de endpoint encontrado. Relatos adicionais afirmam que não havia tarefas pendentes, que dados foram carregados ou que um relatório foi enviado. Sem respostas brutas e identificadores de tentativa, esses relatos permanecem **não confirmados como transações de produção**.
+
+A evidência atual permite afirmar **que o material contém** esses procedimentos, erros e mensagens; não permite afirmar que a API atual tenha (ou não tenha) as rotas, que uma missão tenha sido reivindicada, executada, persistida ou finalizada, ou que os relatórios alegados tenham sido aceitos pelo servidor.
+
+### 4.2 Componentes e responsabilidades relatadas
+
+| Componente | Responsabilidade relatada | Classificação |
+|---|---|---|
+| Executor | Origina a missão e o contexto/fontes. | Modelo histórico, não contrato verificado. |
+| Escriba | Enriquecimento da descrição e passagem de contexto. | Diagnóstico/proposta histórica. |
+| RH | Escolha de execução e possível fatoração em filhas. | Diagnóstico/proposta histórica. |
+| Worker/agente atômico | Execução e geração de relatório final/operacional. | Intenção/código transcrito; sem build/execução independente verificados. |
+| Supervisor/tarefa-mãe | Coordenação e agregação de tarefas-filhas. | Comportamento alegado; estados e agregação não especificados. |
+| API/oráculo | Busca, obtenção e atualização de tarefa; upload é mencionado separadamente. | Endpoints e payloads contraditórios/incompletos. |
+
+### 4.3 Interfaces, entradas e saídas
+
+Caminhos e artefatos mencionados incluem `/api/v1/oracle`, `/api/v1/oracle/manual`, `/api/v1/oracle/tasks`, `/api/v1/oracle/missions`, `/api/v1/tasks/`, `/api/v1/tasks/next`, `/api/v1/tasks/{id}`, rotas de leitura de `TASK-*.md`, e rotas de upload como `/api/v1/artifacts`, `/api/v1/artifacts/upload` e `/api/v1/upload-oracle-manual`. Trata-se de inventário de menções, alternativas e tentativas históricas, **não de um mapa de endpoints aprovados**. Alguns caminhos aparecem como hipóteses ou são abandonados após erro narrado.
+
+Uma fonte posterior menciona textualmente `PATCH /api/v1/tasks/63` com `{status_id: 3}`. Não define o significado de `3`, autenticação, corpo integral, servidor, resposta, nem ligação verificável com upload. A numeração e os campos não constituem schema confirmado.
+
+### 4.4 Requisitos, restrições e premissas
+
+- Separar obter, reivindicar, executar, produzir artefato, carregar, confirmar persistência e finalizar estado.
+- Preservar contexto original e enriquecido até o agente que produz o resultado, se a arquitetura histórica vier a ser confirmada.
+- Definir estados nominais e transições, inclusive tarefa-mãe/filhas, erro, timeout, retry e agregação.
+- Exigir resposta verificável para cada transição e confirmar o artefato após upload.
+- Não desativar validação TLS como solução aceitável; `verify=False` aparece como workaround inseguro em achado provisório do checkpoint F2.6.
+- Não tratar mensagem de UI, replay, cartão de arquivo ou texto “Tarefa concluída” como evidência de backend.
+- Não executar chamadas externas durante a curadoria; esta revisão não chamou API, reivindicou missão, enviou arquivo nem alterou serviço.
+
+### 4.5 Implementado, prototipado ou apenas proposto
+
+- **Implementação confirmada no repositório desta curadoria:** nenhum cliente SOFIA, contrato autoritativo, código completo de agente ou integração de produção foi estabelecido pelos oito conjuntos analisados.
+- **Implementação alegada/transcrita:** scripts, correção de identificador, PATCH de estado, leitura de tarefas, upload e geração de relatórios. Os trechos são parciais, repetidos ou sem fontes executáveis associadas.
+- **Protótipo/UI:** capturas `FULL.png` e replay de tarefa mostram mensagens/estados e às vezes cartões de arquivo; não provam resposta HTTP ou persistência.
+- **Especificação/procedimento:** instruções para buscar, executar, reportar e carregar; rotas concorrentes sem contrato consolidado.
+- **Hipótese/proposta:** Git/GitHub como canal de distribuição, GitHub Actions, contêineres, decomposição de missões e estados/papéis descritos no checkpoint de abertura.
+- **Não confirmado:** produção, teste de carga, disponibilidade das rotas, execução de missão, resultado de pesquisa, upload, transição final ou persistência.
+
+## 5. Arquitetura e modelo conceitual
+
+O pipeline conceitual abaixo preserva a história registrada; não representa implementação atual confirmada:
 
 ```mermaid
 flowchart LR
-    E[Executor] --> G[GenesisPrompt]
+    E[Executor / contexto original] --> G[GenesisPrompt]
     G --> W[Escriba / enriquecimento]
     W --> D[EnrichedDescription]
-    D --> R[RH / decisão de execução]
-    R --> A[Worker atômico]
-    R --> S[Supervisor]
-    A --> F[FinalReport.md]
-    A --> O[OperationalReport.md]
+    D --> R[RH / seleção ou decomposição]
+    R --> A[Worker / tarefa atômica]
+    R --> S[Supervisor / tarefa-mãe]
+    A --> F[Relatório de conteúdo]
+    A --> O[Relatório operacional]
     S --> O
+    A --> U[Upload / persistência alegados]
+    U --> C[Confirmação e finalização — contrato ausente]
 ```
 
-Este fluxo é uma síntese das fontes. Os nomes dos blocos e artefatos aparecem no material, mas os contratos exatos, persistência, estados numéricos e autenticação da API devem ser validados no código-fonte real.
+O problema histórico de supervisão é que o lançador aguardaria um estado terminal da tarefa-mãe enquanto o RH criaria subtarefas; a mãe permaneceria intermediária e o lançador poderia ficar bloqueado. Outra perda relatada ocorre quando links/contexto originais não chegam ao Worker junto com a descrição enriquecida. A correção proposta era manter ambos os contextos e gerar relatório operacional também para supervisão. Não há patch atual, teste ou log que confirme a adoção dessas correções.
 
-## 3. Problema de fatoração e supervisão
+## 6. Fluxos e casos de uso
 
-O lançador de um white paper foi descrito como esperando que uma missão chegasse a um estado final. O RH, entretanto, pode transformar a missão em tarefa-mãe e criar tarefas-filhas. Nesse caso, a mãe permanece em um estado intermediário e o lançador não recebe a transição esperada, ficando preso no primeiro ciclo.
+### 6.1 Obtenção e execução de missão (procedimento alegado)
 
-A correção proposta foi forçar execução direta para aquela classe específica de missão. Essa é uma escolha contextual, não uma regra universal: impedir fatoração pode simplificar a geração de um documento seriado, mas reduz a capacidade de decomposição para missões realmente complexas. Uma solução mais geral precisaria definir estados de supervisão, agregação de filhas, falhas parciais e conclusão da mãe.
+1. **Pré-condição:** endpoint e autenticação definidos — não confirmados.
+2. **Consulta:** procurar tarefa/orientação por uma das rotas mencionadas — a seleção de rota diverge entre fontes.
+3. **Reivindicação/atribuição:** algumas transcrições alegam PATCH/assunção ou atualização de tarefa, sem request/response auditável.
+4. **Execução:** procedimento descrito em linguagem natural; payload, código integral e resultados variam ou faltam.
+5. **Relatório:** nomes como `FinalReport.md`, `OperationalReport.md` e outros arquivos aparecem; conteúdo/artefato nem sempre está presente no diretório de origem.
+6. **Upload:** rotas variam ou são omitidas; falta recibo, hash/ID e resposta.
+7. **Finalização:** frases “concluída” e `status_id=3` aparecem, mas sem semântica definida nem consulta posterior.
+8. **Falhas/recuperação:** 404 explícito em uma fonte; `Not Found`, 502, TLS e problema de navegador constam nos achados provisórios da abertura; não há matriz de causa, retries e recuperação confirmada.
 
-## 4. Problema de perda de contexto
+### 6.2 Supervisão e contexto (histórico/proposta)
 
-A fonte relata que links de repositórios eram incluídos no bloco de origem, mas o Worker usava somente a descrição enriquecida. O resultado era um relatório genérico, sem conexão com os repositórios de referência.
+O RH poderia decompor a tarefa e associar filhas por `parent_task_id`; o supervisor agregaria resultados e emitiria relatório operacional. A hipótese de correção para launcher travado é executar diretamente certos tipos de missão. Ela pode evitar o bloqueio nesses casos, mas desativa decomposição e não resolve genericamente agregação, falha parcial, timeout ou encerramento da mãe.
 
-A correção proposta combina `GenesisPrompt` e `EnrichedDescription` no prompt final do Worker. Curatorialmente, esta mudança é importante porque explicita uma regra de proveniência: o enriquecimento não deve apagar as fontes originais. O pipeline deve transportar contexto permanente e contexto derivado até o ponto que gera o artefato final.
+## 7. Código, algoritmos e parâmetros
 
-## 5. Relatórios operacionais
+Não há algoritmo ou cliente de API completo validado nesta unidade. O que aparece nos blocos de código é fragmentário e/ou textual:
 
-A fonte diferencia dois artefatos:
+- um trecho de processamento usa um booleano `new_tasks_found`, imprime mensagens e retorna; não mostra chamada HTTP, autenticação, parsing, execução, persistência nem tratamento de resposta;
+- marcadores e exemplos mencionam arquivos `TASK-*.md`, scripts de busca/processamento, rotas `/oracle` e `/tasks`, e um PATCH com `status_id`; esses trechos não formam implementação reproduzível;
+- alguns diretórios têm `code_blocks.txt` apenas como marcador, checklist ou fragmento de transcript;
+- o checkpoint de abertura atribui GitHub Actions, contêineres, branches e permissões mínimas a uma proposta de automação de agentes, não a implantação verificada.
 
-- `FinalReport.md`: resultado detalhado da missão;
-- `OperationalReport.md`: narrativa da jornada da tarefa pelo sistema, incluindo criação, enriquecimento, decisão e execução.
+Nenhum teste/build/execução foi reproduzido nesta curadoria. Códigos HTTP citados são transcrições de tentativas passadas e não foram consultados novamente.
 
-Foi identificado um defeito no qual o relatório operacional era gerado para missões atômicas, mas não para a tarefa-mãe em execução supervisora. A correção proposta chama a mesma rotina de geração no caminho supervisor.
+## 8. Evidências e fontes
 
-Essa distinção deve ser mantida na BCE: um relatório de conteúdo não substitui a arqueologia operacional que explica como o resultado foi produzido.
+### 8.1 Oito fontes finais — leitura profunda nesta sessão
 
-## 6. Estado e transições
+Em todos os itens a seguir, `content.txt`, `code_blocks.txt` e `links.txt` foram inspecionados integralmente; imagens raster existentes foram visualizadas. “Observado” refere-se ao artefato/transcript, não a uma nova requisição.
 
-O material menciona estados numéricos para reivindicação, liberação, execução, sucesso e falha, além de estados de tarefa-mãe e filhas. Os números aparecem no código histórico, mas não devem ser tratados como contrato vigente sem conferir a API e os modelos atuais.
-
-A especificação mínima que falta é:
-
-1. catálogo nominal dos estados;
-2. transições permitidas;
-3. agente autorizado por transição;
-4. comportamento em timeout;
-5. idempotência de reivindicação;
-6. relação entre tarefa-mãe e filhas;
-7. agregação de resultados;
-8. armazenamento de blocos e artefatos;
-9. recuperação após falha;
-10. auditoria de autor, timestamp e versão do contexto.
-
-## 7. Arqueologia das decisões
-
-| Fase | Problema | Decisão/correção proposta | Trade-off |
+| ID | Caminho relativo | Evidência e classificação | Limitação |
 |---|---|---|---|
-| lançador inicial | missão-mãe não alcançava o estado esperado | forçar execução direta para white paper | reduz fatoração e pode limitar missões complexas |
-| geração inicial | links do GitHub não chegavam ao Worker | combinar contexto Genesis e enriquecido | aumenta prompt e exige controle de tamanho |
-| relatório operacional | caminho supervisor não produzia relatório | gerar `OperationalReport` também para a mãe | exige tratamento de agregação e contexto supervisor |
-| curadoria atual | contexto conversacional não é persistente | BCE, checkpoints e prompt de retomada | aumenta disciplina documental, reduz perda de continuidade |
+| F2.6-16 | `KNOWLEDGE/iury/20260422_161748_Como acessar e verificar missões na API Sofia - Manus/` | Relata `Not Found` para `/api/v1/oracle/tasks`, `/api/v1/oracle/missions` e leitura direta de Markdown; UI mostra espera. Hipóteses de `/tasks`/`/missions` e Git são abandonadas ou não confirmadas. | Sem método, payload, headers, URL-base consistente, status numérico ou resposta completa; ciclos repetidos não são tentativas independentes. `FULL.png` e `img_000.jpg` mostram UI/corpo textual de erro, não tráfego completo. |
+| F2.6-17 | `KNOWLEDGE/iury/20260422_161834_Como acessar e executar missões na API Sofia - Manus/` | Instrui consultar o manual `/api/v1/oracle/manual`; relata busca sem endpoint específico e bloqueio/pedido de endpoint. | Não mostra execução ou código HTTP. Forte repetição do replay; `FULL.png` é interface/espera. |
+| F2.6-18 | `KNOWLEDGE/iury/20260422_161913_Instruções para a Tarefa no Sofia API Oráculo - Manus/` | Transcrição alterna instruções e alegações de upload/finalização de `Final_Report_TSK42.md`, pesquisa e testes de carga; contém metadados `task_finalization`. | Links vazios; sem corpo do relatório, manual, método/payload/resposta, métrica de teste ou prova de persistência. Instruções contradizem entrega ao usuário versus salvamento via API; `FULL.png` só comprova UI. |
+| F2.6-19 | `KNOWLEDGE/mateus/20260422_174112_Como usar a API Sofia para obter tarefas disponíveis_ - Manus/` | `/api/v1/oracle` é escolhido em lugar de `/oraculo` e `/tasks`; transcrição afirma “sem tarefas”/dados carregados. Há snippet parcial de `process_tasks.py`; registra `verify=False` e esgotamento de créditos Manus. | Sem fetch completo, request/response, status, estado semântico ou log; sucesso alegado não verificável. `FULL.png` mostra transcript/replay. Links incluem material de upgrade; nenhum segredo foi copiado. |
+| F2.6-20 | `KNOWLEDGE/natalia/20260422_171420_Instruções para Missão via Sofia API Manual - Manus/` | Alega envio de relatório e finalização; também diagnostica falha por finalizar sem garantir upload. Menciona `PATCH /api/v1/tasks/63` e `{status_id: 3}`. | Endpoint/método do upload e recibo ausentes; sem significado de `3`, resposta, cronologia ou confirmação. Transcrição repetida; `FULL.png` mostra apenas UI. |
+| F2.6-21 | `KNOWLEDGE/natalia/20260422_171528_Como acessar sofia-api.meshwave.com.br e receber instruções - Manus/` | Alega acesso a `/api/v1/oracle`, atribuição e relatório de pesquisa/IOF; UI mostra arquivo e tarefa concluída. | `links.txt` vazio; sem pesquisa rastreável, request/response, submissão confirmada ou retorno da API. Checklist aparece sem marcação apesar da conclusão alegada; `FULL.png` é replay. Conclusões sobre IOF não são requisitos MeshWave. |
+| F2.6-22 | `KNOWLEDGE/filipe/20260422_165023_Projeto Sofia_ Dossiê de Recrutamento e Onboarding - Manus/` | Apesar do título, conteúdo trata de análise competitiva de arquitetura; relata correção de `id` para `task_id`, pesquisa em páginas e relatório a submeter. Discute monólito, camadas e microsserviços. | Código/links ausentes; atribuição e pesquisa não confirmadas. Conflito entre título e conteúdo; UI termina esperando usuário, não confirma submissão. `FULL.png` não prova backend. |
+| F2.6-23 | `KNOWLEDGE/natalia/20260422_171636_Projeto Sofia_ Dossiê de Recrutamento e Onboarding - Manus/` | 21 pares comando/saída narrados relatam `HTTP Error 404: Not Found` ao obter detalhes; existem alegações de assunção via PATCH e atualização sem resposta técnica. | Não há script, método completo, payload, URL-base, autenticação, estado final ou relatório. Link de assinatura/upgrade foi tratado como material sensível e omitido. `FULL.png` mostra erro/replay, não sucesso. |
 
-## 8. Interfaces e artefatos observados
+### 8.2 Primeira passagem textual anterior — cobertura parcial
 
-| Elemento | Função inferida | Evidência | Estado |
+O checkpoint `BCE/sessoes/2026-10-08_f2-6-abertura.md` registra primeira passagem textual em 15/23 fontes, incluindo as cinco fontes de visão/contexto, material de agentes, fontes operacionais e parte das instruções Sofia API. Seus achados incluem o fluxo Executor → Escriba → RH → Worker, fatoração e bloqueio da tarefa-mãe, perda de contexto, relatórios propostos, endpoints/estados concorrentes, tentativas de upload, falhas 404/502/TLS e propostas GitHub Actions/contêineres. Esses itens são citados como **achados provisórios de checkpoint**; a conferência fonte a fonte dos `code_blocks.txt`, `links.txt` e imagens desse subconjunto não foi estabelecida nesta sessão.
+
+### 8.3 Material sensível
+
+Na leitura dos oito diretórios finais, não foram reproduzidos tokens, senhas, PATs, credenciais ou dados pessoais. Um link de upgrade/assinatura presente em uma fonte foi omitido. Endpoints e identificadores de tarefa aparecem apenas na medida necessária para documentar evidência técnica. Se uma revisão futura encontrar credenciais reais, registrar somente existência/localização e solicitar rotação/revogação, sem copiar o valor.
+
+## 9. Evolução arqueológica
+
+| Período/versão | Formulação/estado | Mudança relatada | Motivo/evidência | Resultado atual na curadoria |
+|---|---|---|---|---|
+| Registros operacionais anteriores à F2.6 | Executor/Escriba/RH/Worker; tarefa-mãe e filhas; contexto original e enriquecido; relatórios final/operacional. | Correções propostas para execução direta em cenário específico, preservar ambos os contextos e gerar relatório no caminho supervisor. | Lote 002 e síntese de abertura F2.6. | Problemas e propostas preservados; implementação atual não confirmada. |
+| Transcripts de missão/API | Rotas REST e leitura de Markdown/Git aparecem como possibilidades. | Algumas alternativas são descartadas após `Not Found`/404 narrado; `/oracle` é preferido em uma fonte; outras fontes alegam acesso/upload sem prova. | F2.6-16 a F2.6-23. | Não há reconciliação normativa; cada ocorrência permanece contextual e não representa contrato. |
+| Transcripts de upload | Relatório e estado final são apresentados como concluídos. | Aparece diagnóstico de que finalização ocorreu sem upload garantido; propostas de PATCH/status. | F2.6-18, F2.6-20, F2.6-21. | Conflito de sequência e de prova; nenhum recibo ou consulta posterior. |
+| Replays/UI | Mensagens, cartões de relatório, “concluída”, “esperando”, indicadores de etapa. | Repetição e fragmentação abundantes. | Imagens e `content.txt` das fontes finais. | UI/replay é evidência de conteúdo exibido, não execução backend. |
+
+## 10. Decisões curatoriais e técnicas relatadas
+
+Não se registra decisão técnica atual de API/produção. Decisões ou mudanças **relatadas** nas fontes incluem: trocar `id` por `task_id` em script; preferir `/oracle` a `/oraculo`/`/tasks` em um procedimento; abandonar acesso direto a certas rotas após `Not Found`; usar Git/GitHub como hipótese; exigir upload antes da finalização; e considerar execução direta versus decomposição.
+
+Essas entradas não são recomendação de implementação nem decisão MeshWave aprovada, porque faltam especificação versionada, código completo, commit do produto, teste e resposta verificável. O registro de decisões BCE (`BCE/REGISTRO_DECISOES.md`) rege a curadoria; nenhuma nova decisão BCE foi necessária para manter DOM-06 em revisão.
+
+## 11. Alternativas, descartes e ideias não adotadas
+
+| Alternativa/ideia | Registro | Estado curatorial |
+|---|---|---|
+| `/tasks`, `/missions`, acesso a `TASK-*.md` ou Git push | Hipóteses e alternativas em F2.6-16; algumas abandonadas após erro narrado. | Não confirmar como endpoint nem como descarte global; falta contrato. |
+| `/oraculo` ou `/tasks` versus `/oracle` | F2.6-19 relata preferência/correção para `/oracle`. | Decisão localizada do transcript, não norma global. |
+| Execução direta versus decomposição supervisionada | Proposta histórica em fontes operacionais e pergunta de planejamento em F2.6-22. | Trade-off aberto; sem política de tipos de missão. |
+| Entregar relatório ao usuário versus guardar no SOFIA | Contradição nos transcripts F2.6-18 e F2.6-20/21. | Não resolver sem fluxo de produto/contrato aprovado. |
+| Desabilitar TLS (`verify=False`) | Workaround relatado em F2.6-19 e abertura do lote. | Não adotar; inseguro e sem comprovação de correção. |
+| Monólito, arquitetura em camadas, microsserviços | Comparação narrativa em F2.6-22. | Alternativas conceituais; sem contexto, benchmarks ou decisão aprovada. |
+
+## 12. Otimizações, correções e melhorias
+
+As fontes anteriores propõem preservar contexto original junto ao enriquecido, corrigir sincronização da tarefa-mãe, produzir relatório operacional também para supervisão e separar upload de finalização. As fontes finais mencionam ajustes de endpoint/identificador, checklist, validação de artefato e testes de carga, mas não apresentam resultados reproduzíveis.
+
+Nenhuma melhoria pode ser declarada implantada. Uma proposta segura para validação futura é implementar teste de integração com ambiente identificado e dados controlados, TLS habilitado, logs redigidos, idempotência, recibo/hash de artefato e consulta do estado após cada transição; só então atualizar o status de evidência.
+
+## 13. Conflitos e incertezas
+
+| ID | Questão | Fontes em conflito | Impacto | Resolução/ação |
+|---|---|---|---|---|
+| C06-01 | Quais rotas são canônicas para consulta, missão, detalhe e upload? | Escopo F2.6; F2.6-16/17/19/20/21/23; achados provisórios dos 15 anteriores. | Não é possível reproduzir integração nem comparar erros. | Obter OpenAPI/manual versionado e validar contra cliente/servidor autorizados. |
+| C06-02 | “Não há tarefas” versus erro tratado como resposta vazia? | F2.6-19 versus 404/Not Found de F2.6-16/17/23. | Risco de mascarar falha como fila vazia. | Preservar status e corpo bruto, separar erro de resposta vazia. |
+| C06-03 | O que significa `status_id=3` e quais transições são válidas? | F2.6-20; menções numéricas no checkpoint F2.6. | Estado não auditável; risco de encerrar antes do upload. | Obter enum/modelo de task e tabela de transições versionada. |
+| C06-04 | O upload ocorre antes da finalização e foi confirmado? | F2.6-18/20/21. | Relatório pode não persistir apesar da UI “concluída”. | Exigir resposta/ID/hash e consulta posterior do artefato/estado. |
+| C06-05 | Quantas tentativas realmente ocorreram? | Fontes F2.6 com repetição/cópias/replays; F2.6-23 contém pares comando/saída repetidos. | Contagem de texto pode superestimar atividade. | Correlacionar timestamps, request-id e logs; não contar repetições. |
+| C06-06 | Quais alegações de execução, pesquisa, carga e conclusão são verificáveis? | F2.6-18/19/21/22; UI versus espera/checklist. | Risco de promover narrativa a resultado. | Recuperar artefatos e logs; manter “não confirmado” até então. |
+| C06-07 | Como tarefa-mãe, subtarefas e Worker compartilham contexto e estado? | Lote 002 e checkpoint F2.6 provisório. | Pode causar bloqueio e perda de contexto. | Validar código/modelos e teste integrado; definir agregação e falhas parciais. |
+| C06-08 | TLS foi reabilitado após workaround? | F2.6-19 e checkpoint de abertura. | Risco de integridade/autenticidade. | Inspecionar configuração segura e logs; não repetir `verify=False`. |
+| C06-09 | Títulos, tarefa efetiva e conteúdo coincidem? | F2.6-22, cujo título difere do foco da tarefa no transcript. | Classificação baseada em título seria enganosa. | Usar conteúdo, não título; manter discrepância arqueológica. |
+
+## 14. Lacunas e questões em aberto
+
+1. **Completar auditoria dos primeiros 15 diretórios:** conferir `content.txt`, `code_blocks.txt`, `links.txt` e imagens associados, pois o checkpoint anterior só atesta primeira passagem textual. Caminhos: os itens 1–15 de `BCE/fontes/ESCOPO_F2_6_SOFIA_AGENTES_MISSOES.md`.
+2. Obter OpenAPI/manual e código efetivamente implantado, com versão/commit e ambiente identificado.
+3. Registrar para cada endpoint: método, base URL, auth (sem valores), headers, schema de request/response, status, filtros, paginação, idempotência e limites.
+4. Definir ciclo de vida nominal: pending, claimed, running, blocked, failed, retrying, report-uploaded, completed; esses nomes são proposta de modelagem, não estados observados/confirmados.
+5. Definir semântica dos IDs numéricos e transições autorizadas, inclusive tarefa-mãe/filhas e agregação.
+6. Distinguir download/obtenção, claim, execução, upload, confirmação de artefato e finalização; registrar recibo e verificação posterior.
+7. Localizar conteúdo real de `FinalReport.md`, `OperationalReport.md` e outros artefatos alegados e comparar checksums/logs sem reproduzir dados sensíveis.
+8. Reproduzir 404/502/TLS somente em ambiente autorizado, com TLS verificado e logs redigidos; causa original permanece **não confirmada**.
+9. Verificar se `GenesisPrompt` e `EnrichedDescription` são campos reais, como são sequenciados e persistidos e se fonte/link chega ao Worker.
+10. Determinar origem e status de `parent_task_id`, timeouts, retries, idempotência, dead-letter e recuperação.
+11. Separar falhas do serviço de erros de navegador, créditos Manus e estado de replay/UI.
+12. Relacionar a persistência/contexto de missão ao DOM-07/DOM-13, sem misturar o escopo até obter contratos.
+
+## 15. Relações com outros documentos
+
+- [DOM-01 — Visão geral](visao-geral-ecossistema-meshwave.md): contexto do ecossistema e Q-CyPIA, ainda hipótese arquitetural.
+- [DOM-02 — Arquitetura e implantação](arquitetura-geral-e-implantacao.md): dependências e propostas de implantação.
+- [DOM-03 — Rede mesh](rede-mesh-comunicacao-e-roteamento.md): redes e roteamento, não fluxo de missões.
+- [DOM-04 — Identidade/DIDs](identidade-dids-e-identificador-de-equipamento.md): identidade e autorização.
+- [DOM-05 — ARC/Bayes](arc-autenticacao-contextual-e-bayes.md): autenticação contextual.
+- DOM-07 — Persistência, memória e base vetorial: armazenamento de contexto, sincronização e `task_blocks`.
+- DOM-12 — Desenvolvimento/versionamento: repositórios, scripts, branches e releases.
+- DOM-13 — Implantação/operação: Cloudflare, recuperação, TLS e operação.
+- DOM-14 — Segurança/privacidade: gestão de credenciais, acesso mínimo, dados de missão e auditoria.
+- DOM-15 — APIs/integrações: contrato de Sofia API e interoperabilidade.
+- GOV-02/GOV-03/GOV-04 — controle mestre, índice e decisões curatoriais.
+
+## 16. Histórico de versões do documento
+
+| Versão | Data | Alteração | Fontes/commit |
 |---|---|---|---|
-| `GenesisPrompt` | contexto original da missão e fontes permanentes | código/texto do Lote 002 | nome observado; contrato não confirmado |
-| `EnrichedDescription` | descrição enriquecida pelo Escriba | código/texto do Lote 002 | nome observado; contrato não confirmado |
-| RH | decisão de execução e atribuição de persona | diagnóstico e código histórico | proposta/versão histórica |
-| Worker | execução final e geração de relatórios | código histórico | proposta/versão histórica |
-| `FinalReport.md` | relatório de conteúdo | código/texto | artefato planejado/produzido em alguns fluxos |
-| `OperationalReport.md` | relatório da jornada operacional | código/texto | correção proposta para todos os caminhos |
-| tarefa supervisora | acompanha e agrega subtarefas | diagnóstico | comportamento observado em histórico, não validado na API atual |
+| `0.1.0` | `2026-10-08` | Síntese inicial baseada no Lote 002 e no checkpoint textual. | `BCE/sessoes/2026-10-08_f2-6-abertura.md`; commit anterior indicado no histórico do repositório. |
+| `0.2.0` | `2026-10-08` | Acrescenta leitura profunda dos oito diretórios finais, conflitos de API/estado, imagens e limite explícito de cobertura dos 15 anteriores. | F2.6-16–F2.6-23; commit de conteúdo a registrar no controle mestre. |
 
-## 9. Relação com MeshWave e Q-CyPIA
+> A convenção comunicada para versionamento do sistema MeshWave considera o estado atual dos módulos como versão `1.0` e incrementos futuros como `1.01`, `1.02` etc. Essa convenção de versão de produto não altera retroativamente o histórico numérico deste documento curatorial; a versão do módulo SOFIA/API em si permanece **não confirmada** nas fontes analisadas.
 
-A fonte de visão geral associa a IA de roteamento a um orquestrador Q-CyPIA gerenciado por SDN. Neste documento, essa relação permanece como hipótese arquitetural: SOFIA pode coordenar agentes e missões que consultam serviços de roteamento, mas não há no lote um contrato que mostre a chamada, o formato da política de anonimato ou a resposta do Q-CyPIA.
+## 17. Próximo passo de curadoria
 
-A interoperabilidade futura deve preservar a origem da missão, as políticas de segurança, as fontes consultadas e os artefatos gerados. O pipeline de agentes não deve transformar uma proposta de roteamento em fato operacional sem uma evidência de execução.
-
-## 10. Segurança e governança
-
-O pipeline manipula contexto, repositórios, relatórios e possivelmente credenciais de APIs. O material analisado contém referências a autenticação e a dados de acesso em históricos operacionais. Esses valores não fazem parte deste documento. O desenho definitivo deve usar armazenamento seguro de segredos, escopo mínimo de permissões, rotação, auditoria e separação entre contexto público e privado.
-
-Também deve existir controle de autorização para ações de alto impacto: alteração de código, publicação de artefatos, mudança de estado de missão e acesso a fontes privadas.
-
-## 11. Lacunas prioritárias
-
-1. localizar os repositórios e versões efetivas de `rh_agent.py`, `worker_agent.py` e `launch_whitepaper_genesis.py`;
-2. conferir se os estados numéricos continuam válidos;
-3. documentar o contrato dos blocos e a ordem de sequência;
-4. definir o protocolo de supervisão e agregação;
-5. medir limites de contexto e estratégia para links extensos;
-6. verificar persistência, idempotência e recuperação;
-7. mapear autenticação e autorização sem registrar segredos;
-8. relacionar SOFIA com a API de missões, Chroma/persistência e o sistema de conhecimento.
-
-## 12. Evidências
-
-- `KNOWLEDGE/johann/20260422_175016_SOFIA and MeshWave Ecosystem Overview - Manus/` — relação proposta entre IA de roteamento, Q-CyPIA e SDN.
-- `KNOWLEDGE/johann/20260422_175100_SOFIA and MeshWave Ecosystem Documents - Manus/` — diagnóstico do pipeline, fatoração, perda de contexto e relatórios.
-- `KNOWLEDGE/info/20260422_174348_Complementar Módulos Faltantes do Diagrama de Implantação - Manus/` — roteiros de integração e módulos futuros, úteis como roadmap, não como prova de execução.
-- `BCE/PROMPT_RETOMADA_AGENTE.md` — regra atual para preservação de contexto e continuidade da curadoria.
-
-## 13. Próximo passo
-
-Localizar e processar as fontes específicas da Sofia API, persistência, agentes e relatórios operacionais; confrontar este modelo com código real e registrar uma matriz de estados e transições somente após encontrar evidência verificável.
+Concluir a auditoria canônica dos 15 primeiros diretórios listados nos itens 1–15 de `BCE/fontes/ESCOPO_F2_6_SOFIA_AGENTES_MISSOES.md`, lendo cada `content.txt`, `code_blocks.txt`, `links.txt` e imagem associada. Atualizar esta matriz e só então decidir se a unidade F2.6 pode ser fechada; manter DOM-06 em `REVISÃO` até contrato, código e execução serem verificáveis.
