@@ -55,7 +55,7 @@ Na consulta de configuração feita em 2026-10-09 às 17:16 (-03:00), o conector
 - `AGENTS.md`, `BCE/ORIENTACAO_AGENTES.md`, `BCE/PROMPT_RETOMADA_AGENTE.md`, `skills/meshwave-bce-curation/SKILL.md` — orientações; commits `b3c8864` (`docs(bce): orientar corpus BCE e Google Docs`) e `290895f` (`docs(bce): condicionar sincronizacao e publicacao`).
 - `BCE/INDICE_CURATORIAL.md` — commit `8870caa` (`docs(bce): atualizar índice DOM-06 F2.6-07`).
 - Controle e checkpoint desta unidade — commit `629125a` (`chore(bce): fechar checkpoint F2.6-07 local`).
-- Após o usuário autorizar a persistência, os cinco commits acima foram enviados a `origin/main`; referência publicada verificada: `629125a`. A correção factual deste checkpoint e do controle foi registrada no commit `f5bc1ec` e será publicada junto com ele.
+- Após o usuário autorizar a persistência, os cinco commits acima foram enviados a `origin/main`; referência publicada verificada: `629125a`. A correção factual deste checkpoint e do controle foi registrada e publicada em `f8649ba`.
 - Nenhum arquivo em `KNOWLEDGE/` foi alterado. Não houve acesso a banco, execução de código da fonte, uso de credenciais ou chamadas externas.
 
 ## Próximo item — F2.6-08
@@ -68,4 +68,4 @@ Caminho exato indicado pelo escopo `BCE/fontes/ESCOPO_F2_6_SOFIA_AGENTES_MISSOES
 
 ## Situação de publicação
 
-Os cinco commits de F2.6-07 foram publicados em `main` após confirmação explícita do usuário; `origin/main` avançou de `ad76243` para `629125a`. A correção aprovada do controle e deste checkpoint está no commit adicional `f5bc1ec`. O repositório `meshwave65/Foundation_MeshWave` é público; nenhum Google Doc foi selecionado ou acessado nesta unidade.
+Os cinco commits de F2.6-07 foram publicados em `main` após confirmação explícita do usuário; `origin/main` avançou de `ad76243` para `629125a`. A correção aprovada do controle e deste checkpoint está no commit adicional `f8649ba`. O repositório `meshwave65/Foundation_MeshWave` é público; nenhum Google Doc foi selecionado ou acessado nesta unidade.
