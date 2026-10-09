@@ -28,7 +28,7 @@ Este índice define a arquitetura documental da Base de Conhecimento Evolutivo. 
 | GOV-07 | `BCE/artefatos/INDICE_IMAGENS_E_DIAGRAMAS.md` | Relação entre imagens e conceitos | CONCLUÍDO |
 | GOV-08 | `BCE/sessoes/` | Checkpoints de sessões e transferências; atualizar a cada retomada | EM_CURADORIA |
 | GOV-09 | `BCE/PROMPT_RETOMADA_AGENTE.md` | Prompt reutilizável para iniciar agentes sucessores | CONCLUÍDO |
-| GOV-10 | `.agents/skills/meshwave-bce-curation/SKILL.md` | Skill reutilizável para auditoria, curadoria e retomada por agentes | CONCLUÍDO |
+| GOV-10 | `skills/meshwave-bce-curation/SKILL.md` | Skill reutilizável para auditoria, curadoria e retomada por agentes | CONCLUÍDO |
 
 ## Documentos de estado da arte
 

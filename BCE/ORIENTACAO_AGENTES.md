@@ -20,7 +20,7 @@ A curadoria não é mera cópia, concatenação ou resumo. É um processo de ide
 
 ## Skill reutilizável para agentes
 
-Agentes que executem ou retomem curadoria da BCE devem consultar [`../.agents/skills/meshwave-bce-curation/SKILL.md`](../.agents/skills/meshwave-bce-curation/SKILL.md) junto com esta orientação. A skill detalha o fluxo de auditoria e continuidade; não substitui a governança abaixo nem autoriza ampliar o escopo indicado pelo usuário e pelo controle mestre.
+Agentes que executem ou retomem curadoria da BCE devem consultar [`../skills/meshwave-bce-curation/SKILL.md`](../skills/meshwave-bce-curation/SKILL.md) junto com esta orientação. A skill detalha o fluxo de auditoria e continuidade; não substitui a governança abaixo nem autoriza ampliar o escopo indicado pelo usuário e pelo controle mestre.
 
 ## 2. Leitura obrigatória antes de qualquer alteração
 
