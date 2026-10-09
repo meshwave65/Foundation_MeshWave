@@ -7,14 +7,17 @@
 | Campo | Valor |
 |---|---|
 | Status global | `EM_ANDAMENTO — FASE 2: mapa curatorial e documentos de domínio` |
-| Última atualização | 2026-10-08 21:42 (-03:00) |
-| Último commit de conteúdo/checkpoint confirmado | `6fc0407` — checkpoint pré-leitura do item 1 F2.6 (DOM-06 em `74a1e7f`; índice em `435397e`; branch `main` sincronizada) |
+| Última atualização | 2026-10-08 21:46 (-03:00) |
+| Último commit de conteúdo/checkpoint confirmado | `243ec62` — fechamento do checkpoint F2.6-01 (DOM-06 `b06ba55`; índice `98b671f`; branch `main` sincronizada) |
 | Commits locais não publicados | Nenhum; `main` sincronizada com `origin/main` |
 | Branch de trabalho | `main` |
-| Último item concluído | `F2.4` — DOM-04 v0.2.0 reconciliado e unidade concluída; o documento permanece `REVISÃO` por ausência de método DID aprovado e implementação verificável. DOM-06 v0.2.0 e índice foram publicados, mas não fecham F2.6. |
-| Item em andamento | `F2.6` — DOM-06 v0.2.0 em `REVISÃO`; oito fontes finais tiveram texto/código/links/imagens auditados; a auditoria canônica dos 15 primeiros diretórios está pendente. Item 1 aberto com caminhos e hashes registrados antes da leitura em `BCE/sessoes/2026-10-08_f2-6-item01-abertura.md`. |
-| Próximo item | Ler integralmente, nesta ordem, `KNOWLEDGE/johann/20260422_175016_SOFIA and MeshWave Ecosystem Overview - Manus/content.txt`, `code_blocks.txt`, `links.txt` e inspecionar `FULL.png`; comparar com DOM-06, registrar fatos/implementações alegadas/propostas/conflitos/lacunas e atualizar o documento curado. Depois seguir itens 2–15 em ordem. |
-| Impedimento atual | Nenhum operacional. A auditoria canônica dos primeiros 15 diretórios F2.6 está pendente; o item 1 está pré-registrado, sem leitura de conteúdo bruto até este checkpoint. Permanecem 244/273 conjuntos fora da amostra semântica integrada e 0/48 fontes amostradas com implementação verificável após F2.4/F2.5. O documento `01_arquitetura_geral_meshwave.md` contém um campo de contato pessoal; seu valor não foi reproduzido na BCE e deve ser revisado no original antes de redistribuição. DOM-01/DOM-02/DOM-03 continuam provisórios. |
+| Último item concluído | `F2.6-01` — primeira fonte de visão auditada em todos os artefatos disponíveis; DOM-06 v0.2.1 e índice atualizados; nenhum código executável, contrato API ou teste de implementação confirmado. |
+| Item em andamento | `F2.6` — DOM-06 v0.2.1 em `REVISÃO`; 9/23 fontes com auditoria profunda (item 1 e itens 16–23); itens 2–15 permanecem com primeira passagem textual apenas e requerem auditoria canônica. |
+| Último caminho processado | `KNOWLEDGE/johann/20260422_175016_SOFIA and MeshWave Ecosystem Overview - Manus/` — `content.txt`, `code_blocks.txt`, `links.txt` e `FULL.png`; todos somente lidos. |
+| Fontes de governança/contexto lidas nesta unidade | `BCE/ORIENTACAO_AGENTES.md`, `BCE/CONTROLE_MESTRE.md`, `BCE/INDICE_CURATORIAL.md`, `BCE/REGISTRO_DECISOES.md`, checkpoints F2.6 de abertura/revisão parcial, escopo F2.6, inventários `.csv`/`.md`, template `_TEMPLATE.md` e DOM-06 anterior. |
+| Arquivos curatoriais alterados | `BCE/temas/sofia-agentes-missoes-e-oraculo.md` v0.2.1; `BCE/INDICE_CURATORIAL.md`; `BCE/sessoes/2026-10-08_f2-6-item01-abertura.md`; este controle mestre. Nenhum arquivo em `KNOWLEDGE/` foi modificado. |
+| Próximo item | Registrar antes de nova leitura o lote único `KNOWLEDGE/johann/20260422_175100_SOFIA and MeshWave Ecosystem Documents - Manus/`: validar fisicamente e anotar os caminhos/tamanhos/hash de `content.txt`, `code_blocks.txt`, `links.txt` e imagens no checkpoint da próxima unidade; então comparar a análise já solicitada com DOM-06 e atualizar o documento. Não contar a leitura narrativa anterior como unidade curatorial fechada. |
+| Conflitos, lacunas e impedimentos | Sem conflito novo de contrato resolvido. F2.6-01 mostra narrativa Q-CyPIA/ARC-Bayes/PGC, mas a extração é repetitiva/truncada e a captura de UI não prova backend, implementação ou teste; o documento-fonte citado não está anexado. Nenhum impedimento operacional. Itens 2–15 aguardam auditoria; DOM-06 permanece `REVISÃO`. Permanecem 244/273 conjuntos fora da amostra semântica integrada e 0/48 fontes amostradas com implementação verificável após F2.4/F2.5. O documento `01_arquitetura_geral_meshwave.md` contém um campo de contato pessoal; seu valor não foi reproduzido na BCE e deve ser revisado no original antes de redistribuição. DOM-01/DOM-02/DOM-03 continuam provisórios. |
 | Responsável pela sessão | Agente BCE MeshWave — revisão F2.6 |
 
 ## Como retomar em cinco minutos
@@ -214,6 +217,7 @@ O agente atual só deve declarar a tarefa transferível quando:
 | 2026-10-08 | Agente BCE MeshWave — abertura F2.6 | Escopo físico fechado; 23 diretórios prioritários e 9 relacionados validados; leitura profunda pendente | `BCE/fontes/ESCOPO_F2_6_SOFIA_AGENTES_MISSOES.md`; checkpoint de abertura | Ler as 23 fontes prioritárias e produzir DOM-06 |
 | 2026-10-08 | Agente BCE MeshWave — revisão parcial F2.6 | Lidos integralmente `content.txt`, `code_blocks.txt`, `links.txt` e imagens dos caminhos 16–23; DOM-06 v0.2.0 e índice publicados; fontes 1–15 permanecem com primeira passagem textual apenas | `74a1e7f` DOM-06; `435397e` índice; `884bdfc` cabeçalho/timestamp; `0e73184` checkpoint/controle | Iniciar em `KNOWLEDGE/johann/20260422_175016_SOFIA and MeshWave Ecosystem Overview - Manus/`; auditar artefatos e depois itens 2–15 |
 | 2026-10-08 | Agente BCE MeshWave — abertura da auditoria canônica F2.6-01 | Caminhos/tamanhos/SHA-256 do item 1 registrados antes de ler seus conteúdos; usuário confirmou manter sequência oficial | Checkpoint `BCE/sessoes/2026-10-08_f2-6-item01-abertura.md`, commit `6fc0407` | Ler os quatro artefatos do item 1; comparar com DOM-06; depois avançar ao item 2 |
+| 2026-10-08 | Agente BCE MeshWave — fechamento F2.6-01 | Texto, blocos, links e imagem auditados; extrações com truncamento/repetição; DOM-06 v0.2.1 e índice atualizados; cobertura profunda 9/23; fontes brutas intactas | `b06ba55` DOM-06; `98b671f` índice; `243ec62` checkpoint de fechamento | Pré-registrar os artefatos de `KNOWLEDGE/johann/20260422_175100_SOFIA and MeshWave Ecosystem Documents - Manus/` e continuar item 2 |
 
 
 ## Lote F1.5 registrado antes da leitura — catálogo de código
