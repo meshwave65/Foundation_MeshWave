@@ -7,15 +7,15 @@
 | Campo | Valor |
 |---|---|
 | Status global | `EM_ANDAMENTO — FASE 2: mapa curatorial e documentos de domínio` |
-| Última atualização | 2026-10-08 19:19 (-03:00) |
-| Último commit de conteúdo/checkpoint confirmado | `e3d684d` — `chore(bce): apontar checkpoint final da F2.4` (branch limpa antes da abertura da F2.6) |
+| Última atualização | 2026-10-08 21:33 (-03:00) |
+| Último commit de conteúdo/checkpoint confirmado | `884bdfc` — `docs(dom-06): registrar timestamp curatorial` (DOM-06 em `74a1e7f`; índice em `435397e`; branch `main` sincronizada) |
 | Commits locais não publicados | Nenhum; `main` sincronizada com `origin/main` |
 | Branch de trabalho | `main` |
-| Último item concluído | `F2.4` — DOM-04 v0.2.0 reconciliado e unidade concluída; o documento permanece `REVISÃO` por ausência de método DID aprovado e implementação verificável |
-| Item em andamento | `F2.6` — lote físico fechado; leitura profunda de 23 fontes prioritárias ainda pendente |
-| Próximo item | Ler integralmente as 23 fontes prioritárias da F2.6, conferindo texto, código, links e imagens; depois produzir DOM-06. |
-| Impedimento atual | Nenhum operacional. Permanecem 244/273 conjuntos fora da amostra semântica integrada e 0/48 fontes amostradas com implementação verificável após F2.4/F2.5. O documento `01_arquitetura_geral_meshwave.md` contém um campo de contato pessoal; seu valor não foi reproduzido na BCE e deve ser revisado no original antes de redistribuição. DOM-01/DOM-02/DOM-03 continuam provisórios. |
-| Responsável pela sessão | Agente BCE MeshWave |
+| Último item concluído | `F2.4` — DOM-04 v0.2.0 reconciliado e unidade concluída; o documento permanece `REVISÃO` por ausência de método DID aprovado e implementação verificável. DOM-06 v0.2.0 e índice foram publicados nesta sessão, mas não fecham F2.6. |
+| Item em andamento | `F2.6` — DOM-06 v0.2.0 em `REVISÃO`; oito fontes finais tiveram texto/código/links/imagens auditados; nas primeiras 15 há apenas primeira passagem textual registrada no checkpoint anterior. |
+| Próximo item | Iniciar por `KNOWLEDGE/johann/20260422_175016_SOFIA and MeshWave Ecosystem Overview - Manus/`: ler `content.txt`, `code_blocks.txt`, `links.txt` e inspecionar `FULL.png`; depois seguir, em ordem, itens 2–15 do escopo F2.6, reconciliar DOM-06 e avaliar fechamento. |
+| Impedimento atual | Nenhum operacional. Cobertura canônica detalhada dos primeiros 15 diretórios F2.6 pendente. Permanecem 244/273 conjuntos fora da amostra semântica integrada e 0/48 fontes amostradas com implementação verificável após F2.4/F2.5. O documento `01_arquitetura_geral_meshwave.md` contém um campo de contato pessoal; seu valor não foi reproduzido na BCE e deve ser revisado no original antes de redistribuição. DOM-01/DOM-02/DOM-03 continuam provisórios. |
+| Responsável pela sessão | Agente BCE MeshWave — revisão F2.6 |
 
 ## Como retomar em cinco minutos
 
@@ -71,7 +71,7 @@
 | F2.3 | Mesh networking, comunicação e roteamento | REVISÃO — DOM-03 v0.1.0; lote de 12 fontes processado; sem implementação verificável | F1.7; DOM-01/DOM-02; consultar DOM-03 para evidências, conflitos, hipóteses e lacunas |
 | F2.4 | Identidade, identificação de equipamento e DIDs | CONCLUÍDO — DOM-04 v0.2.0 (`4f7465e`); sete fontes e 12 imagens conferidas; documento permanece `REVISÃO` por ausência de método DID/implementação verificável | F1.7; DOM-01/DOM-03; DOM-05; próximo F2.6 |
 | F2.5 | ARC, autenticação contextual e inferência bayesiana | REVISÃO — DOM-05 v0.1.0 (`e349070`); executada em paralelo por orientação explícita; sem implementação, calibração ou teste verificável | F1.7; DOM-04; revisar após fechamento da F2.4 |
-| F2.6 | SOFIA, agentes, missões e persistência de conhecimento | EM_ANDAMENTO — escopo físico fechado em `BCE/fontes/ESCOPO_F2_6_SOFIA_AGENTES_MISSOES.md`; 23 fontes prioritárias validadas; leitura pendente | F1.7; DOM-06; DOM-07; DOM-13 |
+| F2.6 | SOFIA, agentes, missões e persistência de conhecimento | EM_ANDAMENTO — DOM-06 v0.2.0 publicado (`74a1e7f`); oito fontes finais lidas integralmente em texto/código/links/imagens; primeiras 15 tiveram somente primeira passagem textual e requerem auditoria canônica | F1.7; DOM-06; DOM-07; DOM-13 |
 | F2.7 | Aplicações, simuladores e interfaces | PENDENTE | F1.7 |
 | F2.8 | Hardware, dispositivos e infraestrutura | PENDENTE | F1.7 |
 | F2.9 | Segurança, privacidade, LGPD e governança | PENDENTE | F1.7 |
@@ -212,6 +212,7 @@ O agente atual só deve declarar a tarefa transferível quando:
 | 2026-10-08 | Manus — F2.5 paralela | Lote ARC/PGC/Bayes fechado, lido e DOM-05 publicado em revisão sem alterar F2.4 `EM_ANDAMENTO` | `d6c6108`, `e349070` | Retomar e fechar explicitamente F2.4 antes de avançar para F2.6 |
 | 2026-10-08 | Agente BCE MeshWave — fechamento F2.4 | Sete fontes e 12 imagens conferidas; DOM-04 v0.2.0 publicado; F2.4 concluída como unidade de curadoria e F2.6 aberta como próximo passo | `4f7465e`, `6ec80a9` | Iniciar escopo físico da F2.6 |
 | 2026-10-08 | Agente BCE MeshWave — abertura F2.6 | Escopo físico fechado; 23 diretórios prioritários e 9 relacionados validados; leitura profunda pendente | `BCE/fontes/ESCOPO_F2_6_SOFIA_AGENTES_MISSOES.md`; checkpoint de abertura | Ler as 23 fontes prioritárias e produzir DOM-06 |
+| 2026-10-08 | Agente BCE MeshWave — revisão parcial F2.6 | Lidos integralmente `content.txt`, `code_blocks.txt`, `links.txt` e imagens dos caminhos 16–23; DOM-06 v0.2.0 e índice publicados; fontes 1–15 permanecem com primeira passagem textual apenas | `74a1e7f` DOM-06; `435397e` índice; `884bdfc` cabeçalho/timestamp; `BCE/sessoes/2026-10-08_f2-6-revisao-parcial-dom06.md` | Iniciar em `KNOWLEDGE/johann/20260422_175016_SOFIA and MeshWave Ecosystem Overview - Manus/`; auditar artefatos e depois itens 2–15 |
 
 
 ## Lote F1.5 registrado antes da leitura — catálogo de código
