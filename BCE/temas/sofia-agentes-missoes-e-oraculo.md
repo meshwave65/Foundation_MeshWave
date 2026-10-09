@@ -8,19 +8,23 @@ info.sevenrock.com.br | Intervenção curatorial: 2026-10-08 21:33 (-03:00)
 |---|---|
 | ID curatorial | `DOM-06` |
 | Status | `REVISÃO` |
-| Versão do documento | `0.2.1` |
+| Versão do documento | `0.2.2` |
 | Última atualização | `2026-10-08` |
 | Curador(es) | Agente BCE MeshWave |
 | Confiança geral | `média-baixa` |
 | Documento relacionado no índice | [`BCE/INDICE_CURATORIAL.md`](../INDICE_CURATORIAL.md) |
+| Confiança geral | `média-baixa` |
+| Documento relacionado no índice | [`BCE/INDICE_CURATORIAL.md`](../INDICE_CURATORIAL.md) |
 
-> **Limite de cobertura desta revisão:** F2.6 fechou fisicamente 23 fontes prioritárias. Nesta revisão, nove diretórios tiveram seus arquivos textuais e imagens associados auditados: o item 1 e os itens 16–23. O checkpoint anterior registra primeira passagem textual nos outros 14 itens (2–15), sem atestar auditoria canônica de `code_blocks.txt`, `links.txt` e imagens. No item 1, a extração textual contém repetições e marcadores de truncamento; a imagem foi inspecionada, mas a evidência recuperável é limitada. Portanto, não se declara auditoria completa das 23 fontes nem implementação do sistema.
+> **Limite de cobertura desta revisão:** F2.6 fechou fisicamente 23 fontes prioritárias. Dez diretórios tiveram seus artefatos disponíveis auditados em profundidade: itens 1–2 e 16–23. Os itens 3–15 têm apenas primeira passagem textual anterior; seus `code_blocks.txt`, `links.txt` e imagens ainda não foram auditados canonicamente. O item 1 tem extrações repetitivas/truncadas e imagem de UI parcial; o item 2 tem transcript longo e repetitivo, código transcrito e uma captura parcial. Portanto, não se declara auditoria completa das 23 fontes nem implementação do sistema.
 
 ## 1. Resumo executivo
 
 As fontes descrevem SOFIA como um sistema de obtenção e execução de missões com agentes e supervisão, mas não há, no material consolidado, contrato autoritativo da API, implementação completa ou trilha transacional que confirme o comportamento atual. O modelo operacional anteriormente relatado — Executor → Escriba → RH → Worker, com possibilidade de decomposição em tarefa-mãe/tarefas-filhas — permanece **modelo histórico/proposto**, não arquitetura de produção verificada. A fonte de visão F2.6-01 acrescenta alegações de alto nível sobre roteamento Q-CyPIA, anonimato e ARC-Bayes/PGC, mas não documenta o fluxo de missões ou demonstra execução.
 
 As fontes auditadas dos itens 1 e 16–23 reforçam um problema recorrente: transcrições e capturas de interface narram obtenção de tarefas, consulta de rotas, execução, geração de relatórios, upload e finalização, mas geralmente não incluem método HTTP, requisição e resposta integrais, autenticação, timestamp, request-id, status numérico, payload ou verificação posterior. Uma fonte contém tentativas narradas com `HTTP Error 404: Not Found`; outras mencionam `Not Found`, sem status numérico demonstrável. Essas evidências demonstram o que foi relatado/mostrado, não que as rotas estejam ou não implementadas hoje.
+
+F2.6-02 acrescenta uma sequência de propostas corretivas para missões white-paper: forçar despacho direto pelo RH, preservar `GenesisPrompt` junto de `EnrichedDescription`, gerar `FinalReport.md` e `OperationalReport.md`, trocar a espera do lançador de um status de liberação para polling por `task_id`, e depois buscar detalhes completos da tarefa-mãe após relato de `NoneType` no Worker supervisor. A própria conversa registra que a correção anterior não resolveu o problema observado. São propostas e diagnósticos narrados; não há prova de que os patches foram aplicados ou passaram em execução.
 
 Endpoints concorrentes, estados semânticos não definidos, alegações de sucesso incompatíveis com falhas/espera e duplicações internas extensas mantêm o documento em `REVISÃO`. A classificação distingue **fato observado no artefato**, **implementação alegada**, **protótipo/UI**, **especificação**, **hipótese**, **decisão**, **alternativa**, **descarte**, **conflito** e **lacuna**; repetições de um transcript não são contadas como execuções independentes.
 
@@ -30,7 +34,7 @@ Endpoints concorrentes, estados semânticos não definidos, alegações de suces
 
 **Fora do escopo principal:** desenho detalhado de persistência, sincronização, ChromaDB e banco vetorial (DOM-07); operação e recuperação de infraestrutura (DOM-13); Android (DOM-10); identidade e ARC/Bayes (DOM-04/DOM-05); topologia mesh (DOM-03). Fontes com conteúdo médico, financeiro ou de outra tarefa externa são contexto das missões, não requisitos do MeshWave sem evidência independente.
 
-**Cobertura e proveniência:** o escopo está registrado em `BCE/fontes/ESCOPO_F2_6_SOFIA_AGENTES_MISSOES.md`. Os 23 caminhos foram validados fisicamente. O checkpoint `BCE/sessoes/2026-10-08_f2-6-abertura.md` registra primeira passagem textual anterior em 15/23; nesta revisão, F2.6-01 e F2.6-16–23 tiveram `content.txt`, `code_blocks.txt`, `links.txt` e imagens conferidos. Para F2.6-01, os arquivos foram lidos por inteiro, mas a própria extração traz 24 marcadores de truncamento em `content.txt` e dois em `code_blocks.txt`; a captura preserva apenas o trecho visível da interface. Os outros 14 diretórios (itens 2–15) não são declarados auditados nos seus arquivos auxiliares/imagens. Os nove conjuntos reservados de persistência/Chroma permanecem fora do lote, salvo dependência direta.
+**Cobertura e proveniência:** o escopo está registrado em `BCE/fontes/ESCOPO_F2_6_SOFIA_AGENTES_MISSOES.md`. Os 23 caminhos foram validados fisicamente. A primeira passagem anterior cobre 15/23; a auditoria canônica agora cobre os itens 1–2 e 16–23 (10/23). O checkpoint `BCE/sessoes/2026-10-08_f2-6-item02-abertura.md` registra o pré-registro do item 2. Em F2.6-02, `content.txt` (32.880 linhas; 1.316.349 bytes) e `code_blocks.txt` (2.062 linhas; 90.887 bytes) foram lidos em passagens com repetições exatas colapsadas para análise; `links.txt` tem 0 bytes; `FULL.png` (1280×845) foi inspecionada. As repetições não são execuções independentes. Permanecem pendentes os itens 3–15 e os nove conjuntos reservados de persistência/Chroma, salvo dependência direta.
 
 ## 3. Terminologia
 
@@ -47,6 +51,9 @@ Endpoints concorrentes, estados semânticos não definidos, alegações de suces
 | `EnrichedDescription` | Descrição enriquecida atribuída ao Escriba. | Nome observado em fontes anteriores; contrato desconhecido. |
 | `FinalReport.md` | Relatório de conteúdo mencionado como saída. | Previsto/alegado; arquivo e confirmação de persistência não são demonstrados por esta amostra. |
 | `OperationalReport.md` | Relatório da jornada operacional, inclusive supervisão. | Correção proposta historicamente; cobertura efetiva desconhecida. |
+| Lançador / `launch_whitepaper_genesis.py` | Script transcrito para iniciar missões de white paper em sequência e monitorar uma tarefa. | Substituições propostas; não há execução independente nem contrato validado. |
+| `client_request_uuid`, `task_id`, `parent_task_id` | Identificadores usados nos snippets para localizar tarefa e relacionar tarefa-mãe/filhas. | Campos citados no transcript; schema e semântica não confirmados. |
+| `status_id` | Número usado nos snippets para representar estados como 1, 3, 5, 20, 41, 50 e 52. | Valores transcritos sem enum, transições autorizadas ou significado oficial. |
 | Oráculo/API | Conjunto de caminhos chamados `/oracle`, `/api/v1/oracle/...`, `/api/v1/tasks/...` ou semelhantes nos registros. | Referências incompatíveis; nenhum endpoint canônico validado. |
 | “Concluída” | Texto exibido em transcrição/cartão/UI/replay. | Não equivale, sem confirmação de servidor, a missão finalizada ou artefato persistido. |
 
@@ -58,6 +65,8 @@ As fontes sustentam que houve instruções e tentativas narradas para consultar 
 
 A evidência atual permite afirmar **que o material contém** esses procedimentos, erros e mensagens; não permite afirmar que a API atual tenha (ou não tenha) as rotas, que uma missão tenha sido reivindicada, executada, persistida ou finalizada, ou que os relatórios alegados tenham sido aceitos pelo servidor.
 
+F2.6-02 contém um relato de tarefas com `parent_task_id` e uma tarefa-mãe parada em status 50, além da mensagem `argument of type 'NoneType' is not iterable`. A narrativa atribui o erro a `blocks` ausente/`None` no objeto simplificado recebido pelo supervisor; o código posterior propõe buscar `GET /tasks/{task_id}` antes de iterar. O transcript não inclui resposta JSON bruta, esquema da API, logs completos correlacionados nem resultado da aplicação da correção, então causa-raiz e resolução permanecem **alegadas/não confirmadas**.
+
 ### 4.2 Componentes e responsabilidades relatadas
 
 | Componente | Responsabilidade relatada | Classificação |
@@ -67,6 +76,7 @@ A evidência atual permite afirmar **que o material contém** esses procedimento
 | RH | Escolha de execução e possível fatoração em filhas. | Diagnóstico/proposta histórica. |
 | Worker/agente atômico | Execução e geração de relatório final/operacional. | Intenção/código transcrito; sem build/execução independente verificados. |
 | Supervisor/tarefa-mãe | Coordenação e agregação de tarefas-filhas. | Comportamento alegado; estados e agregação não especificados. |
+| Lançador de white paper | Criar cada missão e aguardar o estado da tarefa antes de avançar. | Código transcrito em versões que primeiro esperavam status 1/3 e depois faziam polling por `task_id` até status 3; nenhuma versão foi executada nesta curadoria. |
 | API/oráculo | Busca, obtenção e atualização de tarefa; upload é mencionado separadamente. | Endpoints e payloads contraditórios/incompletos. |
 
 ### 4.3 Interfaces, entradas e saídas
@@ -74,6 +84,8 @@ A evidência atual permite afirmar **que o material contém** esses procedimento
 Caminhos e artefatos mencionados incluem `/api/v1/oracle`, `/api/v1/oracle/manual`, `/api/v1/oracle/tasks`, `/api/v1/oracle/missions`, `/api/v1/tasks/`, `/api/v1/tasks/next`, `/api/v1/tasks/{id}`, rotas de leitura de `TASK-*.md`, e rotas de upload como `/api/v1/artifacts`, `/api/v1/artifacts/upload` e `/api/v1/upload-oracle-manual`. Trata-se de inventário de menções, alternativas e tentativas históricas, **não de um mapa de endpoints aprovados**. Alguns caminhos aparecem como hipóteses ou são abandonados após erro narrado.
 
 Uma fonte posterior menciona textualmente `PATCH /api/v1/tasks/63` com `{status_id: 3}`. Não define o significado de `3`, autenticação, corpo integral, servidor, resposta, nem ligação verificável com upload. A numeração e os campos não constituem schema confirmado.
+
+F2.6-02 transcreve ainda `GET /tasks/`, `GET /tasks/{task_id}`, `GET /tasks/{task_id}/blocks` e `PATCH /tasks/{task_id}` em scripts apontados para `http://127.0.0.1:8000`, com IDs de status numéricos. Esses caminhos e a base local são detalhes do código proposto, não endpoints atuais aprovados; não há autenticação, respostas de API ou documentação de contrato nesta fonte.
 
 ### 4.4 Requisitos, restrições e premissas
 
@@ -87,12 +99,12 @@ Uma fonte posterior menciona textualmente `PATCH /api/v1/tasks/63` com `{status_
 
 ### 4.5 Implementado, prototipado ou apenas proposto
 
-- **Implementação confirmada no repositório desta curadoria:** nenhum cliente SOFIA, contrato autoritativo, código completo de agente ou integração de produção foi estabelecido pelos oito conjuntos analisados.
-- **Implementação alegada/transcrita:** scripts, correção de identificador, PATCH de estado, leitura de tarefas, upload e geração de relatórios. Os trechos são parciais, repetidos ou sem fontes executáveis associadas.
+- **Implementação confirmada no repositório desta curadoria:** nenhum cliente SOFIA, contrato autoritativo, código completo de agente ou integração de produção foi estabelecido pelos dez conjuntos auditados.
+- **Implementação alegada/transcrita:** além de scripts e rotas citados por fontes anteriores, F2.6-02 contém versões sugeridas de `rh_agent.py`, `worker_agent.py` e `launch_whitepaper_genesis.py`; não há cópia desses arquivos-fonte de aplicação, commit do produto, teste ou execução confirmada.
 - **Protótipo/UI:** capturas `FULL.png` e replay de tarefa mostram mensagens/estados e às vezes cartões de arquivo; não provam resposta HTTP ou persistência.
-- **Especificação/procedimento:** instruções para buscar, executar, reportar e carregar; rotas concorrentes sem contrato consolidado.
+- **Especificação/procedimento:** instruções para buscar, executar, reportar e carregar; F2.6-02 também propõe despacho direto para um caso de white paper, passagem de dois blocos de contexto e espera por status terminal, sem contrato consolidado.
 - **Hipótese/proposta:** Git/GitHub como canal de distribuição, GitHub Actions, contêineres, decomposição de missões e estados/papéis descritos no checkpoint de abertura.
-- **Não confirmado:** produção, teste de carga, disponibilidade das rotas, execução de missão, resultado de pesquisa, upload, transição final ou persistência.
+- **Não confirmado:** produção, teste de carga, disponibilidade das rotas, aplicação dos patches, execução de missão, resultado de pesquisa, upload, transição final ou persistência.
 
 ## 5. Arquitetura e modelo conceitual
 
@@ -100,7 +112,8 @@ O pipeline conceitual abaixo preserva a história registrada; não representa im
 
 ```mermaid
 flowchart LR
-    E[Executor / contexto original] --> G[GenesisPrompt]
+    L[Lançador de missões] --> E[Executor / contexto original]
+    E --> G[GenesisPrompt]
     G --> W[Escriba / enriquecimento]
     W --> D[EnrichedDescription]
     D --> R[RH / seleção ou decomposição]
@@ -113,7 +126,7 @@ flowchart LR
     U --> C[Confirmação e finalização — contrato ausente]
 ```
 
-O problema histórico de supervisão é que o lançador aguardaria um estado terminal da tarefa-mãe enquanto o RH criaria subtarefas; a mãe permaneceria intermediária e o lançador poderia ficar bloqueado. Outra perda relatada ocorre quando links/contexto originais não chegam ao Worker junto com a descrição enriquecida. A correção proposta era manter ambos os contextos e gerar relatório operacional também para supervisão. Não há patch atual, teste ou log que confirme a adoção dessas correções.
+O problema histórico de supervisão é que o lançador aguardaria um estado terminal da tarefa-mãe enquanto o RH criaria subtarefas; a mãe permaneceria intermediária e o lançador poderia ficar bloqueado. Outra perda relatada ocorre quando links/contexto originais não chegam ao Worker junto com a descrição enriquecida. F2.6-02 apresenta primeiro a hipótese de forçar o RH a executar diretamente esta classe de white paper; mais tarde, o usuário relata que o modo supervisor ainda falha e que o lançador não avança. A conversa então corrige o foco para `blocks` ausente/`None` e propõe buscar os detalhes da tarefa-mãe. Não há patch atual, teste ou log que confirme qualquer correção.
 
 ## 6. Fluxos e casos de uso
 
@@ -132,26 +145,32 @@ O problema histórico de supervisão é que o lançador aguardaria um estado ter
 
 O RH poderia decompor a tarefa e associar filhas por `parent_task_id`; o supervisor agregaria resultados e emitiria relatório operacional. A hipótese de correção para launcher travado é executar diretamente certos tipos de missão. Ela pode evitar o bloqueio nesses casos, mas desativa decomposição e não resolve genericamente agregação, falha parcial, timeout ou encerramento da mãe.
 
+### 6.3 Sequência de missões white-paper (proposta transcrita em F2.6-02)
+
+Uma versão inicial do lançador cria a missão com `client_request_uuid` e avança quando a tarefa alcança status 1 ou 3; o próprio transcript depois identifica que status 1 representa liberação, não conclusão, e que isso pode disparar as 23 missões sem esperar o trabalho terminar. Uma versão posterior procura o `task_id` pelo UUID e faz polling até status 3. O usuário relata, porém, que a tarefa-mãe permanece em 50 por erro do Worker supervisor. A sequência documenta iteração e revisão de diagnóstico, não comprova que qualquer versão do script foi aplicada ou que o fluxo final funcionou.
+
 ## 7. Código, algoritmos e parâmetros
 
-Não há algoritmo ou cliente de API completo validado nesta unidade. O que aparece nos blocos de código é fragmentário e/ou textual:
+Não há algoritmo ou cliente de API completo validado nesta unidade. F2.6-02 contém trechos extensos e várias versões de três scripts, repetidos ao longo de uma transcrição de 32.880 linhas:
 
-- um trecho de processamento usa um booleano `new_tasks_found`, imprime mensagens e retorna; não mostra chamada HTTP, autenticação, parsing, execução, persistência nem tratamento de resposta;
-- marcadores e exemplos mencionam arquivos `TASK-*.md`, scripts de busca/processamento, rotas `/oracle` e `/tasks`, e um PATCH com `status_id`; esses trechos não formam implementação reproduzível;
-- alguns diretórios têm `code_blocks.txt` apenas como marcador, checklist ou fragmento de transcript;
-- o checkpoint de abertura atribui GitHub Actions, contêineres, branches e permissões mínimas a uma proposta de automação de agentes, não a implantação verificada.
+- **RH (`rh_agent.py`):** proposta específica para white paper que lê status 41, reivindica como 20 e força execução direta/liberação em 1; `determine_persona()` retorna o valor constante `999999`. Os números e a regra não têm contrato nem justificativa externa na fonte.
+- **Worker (`worker_agent.py`):** proposta para combinar `GenesisPrompt` e `EnrichedDescription`, gerar os dois relatórios e atualizar status 52/3; versões de supervisor primeiro recebem um objeto sem detalhes e depois buscam os detalhes completos em `GET /tasks/{task_id}` antes de extrair a descrição enriquecida.
+- **Lançador (`launch_whitepaper_genesis.py`):** versão inicial considera status 1 suficiente para seguir; versões posteriores localizam a tarefa pelo UUID e esperam o status 3 do `task_id`. O código não traz resultado de teste ou execução.
+- **Erro reportado:** o transcript contém `argument of type 'NoneType' is not iterable` e relato de tarefa-mãe presa em status 50. A correção posterior busca o objeto detalhado; porém, em Python, `obj.get('blocks', [])` ainda retorna `None` se a chave existir explicitamente com valor `None`. Assim, o próprio trecho não demonstra que o caso reportado está resolvido.
+- **Riscos aparentes nos snippets, não resultados observados:** loops de polling sem prazo máximo; caminhos de erro/status 5 não tratados como terminais em alguns loops; supervisor que prossegue se não encontrar filhas; prompts de síntese com reticências (`...`) em lugar de instruções completas; ausência de testes e respostas da API. Esses pontos exigem validação contra código real antes de qualquer adoção.
 
-Nenhum teste/build/execução foi reproduzido nesta curadoria. Códigos HTTP citados são transcrições de tentativas passadas e não foram consultados novamente.
+Os arquivos são transcrições de conversa/código, não os arquivos executáveis do projeto. `code_blocks.txt` tem 2.062 linhas e repete trechos; `links.txt` está vazio. A inspeção foi feita em passagens com duplicatas exatas colapsadas para revisão, preservando os originais. Nenhum código foi executado nesta curadoria; códigos HTTP e logs são relatos passados, não consultas atuais.
 
 ## 8. Evidências e fontes
 
-### 8.1 Nove fontes — leitura profunda dos itens F2.6-01 e F2.6-16–23
+### 8.1 Dez fontes — leitura profunda dos itens F2.6-01–02 e F2.6-16–23
 
-Em todos os itens a seguir, `content.txt`, `code_blocks.txt` e `links.txt` foram inspecionados integralmente; imagens raster existentes foram visualizadas. “Observado” refere-se ao artefato/transcript, não a uma nova requisição.
+Nos itens a seguir, `content.txt`, `code_blocks.txt` e `links.txt` foram inspecionados; imagens raster existentes foram visualizadas. Nos itens 1 e 2, os transcripts extensos foram revisados em passagens de conteúdo único com repetições exatas colapsadas; isso não elimina os limites de extração nem transforma repetições em tentativas independentes. “Observado” refere-se ao artefato/transcript, não a uma nova requisição.
 
 | ID | Caminho relativo | Evidência e classificação | Limitação |
 |---|---|---|---|
 | F2.6-01 | `KNOWLEDGE/johann/20260422_175016_SOFIA and MeshWave Ecosystem Overview - Manus/` | `content.txt` e `code_blocks.txt` são extrações altamente repetitivas: respectivamente 303 linhas/24 marcadores de truncamento e 11 linhas/2 marcadores; há 14 linhas de conteúdo distintas em `content.txt` (mais a linha vazia). `code_blocks.txt` não contém código executável recuperável, apenas fragmento repetido de texto. `FULL.png` (1280×845) mostra captura de UI, página 2/5, com menções a `GLOBALMESHWAVE-Consolidado11Maio2025.md`, Q-CyPIA, seleção de múltiplas rotas com anonimato, ARC-Bayes/PGC, presença física e validação futura em testbeds/estabilidade do fluxo assíncrono. Classificação: visão/especificação narrativa e alegações de capacidade; próximos passos são proposta; texto de leitura e conclusão da reprodução são fatos observados na captura, não prova de backend. `links.txt` contém somente `https://help.manus.im/`. | O texto da extração termina em fragmento (`...baix`) e replica o mesmo conteúdo; a captura mostra apenas uma parte renderizada e não permite examinar os documentos-fonte citados. Não há código, contrato de API, log de execução, teste de testbed ou evidência de Q-CyPIA/PGC em produção. O link de suporte não é documentação técnica do SOFIA. O conjunto sobrepõe-se a DOM-01/DOM-02/DOM-03/DOM-05; não foi promovido a nova descrição do fluxo de agentes. |
+| F2.6-02 | `KNOWLEDGE/johann/20260422_175100_SOFIA and MeshWave Ecosystem Documents - Manus/` | `content.txt` (32.880 linhas; 1.316.349 bytes) e `code_blocks.txt` (2.062 linhas; 90.887 bytes) narram falha de launcher/Worker em missões white-paper e contêm versões propostas de `rh_agent.py`, `worker_agent.py` e `launch_whitepaper_genesis.py`. A evolução passa de despacho RH direto e passagem de contexto à espera do launcher por `task_id`/status 3 e, após novo relato de erro `NoneType`/mãe em status 50, à busca de detalhes completos da tarefa. `links.txt` está vazio. `FULL.png` (1280×845) mostra trecho de análise e código do Worker em uma interface/replay. | Repetição extensa; análise feita com duplicatas exatas colapsadas. Referências a imagens de banco de dados e estados 118–121 aparecem na narrativa, mas este diretório contém somente `FULL.png`, que mostra chat/código, não imagens de banco. A captura/replay não comprova aplicação, build, execução ou sucesso. Faltam contrato/esquema da API, payload/resposta, código-fonte aplicado, logs correlacionados e testes. A correção de `blocks` pode ainda falhar se o campo existir como `None`; monitoramentos não têm timeout explícito em trechos transcritos. |
 | F2.6-16 | `KNOWLEDGE/iury/20260422_161748_Como acessar e verificar missões na API Sofia - Manus/` | Relata `Not Found` para `/api/v1/oracle/tasks`, `/api/v1/oracle/missions` e leitura direta de Markdown; UI mostra espera. Hipóteses de `/tasks`/`/missions` e Git são abandonadas ou não confirmadas. | Sem método, payload, headers, URL-base consistente, status numérico ou resposta completa; ciclos repetidos não são tentativas independentes. `FULL.png` e `img_000.jpg` mostram UI/corpo textual de erro, não tráfego completo. |
 | F2.6-17 | `KNOWLEDGE/iury/20260422_161834_Como acessar e executar missões na API Sofia - Manus/` | Instrui consultar o manual `/api/v1/oracle/manual`; relata busca sem endpoint específico e bloqueio/pedido de endpoint. | Não mostra execução ou código HTTP. Forte repetição do replay; `FULL.png` é interface/espera. |
 | F2.6-18 | `KNOWLEDGE/iury/20260422_161913_Instruções para a Tarefa no Sofia API Oráculo - Manus/` | Transcrição alterna instruções e alegações de upload/finalização de `Final_Report_TSK42.md`, pesquisa e testes de carga; contém metadados `task_finalization`. | Links vazios; sem corpo do relatório, manual, método/payload/resposta, métrica de teste ou prova de persistência. Instruções contradizem entrega ao usuário versus salvamento via API; `FULL.png` só comprova UI. |
@@ -163,11 +182,11 @@ Em todos os itens a seguir, `content.txt`, `code_blocks.txt` e `links.txt` foram
 
 ### 8.2 Primeira passagem textual anterior — cobertura parcial
 
-O checkpoint `BCE/sessoes/2026-10-08_f2-6-abertura.md` registra primeira passagem textual em 15/23 fontes, incluindo visão/contexto, material de agentes e fontes operacionais. Nesta revisão, F2.6-01 foi auditada diretamente; portanto, permanecem somente os itens 2–15 com primeira passagem textual anterior e sem auditoria canônica de todos os arquivos/imagens. Os achados provisórios da abertura incluem o fluxo Executor → Escriba → RH → Worker, fatoração e bloqueio da tarefa-mãe, perda de contexto, relatórios propostos, endpoints/estados concorrentes, tentativas de upload, falhas 404/502/TLS e propostas GitHub Actions/contêineres. Eles não são convertidos em fatos de implementação por esta leitura do item 1.
+O checkpoint `BCE/sessoes/2026-10-08_f2-6-abertura.md` registra primeira passagem textual em 15/23 fontes, incluindo visão/contexto, material de agentes e fontes operacionais. Nesta revisão, F2.6-01 e F2.6-02 foram auditadas diretamente, além dos itens 16–23; permanecem os itens 3–15 com primeira passagem textual anterior e sem auditoria canônica de todos os arquivos/imagens. Os achados provisórios da abertura incluem o fluxo Executor → Escriba → RH → Worker, fatoração e bloqueio da tarefa-mãe, perda de contexto, relatórios propostos, endpoints/estados concorrentes, tentativas de upload, falhas 404/502/TLS e propostas GitHub Actions/contêineres. Eles não são convertidos em fatos de implementação por estas leituras.
 
 ### 8.3 Material sensível
 
-Na leitura profunda de F2.6-01 e F2.6-16–23, não foram reproduzidos tokens, senhas, PATs, credenciais ou dados pessoais. Um link de upgrade/assinatura presente em uma fonte final foi omitido. Endpoints e identificadores de tarefa aparecem apenas na medida necessária para documentar evidência técnica. Se uma revisão futura encontrar credenciais reais, registrar somente existência/localização e solicitar rotação/revogação, sem copiar o valor.
+Na leitura profunda dos dez conjuntos, não foram reproduzidos tokens, senhas, PATs, credenciais ou dados pessoais. Um link de upgrade/assinatura presente em uma fonte final foi omitido. Endpoints, nomes de arquivos e identificadores de tarefa aparecem apenas na medida necessária para documentar a evidência técnica. Se uma revisão futura encontrar credenciais reais, registrar somente existência/localização e solicitar rotação/revogação, sem copiar o valor.
 
 ## 9. Evolução arqueológica
 
@@ -178,6 +197,7 @@ Na leitura profunda de F2.6-01 e F2.6-16–23, não foram reproduzidos tokens, s
 | Transcripts de upload | Relatório e estado final são apresentados como concluídos. | Aparece diagnóstico de que finalização ocorreu sem upload garantido; propostas de PATCH/status. | F2.6-18, F2.6-20, F2.6-21. | Conflito de sequência e de prova; nenhum recibo ou consulta posterior. |
 | Replays/UI | Mensagens, cartões de relatório, “concluída”, “esperando”, indicadores de etapa. | Repetição e fragmentação abundantes. | `FULL.png` de F2.6-01 e imagens dos itens 16–23. | UI/replay é evidência de conteúdo exibido, não execução backend. F2.6-01 mostra conclusão da reprodução no produto, mas o texto visível também diz que o contexto ficou muito longo e sugere iniciar outro chat. |
 | Visão de ecossistema (item 1) | Relato de colaboração Q-CyPIA/SDN com seleção de rotas anônimas, ARC-Bayes/PGC e validação futura em testbeds. | Especificação/alegação narrativa. | F2.6-01 `FULL.png`; extrações `content.txt`/`code_blocks.txt`. | Fonte secundária e truncada; conteúdo adjacente a roteamento/arquitetura/ARC, não contrato de agente. Não confirma implementação nem resultado de teste. |
+| Diagnósticos e correções de white-paper (item 2) | Sequência de versões propostas para RH, Worker e launcher; o próprio usuário corrige duas análises anteriores e relata que o Worker supervisor ainda não conclui a tarefa-mãe. | Implementação proposta; alegações de erro/status; sem validação. | F2.6-02 `content.txt`, `code_blocks.txt`, `FULL.png`; `links.txt` vazio. | Não estabelece quais arquivos foram aplicados. A correção final não tem teste; seu tratamento `get('blocks', [])` não protege quando o valor presente é `None`. A tela “Reprodução da tarefa Manus concluída” é estado de replay, não resultado de backend. |
 
 ## 10. Decisões curatoriais e técnicas relatadas
 
@@ -191,14 +211,14 @@ Essas entradas não são recomendação de implementação nem decisão MeshWave
 |---|---|---|
 | `/tasks`, `/missions`, acesso a `TASK-*.md` ou Git push | Hipóteses e alternativas em F2.6-16; algumas abandonadas após erro narrado. | Não confirmar como endpoint nem como descarte global; falta contrato. |
 | `/oraculo` ou `/tasks` versus `/oracle` | F2.6-19 relata preferência/correção para `/oracle`. | Decisão localizada do transcript, não norma global. |
-| Execução direta versus decomposição supervisionada | Proposta histórica em fontes operacionais e pergunta de planejamento em F2.6-22. | Trade-off aberto; sem política de tipos de missão. |
+| Execução direta versus decomposição supervisionada | Proposta histórica em fontes operacionais e pergunta de planejamento em F2.6-22; em F2.6-02 o RH seria forçado a execução direta especificamente para gerar 23 capítulos de um white paper. | Trade-off aberto; workaround específico pode evitar fatoração, mas não é política geral aprovada nem evidência de correção do Worker supervisor. |
 | Entregar relatório ao usuário versus guardar no SOFIA | Contradição nos transcripts F2.6-18 e F2.6-20/21. | Não resolver sem fluxo de produto/contrato aprovado. |
 | Desabilitar TLS (`verify=False`) | Workaround relatado em F2.6-19 e abertura do lote. | Não adotar; inseguro e sem comprovação de correção. |
 | Monólito, arquitetura em camadas, microsserviços | Comparação narrativa em F2.6-22. | Alternativas conceituais; sem contexto, benchmarks ou decisão aprovada. |
 
 ## 12. Otimizações, correções e melhorias
 
-As fontes anteriores propõem preservar contexto original junto ao enriquecido, corrigir sincronização da tarefa-mãe, produzir relatório operacional também para supervisão e separar upload de finalização. As fontes finais mencionam ajustes de endpoint/identificador, checklist, validação de artefato e testes de carga, mas não apresentam resultados reproduzíveis.
+As fontes anteriores propõem preservar contexto original junto ao enriquecido, corrigir sincronização da tarefa-mãe, produzir relatório operacional também para supervisão e separar upload de finalização. F2.6-02 amplia a história: a primeira correção do launcher aguardava apenas liberação; outra passou a monitorar `task_id` até status 3; após o usuário relatar falha do Worker supervisor, o diagnóstico mudou para falta de detalhes/blocos da tarefa-mãe. A narrativa reconhece que a análise anterior estava errada. Nenhuma destas mudanças tem patch do repositório de produto, teste ou resultado reproduzível nesta fonte.
 
 Nenhuma melhoria pode ser declarada implantada. Uma proposta segura para validação futura é implementar teste de integração com ambiente identificado e dados controlados, TLS habilitado, logs redigidos, idempotência, recibo/hash de artefato e consulta do estado após cada transição; só então atualizar o status de evidência.
 
@@ -215,10 +235,13 @@ Nenhuma melhoria pode ser declarada implantada. Uma proposta segura para valida�
 | C06-07 | Como tarefa-mãe, subtarefas e Worker compartilham contexto e estado? | Lote 002 e checkpoint F2.6 provisório. | Pode causar bloqueio e perda de contexto. | Validar código/modelos e teste integrado; definir agregação e falhas parciais. |
 | C06-08 | TLS foi reabilitado após workaround? | F2.6-19 e checkpoint de abertura. | Risco de integridade/autenticidade. | Inspecionar configuração segura e logs; não repetir `verify=False`. |
 | C06-09 | Títulos, tarefa efetiva e conteúdo coincidem? | F2.6-22, cujo título difere do foco da tarefa no transcript. | Classificação baseada em título seria enganosa. | Usar conteúdo, não título; manter discrepância arqueológica. |
+| C06-10 | O launcher deve avançar ao receber status 1 ou apenas após a conclusão da tarefa-mãe? | F2.6-02 contém versões com ambas as condições; o transcript relata que status 1 libera o Worker, mas não indica conclusão. | Pode iniciar as 23 missões sem sincronização e deixar o launcher esperando a mãe. | Obter enum/semântica de estado e logs correlacionados do sistema; não validar nenhuma versão por sua descrição. |
+| C06-11 | A falha de supervisão decorre de `blocks` ausente/`None` e a busca dos detalhes corrige o problema? | Relato e diagnóstico em F2.6-02; snippet posterior busca `GET /tasks/{task_id}` antes de iterar. | Uma causa não validada pode levar a correção ineficaz ou deixar tarefa em status 50. | Obter payloads da API e código aplicado; reproduzir teste isolado com `blocks` ausente, lista vazia e `null`. |
+| C06-12 | As versões transcritas são integralmente executáveis e robustas? | F2.6-02 apresenta placeholders no prompt supervisor, polling sem timeout e uma extração de `blocks` que ainda aceita `None`. | Alegar “versão final” pode ocultar lacunas funcionais e loops infinitos. | Comparar com o repositório de produto e executar testes controlados; até lá, classificá-las como propostas transcritas. |
 
 ## 14. Lacunas e questões em aberto
 
-1. **Completar auditoria dos itens 2–15:** conferir `content.txt`, `code_blocks.txt`, `links.txt` e imagens associados; o item 1 foi conferido, mas sua extração continua limitada e só apresenta um fragmento da visão na captura. Caminhos: itens 2–15 de `BCE/fontes/ESCOPO_F2_6_SOFIA_AGENTES_MISSOES.md`.
+1. **Completar auditoria dos itens 3–15:** conferir `content.txt`, `code_blocks.txt`, `links.txt` e imagens associados. Itens 1–2 e 16–23 foram auditados em profundidade; no item 1 a extração continua limitada e no item 2 o transcript/código são repetitivos e não validados. Caminhos: itens 3–15 de `BCE/fontes/ESCOPO_F2_6_SOFIA_AGENTES_MISSOES.md`.
 2. Obter OpenAPI/manual e código efetivamente implantado, com versão/commit e ambiente identificado.
 3. Registrar para cada endpoint: método, base URL, auth (sem valores), headers, schema de request/response, status, filtros, paginação, idempotência e limites.
 4. Definir ciclo de vida nominal: pending, claimed, running, blocked, failed, retrying, report-uploaded, completed; esses nomes são proposta de modelagem, não estados observados/confirmados.
@@ -230,6 +253,7 @@ Nenhuma melhoria pode ser declarada implantada. Uma proposta segura para valida�
 10. Determinar origem e status de `parent_task_id`, timeouts, retries, idempotência, dead-letter e recuperação.
 11. Separar falhas do serviço de erros de navegador, créditos Manus e estado de replay/UI.
 12. Relacionar a persistência/contexto de missão ao DOM-07/DOM-13, sem misturar o escopo até obter contratos.
+13. Confrontar as versões transcritas de `rh_agent.py`, `worker_agent.py` e `launch_whitepaper_genesis.py` com código-fonte/commits autorizados; verificar timeouts, estados de falha, valor `blocks: null` e cobertura de testes antes de reutilizá-las.
 
 ## 15. Relações com outros documentos
 
@@ -252,9 +276,10 @@ Nenhuma melhoria pode ser declarada implantada. Uma proposta segura para valida�
 | `0.1.0` | `2026-10-08` | Síntese inicial baseada no Lote 002 e no checkpoint textual. | `BCE/sessoes/2026-10-08_f2-6-abertura.md`; commit anterior indicado no histórico do repositório. |
 | `0.2.0` | `2026-10-08` | Acrescenta leitura profunda dos oito diretórios finais, conflitos de API/estado, imagens e limite explícito de cobertura dos 15 anteriores. | F2.6-16–F2.6-23; commit de conteúdo a registrar no controle mestre. |
 | `0.2.1` | `2026-10-08` | Inclui a auditoria F2.6-01, documenta a extração truncada/repetitiva e recalcula a cobertura profunda para 9/23; mantém as alegações de Q-CyPIA/PGC como narrativa não verificada. | F2.6-01 `content.txt`, `code_blocks.txt`, `links.txt`, `FULL.png`; checkpoint `BCE/sessoes/2026-10-08_f2-6-item01-abertura.md`. |
+| `0.2.2` | `2026-10-08` | Inclui a auditoria F2.6-02, reconstrói a sequência de diagnósticos/correções dos agentes e launcher e registra conflitos, riscos estáticos e ausência de validação; cobertura profunda passa a 10/23. | F2.6-02 `content.txt`, `code_blocks.txt`, `links.txt`, `FULL.png`; checkpoint de abertura `BCE/sessoes/2026-10-08_f2-6-item02-abertura.md`; commit de conteúdo a registrar no controle mestre. |
 
 > A convenção comunicada para versionamento do sistema MeshWave considera o estado atual dos módulos como versão `1.0` e incrementos futuros como `1.01`, `1.02` etc. Essa convenção de versão de produto não altera retroativamente o histórico numérico deste documento curatorial; a versão do módulo SOFIA/API em si permanece **não confirmada** nas fontes analisadas.
 
 ## 17. Próximo passo de curadoria
 
-Concluir a auditoria canônica dos itens 2–15 listados em `BCE/fontes/ESCOPO_F2_6_SOFIA_AGENTES_MISSOES.md`, lendo cada `content.txt`, `code_blocks.txt`, `links.txt` e imagem associada. Atualizar esta matriz e só então decidir se a unidade F2.6 pode ser fechada; manter DOM-06 em `REVISÃO` até contrato, código e execução serem verificáveis.
+Pré-registrar os arquivos, tamanhos e hashes do item 3 — `KNOWLEDGE/johann/20260422_175351_Uploaded Documents Related to SOFIA and MeshWave Ecosystem - Manus/` — em checkpoint versionado antes de abrir seus conteúdos. Depois, auditar `content.txt`, `code_blocks.txt`, `links.txt` e todas as imagens; atualizar esta matriz e manter DOM-06 em `REVISÃO` até contrato, código e execução serem verificáveis.
