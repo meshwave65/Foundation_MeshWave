@@ -7,7 +7,7 @@
 - **Agente/sessão:** Manus — retomada da curadoria BCE MeshWave.
 - **Branch:** `main`.
 - **Commit-base local:** `ad76243` — fechamento F2.6-06, então em `origin/main`.
-- **Escopo autorizado:** curadoria local no repositório; sem acesso ao banco vetorial, Cloudflare ou SSH, sem uso de PAT/credenciais e sem push. A autorização foi confirmada pelo usuário.
+- **Escopo inicial:** curadoria local no repositório, sem acesso ao banco vetorial, Cloudflare ou SSH e sem uso de PAT/credenciais. Após concluir a curadoria, o usuário autorizou explicitamente publicar os cinco commits pendentes e a correção factual deste checkpoint/controle.
 - **Reorientação solicitada:** incluir Google Docs como possível fonte complementar e priorizar os arquivos de orientação. O usuário delimitou a fonte externa a Google Docs e pediu que o corpus documental pertinente de todo `BCE/` seja considerado, inclusive o documento que define a lista de artefatos.
 
 ## Fontes processadas e classificação
@@ -47,15 +47,16 @@ Foram alinhados `AGENTS.md`, `BCE/ORIENTACAO_AGENTES.md`, `BCE/PROMPT_RETOMADA_A
 - GitHub/BCE permanece o registro versionado; não promover Docs a decisão aprovada ou implementação vigente sem confirmação independente;
 - commits/push respeitam a autorização específica da tarefa; trabalho pode permanecer local e não publicado quando esse for o escopo. A retomada deve inspecionar status/log antes de sincronizar e só fazer pull quando necessário, seguro e autorizado.
 
-O conector Google Workspace foi observado **desabilitado**. Nenhum Google Doc foi escolhido ou lido nesta unidade. A orientação está preparada para uso futuro, condicionado à conexão/autorização e à seleção dos Docs pertinentes. Não houve alteração de configuração de conector.
+Na consulta de configuração feita em 2026-10-09 às 17:16 (-03:00), o conector Google Workspace apareceu **habilitado**, com contas autorizadas configuradas, mas sem uma conta ativa selecionada na sessão. Nenhum Google Doc foi escolhido ou lido nesta unidade, e a configuração do conector não foi alterada. A orientação permite uso futuro somente após selecionar documentos nativos pertinentes e confirmar acesso autorizado.
 
-## Arquivos e commits locais
+## Arquivos e commits publicados
 
-- `BCE/temas/sofia-agentes-missoes-e-oraculo.md` — DOM-06 v0.2.7; commit local `c55e31d` (`curation(dom-06): auditar F2.6-07`).
-- `AGENTS.md`, `BCE/ORIENTACAO_AGENTES.md`, `BCE/PROMPT_RETOMADA_AGENTE.md`, `skills/meshwave-bce-curation/SKILL.md` — orientações harmonizadas; commit local `b3c8864` (`docs(bce): orientar corpus BCE e Google Docs`) e ajuste de pull/push condicional em `290895f` (`docs(bce): condicionar sincronizacao e publicacao`).
-- `BCE/INDICE_CURATORIAL.md` — DOM-06/cobertura atualizados; commit local `8870caa` (`docs(bce): atualizar índice DOM-06 F2.6-07`).
-- `BCE/CONTROLE_MESTRE.md` e este checkpoint integram juntos o commit operacional local de fechamento.
-- Nenhum arquivo em `KNOWLEDGE/` foi alterado. Nenhum commit desta unidade foi enviado a `origin/main`.
+- `BCE/temas/sofia-agentes-missoes-e-oraculo.md` — DOM-06 v0.2.7; commit `c55e31d` (`curation(dom-06): auditar F2.6-07`).
+- `AGENTS.md`, `BCE/ORIENTACAO_AGENTES.md`, `BCE/PROMPT_RETOMADA_AGENTE.md`, `skills/meshwave-bce-curation/SKILL.md` — orientações; commits `b3c8864` (`docs(bce): orientar corpus BCE e Google Docs`) e `290895f` (`docs(bce): condicionar sincronizacao e publicacao`).
+- `BCE/INDICE_CURATORIAL.md` — commit `8870caa` (`docs(bce): atualizar índice DOM-06 F2.6-07`).
+- Controle e checkpoint desta unidade — commit `629125a` (`chore(bce): fechar checkpoint F2.6-07 local`).
+- Após o usuário autorizar a persistência, os cinco commits acima foram enviados a `origin/main`; referência publicada verificada: `629125a`. A correção factual deste checkpoint e do controle foi registrada no commit `f5bc1ec` e será publicada junto com ele.
+- Nenhum arquivo em `KNOWLEDGE/` foi alterado. Não houve acesso a banco, execução de código da fonte, uso de credenciais ou chamadas externas.
 
 ## Próximo item — F2.6-08
 
@@ -67,4 +68,4 @@ Caminho exato indicado pelo escopo `BCE/fontes/ESCOPO_F2_6_SOFIA_AGENTES_MISSOES
 
 ## Situação de publicação
 
-`main` contém quatro commits locais de conteúdo/orientação (`c55e31d`, `b3c8864`, `8870caa`, `290895f`) e um commit operacional local deste controle/checkpoint, totalizando cinco commits à frente de `origin/main`. A referência remota permanece em `ad76243`; **não houve push**, conforme o escopo local autorizado.
+Os cinco commits de F2.6-07 foram publicados em `main` após confirmação explícita do usuário; `origin/main` avançou de `ad76243` para `629125a`. A correção aprovada do controle e deste checkpoint está no commit adicional `f5bc1ec`. O repositório `meshwave65/Foundation_MeshWave` é público; nenhum Google Doc foi selecionado ou acessado nesta unidade.
