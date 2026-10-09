@@ -6,6 +6,6 @@ Este diretório é o armazenamento canônico das skills reutilizáveis específi
 
 | Skill | Caminho | Uso |
 |---|---|---|
-| `meshwave-bce-curation` | [`skills/meshwave-bce-curation/SKILL.md`](meshwave-bce-curation/SKILL.md) | Retomada da BCE, auditoria de fontes, classificação de evidências, atualização de documentos e checkpoints. |
+| `meshwave-bce-curation` | [`skills/meshwave-bce-curation/SKILL.md`](meshwave-bce-curation/SKILL.md) | Retomada da BCE, auditoria de fontes, resumo verificável de commits recentes, reconciliação de itens pedidos com a fila publicada, atualização de documentos e checkpoints. |
 
 Os agentes encontram a skill de curadoria pela instrução raiz [`AGENTS.md`](../AGENTS.md) e pela orientação da BCE. Mantenha cada skill em apenas uma cópia canônica; não duplique o conteúdo em caminhos de compatibilidade, para evitar divergência.

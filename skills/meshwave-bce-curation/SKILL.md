@@ -1,6 +1,6 @@
 ---
 name: meshwave-bce-curation
-description: Curadoria rastreável da Base de Conhecimento Evolutivo MeshWave. Use ao retomar ou executar auditorias de fontes, classificar evidências, consolidar documentos BCE, reconciliar conflitos, atualizar checkpoints ou transferir trabalho entre agentes no repositório Foundation_MeshWave.
+description: Curadoria rastreável da Base de Conhecimento Evolutivo MeshWave. Use ao retomar ou executar auditorias de fontes, resumir commits recentes, reconciliar um item pedido com o estado publicado da fila, classificar evidências, consolidar documentos BCE, atualizar checkpoints ou transferir trabalho no repositório Foundation_MeshWave.
 ---
 
 # Curadoria BCE MeshWave
@@ -9,9 +9,34 @@ Use esta skill para continuar a curadoria do repositório `meshwave65/Foundation
 
 ## Escolha o fluxo correto
 
-- **Retomada/curadoria de fontes:** siga o fluxo completo abaixo e execute somente o item em andamento registrado no controle mestre.
-- **Tarefa explicitamente fora da fila de fontes** (por exemplo, criar ou aperfeiçoar esta skill): faça apenas o trabalho solicitado. Não leia nem processe um lote como se fosse a próxima unidade de curadoria; preserve o item e o próximo caminho registrados no controle mestre. Atualize os documentos de governança somente quando a integração realmente exigir.
-- Se o pedido, o controle mestre e o estado Git divergirem, não adivinhe nem marque trabalho como concluído. Reconcilie com o histórico publicado, registre a divergência e peça esclarecimento apenas se ela impedir uma decisão segura.
+- **Retomada/curadoria de fontes:** sincronize a branch, reconcilie o item pedido com o estado publicado e siga somente a próxima ação exata do controle mestre.
+- **Resumo de commits:** use o procedimento “Resumo de commits e reconciliação” abaixo; não resuma apenas pelas mensagens de commit.
+- **Tarefa explicitamente fora da fila de fontes** (por exemplo, criar ou aperfeiçoar esta skill): faça apenas o trabalho solicitado. Não leia nem processe um lote como se fosse a próxima unidade de curadoria; preserve o item e o próximo caminho registrados no controle mestre. Atualize documentos de governança somente quando a integração realmente exigir.
+- Se o pedido, o controle mestre e o estado Git divergirem, confie no que está efetivamente publicado no Git para determinar o que já ocorreu; corrija a documentação de continuidade e registre a divergência. Peça esclarecimento somente se o conflito impedir uma decisão segura.
+
+## Resumo de commits e reconciliação
+
+### Produzir um resumo verificável
+
+1. Defina e informe o commit-base usado. Prefira o hash indicado na solicitação ou no checkpoint anterior; se não houver, use o último commit já reportado ao usuário e mostre o hash inicial.
+2. Sincronize a referência autorizada (`git fetch origin`) e compare a branch atual com `origin/main`.
+3. Inspecione tanto a sequência quanto os arquivos alterados:
+
+   ```bash
+   git log --format='%h %ad %s' --date=short BASE..origin/main
+   git diff --stat BASE..origin/main
+   git show --stat --format=fuller COMMIT
+   ```
+
+4. Leia checkpoints e trechos dos documentos curados alterados para descrever o resultado real. Títulos de commit e estatísticas, sozinhos, não demonstram o conteúdo ou o grau de conclusão.
+5. Agrupe commits da mesma unidade lógica (documento temático, índice, correção, checkpoint/controle). Cite hashes curtos, efeito, limites e estado final publicado. Informe se `main` está sincronizada, se há alterações locais e qual é a próxima ação registrada.
+
+### Conferir se o item pedido já foi concluído
+
+1. Compare o ID/caminho pedido com o escopo da fonte, `BCE/CONTROLE_MESTRE.md`, checkpoints recentes, commits publicados e documento temático/índice.
+2. Confirme que a publicação está em `origin/main` e que os artefatos curatoriais registram a evidência, a cobertura e as limitações do item.
+3. Se o item já estiver concluído e publicado, **não reabra nem reprocese a fonte, não crie commits duplicados e não substitua a próxima ação da fila**. Resuma o que já foi feito, valide os registros e explique que a execução solicitada já está refletida no estado publicado.
+4. Reaudite ou corrija um item concluído somente quando o usuário pedir isso explicitamente ou quando houver uma inconsistência concreta a reparar. Para um item ainda pendente, prossiga com o pré-registro e o fluxo de auditoria abaixo.
 
 ## Fluxo de retomada e curadoria
 
@@ -95,4 +120,4 @@ Revise o diff, caminhos, links internos, status Git e afirmações de cobertura 
 
 ## Critério de transferência
 
-Considere a unidade transferível somente quando o estado publicado e os documentos de controle apontarem um próximo passo único, exato e reproduzível; a cobertura parcial e as incertezas estiverem explícitas; as fontes brutas permanecerem intactas; e o commit mais recente estiver identificado. Na resposta final, informe o item concluído, commit mais recente, estado de publicação e próximo caminho exato.
+Considere a unidade transferível somente quando o estado publicado e os documentos de controle apontarem um próximo passo único, exato e reproduzível; a cobertura parcial e as incertezas estiverem explícitas; as fontes brutas permanecerem intactas; e o commit mais recente estiver identificado. Na resposta final, informe o item concluído ou já publicado, commits, estado de publicação e próximo caminho exato.
