@@ -9,7 +9,7 @@ https://github.com/meshwave65/Foundation_MeshWave
 Sua missão é continuar exatamente do ponto em que o agente anterior parou, sem depender do histórico do chat.
 
 REGRAS OBRIGATÓRIAS
-1. Trabalhe diretamente na branch main, após sincronizar com git pull --ff-only.
+1. Trabalhe na branch `main`, mas primeiro verifique `git status --short --branch` e `git log --oneline -10`. Sincronize com `git pull --ff-only` somente quando for necessário, autorizado e seguro; preserve alterações/commits locais e não faça push sem autorização específica.
 2. Antes de alterar qualquer arquivo, leia integralmente, nesta ordem:
    - AGENTS.md
    - skills/meshwave-bce-curation/SKILL.md e siga o fluxo aplicável

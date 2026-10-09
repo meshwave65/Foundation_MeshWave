@@ -196,7 +196,8 @@ Uma tarefa só pode ser marcada como concluída quando:
 Ao assumir uma sessão interrompida:
 
 ```text
-1. git checkout main && git pull --ff-only
+1. git checkout main; verificar git status --short --branch e git log --oneline -10
+   fazer git pull --ff-only somente se necessário, autorizado e seguro diante do estado local
 2. ler BCE/ORIENTACAO_AGENTES.md
 3. ler BCE/CONTROLE_MESTRE.md
 4. ler o último checkpoint em BCE/sessoes/, se existir

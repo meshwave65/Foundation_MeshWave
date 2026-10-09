@@ -46,12 +46,13 @@ No clone autorizado do repositório:
 
 ```bash
 git checkout main
-git pull --ff-only
 git status --short --branch
 git log --oneline -10
+# Execute git pull --ff-only somente se a sincronização remota for necessária,
+# autorizada pela tarefa atual e segura diante do estado local.
 ```
 
-Confirme que a branch e o último commit publicado correspondem ao esperado. Não sobrescreva trabalho local. Se houver mudanças não relacionadas, conflito, permissão ausente ou divergência que não possa ser reconciliada com segurança, pare essa alteração e registre o impedimento; nunca use `push --force` para contornar o problema.
+Confirme que a branch e o último commit publicado correspondem ao esperado. Não sobrescreva trabalho local. Se houver commits locais à frente do remoto, alterações não relacionadas, conflito, permissão ausente ou divergência que não possa ser reconciliada com segurança, preserve o estado e não faça pull/push por inferência; registre o impedimento quando bloquear a tarefa. Nunca use `push --force` para contornar o problema.
 
 ### 2. Ler a governança antes de editar
 
