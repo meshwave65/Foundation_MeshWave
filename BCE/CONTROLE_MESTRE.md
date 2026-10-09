@@ -8,7 +8,7 @@
 |---|---|
 | Status global | `EM_ANDAMENTO — FASE 2: mapa curatorial e documentos de domínio` |
 | Última atualização | 2026-10-08 21:33 (-03:00) |
-| Último commit de conteúdo/checkpoint confirmado | `884bdfc` — `docs(dom-06): registrar timestamp curatorial` (DOM-06 em `74a1e7f`; índice em `435397e`; branch `main` sincronizada) |
+| Último commit de conteúdo/checkpoint confirmado | `0e73184` — `chore(bce): registrar checkpoint parcial da F2.6` (DOM-06 em `74a1e7f`; índice em `435397e`; branch `main` sincronizada) |
 | Commits locais não publicados | Nenhum; `main` sincronizada com `origin/main` |
 | Branch de trabalho | `main` |
 | Último item concluído | `F2.4` — DOM-04 v0.2.0 reconciliado e unidade concluída; o documento permanece `REVISÃO` por ausência de método DID aprovado e implementação verificável. DOM-06 v0.2.0 e índice foram publicados nesta sessão, mas não fecham F2.6. |
@@ -212,7 +212,7 @@ O agente atual só deve declarar a tarefa transferível quando:
 | 2026-10-08 | Manus — F2.5 paralela | Lote ARC/PGC/Bayes fechado, lido e DOM-05 publicado em revisão sem alterar F2.4 `EM_ANDAMENTO` | `d6c6108`, `e349070` | Retomar e fechar explicitamente F2.4 antes de avançar para F2.6 |
 | 2026-10-08 | Agente BCE MeshWave — fechamento F2.4 | Sete fontes e 12 imagens conferidas; DOM-04 v0.2.0 publicado; F2.4 concluída como unidade de curadoria e F2.6 aberta como próximo passo | `4f7465e`, `6ec80a9` | Iniciar escopo físico da F2.6 |
 | 2026-10-08 | Agente BCE MeshWave — abertura F2.6 | Escopo físico fechado; 23 diretórios prioritários e 9 relacionados validados; leitura profunda pendente | `BCE/fontes/ESCOPO_F2_6_SOFIA_AGENTES_MISSOES.md`; checkpoint de abertura | Ler as 23 fontes prioritárias e produzir DOM-06 |
-| 2026-10-08 | Agente BCE MeshWave — revisão parcial F2.6 | Lidos integralmente `content.txt`, `code_blocks.txt`, `links.txt` e imagens dos caminhos 16–23; DOM-06 v0.2.0 e índice publicados; fontes 1–15 permanecem com primeira passagem textual apenas | `74a1e7f` DOM-06; `435397e` índice; `884bdfc` cabeçalho/timestamp; `BCE/sessoes/2026-10-08_f2-6-revisao-parcial-dom06.md` | Iniciar em `KNOWLEDGE/johann/20260422_175016_SOFIA and MeshWave Ecosystem Overview - Manus/`; auditar artefatos e depois itens 2–15 |
+| 2026-10-08 | Agente BCE MeshWave — revisão parcial F2.6 | Lidos integralmente `content.txt`, `code_blocks.txt`, `links.txt` e imagens dos caminhos 16–23; DOM-06 v0.2.0 e índice publicados; fontes 1–15 permanecem com primeira passagem textual apenas | `74a1e7f` DOM-06; `435397e` índice; `884bdfc` cabeçalho/timestamp; `0e73184` checkpoint/controle | Iniciar em `KNOWLEDGE/johann/20260422_175016_SOFIA and MeshWave Ecosystem Overview - Manus/`; auditar artefatos e depois itens 2–15 |
 
 
 ## Lote F1.5 registrado antes da leitura — catálogo de código
