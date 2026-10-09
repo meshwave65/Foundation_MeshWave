@@ -8,19 +8,19 @@ info.sevenrock.com.br | Intervenção curatorial: 2026-10-08 21:33 (-03:00)
 |---|---|
 | ID curatorial | `DOM-06` |
 | Status | `REVISÃO` |
-| Versão do documento | `0.2.0` |
+| Versão do documento | `0.2.1` |
 | Última atualização | `2026-10-08` |
 | Curador(es) | Agente BCE MeshWave |
 | Confiança geral | `média-baixa` |
 | Documento relacionado no índice | [`BCE/INDICE_CURATORIAL.md`](../INDICE_CURATORIAL.md) |
 
-> **Limite de cobertura desta revisão:** F2.6 fechou fisicamente 23 fontes prioritárias. O checkpoint anterior registra primeira passagem textual em 15 delas, mas não atesta auditoria completa de `code_blocks.txt`, `links.txt` e imagens para esse subconjunto. Nesta sessão, os oito diretórios finais (F2.6-16 a F2.6-23) tiveram seus três arquivos textuais lidos integralmente e todas as imagens raster inspecionadas. Portanto, esta síntese integra achados das 23 fontes com evidência desigual; não declara auditoria de artefatos completa das 23.
+> **Limite de cobertura desta revisão:** F2.6 fechou fisicamente 23 fontes prioritárias. Nesta revisão, nove diretórios tiveram seus arquivos textuais e imagens associados auditados: o item 1 e os itens 16–23. O checkpoint anterior registra primeira passagem textual nos outros 14 itens (2–15), sem atestar auditoria canônica de `code_blocks.txt`, `links.txt` e imagens. No item 1, a extração textual contém repetições e marcadores de truncamento; a imagem foi inspecionada, mas a evidência recuperável é limitada. Portanto, não se declara auditoria completa das 23 fontes nem implementação do sistema.
 
 ## 1. Resumo executivo
 
-As fontes descrevem SOFIA como um sistema de obtenção e execução de missões com agentes e supervisão, mas não há, no material consolidado, contrato autoritativo da API, implementação completa ou trilha transacional que confirme o comportamento atual. O modelo operacional anteriormente relatado — Executor → Escriba → RH → Worker, com possibilidade de decomposição em tarefa-mãe/tarefas-filhas — permanece **modelo histórico/proposto**, não arquitetura de produção verificada.
+As fontes descrevem SOFIA como um sistema de obtenção e execução de missões com agentes e supervisão, mas não há, no material consolidado, contrato autoritativo da API, implementação completa ou trilha transacional que confirme o comportamento atual. O modelo operacional anteriormente relatado — Executor → Escriba → RH → Worker, com possibilidade de decomposição em tarefa-mãe/tarefas-filhas — permanece **modelo histórico/proposto**, não arquitetura de produção verificada. A fonte de visão F2.6-01 acrescenta alegações de alto nível sobre roteamento Q-CyPIA, anonimato e ARC-Bayes/PGC, mas não documenta o fluxo de missões ou demonstra execução.
 
-Os oito conjuntos finais reforçam um problema recorrente: transcrições e capturas de interface narram obtenção de tarefas, consulta de rotas, execução, geração de relatórios, upload e finalização, mas geralmente não incluem método HTTP, requisição e resposta integrais, autenticação, timestamp, request-id, status numérico, payload ou verificação posterior. Uma fonte contém tentativas narradas com `HTTP Error 404: Not Found`; outras mencionam `Not Found`, sem status numérico demonstrável. Essas evidências demonstram o que foi relatado/mostrado, não que as rotas estejam ou não implementadas hoje.
+As fontes auditadas dos itens 1 e 16–23 reforçam um problema recorrente: transcrições e capturas de interface narram obtenção de tarefas, consulta de rotas, execução, geração de relatórios, upload e finalização, mas geralmente não incluem método HTTP, requisição e resposta integrais, autenticação, timestamp, request-id, status numérico, payload ou verificação posterior. Uma fonte contém tentativas narradas com `HTTP Error 404: Not Found`; outras mencionam `Not Found`, sem status numérico demonstrável. Essas evidências demonstram o que foi relatado/mostrado, não que as rotas estejam ou não implementadas hoje.
 
 Endpoints concorrentes, estados semânticos não definidos, alegações de sucesso incompatíveis com falhas/espera e duplicações internas extensas mantêm o documento em `REVISÃO`. A classificação distingue **fato observado no artefato**, **implementação alegada**, **protótipo/UI**, **especificação**, **hipótese**, **decisão**, **alternativa**, **descarte**, **conflito** e **lacuna**; repetições de um transcript não são contadas como execuções independentes.
 
@@ -30,7 +30,7 @@ Endpoints concorrentes, estados semânticos não definidos, alegações de suces
 
 **Fora do escopo principal:** desenho detalhado de persistência, sincronização, ChromaDB e banco vetorial (DOM-07); operação e recuperação de infraestrutura (DOM-13); Android (DOM-10); identidade e ARC/Bayes (DOM-04/DOM-05); topologia mesh (DOM-03). Fontes com conteúdo médico, financeiro ou de outra tarefa externa são contexto das missões, não requisitos do MeshWave sem evidência independente.
 
-**Cobertura e proveniência:** o escopo está registrado em `BCE/fontes/ESCOPO_F2_6_SOFIA_AGENTES_MISSOES.md`. Os 23 caminhos foram validados fisicamente. O checkpoint `BCE/sessoes/2026-10-08_f2-6-abertura.md` registra uma primeira passagem textual anterior em 15/23. A leitura profunda descrita nesta atualização cobre os oito últimos diretórios e seus `content.txt`, `code_blocks.txt`, `links.txt` e imagens; os outros 15 não são aqui declarados como auditados em seus arquivos auxiliares/imagens. Os nove conjuntos reservados de persistência/Chroma permanecem fora do lote, salvo dependência direta.
+**Cobertura e proveniência:** o escopo está registrado em `BCE/fontes/ESCOPO_F2_6_SOFIA_AGENTES_MISSOES.md`. Os 23 caminhos foram validados fisicamente. O checkpoint `BCE/sessoes/2026-10-08_f2-6-abertura.md` registra primeira passagem textual anterior em 15/23; nesta revisão, F2.6-01 e F2.6-16–23 tiveram `content.txt`, `code_blocks.txt`, `links.txt` e imagens conferidos. Para F2.6-01, os arquivos foram lidos por inteiro, mas a própria extração traz 24 marcadores de truncamento em `content.txt` e dois em `code_blocks.txt`; a captura preserva apenas o trecho visível da interface. Os outros 14 diretórios (itens 2–15) não são declarados auditados nos seus arquivos auxiliares/imagens. Os nove conjuntos reservados de persistência/Chroma permanecem fora do lote, salvo dependência direta.
 
 ## 3. Terminologia
 
@@ -145,12 +145,13 @@ Nenhum teste/build/execução foi reproduzido nesta curadoria. Códigos HTTP cit
 
 ## 8. Evidências e fontes
 
-### 8.1 Oito fontes finais — leitura profunda nesta sessão
+### 8.1 Nove fontes — leitura profunda dos itens F2.6-01 e F2.6-16–23
 
 Em todos os itens a seguir, `content.txt`, `code_blocks.txt` e `links.txt` foram inspecionados integralmente; imagens raster existentes foram visualizadas. “Observado” refere-se ao artefato/transcript, não a uma nova requisição.
 
 | ID | Caminho relativo | Evidência e classificação | Limitação |
 |---|---|---|---|
+| F2.6-01 | `KNOWLEDGE/johann/20260422_175016_SOFIA and MeshWave Ecosystem Overview - Manus/` | `content.txt` e `code_blocks.txt` são extrações altamente repetitivas: respectivamente 303 linhas/24 marcadores de truncamento e 11 linhas/2 marcadores; há 14 linhas de conteúdo distintas em `content.txt` (mais a linha vazia). `code_blocks.txt` não contém código executável recuperável, apenas fragmento repetido de texto. `FULL.png` (1280×845) mostra captura de UI, página 2/5, com menções a `GLOBALMESHWAVE-Consolidado11Maio2025.md`, Q-CyPIA, seleção de múltiplas rotas com anonimato, ARC-Bayes/PGC, presença física e validação futura em testbeds/estabilidade do fluxo assíncrono. Classificação: visão/especificação narrativa e alegações de capacidade; próximos passos são proposta; texto de leitura e conclusão da reprodução são fatos observados na captura, não prova de backend. `links.txt` contém somente `https://help.manus.im/`. | O texto da extração termina em fragmento (`...baix`) e replica o mesmo conteúdo; a captura mostra apenas uma parte renderizada e não permite examinar os documentos-fonte citados. Não há código, contrato de API, log de execução, teste de testbed ou evidência de Q-CyPIA/PGC em produção. O link de suporte não é documentação técnica do SOFIA. O conjunto sobrepõe-se a DOM-01/DOM-02/DOM-03/DOM-05; não foi promovido a nova descrição do fluxo de agentes. |
 | F2.6-16 | `KNOWLEDGE/iury/20260422_161748_Como acessar e verificar missões na API Sofia - Manus/` | Relata `Not Found` para `/api/v1/oracle/tasks`, `/api/v1/oracle/missions` e leitura direta de Markdown; UI mostra espera. Hipóteses de `/tasks`/`/missions` e Git são abandonadas ou não confirmadas. | Sem método, payload, headers, URL-base consistente, status numérico ou resposta completa; ciclos repetidos não são tentativas independentes. `FULL.png` e `img_000.jpg` mostram UI/corpo textual de erro, não tráfego completo. |
 | F2.6-17 | `KNOWLEDGE/iury/20260422_161834_Como acessar e executar missões na API Sofia - Manus/` | Instrui consultar o manual `/api/v1/oracle/manual`; relata busca sem endpoint específico e bloqueio/pedido de endpoint. | Não mostra execução ou código HTTP. Forte repetição do replay; `FULL.png` é interface/espera. |
 | F2.6-18 | `KNOWLEDGE/iury/20260422_161913_Instruções para a Tarefa no Sofia API Oráculo - Manus/` | Transcrição alterna instruções e alegações de upload/finalização de `Final_Report_TSK42.md`, pesquisa e testes de carga; contém metadados `task_finalization`. | Links vazios; sem corpo do relatório, manual, método/payload/resposta, métrica de teste ou prova de persistência. Instruções contradizem entrega ao usuário versus salvamento via API; `FULL.png` só comprova UI. |
@@ -162,11 +163,11 @@ Em todos os itens a seguir, `content.txt`, `code_blocks.txt` e `links.txt` foram
 
 ### 8.2 Primeira passagem textual anterior — cobertura parcial
 
-O checkpoint `BCE/sessoes/2026-10-08_f2-6-abertura.md` registra primeira passagem textual em 15/23 fontes, incluindo as cinco fontes de visão/contexto, material de agentes, fontes operacionais e parte das instruções Sofia API. Seus achados incluem o fluxo Executor → Escriba → RH → Worker, fatoração e bloqueio da tarefa-mãe, perda de contexto, relatórios propostos, endpoints/estados concorrentes, tentativas de upload, falhas 404/502/TLS e propostas GitHub Actions/contêineres. Esses itens são citados como **achados provisórios de checkpoint**; a conferência fonte a fonte dos `code_blocks.txt`, `links.txt` e imagens desse subconjunto não foi estabelecida nesta sessão.
+O checkpoint `BCE/sessoes/2026-10-08_f2-6-abertura.md` registra primeira passagem textual em 15/23 fontes, incluindo visão/contexto, material de agentes e fontes operacionais. Nesta revisão, F2.6-01 foi auditada diretamente; portanto, permanecem somente os itens 2–15 com primeira passagem textual anterior e sem auditoria canônica de todos os arquivos/imagens. Os achados provisórios da abertura incluem o fluxo Executor → Escriba → RH → Worker, fatoração e bloqueio da tarefa-mãe, perda de contexto, relatórios propostos, endpoints/estados concorrentes, tentativas de upload, falhas 404/502/TLS e propostas GitHub Actions/contêineres. Eles não são convertidos em fatos de implementação por esta leitura do item 1.
 
 ### 8.3 Material sensível
 
-Na leitura dos oito diretórios finais, não foram reproduzidos tokens, senhas, PATs, credenciais ou dados pessoais. Um link de upgrade/assinatura presente em uma fonte foi omitido. Endpoints e identificadores de tarefa aparecem apenas na medida necessária para documentar evidência técnica. Se uma revisão futura encontrar credenciais reais, registrar somente existência/localização e solicitar rotação/revogação, sem copiar o valor.
+Na leitura profunda de F2.6-01 e F2.6-16–23, não foram reproduzidos tokens, senhas, PATs, credenciais ou dados pessoais. Um link de upgrade/assinatura presente em uma fonte final foi omitido. Endpoints e identificadores de tarefa aparecem apenas na medida necessária para documentar evidência técnica. Se uma revisão futura encontrar credenciais reais, registrar somente existência/localização e solicitar rotação/revogação, sem copiar o valor.
 
 ## 9. Evolução arqueológica
 
@@ -175,7 +176,8 @@ Na leitura dos oito diretórios finais, não foram reproduzidos tokens, senhas, 
 | Registros operacionais anteriores à F2.6 | Executor/Escriba/RH/Worker; tarefa-mãe e filhas; contexto original e enriquecido; relatórios final/operacional. | Correções propostas para execução direta em cenário específico, preservar ambos os contextos e gerar relatório no caminho supervisor. | Lote 002 e síntese de abertura F2.6. | Problemas e propostas preservados; implementação atual não confirmada. |
 | Transcripts de missão/API | Rotas REST e leitura de Markdown/Git aparecem como possibilidades. | Algumas alternativas são descartadas após `Not Found`/404 narrado; `/oracle` é preferido em uma fonte; outras fontes alegam acesso/upload sem prova. | F2.6-16 a F2.6-23. | Não há reconciliação normativa; cada ocorrência permanece contextual e não representa contrato. |
 | Transcripts de upload | Relatório e estado final são apresentados como concluídos. | Aparece diagnóstico de que finalização ocorreu sem upload garantido; propostas de PATCH/status. | F2.6-18, F2.6-20, F2.6-21. | Conflito de sequência e de prova; nenhum recibo ou consulta posterior. |
-| Replays/UI | Mensagens, cartões de relatório, “concluída”, “esperando”, indicadores de etapa. | Repetição e fragmentação abundantes. | Imagens e `content.txt` das fontes finais. | UI/replay é evidência de conteúdo exibido, não execução backend. |
+| Replays/UI | Mensagens, cartões de relatório, “concluída”, “esperando”, indicadores de etapa. | Repetição e fragmentação abundantes. | `FULL.png` de F2.6-01 e imagens dos itens 16–23. | UI/replay é evidência de conteúdo exibido, não execução backend. F2.6-01 mostra conclusão da reprodução no produto, mas o texto visível também diz que o contexto ficou muito longo e sugere iniciar outro chat. |
+| Visão de ecossistema (item 1) | Relato de colaboração Q-CyPIA/SDN com seleção de rotas anônimas, ARC-Bayes/PGC e validação futura em testbeds. | Especificação/alegação narrativa. | F2.6-01 `FULL.png`; extrações `content.txt`/`code_blocks.txt`. | Fonte secundária e truncada; conteúdo adjacente a roteamento/arquitetura/ARC, não contrato de agente. Não confirma implementação nem resultado de teste. |
 
 ## 10. Decisões curatoriais e técnicas relatadas
 
@@ -216,7 +218,7 @@ Nenhuma melhoria pode ser declarada implantada. Uma proposta segura para valida�
 
 ## 14. Lacunas e questões em aberto
 
-1. **Completar auditoria dos primeiros 15 diretórios:** conferir `content.txt`, `code_blocks.txt`, `links.txt` e imagens associados, pois o checkpoint anterior só atesta primeira passagem textual. Caminhos: os itens 1–15 de `BCE/fontes/ESCOPO_F2_6_SOFIA_AGENTES_MISSOES.md`.
+1. **Completar auditoria dos itens 2–15:** conferir `content.txt`, `code_blocks.txt`, `links.txt` e imagens associados; o item 1 foi conferido, mas sua extração continua limitada e só apresenta um fragmento da visão na captura. Caminhos: itens 2–15 de `BCE/fontes/ESCOPO_F2_6_SOFIA_AGENTES_MISSOES.md`.
 2. Obter OpenAPI/manual e código efetivamente implantado, com versão/commit e ambiente identificado.
 3. Registrar para cada endpoint: método, base URL, auth (sem valores), headers, schema de request/response, status, filtros, paginação, idempotência e limites.
 4. Definir ciclo de vida nominal: pending, claimed, running, blocked, failed, retrying, report-uploaded, completed; esses nomes são proposta de modelagem, não estados observados/confirmados.
@@ -249,9 +251,10 @@ Nenhuma melhoria pode ser declarada implantada. Uma proposta segura para valida�
 |---|---|---|---|
 | `0.1.0` | `2026-10-08` | Síntese inicial baseada no Lote 002 e no checkpoint textual. | `BCE/sessoes/2026-10-08_f2-6-abertura.md`; commit anterior indicado no histórico do repositório. |
 | `0.2.0` | `2026-10-08` | Acrescenta leitura profunda dos oito diretórios finais, conflitos de API/estado, imagens e limite explícito de cobertura dos 15 anteriores. | F2.6-16–F2.6-23; commit de conteúdo a registrar no controle mestre. |
+| `0.2.1` | `2026-10-08` | Inclui a auditoria F2.6-01, documenta a extração truncada/repetitiva e recalcula a cobertura profunda para 9/23; mantém as alegações de Q-CyPIA/PGC como narrativa não verificada. | F2.6-01 `content.txt`, `code_blocks.txt`, `links.txt`, `FULL.png`; checkpoint `BCE/sessoes/2026-10-08_f2-6-item01-abertura.md`. |
 
 > A convenção comunicada para versionamento do sistema MeshWave considera o estado atual dos módulos como versão `1.0` e incrementos futuros como `1.01`, `1.02` etc. Essa convenção de versão de produto não altera retroativamente o histórico numérico deste documento curatorial; a versão do módulo SOFIA/API em si permanece **não confirmada** nas fontes analisadas.
 
 ## 17. Próximo passo de curadoria
 
-Concluir a auditoria canônica dos 15 primeiros diretórios listados nos itens 1–15 de `BCE/fontes/ESCOPO_F2_6_SOFIA_AGENTES_MISSOES.md`, lendo cada `content.txt`, `code_blocks.txt`, `links.txt` e imagem associada. Atualizar esta matriz e só então decidir se a unidade F2.6 pode ser fechada; manter DOM-06 em `REVISÃO` até contrato, código e execução serem verificáveis.
+Concluir a auditoria canônica dos itens 2–15 listados em `BCE/fontes/ESCOPO_F2_6_SOFIA_AGENTES_MISSOES.md`, lendo cada `content.txt`, `code_blocks.txt`, `links.txt` e imagem associada. Atualizar esta matriz e só então decidir se a unidade F2.6 pode ser fechada; manter DOM-06 em `REVISÃO` até contrato, código e execução serem verificáveis.
