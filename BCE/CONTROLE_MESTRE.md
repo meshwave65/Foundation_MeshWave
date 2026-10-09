@@ -7,7 +7,7 @@
 | Campo | Valor |
 |---|---|
 | Status global | `EM_ANDAMENTO — FASE 2: mapa curatorial e documentos de domínio` |
-| Última atualização | 2026-10-08 22:52 (-03:00) |
+| Última atualização | 2026-10-09 10:29 (-03:00) |
 | Último commit de conteúdo publicado | `89aa4bf` — correção de precisão em DOM-06 v0.2.5; auditoria F2.6-05 em `7abe9f0`, índice em `0ef21ba`; branch `main` sincronizada |
 | Commits locais não publicados | Nenhum após publicar controle e checkpoint; `main` sincronizada com `origin/main` |
 | Branch de trabalho | `main` |
@@ -18,7 +18,7 @@
 | Arquivos curatoriais alterados | `BCE/temas/sofia-agentes-missoes-e-oraculo.md` (v0.2.5); `BCE/INDICE_CURATORIAL.md`; `BCE/CONTROLE_MESTRE.md`; `BCE/sessoes/2026-10-08_f2-6-item05-fechamento.md`. Nenhum arquivo em `KNOWLEDGE/` foi modificado. |
 | Próximo item | Próxima ação exata: após confirmar este checkpoint, ler `content.txt`, `code_blocks.txt`, `links.txt` e inspecionar todas as imagens de `KNOWLEDGE/andressa/20260422_162534_Automatização e Estruturação de Agentes no Projeto Mesh Wave - Manus/` (F2.6-06). Tamanhos e SHA-256 estão pré-registrados em `BCE/sessoes/2026-10-08_f2-6-item05-fechamento.md`. Comparar com DOM-06; não executar código nem fazer chamadas externas. |
 | Conflitos, lacunas e impedimentos | F2.6-05 propõe diretório local simulando DB e log `task_blocks`; alegações do assistente sobre `sentinel.py`, `sofia_db`, agentes, API e missões assíncronas carecem de código/schema ou validação independente. Capturas/replay não comprovam execução; links não acessados. Nenhum valor literal de credencial foi reproduzido; sem chamadas externas ou execução; fontes brutas intactas. DOM-06 permanece `REVISÃO`; itens 6–15 aguardam auditoria canônica. Sem impedimentos para prosseguir na fila. |
-| Responsável pela sessão | Manus — fechamento F2.6-05 |
+| Responsável pela sessão | Manus — retomada F2.6-06 após reconciliação da fila |
 
 ## Como retomar em cinco minutos
 
@@ -74,7 +74,7 @@
 | F2.3 | Mesh networking, comunicação e roteamento | REVISÃO — DOM-03 v0.1.0; lote de 12 fontes processado; sem implementação verificável | F1.7; DOM-01/DOM-02; consultar DOM-03 para evidências, conflitos, hipóteses e lacunas |
 | F2.4 | Identidade, identificação de equipamento e DIDs | CONCLUÍDO — DOM-04 v0.2.0 (`4f7465e`); sete fontes e 12 imagens conferidas; documento permanece `REVISÃO` por ausência de método DID/implementação verificável | F1.7; DOM-01/DOM-03; DOM-05; próximo F2.6 |
 | F2.5 | ARC, autenticação contextual e inferência bayesiana | REVISÃO — DOM-05 v0.1.0 (`e349070`); executada em paralelo por orientação explícita; sem implementação, calibração ou teste verificável | F1.7; DOM-04; revisar após fechamento da F2.4 |
-| F2.6 | SOFIA, agentes, missões e persistência de conhecimento | EM_ANDAMENTO — DOM-06 v0.2.4 (`2944243`); auditoria profunda 12/23 (itens 1–4 e 16–23); itens 5–15 ainda requerem auditoria canônica; contrato/código/execução não confirmados | F1.7; DOM-06; DOM-07; DOM-13 |
+| F2.6 | SOFIA, agentes, missões e persistência de conhecimento | EM_ANDAMENTO — DOM-06 v0.2.5 (`7abe9f0`; correção `89aa4bf`); auditoria profunda 13/23 (itens 1–5 e 16–23); itens 6–15 ainda requerem auditoria canônica; contrato/código/execução não confirmados | F1.7; DOM-06; DOM-07; DOM-13 |
 | F2.7 | Aplicações, simuladores e interfaces | PENDENTE | F1.7 |
 | F2.8 | Hardware, dispositivos e infraestrutura | PENDENTE | F1.7 |
 | F2.9 | Segurança, privacidade, LGPD e governança | PENDENTE | F1.7 |
@@ -226,6 +226,7 @@ O agente atual só deve declarar a tarefa transferível quando:
 | 2026-10-08 | Manus — fechamento F2.6-03 | Texto, blocos, link e imagem auditados; DOM-06 v0.2.3 e índice publicados; cobertura profunda 11/23; F2.6-04 pré-registrada sem leitura semântica | `c61df62` DOM-06; `04a073a` índice; controle/checkpoint neste commit | Ler os quatro artefatos de `KNOWLEDGE/johann/20260422_171657_Relatório de Passagem de Contexto Sistema SOFIA - Manus/` |
 | 2026-10-08 | Manus — fechamento F2.6-04 | Transcript, fragmentos HTML/Vue/CSS, link e imagem auditados; DOM-06 v0.2.4 e índice publicados; cobertura profunda 12/23; F2.6-05 pré-registrada sem leitura semântica | `2944243` DOM-06; `9fdf832` índice; `f84c117` controle/checkpoint publicados | Ler os cinco artefatos de `KNOWLEDGE/meshwave65/20260422_Reabilitação do Sistema SOFIA - Manus/` |
 | 2026-10-08 | Manus — fechamento F2.6-05 | Transcript, blocos, links e duas imagens auditados; DOM-06 v0.2.5 e índice publicados; cobertura profunda 13/23; F2.6-06 pré-registrada sem leitura semântica | `7abe9f0` DOM-06; `89aa4bf` correção de precisão; `0ef21ba` índice; controle/checkpoint publicados juntos nesta unidade | Ler os quatro artefatos de `KNOWLEDGE/andressa/20260422_162534_Automatização e Estruturação de Agentes no Projeto Mesh Wave - Manus/` |
+| 2026-10-09 | Manus — iteração da skill e reconciliação da fila | Skill ampliada para resumir commits e evitar reprocessar itens já publicados; F2.6-03 confirmado concluído em `main`; backlog corrigido para DOM-06 v0.2.5/13/23; F2.6-06 preservada como próxima | `d9e9ba4` skill; controle atualizado nesta unidade | Conferir o pré-registro e processar `KNOWLEDGE/andressa/20260422_162534_Automatização e Estruturação de Agentes no Projeto Mesh Wave - Manus/` (F2.6-06) |
 
 
 ## Lote F1.5 registrado antes da leitura — catálogo de código
