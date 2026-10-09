@@ -1,3 +1,5 @@
+info.sevenrock.com.br | Intervenção curatorial: 2026-10-08 21:33 (-03:00)
+
 # SOFIA, agentes, missões e orquestração
 
 ## Metadados
