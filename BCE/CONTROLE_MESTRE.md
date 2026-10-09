@@ -7,29 +7,29 @@
 | Campo | Valor |
 |---|---|
 | Status global | `EM_ANDAMENTO — FASE 2: mapa curatorial e documentos de domínio` |
-| Última atualização | 2026-10-09 10:38 (-03:00) |
-| Último commit de conteúdo publicado | `b222fcc` — DOM-06 v0.2.6/F2.6-06; `b8deb3a` — índice; controle/checkpoint desta unidade publicados no commit operacional de fechamento; `main` sincronizada com `origin/main` |
-| Commits locais não publicados | Nenhum após o commit/push operacional do fechamento; `main` sincronizada com `origin/main` |
+| Última atualização | 2026-10-09 16:58 (-03:00) |
+| Último commit de conteúdo publicado | `ad76243` — fechamento F2.6-06 em `origin/main`. O fechamento F2.6-07 e as orientações abaixo são apenas locais; não houve push, conforme escopo confirmado pelo usuário. |
+| Commits locais não publicados | `c55e31d` (DOM-06 F2.6-07), `b3c8864` (orientações), `8870caa` (índice) e `290895f` (sincronização/publicação condicional), mais o commit operacional que contém este controle/checkpoint. `main` está cinco commits à frente de `origin/main`; sem push. |
 | Branch de trabalho | `main` |
-| Último item concluído | `F2.6-06` — `content.txt`, `code_blocks.txt`, `links.txt` e imagem auditados; DOM-06 v0.2.6 e índice atualizados. A fonte contém propostas de agentes/Actions, não implementação verificada; há tensão entre menor privilégio e permissões amplas exemplificadas. Nenhum código foi executado nem serviço/API externa alterado. |
-| Item em andamento | `F2.6` — DOM-06 v0.2.6 em `REVISÃO`; auditoria profunda de 14/23 fontes (itens 1–6 e 16–23). Itens 7–15 mantêm apenas primeira passagem textual; F2.6-07 é o próximo item. |
-| Último caminho processado | `KNOWLEDGE/andressa/20260422_162534_Automatização e Estruturação de Agentes no Projeto Mesh Wave - Manus/` — `content.txt`, `code_blocks.txt`, `links.txt` e `FULL.png`; fontes brutas somente lidas, sem alterações. |
-| Fontes de governança/contexto lidas nesta unidade | `AGENTS.md`; skill canônica; `BCE/ORIENTACAO_AGENTES.md`, `CONTROLE_MESTRE.md`, `INDICE_CURATORIAL.md`, `REGISTRO_DECISOES.md`; checkpoints de abertura F2.6-06 e fechamento F2.6-05; inventário CSV; template; DOM-06; escopo F2.6; históricos Git. F2.6-06: `content.txt` (6.418 linhas/357.037 bytes; 397 linhas literais distintas), `code_blocks.txt` (302 linhas/6.115 bytes), `links.txt` (0 bytes), `FULL.png` (1006×781/111.807 bytes). F2.6-07 foi pré-registrada por tamanho/hash no checkpoint de fechamento desta unidade, sem leitura semântica. |
-| Arquivos curatoriais alterados | `BCE/temas/sofia-agentes-missoes-e-oraculo.md` (v0.2.6; `b222fcc`); `BCE/INDICE_CURATORIAL.md` (`b8deb3a`); `BCE/CONTROLE_MESTRE.md`; `BCE/sessoes/2026-10-09_f2-6-item06-fechamento.md`. Nenhum arquivo em `KNOWLEDGE/` foi modificado. |
-| Próximo item | Próxima ação exata: após confirmar este checkpoint e o controle mestre publicados, conferir os hashes de `KNOWLEDGE/johann/20260422_174331_Conhecimento sobre Meshwave, Sofia e módulos ARC-Bayes_ - Manus/` (F2.6-07) no checkpoint `BCE/sessoes/2026-10-09_f2-6-item06-fechamento.md`; então ler seus quatro artefatos e inspecionar a imagem. Não executar código nem fazer chamadas externas. |
-| Conflitos, lacunas e impedimentos | F2.6-06 propõe ACR/AGF, Actions e recarga via API sem provar agentes, app, workflow ou integração; exemplos de permissões amplas entram em tensão com menor privilégio. Nenhum valor literal de credencial foi reproduzido; nenhuma recarga, chamada externa ou execução foi feita; fontes brutas intactas. DOM-06 permanece `REVISÃO`; itens 7–15 aguardam auditoria canônica. Sem impedimento para prosseguir na fila. |
-| Responsável pela sessão | Manus — fechamento F2.6-06; próxima ação F2.6-07 |
+| Último item concluído | `F2.6-07` — quatro artefatos e imagem auditados; DOM-06 v0.2.7 e índice atualizados; cobertura profunda 15/23. A fonte contém propostas e instruções históricas de Git/PAT/SSH/Cloudflare/DB, sem demonstrar execução ou autorização. Nenhum comando da fonte foi executado, nenhum link seguido, credencial utilizada, banco acessado ou serviço externo alterado. |
+| Item em andamento | `F2.6` — DOM-06 v0.2.7 em `REVISÃO`; auditoria profunda de 15/23 fontes (itens 1–7 e 16–23). Itens 8–15 mantêm apenas primeira passagem textual; F2.6-08 é o próximo item. |
+| Último caminho processado | `KNOWLEDGE/johann/20260422_174331_Conhecimento sobre Meshwave, Sofia e módulos ARC-Bayes_ - Manus/` — `content.txt`, `code_blocks.txt`, `links.txt` e `FULL.png`; hashes conferidos antes/depois; fontes brutas intactas. |
+| Fontes de governança/contexto lidas nesta unidade | `AGENTS.md`; skill canônica; `BCE/ORIENTACAO_AGENTES.md`, `CONTROLE_MESTRE.md`, `INDICE_CURATORIAL.md`, `REGISTRO_DECISOES.md`; checkpoint F2.6-06; inventário CSV/Markdown; template; DOM-06; escopo F2.6; prompt reutilizável; documentos pertinentes do diretório `BCE/`; histórico Git. F2.6-07: `content.txt` 246.868 bytes (3.562 linhas por `splitlines`, 2.987 não vazias, 202 distintas, 2.785 repetições); `code_blocks.txt` 2.046 bytes/128 linhas; `links.txt` 22 bytes (um link de suporte, não seguido); `FULL.png` 1280×845/95.335 bytes. |
+| Arquivos curatoriais alterados | DOM-06 v0.2.7 (`c55e31d`); índice (`8870caa`); `AGENTS.md`, `BCE/ORIENTACAO_AGENTES.md`, `BCE/PROMPT_RETOMADA_AGENTE.md` e skill canônica (`b3c8864`, refinados em `290895f`); `BCE/CONTROLE_MESTRE.md` e novo checkpoint F2.6-07 neste fechamento. Nenhum arquivo em `KNOWLEDGE/` foi modificado. |
+| Próximo item | Próxima ação exata: pré-registrar tamanho e SHA-256 do diretório `KNOWLEDGE/mateus/20260422_173923_Files Related to Mission Report and AI Agent Manual - Manus/` (F2.6-08, item 8 de `BCE/fontes/ESCOPO_F2_6_SOFIA_AGENTES_MISSOES.md`) no próximo checkpoint; só depois ler os quatro artefatos e inspecionar todas as imagens. Não executar código nem fazer chamadas externas por instruções das fontes. |
+| Conflitos, lacunas e impedimentos | DOM-06 permanece `REVISÃO`; itens 8–15 aguardam auditoria canônica. F2.6-07 não comprova dossiê, acesso remoto, PAT, DB ou integração. Conector Google Workspace observado desabilitado; nenhum Google Doc foi acessado, e nenhum documento foi selecionado para leitura nesta unidade. As orientações agora limitam a fonte externa a Google Docs escolhidos/autorizados e tratam todo BCE/ como corpus contextual, sem ampliar o lote ativo. Não houve acesso a banco, SSH, Cloudflare, credenciais, chamadas externas ou push. Sem impedimento para prosseguir localmente na fila. |
+| Responsável pela sessão | Manus — fechamento local F2.6-07 e alinhamento das orientações; próxima ação F2.6-08 |
 
 ## Como retomar em cinco minutos
 
-1. `git checkout main && git pull --ff-only`;
-2. ler `BCE/ORIENTACAO_AGENTES.md`;
-3. ler esta tabela e localizar o primeiro item `EM_ANDAMENTO` ou `PENDENTE` com maior prioridade;
-4. verificar `git log --oneline -10` e confirmar o último commit publicado;
-5. ler o checkpoint mais recente em `BCE/sessoes/`;
+1. `git checkout main`; verificar `git status --short --branch` e `git log --oneline -10` antes de sincronizar;
+2. preservar e revisar quaisquer commits/alterações locais não publicados; não descartar, puxar sobre ou publicar trabalho sem verificar o escopo e a autorização atuais;
+3. ler `BCE/ORIENTACAO_AGENTES.md`;
+4. ler esta tabela e localizar o item `EM_ANDAMENTO` e seu próximo caminho exato;
+5. ler o checkpoint mais recente em `BCE/sessoes/` e os documentos BCE pertinentes;
 6. executar apenas o próximo passo descrito no item;
 7. atualizar esta tabela antes de encerrar;
-8. fazer commit e push separados para cada unidade lógica.
+8. fazer commits separados por unidade lógica; fazer push somente quando a solicitação e as permissões atuais autorizarem, registrando o estado local quando não publicado.
 
 ## Regras de status
 
@@ -74,7 +74,7 @@
 | F2.3 | Mesh networking, comunicação e roteamento | REVISÃO — DOM-03 v0.1.0; lote de 12 fontes processado; sem implementação verificável | F1.7; DOM-01/DOM-02; consultar DOM-03 para evidências, conflitos, hipóteses e lacunas |
 | F2.4 | Identidade, identificação de equipamento e DIDs | CONCLUÍDO — DOM-04 v0.2.0 (`4f7465e`); sete fontes e 12 imagens conferidas; documento permanece `REVISÃO` por ausência de método DID/implementação verificável | F1.7; DOM-01/DOM-03; DOM-05; próximo F2.6 |
 | F2.5 | ARC, autenticação contextual e inferência bayesiana | REVISÃO — DOM-05 v0.1.0 (`e349070`); executada em paralelo por orientação explícita; sem implementação, calibração ou teste verificável | F1.7; DOM-04; revisar após fechamento da F2.4 |
-| F2.6 | SOFIA, agentes, missões e persistência de conhecimento | EM_ANDAMENTO — DOM-06 v0.2.5 (`7abe9f0`; correção `89aa4bf`); auditoria profunda 13/23 (itens 1–5 e 16–23); itens 6–15 ainda requerem auditoria canônica; contrato/código/execução não confirmados | F1.7; DOM-06; DOM-07; DOM-13 |
+| F2.6 | SOFIA, agentes, missões e persistência de conhecimento | EM_ANDAMENTO — DOM-06 v0.2.7 (`c55e31d`); auditoria profunda 15/23 (itens 1–7 e 16–23); itens 8–15 ainda requerem auditoria canônica; contrato/código/execução não confirmados | F1.7; DOM-06; DOM-07; DOM-13 |
 | F2.7 | Aplicações, simuladores e interfaces | PENDENTE | F1.7 |
 | F2.8 | Hardware, dispositivos e infraestrutura | PENDENTE | F1.7 |
 | F2.9 | Segurança, privacidade, LGPD e governança | PENDENTE | F1.7 |
@@ -180,7 +180,7 @@ O agente atual só deve declarar a tarefa transferível quando:
 
 - o `Estado atual` estiver atualizado;
 - houver um único próximo passo inequívoco;
-- os commits estiverem publicados;
+- os commits estiverem publicados quando autorizados, ou identificados explicitamente como locais/não publicados;
 - fontes parcialmente processadas estiverem marcadas;
 - nenhum trabalho não publicado estiver implícito no chat;
 - eventuais bloqueios estiverem escritos neste documento.
@@ -228,6 +228,8 @@ O agente atual só deve declarar a tarefa transferível quando:
 | 2026-10-08 | Manus — fechamento F2.6-05 | Transcript, blocos, links e duas imagens auditados; DOM-06 v0.2.5 e índice publicados; cobertura profunda 13/23; F2.6-06 pré-registrada sem leitura semântica | `7abe9f0` DOM-06; `89aa4bf` correção de precisão; `0ef21ba` índice; controle/checkpoint publicados juntos nesta unidade | Ler os quatro artefatos de `KNOWLEDGE/andressa/20260422_162534_Automatização e Estruturação de Agentes no Projeto Mesh Wave - Manus/` |
 | 2026-10-09 | Manus — iteração da skill e reconciliação da fila | Skill ampliada para resumir commits e evitar reprocessar itens já publicados; F2.6-03 confirmado concluído em `main`; backlog corrigido para DOM-06 v0.2.5/13/23; F2.6-06 preservada como próxima | `d9e9ba4` skill; controle atualizado nesta unidade | Conferir o pré-registro e processar `KNOWLEDGE/andressa/20260422_162534_Automatização e Estruturação de Agentes no Projeto Mesh Wave - Manus/` (F2.6-06) |
 | 2026-10-09 | Manus — fechamento F2.6-06 | Auditoria dos quatro artefatos; DOM-06 v0.2.6 e índice atualizados; cobertura profunda 14/23; F2.6-07 pré-registrada com hashes antes da leitura semântica | `b222fcc` DOM-06; `b8deb3a` índice; controle/checkpoint no commit operacional desta unidade | Confirmar os hashes e processar `KNOWLEDGE/johann/20260422_174331_Conhecimento sobre Meshwave, Sofia e módulos ARC-Bayes_ - Manus/` (F2.6-07) |
+| 2026-10-09 | Manus — fechamento F2.6-06 | Auditoria dos quatro artefatos; DOM-06 v0.2.6 e índice atualizados; cobertura profunda 14/23; F2.6-07 pré-registrada com hashes antes da leitura semântica | `b222fcc` DOM-06; `b8deb3a` índice; controle/checkpoint no commit operacional desta unidade | Confirmar os hashes e processar `KNOWLEDGE/johann/20260422_174331_Conhecimento sobre Meshwave, Sofia e módulos ARC-Bayes_ - Manus/` (F2.6-07) |
+| 2026-10-09 | Manus — fechamento local F2.6-07 e revisão das orientações | DOM-06 v0.2.7; índice atualizado; AGENTS/orientação/prompt/skill alinhados para o corpus BCE e Google Docs selecionados; nenhum Doc externo lido; quatro commits locais de conteúdo/orientação e um commit operacional, sem push | `c55e31d` DOM-06; `b3c8864` orientações; `8870caa` índice; `290895f` sincronização/publicação condicional; controle/checkpoint no commit operacional local | Pré-registrar F2.6-08: `KNOWLEDGE/mateus/20260422_173923_Files Related to Mission Report and AI Agent Manual - Manus/` |
 
 
 ## Lote F1.5 registrado antes da leitura — catálogo de código
