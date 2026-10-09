@@ -7,7 +7,7 @@
 | Campo | Valor |
 |---|---|
 | Status global | `EM_ANDAMENTO — FASE 2: mapa curatorial e documentos de domínio` |
-| Última atualização | 2026-10-08 22:42 (-03:00) |
+| Última atualização | 2026-10-08 22:43 (-03:00) |
 | Último commit de conteúdo publicado | `9fdf832` — índice após DOM-06 v0.2.4; conteúdo F2.6-04 em `2944243`; branch `main` sincronizada |
 | Commits locais não publicados | Nenhum; `main` sincronizada com `origin/main` |
 | Branch de trabalho | `main` |
@@ -224,7 +224,7 @@ O agente atual só deve declarar a tarefa transferível quando:
 | 2026-10-08 | Agente BCE MeshWave — abertura de F2.6-02 | Arquivos, tamanhos e SHA-256 registrados antes de ler conteúdo; conjunto corresponde ao inventário; fontes brutas intactas | Checkpoint `BCE/sessoes/2026-10-08_f2-6-item02-abertura.md`, commit `e65ecdf` | Ler os quatro artefatos registrados, comparar com DOM-06 e atualizar evidência/cobertura |
 | 2026-10-08 | Manus — fechamento F2.6-02 / teste da skill | Transcript, blocos, links e imagem auditados; DOM-06 v0.2.2 e índice atualizados; cobertura profunda 10/23; item 3 pré-registrado sem leitura semântica | `ef063e4` DOM-06; `a96ab7b` índice; controle/checkpoint publicados juntos nesta unidade | Confirmar o pré-registro e processar F2.6-03 em `KNOWLEDGE/johann/20260422_175351_Uploaded Documents Related to SOFIA and MeshWave Ecosystem - Manus/` |
 | 2026-10-08 | Manus — fechamento F2.6-03 | Texto, blocos, link e imagem auditados; DOM-06 v0.2.3 e índice publicados; cobertura profunda 11/23; F2.6-04 pré-registrada sem leitura semântica | `c61df62` DOM-06; `04a073a` índice; controle/checkpoint neste commit | Ler os quatro artefatos de `KNOWLEDGE/johann/20260422_171657_Relatório de Passagem de Contexto Sistema SOFIA - Manus/` |
-| 2026-10-08 | Manus — fechamento F2.6-04 | Transcript, fragmentos HTML/Vue/CSS, link e imagem auditados; DOM-06 v0.2.4 e índice publicados; cobertura profunda 12/23; F2.6-05 pré-registrada sem leitura semântica | `2944243` DOM-06; `9fdf832` índice; controle/checkpoint neste commit | Ler os cinco artefatos de `KNOWLEDGE/meshwave65/20260422_Reabilitação do Sistema SOFIA - Manus/` |
+| 2026-10-08 | Manus — fechamento F2.6-04 | Transcript, fragmentos HTML/Vue/CSS, link e imagem auditados; DOM-06 v0.2.4 e índice publicados; cobertura profunda 12/23; F2.6-05 pré-registrada sem leitura semântica | `2944243` DOM-06; `9fdf832` índice; `f84c117` controle/checkpoint publicados | Ler os cinco artefatos de `KNOWLEDGE/meshwave65/20260422_Reabilitação do Sistema SOFIA - Manus/` |
 
 
 ## Lote F1.5 registrado antes da leitura — catálogo de código

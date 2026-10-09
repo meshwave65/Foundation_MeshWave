@@ -3,7 +3,7 @@
 ## Registro da unidade concluída
 
 - **Início:** 2026-10-08 22:38 (-03:00).
-- **Fechamento:** 2026-10-08 22:42 (-03:00).
+- **Fechamento:** 2026-10-08 22:43 (-03:00).
 - **Agente/sessão:** Manus — retomada BCE MeshWave, tarefa `SgvVE2C0Whw6VvSWqKeDLj`.
 - **Branch:** `main`.
 - **Commit inicial:** `51971c9` — `chore(bce): registrar fechamento de F2.6-03`.
@@ -33,7 +33,7 @@
 
 - `BCE/temas/sofia-agentes-missoes-e-oraculo.md` — versão `0.2.4`, em `REVISÃO`, incorpora F2.6-04 e cobertura profunda 12/23; commit `2944243` (`curation(dom-06): auditar fonte F2.6-04`), enviado a `origin/main`.
 - `BCE/INDICE_CURATORIAL.md` — DOM-06 e cobertura atualizados; commit `9fdf832` (`docs(bce): atualizar indice apos F2.6-04`), enviado a `origin/main`.
-- Este checkpoint e `BCE/CONTROLE_MESTRE.md` são o fechamento operacional desta unidade e serão publicados juntos em commit próprio.
+- Este checkpoint e `BCE/CONTROLE_MESTRE.md` foram publicados juntos em `f84c117` (`chore(bce): registrar fechamento de F2.6-04`) em `origin/main`.
 - Nenhum arquivo de `KNOWLEDGE/` foi modificado.
 
 ## Pré-registro físico da próxima fonte — F2.6-05
