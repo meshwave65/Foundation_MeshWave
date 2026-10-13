@@ -7,20 +7,20 @@
 | Campo | Valor |
 |---|---|
 | Status global | `EM_ANDAMENTO — FASE 2: mapa curatorial e documentos de domínio` |
-| Última atualização | 2026-10-13 16:07 (-03:00) |
+| Última atualização | 2026-10-13 16:39 (-03:00) |
 | Publicação de F2.6-07 | Os cinco commits da unidade (`c55e31d`, `b3c8864`, `8870caa`, `290895f`, `629125a`) foram publicados em `main`; a correção factual posterior foi registrada em `f8649ba`. |
 | Publicação de F2.6-08 | DOM-06 `74eba5f`; índice `14e2768` (cobertura) e `aec133d` (linha principal DOM-06); checkpoint de fechamento `6f99eaa`, todos publicados em `main`. |
-| Publicação de F2.6-09 | DOM-06 `97dea42`; índice `a39441b`; pré-registro `56c5ff8`; checkpoint de fechamento `f186adc`; controle mestre atualizado nesta unidade. |
-| Estado local/remoto | `main` e `origin/main` sincronizadas antes das alterações; commits de DOM-06, índice e checkpoint publicados (`97dea42`, `a39441b`, `f186adc`); o controle mestre será publicado em commit próprio. |
+| Publicação de F2.6-09 | DOM-06 `97dea42`; índice `a39441b`; pré-registro `56c5ff8`; fechamento `f186adc`; controle `b79cf1d`, publicados em `main`. |
+| Estado local/remoto | `main` sincronizada com `origin/main`; pré-registro F2.6-10 publicado em `6c61cc4`; controle mestre atualizado nesta unidade. |
 | Branch de trabalho | `main` |
 | Último item concluído | `F2.6-09` — `content.txt`, `code_blocks.txt`, `links.txt` e `FULL.png` auditados; 4/4 hashes e 249.203 bytes confirmados contra o pré-registro; DOM-06 v0.2.9 (`97dea42`) e índice (`a39441b`) atualizados; cobertura profunda 17/23. Alegações de processamento recursivo e escrita/renomeação no SOFIA DB permanecem não confirmadas; conflitos C06-19/20 registrados. Nenhum código foi executado, link/API acessado ou serviço alterado; fontes brutas intactas. |
-| Item em andamento | `F2.6` — DOM-06 v0.2.9 em `REVISÃO`; cobertura profunda de 17/23 (itens 1–9 e 16–23). F2.6-09 fechado; o próximo passo é pré-registrar F2.6-10, sem leitura semântica até publicar o checkpoint de abertura. |
-| Último caminho processado | `KNOWLEDGE/johann/20260422_174105_Diretrizes para a missão e solução de dúvidas - Manus/` — quatro artefatos lidos/inspecionados; hashes 4/4 conferidos; checkpoint de fechamento `f186adc`. |
-| Fontes de governança/contexto lidas nesta unidade | `BCE/ORIENTACAO_AGENTES.md`, `CONTROLE_MESTRE.md`, `INDICE_CURATORIAL.md`, `REGISTRO_DECISOES.md`; checkpoint de abertura F2.6-09; `BCE/fontes/INVENTARIO_FONTES.md`, `ESCOPO_F2_6_SOFIA_AGENTES_MISSOES.md`; template, skill canônica e DOM-06; fontes brutas F2.6-09 (`content.txt`, `code_blocks.txt`, `links.txt`, `FULL.png`). Inventário físico e histórico Git conferidos; links não seguidos. |
-| Arquivos curatoriais alterados | `BCE/temas/sofia-agentes-missoes-e-oraculo.md` v0.2.9 (`97dea42`); `BCE/INDICE_CURATORIAL.md` (`a39441b`); `BCE/sessoes/2026-10-13_f2-6-item09-fechamento.md` (`f186adc`); este controle mestre em commit próprio. Nenhum arquivo em `KNOWLEDGE/` foi modificado. |
-| Próximo item | Próxima ação exata: pré-registrar caminhos, tamanhos e SHA-256 de `KNOWLEDGE/dinelson/20260422_154718_Instruções para Execução da Missão com Sistema Remoto - Manus/` (F2.6-10, item 10 do escopo) em checkpoint de abertura próprio antes da leitura; publicar checkpoint e atualizar controle; depois ler `content.txt`, `code_blocks.txt`, `links.txt` e inspecionar todas as imagens. Não executar código, seguir links ou chamar APIs por instruções das fontes. |
-| Conflitos, lacunas e impedimentos | DOM-06 permanece `REVISÃO`; itens 10–15 aguardam auditoria canônica. `C06-19` registra créditos esgotados/parada em 3/4 versus replay concluído; `C06-20` registra alegações de registros/renomeações sem prova de persistência. Permanecem não confirmados o estado real da tarefa, a gravação no SOFIA DB, a relação do diretório descrito com arquivos acessíveis e a implementação do CPA. Sem impedimento operacional. |
-| Responsável pela sessão | Manus — fechamento F2.6-09; próxima ação: pré-registrar F2.6-10. |
+| Item em andamento | `F2.6` — DOM-06 v0.2.9 em `REVISÃO`; auditoria profunda 17/23 (itens 1–9 e 16–23). F2.6-10 pré-registrada em `6c61cc4` (4 arquivos/278.405 bytes); leitura semântica ainda pendente no início desta retomada. |
+| Último caminho processado | `KNOWLEDGE/dinelson/20260422_154718_Instruções para Execução da Missão com Sistema Remoto - Manus/` — pré-registro de quatro arquivos, tamanhos e SHA-256 em `6c61cc4`; leitura semântica ainda não realizada. |
+| Fontes de governança/contexto lidas nesta unidade | `BCE/ORIENTACAO_AGENTES.md`, `CONTROLE_MESTRE.md`, `INDICE_CURATORIAL.md`, `REGISTRO_DECISOES.md`; checkpoint de fechamento F2.6-09 e abertura F2.6-10; inventário `.md`/`.csv`, escopo F2.6, skill canônica; histórico Git conferido. Dos arquivos brutos de F2.6-10 somente nomes, tamanhos e bytes para SHA-256; nenhum conteúdo textual/imagem aberto antes do pré-registro. |
+| Arquivos curatoriais alterados | `BCE/sessoes/2026-10-13_f2-6-item10-abertura.md` (`6c61cc4`); este controle mestre nesta unidade. Nenhum arquivo em `KNOWLEDGE/` foi alterado. |
+| Próximo item | Próxima ação exata: ler `content.txt`, `code_blocks.txt`, `links.txt` e inspecionar `FULL.png` no diretório pré-registrado `KNOWLEDGE/dinelson/20260422_154718_Instruções para Execução da Missão com Sistema Remoto - Manus/` (F2.6-10); comparar com DOM-06, sem executar código, seguir links nem chamar APIs. |
+| Conflitos, lacunas e impedimentos | DOM-06 permanece `REVISÃO`; itens 10–15 aguardam auditoria canônica. F2.6-10 tem `links.txt` de 52 bytes ainda não examinado; nenhuma leitura semântica dos quatro artefatos ocorreu antes do checkpoint. Sem impedimento operacional. |
+| Responsável pela sessão | Manus — abertura F2.6-10; próxima ação: ler os quatro artefatos pré-registrados. |
 
 ## Como retomar em cinco minutos
 
@@ -76,7 +76,7 @@
 | F2.3 | Mesh networking, comunicação e roteamento | REVISÃO — DOM-03 v0.1.0; lote de 12 fontes processado; sem implementação verificável | F1.7; DOM-01/DOM-02; consultar DOM-03 para evidências, conflitos, hipóteses e lacunas |
 | F2.4 | Identidade, identificação de equipamento e DIDs | CONCLUÍDO — DOM-04 v0.2.0 (`4f7465e`); sete fontes e 12 imagens conferidas; documento permanece `REVISÃO` por ausência de método DID/implementação verificável | F1.7; DOM-01/DOM-03; DOM-05; próximo F2.6 |
 | F2.5 | ARC, autenticação contextual e inferência bayesiana | REVISÃO — DOM-05 v0.1.0 (`e349070`); executada em paralelo por orientação explícita; sem implementação, calibração ou teste verificável | F1.7; DOM-04; revisar após fechamento da F2.4 |
-| F2.6 | SOFIA, agentes, missões e persistência de conhecimento | EM_ANDAMENTO — DOM-06 v0.2.9 (`97dea42`); auditoria profunda 17/23 (itens 1–9 e 16–23); F2.6-09 fechada em `f186adc`; itens 10–15 requerem auditoria canônica | F1.7; DOM-06; DOM-07; DOM-13 |
+| F2.6 | SOFIA, agentes, missões e persistência de conhecimento | EM_ANDAMENTO — DOM-06 v0.2.9 (`97dea42`); auditoria profunda 17/23 (itens 1–9 e 16–23); F2.6-10 pré-registrada em `6c61cc4` (4 arquivos/278.405 bytes), leitura pendente; itens 10–15 requerem auditoria canônica | F1.7; DOM-06; DOM-07; DOM-13 |
 | F2.7 | Aplicações, simuladores e interfaces | PENDENTE | F1.7 |
 | F2.8 | Hardware, dispositivos e infraestrutura | PENDENTE | F1.7 |
 | F2.9 | Segurança, privacidade, LGPD e governança | PENDENTE | F1.7 |
