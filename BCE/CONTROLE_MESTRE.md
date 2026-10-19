@@ -7,21 +7,22 @@
 | Campo | Valor |
 |---|---|
 | Status global | `EM_ANDAMENTO — FASE 2: mapa curatorial e documentos de domínio` |
-| Última atualização | 2026-10-19 06:32 (-03:00) |
+| Última atualização | 2026-10-19 07:35 (-03:00) |
 | Publicação de F2.6-07 | Os cinco commits da unidade (`c55e31d`, `b3c8864`, `8870caa`, `290895f`, `629125a`) foram publicados em `main`; a correção factual posterior foi registrada em `f8649ba`. |
 | Publicação de F2.6-08 | DOM-06 `74eba5f`; índice `14e2768` (cobertura) e `aec133d` (linha principal DOM-06); checkpoint de fechamento `6f99eaa`, todos publicados em `main`. |
 | Publicação de F2.6-09 | DOM-06 `97dea42`; índice `a39441b`; pré-registro `56c5ff8`; fechamento `f186adc`; controle `b79cf1d`, publicados em `main`.
 | Publicação de F2.6-10 | DOM-06 `734577e`; índice `ecc5b56`; pré-registro/fechamento F2.6-10 e abertura F2.6-11 `0fa447e`, publicados em `main`. |
-| Estado local/remoto | `main` sincronizada com `origin/main`; DOM-06, índice e checkpoint F2.6-10/11 publicados em `734577e`, `ecc5b56` e `0fa447e`; este controle será publicado em commit próprio. |
+| Publicação de F2.6-11 | DOM-06 `c463af9`; índice `1737039`; fechamento e abertura F2.6-12 `ec2bbcf`, publicados em `main`. |
+| Estado local/remoto | `main` sincronizada com `origin/main` em `ec2bbcf`; este controle estava defasado em relação ao checkpoint F2.6-11 e será reconciliado em commit próprio. |
 | Branch de trabalho | `main` |
-| Último item concluído | `F2.6-10` — os quatro artefatos foram auditados e os hashes 4/4 confirmados contra o pré-registro (`6c61cc4`); DOM-06 v0.3.0 (`734577e`) e índice (`ecc5b56`) publicados; cobertura profunda 18/23 (itens 1–10 e 16–23). Proposta workspace→`knowledge_artifacts`, API indisponível narrada, código fragmentário e replay 4/4 ambíguo; execução/persistência não confirmadas. Conflitos C06-21–23 registrados. Nenhum código/link/API executado ou acessado; fontes brutas intactas. |
-| Item em andamento | `F2.6` — DOM-06 v0.3.0 em `REVISÃO`; auditoria profunda 18/23 (itens 1–10 e 16–23). `F2.6-11` pré-registrada em `0fa447e` (18 arquivos/834.075 bytes); conteúdo ainda não lido. |
-| Último caminho processado | `KNOWLEDGE/dinelson/20260422_154718_Instruções para Execução da Missão com Sistema Remoto - Manus/` — F2.6-10 auditado; SHA-256 4/4 confirmado contra o pré-registro. F2.6-11 foi somente enumerada e hasheada, sem leitura semântica. |
-| Fontes de governança/contexto lidas nesta unidade | `ORIENTACAO_AGENTES.md`, `CONTROLE_MESTRE.md`, `INDICE_CURATORIAL.md`, `REGISTRO_DECISOES.md`, skill BCE, escopo/inventário F2.6, checkpoint de abertura F2.6-10 e histórico Git. F2.6-10: quatro artefatos lidos/inspecionados; F2.6-11: somente nomes, bytes e SHA-256 pré-registrados. |
-| Arquivos curatoriais alterados | DOM-06 (`734577e`); índice curatorial (`ecc5b56`); checkpoint F2.6-10/11 (`0fa447e`); este controle mestre em commit próprio. Nenhum arquivo em `KNOWLEDGE/` foi alterado. |
-| Próximo item | Próxima ação exata, após este controle ser publicado: ler `content.txt`, `code_blocks.txt` e `links.txt`, inspecionar `FULL.png` e `img_000.jpg`–`img_013.jpg` no diretório pré-registrado `KNOWLEDGE/andressa/20260422_161931_Como acessar e concluir missões na API Sofia - Manus/` (F2.6-11); comparar com DOM-06 e, ao final, conferir tamanhos/SHA-256. Não executar código, seguir links nem chamar APIs. |
-| Conflitos, lacunas e impedimentos | DOM-06 permanece `REVISÃO`; F2.6-11–15 aguardam auditoria canônica. F2.6-11 está pré-registrada (18 arquivos/834.075 bytes), sem leitura semântica. F2.6-10 mantém conflitos de fonte de verdade (workspace/banco), estado do script e conclusão/replay. Sem impedimento operacional. |
-| Responsável pela sessão | Manus — fechamento F2.6-10 e abertura F2.6-11; próxima ação: ler os 18 artefatos pré-registrados de F2.6-11. |
+| Último item concluído | `F2.6-11` — os 18 artefatos foram auditados e os hashes 18/18 confirmados; DOM-06 v0.3.1 (`c463af9`) e índice (`1737039`) publicados; cobertura profunda 19/23 (itens 1–11 e 16–23). Claims de tarefas, erro 502 e UI 3/5/créditos esgotados permanecem não confirmados como execução SOFIA. |
+| Item em andamento | `F2.6` — DOM-06 v0.3.1 em `REVISÃO`; F2.6-12 aberta e pré-registrada em `ec2bbcf` (4 arquivos/247.235 bytes), leitura semântica pendente. Itens 12–15 requerem auditoria canônica. |
+| Último caminho processado | `KNOWLEDGE/andressa/20260422_161931_Como acessar e concluir missões na API Sofia - Manus/` — F2.6-11 auditado; SHA-256 18/18 confirmado. Próximo caminho pré-registrado: `KNOWLEDGE/dinecy/20260422_171255_Diretrizes para execução da tarefa no Sofia API - Manus/`. |
+| Fontes de governança/contexto lidas nesta unidade | `AGENTS.md`, skill BCE, `ORIENTACAO_AGENTES.md`, `CONTROLE_MESTRE.md`, `INDICE_CURATORIAL.md`, `REGISTRO_DECISOES.md`, escopo/inventário F2.6, checkpoint F2.6-11 e histórico Git. F2.6-11: quatro artefatos textuais e 15 imagens auditados; F2.6-12: somente nomes, bytes e SHA-256 pré-registrados. |
+| Arquivos curatoriais alterados | Este controle mestre; nenhum arquivo em `KNOWLEDGE/` foi alterado. DOM-06, índice e checkpoint F2.6-11/12 já estavam publicados em `c463af9`, `1737039` e `ec2bbcf`. |
+| Próximo item | Auditar F2.6-12: ler `content.txt`, `code_blocks.txt` e `links.txt`, inspecionar `FULL.png`, comparar com DOM-06 e reconfirmar tamanho/SHA-256; não executar código, seguir links nem chamar APIs. |
+| Conflitos, lacunas e impedimentos | DOM-06 permanece `REVISÃO`; F2.6-12–15 aguardam auditoria canônica. F2.6-12 está pré-registrada (4 arquivos/247.235 bytes), sem leitura semântica. F2.6-10/11 mantêm execução/replay e backend não confirmados. Credencial administrativa recebida fora das fontes não será armazenada nem utilizada; deve ser rotacionada pelo responsável. |
+| Responsável pela sessão | Manus — reconciliação do controle e auditoria F2.6-12; próxima ação: ler os quatro artefatos pré-registrados de F2.6-12. |
 
 ## Como retomar em cinco minutos
 
