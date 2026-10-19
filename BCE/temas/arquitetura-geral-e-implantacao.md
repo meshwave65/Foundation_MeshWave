@@ -5,9 +5,9 @@
 | Campo | Valor |
 |---|---|
 | ID curatorial | `DOM-02` |
-| Status | `REVISÃO` — primeira síntese; arquitetura e cronograma não validados |
-| Versão do documento | `0.1.0` |
-| Última atualização | `2026-10-08` |
+| Status | `REVISÃO` — síntese conceitual; arquitetura, cronograma e implantação não validados |
+| Versão do documento | `0.1.1` |
+| Última atualização | `2026-10-19` |
 | Curador | `Manus — curadoria BCE MeshWave` |
 | Confiança geral | Média para a existência da proposta arquitetural; baixa para vigência, implantação e funcionamento |
 | Documento relacionado no índice | `BCE/INDICE_CURATORIAL.md` — DOM-02 |
@@ -18,11 +18,11 @@ Há uma descrição técnica na raiz (`01_arquitetura_geral_meshwave.md`, rotula
 
 As imagens associadas a duas fontes de `KNOWLEDGE/` mostram principalmente **um roadmap por segmentos e fases**, não uma arquitetura implantada. Esse roadmap distribui itens entre quatro fases e uma escala temporal aproximada de 2025 a 2032. Uma captura textual ainda afirma que existiria um módulo Python de prova de conceito e descreve a transição de um protótipo para a Fase 2, mas nenhum código, commit, build ou resultado correspondente está anexado às fontes examinadas. Os conteúdos de “módulos faltantes” relatam a preparação de roteiros explicativos; os próprios roteiros não foram localizados nos artefatos da fonte.
 
-Portanto, DOM-02 registra uma **arquitetura conceitual proposta e um roadmap**, não uma arquitetura de produção ou plano de implantação validado. As escolhas de transporte, criptografia, IA, DLT, LEO, 6G, computação quântica e armazenamento P2P abaixo devem permanecer classificadas como componentes propostos até serem associadas a artefatos rastreáveis e testes.
+Portanto, DOM-02 registra uma **arquitetura conceitual proposta e um roadmap**, não uma arquitetura de produção ou plano de implantação validado. A auditoria direta F3.1/E003 confirma que a fonte CLA contém uma grade visual, mas a conversa e a imagem não fornecem legenda, CRS ou algoritmo que permitam reproduzir a hierarquia. As escolhas de transporte, criptografia, IA, DLT, LEO, 6G, computação quântica e armazenamento P2P abaixo devem permanecer classificadas como componentes propostos até serem associadas a artefatos rastreáveis e testes.
 
 ## 2. Escopo e limites
 
-Esta primeira revisão processa o arquivo arquitetural listado como candidato no índice e os três conjuntos apontados no DOM-01 §13:
+A síntese original de F2.2 processou o arquivo arquitetural listado como candidato no índice e os três conjuntos que então estavam definidos no §13 da versão vigente de DOM-01. Em F3.1, E003/L001-03 foi reauditada diretamente em cinco artefatos, com pré-registro e hashes 5/5 confirmados; a atualização abaixo incorpora essa verificação sem alterar as fontes brutas:
 
 1. `01_arquitetura_geral_meshwave.md`;
 2. `KNOWLEDGE/info/20260422_165052_Fonte para Arquitetura e Operação da Rede MeshWave - Manus/`;
@@ -146,7 +146,7 @@ As três fontes brutas indicadas pelo DOM-01 não fornecem código de arquitetur
 
 - `165052/.../code_blocks.txt` está vazio, e `links.txt` também; a captura menciona Python, mas o arquivo e os resultados não acompanham a fonte.
 - `174348/.../code_blocks.txt` contém uma passagem de narração sobre armazenamento P2P, não código; `links.txt` vazio.
-- `165701/.../code_blocks.txt` repete um excerto textual de `previous_task_context.md`; não é algoritmo; `links.txt` vazio.
+- `165701/.../code_blocks.txt` repete um excerto textual de `previous_task_context.md`; não é algoritmo; `links.txt` vazio. A auditoria direta E003 encontrou cinco arquivos no diretório, sem planilha ou `previous_task_context.md` entre eles.
 - `01_arquitetura_geral_meshwave.md` é uma especificação em prosa; não inclui repositório de implementação, configurações, testes ou parâmetros suficientes para reprodução.
 
 A imagem CLA usa células rotuladas por valores decimais e sobreposições poligonais, mas não fornece eixos, CRS, legenda, mapeamento de coordenadas, vizinhança, regra de seleção, precisão ou atualização. Não se converte o desenho em uma fórmula de Geohash/CLA.
@@ -159,7 +159,7 @@ A imagem CLA usa células rotuladas por valores decimais e sobreposições polig
 | 2025-05-21, rótulo no arquivo raiz | Documento intitulado “Sistema MeshWave Versão 1.0” propõe arquitetura de cinco camadas e SDN transversal. | Versão declarada no cabeçalho; sem tag/commit que confirme release de software. |
 | Sem data técnica independente | Captura de L001-02 descreve Fase 1 como design/autenticação básica/preparação Blockchain e alega protótipo Python; Fase 2 traria P2P, criptografia de chave pública, consenso e SSI/DIDs. | Plano/alegação de progresso. A imagem não contém o protótipo, versão, teste ou confirmação de entrega. |
 | Roadmap gráfico, horizonte 2025–2032 | Quatro fases, com durações indicadas de 12–18, 12–18, 18–24 e 24–36 meses. | Estimativas amplas; início/fim e sobreposições não estão definidos. |
-| Fonte CLA, tarefa de referência visual | Usuário considera uma grade com polígonos a referência atual; texto associa a ideia a regiões, vértices e coordenadas compartilhadas. | Aprovação de uma representação conceitual, não decisão de protocolo nem validação geográfica. |
+| Fonte CLA, tarefa de referência visual (E003/L001-03) | A transcrição registra a preferência do usuário pela imagem como referência e afirma que ela foi gerada a partir de uma planilha; a inspeção direta mostra grade numerada, regiões coloridas e sobreposições poligonais. | Preferência registrada no replay; não decisão de protocolo. Planilha/contexto não estão no conjunto e a imagem não possui legenda, CRS, escala ou algoritmo. |
 
 ### Decisões técnicas
 
@@ -177,7 +177,7 @@ O usuário identificou o desenho CLA como referência visual para continuidade, 
 | C04 | Modelo de camadas (5 + SDN) e figura por segmentos/fases usam taxonomias diferentes. | Documento raiz e `img_000.jpg` | Relações e responsabilidades podem se sobrepor ou ficar sem dono. | Criar matriz rastreável de camadas × segmentos × módulos após validação. |
 | C05 | Cronologia do roadmap não está reconciliada com a captura sobre Fase 1 até meados de 2026/Fase 2 em 2026–2027. | `165052/FULL.png` e figura `174348/img_000.jpg` | Risco de usar datas diferentes como compromisso. | Confirmar baseline, datas de início/fim, predecessoras, duração e estado real. |
 | C06 | Transcrição relata roteiros concluídos/`8/8`, mas nomes, fases e arquivos disponíveis não reconciliam. | `174348/content.txt`, anexos enumerados | Pode haver incompletude do material ou texto de interface/entrega sem artefato. | Localizar os roteiros originais e registrar hashes/revisões; não inferir completude. |
-| C07 | A imagem CLA não tem legenda nem referência espacial. | `165701/img_000.jpg`, captura `FULL.png` | Não se sabe se as células representam Geohash, cache, níveis de CLA/CPA ou outra indexação; impossível reproduzir rota. | Recuperar planilha e `previous_task_context.md` citados ou obter definição técnica e teste. |
+| C07 | A imagem CLA não tem legenda nem referência espacial. | `165701/img_000.jpg`, captura `FULL.png`; classificação direta `BCE/fontes/CLASSIFICACAO_F3_1_DOM01_E003.md` | Não se sabe se as células representam Geohash, cache, níveis de CLA/CPA ou outra indexação; impossível reproduzir rota. | Recuperar a planilha e o `previous_task_context.md` citados ou obter definição técnica e teste; confirmar a identidade do arquivo de imagem citado no replay. |
 | C08 | Fallback celular/LEO e princípio “sem infraestrutura de operadoras” não têm política de prioridade definida. | Documento raiz e DOM-01 L001-01 | Pode afetar custo, conectividade, privacidade e autonomia. | Definir modos de operação, condições de fallback e dependências externas em DOM-03/DOM-15. |
 | C09 | Há um campo de contato pessoal no cabeçalho do documento arquitetural da raiz. | `01_arquitetura_geral_meshwave.md` | Dado não necessário para a síntese e potencialmente inadequado para redistribuição. | O valor não foi reproduzido nesta BCE; revisar necessidade de exposição no documento-fonte com o responsável. |
 | C10 | Sigla MCP é usada para computação de borda, sem contrato ou glossário. | `01_arquitetura_geral_meshwave.md` | Ambiguidade de camada/servidor e risco de interpretação errada. | Confirmar significado e terminologia normativa com fonte técnica. |
@@ -192,7 +192,7 @@ O usuário identificou o desenho CLA como referência visual para continuidade, 
 6. Como tarefas e armazenamento compartilhados são consentidos, isolados, priorizados, limitados e auditados?
 7. Quais são os protocolos e formatos de chaves/DIDs, como se faz rotação/revogação e quais dados de localização entram em DLT?
 8. Qual baseline do roadmap é atual; quais itens foram concluídos, cancelados, adiados ou substituídos?
-9. Onde estão o alegado protótipo Python, os roteiros, o contexto anterior e a fonte/planilha da imagem CLA?
+9. Onde estão o alegado protótipo Python, os roteiros, o contexto anterior e a fonte/planilha da imagem CLA? A auditoria E003 confirma apenas que planilha e `previous_task_context.md` não estão nos cinco arquivos desta fonte.
 10. Como se harmonizam descentralização, control plane SDN, provedores celulares e servidores edge sem comprometer a promessa de autonomia?
 11. Que medidas, testes e critérios definem QoS, resiliência, bateria, anonimato, privacidade, disponibilidade e capacidade?
 
@@ -207,6 +207,7 @@ O usuário identificou o desenho CLA como referência visual para continuidade, 
 - `DOM-12` — repositórios, versões e alegado protótipo Python.
 - `DOM-14` — segurança, privacidade e governança.
 - `DOM-15` — APIs e conectores celulares, LEO, SDN e edge.
+- `BCE/fontes/CLASSIFICACAO_F3_1_DOM01_E003.md` — auditoria direta dos artefatos de CLA, hashes e limites de interpretação.
 
 ## 12. Evidências e proveniência
 
@@ -217,12 +218,19 @@ O usuário identificou o desenho CLA como referência visual para continuidade, 
 | E03 | `KNOWLEDGE/info/20260422_165052_Fonte para Arquitetura e Operação da Rede MeshWave - Manus/img_000.jpg` | Roadmap em imagem | Segmentos e fases da evolução/implantação; horizonte visual 2025–2032. | Imagem 1024×768 JPEG; planejamento, não estado executado. |
 | E04 | `KNOWLEDGE/info/20260422_174348_Complementar Módulos Faltantes do Diagrama de Implantação - Manus/content.txt` | Transcrição de tarefa | Roteiros explicativos planejados para módulos e afirmações de conclusão. | 2.035 linhas com repetição; roteiros não aparecem como arquivos anexos nem foram localizados sob os nomes citados. |
 | E05 | `KNOWLEDGE/info/20260422_174348_Complementar Módulos Faltantes do Diagrama de Implantação - Manus/img_000.jpg`, `img_001.jpg`, `FULL.png` | Roadmap/captura | Mesma matriz de segmentos/fases que a figura anterior. | `img_000.jpg` e `img_001.jpg` são WEBP 1024×768 com a mesma SHA-256 `6c81d6ebbb082cbc85078c7c064b8d9acd61bbeb268830e0421e038eddd80968`; extensão `.jpg` não corresponde ao formato interno. Não contar como episódios/imagens distintos. |
-| E06 | `KNOWLEDGE/info/20260422_165701_Hierarquia de CLA Continental e Roteamento - Manus/content.txt`, `code_blocks.txt` e `FULL.png` | Transcrição/captura | Usuário e agente tratam uma figura como referência conceitual; menciona regiões, vértices e coordenadas compartilhadas. | Transcrição repetitiva; `previous_task_context.md` citado mas não anexado/localizado; blocos são texto, não código. |
-| E07 | `KNOWLEDGE/info/20260422_165701_Hierarquia de CLA Continental e Roteamento - Manus/img_000.jpg` | Diagrama raster | Grade com células numeradas, regiões coloridas e polígonos/sobreposições. | 853×379; bytes identificados como PNG apesar da extensão `.jpg`; sem legenda/CRS/algoritmo, proveniência técnica ou dados-fonte. |
+| E06 | `KNOWLEDGE/info/20260422_165701_Hierarquia de CLA Continental e Roteamento - Manus/content.txt`, `code_blocks.txt`, `links.txt` e `FULL.png` | Transcrição/captura auditada diretamente em F3.1 | A conversa registra preferência pela figura e afirma que ela foi gerada após análise de planilha; `FULL.png` mostra a entrega/transferência de `previous_task_context.md`, não a geração técnica nem a imagem CLA. | Hashes 5/5 no checkpoint E003; `content.txt` tem 788 linhas, 627 não vazias e 28 literais distintas. `previous_task_context.md` e a planilha não estão entre os cinco arquivos; `code_blocks.txt` é textual e `links.txt` vazio. Ver `CLASSIFICACAO_F3_1_DOM01_E003.md`. |
+| E07 | `KNOWLEDGE/info/20260422_165701_Hierarquia de CLA Continental e Roteamento - Manus/img_000.jpg` | Imagem/grade raster auditada diretamente em F3.1 | Grade de células com rótulos decimais, áreas verdes/laranjas, contornos poligonais vermelhos e traçados escuros. | 853×379; bytes identificados como PNG apesar da extensão `.jpg`; sem legenda, eixos, escala, CRS, semântica, algoritmo, parâmetros ou dados-fonte. |
 | E08 | `BCE/fontes/CLASSIFICACAO_LOTE_001.md`, `BCE/fontes/CLASSIFICACAO_LOTE_002.md`, `BCE/fontes/RELATORIO_LACUNAS_E_QUALIDADE_F1_7.md` | Sínteses curatoriais | Qualidade e classificação prévias das fontes e limites da amostra. | São sínteses, não substituem arquivos brutos nem validam os componentes. |
 
 Os `links.txt` de E02, E04 e E06 têm zero bytes. Busca no repositório não localizou `previous_task_context.md` nem os arquivos de roteiro citados. Nenhum valor pessoal foi copiado. Os originais em `KNOWLEDGE/` foram mantidos intactos.
 
-## 13. Próximo passo de curadoria
+## 13. Histórico de versões
 
-Executar **F2.3 — rede mesh, comunicação e roteamento**: confrontar este modelo com fontes dedicadas a BLE/Wi‑Fi Direct, descoberta de vizinhos, gestão de enlaces, encaminhamento, CLA/CPA/Geohash, cache e fallback; processar textos, código, links e imagens antes de definir qualquer protocolo. Resultado esperado: documento DOM-03 com estados implementados/propostos, algoritmos e parâmetros rastreáveis, conflitos C03/C07/C08 atualizados e referências cruzadas de volta a DOM-02. Manter DOM-02 em `REVISÃO` até haver especificação/implementação e implantação verificáveis.
+| Versão | Data | Alteração | Fontes/commit |
+|---|---|---|---|
+| `0.1.0` | 2026-10-08 | Primeira síntese F2.2 da arquitetura conceitual, roadmap e fontes indicadas pelo DOM-01. | `864d357`; ver checkpoint `BCE/sessoes/2026-10-08_f2-2.md`. |
+| `0.1.1` | 2026-10-19 | Integra a auditoria direta F3.1/E003, confirma a natureza visual da grade e qualifica como ausentes a planilha, o contexto e parâmetros que definiriam a interpretação. | Classificação `BCE/fontes/CLASSIFICACAO_F3_1_DOM01_E003.md`; pré-registro `BCE/sessoes/2026-10-19_f3-1-dom01-e003-abertura.md`; atualização desta sessão. |
+
+## 14. Próximo passo de curadoria
+
+Continuar **F3.1 com E004/L001-04** após pré-registrar os nomes, tamanhos e SHA-256 de `KNOWLEDGE/info/20260422_165745_ARC - Autenticação Recessiva Contextual com inferência Bayesiana - Manus/`. Comparar a evidência com DOM-01/DOM-05; manter a representação CLA como conceito visual sem promover o desenho a algoritmo. Após a conclusão da F3.1, retomar as lacunas de especificação, versão e implantação de DOM-02; mantê-lo em `REVISÃO` até haver evidência suficiente.
