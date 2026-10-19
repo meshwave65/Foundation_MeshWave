@@ -7,7 +7,7 @@
 | Campo | Valor |
 |---|---|
 | Status global | `EM_ANDAMENTO — FASE 2: mapa curatorial e documentos de domínio` |
-| Última atualização | 2026-10-19 07:43 (-03:00) |
+| Última atualização | 2026-10-19 07:57 (-03:00) |
 | Publicação de F2.6-07 | Os cinco commits da unidade (`c55e31d`, `b3c8864`, `8870caa`, `290895f`, `629125a`) foram publicados em `main`; a correção factual posterior foi registrada em `f8649ba`. |
 | Publicação de F2.6-08 | DOM-06 `74eba5f`; índice `14e2768` (cobertura) e `aec133d` (linha principal DOM-06); checkpoint de fechamento `6f99eaa`, todos publicados em `main`. |
 | Publicação de F2.6-09 | DOM-06 `97dea42`; índice `a39441b`; pré-registro `56c5ff8`; fechamento `f186adc`; controle `b79cf1d`, publicados em `main`.
@@ -15,16 +15,17 @@
 | Publicação de F2.6-11 | DOM-06 `c463af9`; índice `1737039`; fechamento e abertura F2.6-12 `ec2bbcf`, publicados em `main`. |
 | Publicação de F2.6-12 | DOM-06 `252c8c4`; índice `b51cbeb`; controle `1adf0d9`; checkpoint `b0706b1`, publicados em `main`. |
 | Publicação de F2.6-13 | Pré-registro `b8132e9`; DOM-06 `ca64cca`; índice `3b26fe0`; fechamento e abertura serão publicados após esta atualização. |
-| Estado local/remoto | `main` sincronizada com `origin/main` em `3b26fe0`; este controle registra o fechamento de F2.6-13 e a abertura de F2.6-14. |
+| Publicação de F2.6-14 | Pré-registro `0ebf77a`; DOM-06 `6001255`/`25c1768`; índice `afa3ec2`; fechamento e abertura serão publicados após esta atualização. |
+| Estado local/remoto | `main` sincronizada com `origin/main` em `afa3ec2`; este controle registra o fechamento de F2.6-14 e a abertura de F2.6-15. |
 | Branch de trabalho | `main` |
-| Último item concluído | `F2.6-13` — os 4 artefatos foram auditados e os hashes 4/4 confirmados; DOM-06 v0.3.3 (`ca64cca`) e índice (`3b26fe0`) publicados; cobertura profunda 21/23 (itens 1–13 e 16–23). Upload, finalização, artefato e backend permanecem não confirmados apesar da UI 6/6/replay concluído. |
-| Item em andamento | `F2.6` — DOM-06 v0.3.3 em `REVISÃO`; F2.6-14 será pré-registrada e auditada. Itens 14–15 requerem auditoria canônica. |
-| Último caminho processado | `KNOWLEDGE/filipe/20260422_164903_Instruções para a missão via Sofia API - Manus/` — F2.6-13 auditado; SHA-256 4/4 confirmado. Próximo item: F2.6-14 conforme escopo físico. |
+| Último item concluído | `F2.6-14` — os 4 artefatos foram auditados e os hashes 4/4 confirmados; DOM-06 v0.3.4 (`25c1768`) e índice (`afa3ec2`) publicados; cobertura profunda 22/23 (itens 1–14 e 16–23). A divergência curl/Python, SSL, JSON e disponibilidade permanecem não confirmadas como estado SOFIA. |
+| Item em andamento | `F2.6` — DOM-06 v0.3.4 em `REVISÃO`; F2.6-15 será pré-registrada e auditada. O item 15 requer auditoria canônica. |
+| Último caminho processado | `KNOWLEDGE/iury/20260422_161525_Como acessar e executar missões na API Sofia - Manus/` — F2.6-14 auditado; SHA-256 4/4 confirmado. Próximo item: F2.6-15 conforme escopo físico. |
 | Fontes de governança/contexto lidas nesta unidade | `AGENTS.md`, skill BCE, `ORIENTACAO_AGENTES.md`, `CONTROLE_MESTRE.md`, `INDICE_CURATORIAL.md`, `REGISTRO_DECISOES.md`, escopo/inventário F2.6, checkpoint F2.6-11 e histórico Git. F2.6-11: quatro artefatos textuais e 15 imagens auditados; F2.6-12: somente nomes, bytes e SHA-256 pré-registrados. |
 | Arquivos curatoriais alterados | Este controle mestre; nenhum arquivo em `KNOWLEDGE/` foi alterado. DOM-06, índice e checkpoint F2.6-11/12 já estavam publicados em `c463af9`, `1737039` e `ec2bbcf`. |
-| Próximo item | Localizar o item 14 no `BCE/fontes/ESCOPO_F2_6_SOFIA_AGENTES_MISSOES.md`, pré-registrar arquivos/tamanhos/SHA-256 e só então auditar `content.txt`, `code_blocks.txt`, `links.txt` e imagens; não executar código, seguir links nem chamar APIs. |
-| Conflitos, lacunas e impedimentos | DOM-06 permanece `REVISÃO`; F2.6-14–15 aguardam auditoria canônica. F2.6-13 mantém conflitos sobre endpoint de upload, tarefa 61 e replay 6/6, sem recibo ou estado posterior. Credencial administrativa recebida fora das fontes não será armazenada nem utilizada; deve ser rotacionada pelo responsável. |
-| Responsável pela sessão | Manus — auditoria F2.6-13; próxima ação: pré-registrar e auditar o item 14. |
+| Próximo item | Localizar o item 15 no `BCE/fontes/ESCOPO_F2_6_SOFIA_AGENTES_MISSOES.md`, pré-registrar arquivos/tamanhos/SHA-256 e só então auditar `content.txt`, `code_blocks.txt`, `links.txt` e imagens; não executar código, seguir links nem chamar APIs. |
+| Conflitos, lacunas e impedimentos | DOM-06 permanece `REVISÃO`; F2.6-15 aguarda auditoria canônica. F2.6-14 mantém conflitos entre curl 200 narrado e agente Python com SSL/“nenhuma tarefa”, além do risco de `verify=False`. Credencial administrativa recebida fora das fontes não será armazenada nem utilizada; deve ser rotacionada pelo responsável. |
+| Responsável pela sessão | Manus — auditoria F2.6-14; próxima ação: pré-registrar e auditar o item 15. |
 
 ## Como retomar em cinco minutos
 
@@ -80,7 +81,7 @@
 | F2.3 | Mesh networking, comunicação e roteamento | REVISÃO — DOM-03 v0.1.0; lote de 12 fontes processado; sem implementação verificável | F1.7; DOM-01/DOM-02; consultar DOM-03 para evidências, conflitos, hipóteses e lacunas |
 | F2.4 | Identidade, identificação de equipamento e DIDs | CONCLUÍDO — DOM-04 v0.2.0 (`4f7465e`); sete fontes e 12 imagens conferidas; documento permanece `REVISÃO` por ausência de método DID/implementação verificável | F1.7; DOM-01/DOM-03; DOM-05; próximo F2.6 |
 | F2.5 | ARC, autenticação contextual e inferência bayesiana | REVISÃO — DOM-05 v0.1.0 (`e349070`); executada em paralelo por orientação explícita; sem implementação, calibração ou teste verificável | F1.7; DOM-04; revisar após fechamento da F2.4 |
-| F2.6 | SOFIA, agentes, missões e persistência de conhecimento | EM_ANDAMENTO — DOM-06 v0.3.3 (`ca64cca`); auditoria profunda 21/23 (itens 1–13 e 16–23); F2.6-13 concluída; F2.6-14 será pré-registrada e auditada; itens 14–15 requerem auditoria canônica | F1.7; DOM-06; DOM-07; DOM-13 |
+| F2.6 | SOFIA, agentes, missões e persistência de conhecimento | EM_ANDAMENTO — DOM-06 v0.3.4 (`25c1768`); auditoria profunda 22/23 (itens 1–14 e 16–23); F2.6-14 concluída; F2.6-15 será pré-registrada e auditada; item 15 requer auditoria canônica | F1.7; DOM-06; DOM-07; DOM-13 |
 | F2.7 | Aplicações, simuladores e interfaces | PENDENTE | F1.7 |
 | F2.8 | Hardware, dispositivos e infraestrutura | PENDENTE | F1.7 |
 | F2.9 | Segurança, privacidade, LGPD e governança | PENDENTE | F1.7 |
@@ -243,6 +244,7 @@ O agente atual só deve declarar a tarefa transferível quando:
 | 2026-10-19 | Manus — fechamento F2.6-11 e abertura F2.6-12 | F2.6-11 auditada; DOM-06 v0.3.1/índice atualizados; cobertura 19/23; F2.6-12 pré-registrada com 4 arquivos/247.235 bytes antes da leitura semântica | `c463af9` DOM-06; `1737039` índice; `ec2bbcf` checkpoint | Auditar `KNOWLEDGE/dinecy/20260422_171255_Diretrizes para execução da tarefa no Sofia API - Manus/` |
 | 2026-10-19 | Manus — reconciliação e fechamento F2.6-12 | Controle mestre reconciliado; F2.6-12 auditada; DOM-06 v0.3.2/índice atualizados; cobertura 20/23; F2.6-13 aberta | `5a6dd54` controle; `252c8c4` DOM-06; `b51cbeb` índice; checkpoint desta unidade será publicado separadamente | Pré-registrar e auditar `KNOWLEDGE/filipe/20260422_164903_Instruções para a missão via Sofia API - Manus/` |
 | 2026-10-19 | Manus — fechamento F2.6-13 e abertura F2.6-14 | F2.6-13 auditada; DOM-06 v0.3.3/índice atualizados; cobertura 21/23; F2.6-14 aberta | `b8132e9` pré-registro; `ca64cca` DOM-06; `3b26fe0` índice; controle e checkpoint desta unidade serão publicados separadamente | Localizar item 14 no escopo físico, pré-registrar arquivos e auditar a próxima fonte |
+| 2026-10-19 | Manus — fechamento F2.6-14 e abertura F2.6-15 | F2.6-14 auditada; DOM-06 v0.3.4/índice atualizados; cobertura 22/23; F2.6-15 aberta | `0ebf77a` pré-registro; `6001255`/`25c1768` DOM-06; `afa3ec2` índice; controle e checkpoint desta unidade serão publicados separadamente | Localizar item 15 no escopo físico, pré-registrar arquivos e auditar a última fonte pendente |
 
 
 ## Lote F1.5 registrado antes da leitura — catálogo de código
