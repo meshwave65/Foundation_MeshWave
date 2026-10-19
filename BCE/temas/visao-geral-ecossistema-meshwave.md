@@ -6,11 +6,11 @@
 |---|---|
 | ID curatorial | `DOM-01` |
 | Status | `REVISÃO` — versão provisória; cobertura não abrangente |
-| Versão do documento | `0.3.1` |
+| Versão do documento | `0.3.2` |
 | Última atualização | `2026-10-19` |
 | Curador | `Manus — curadoria BCE MeshWave` |
 | Confiança geral | `baixa a média` para intenção conceitual; baixa para arquitetura vigente e estado do produto |
-| Fontes desta versão | Classificações L001–L003, relatório F1.7, fontes primárias da seção 8, E001–E002 auditadas em F3.1 e especificação arquitetural E011 |
+| Fontes desta versão | Classificações L001–L003, relatório F1.7, fontes primárias da seção 8, E001–E003 auditadas em F3.1 e especificação arquitetural E011 |
 
 ## 1. Resumo executivo
 
@@ -20,11 +20,13 @@ A evidência disponível nesta etapa é heterogênea: transcrições de conversa
 
 A auditoria direta de E002/L001-02 encontrou uma matriz de roadmap por quatro fases e uma captura que **alega** existir um protótipo Python; nenhum código ou resultado acompanha a alegação, portanto isso não altera o estado de implementação.
 
+A auditoria direta de E003/L001-03 confirma uma grade visual com células numeradas e regiões coloridas, mas não encontra legenda, CRS, escala ou regra de roteamento. A transcrição relata uma imagem gerada a partir de uma planilha e aprovada como referência; a planilha e o arquivo de contexto anunciados não estão entre os cinco artefatos, e a captura `FULL.png` mostra a transferência de contexto, não o desenho nem sua geração técnica.
+
 Assim, este documento define um **mapa de conceitos e relações candidatos para orientar a curadoria**, não uma descrição certificada do produto atual. O diagrama e as definições abaixo distinguem o que foi observado em registros do que continua proposto, ambíguo ou não verificado.
 
 ## 2. Escopo e limites
 
-Este documento oferece uma visão de orientação do ecossistema e ligações entre domínios; não substitui os documentos especializados de arquitetura, rede, identidade, ARC, SOFIA, aplicações ou segurança. A síntese direta aprofundou três fontes primárias de visão/sinergia (`L001-01`, `L001-06` e `L002-04`) e confrontou as classificações Lote 001–003, os catálogos F1.4–F1.6 e o relatório F1.7. Em F3.1, foram reauditados diretamente E001/L001-01 e E002/L001-02, com pré-registro físico e classificação individual. Os arquivos brutos permanecem preservados.
+Este documento oferece uma visão de orientação do ecossistema e ligações entre domínios; não substitui os documentos especializados de arquitetura, rede, identidade, ARC, SOFIA, aplicações ou segurança. A síntese direta aprofundou três fontes primárias de visão/sinergia (`L001-01`, `L001-06` e `L002-04`) e confrontou as classificações Lote 001–003, os catálogos F1.4–F1.6 e o relatório F1.7. Em F3.1, foram reauditados diretamente E001/L001-01, E002/L001-02 e E003/L001-03, cada um com pré-registro físico e classificação individual. Os arquivos brutos permanecem preservados.
 
 **Limites relevantes:**
 
@@ -153,7 +155,7 @@ A fonte ARC do Lote 001 registra uma escolha de design para evitar que ausência
 |---|---|---|---|---|
 | E001 / L001-01 | `KNOWLEDGE/info/20260422_171119_O que é o projeto Meshwave_ - Manus/` (`content.txt`, `code_blocks.txt`, `links.txt`, `FULL.png`) | Transcrição/captura/fragmentos auditados em F3.1 | Visão de rede mesh, roteiro de roteamento/confiança, roadmap e tensão de identidade `ANDROID_ID` → “DNA do Equipamento”. | 1.993 linhas/121 literais distintas, repetição de replay; blocos de 172 bytes são rótulos, não código; links de grounding não seguidos; homônimos externos e associação de versão não confirmados. Hashes 4/4 registrados em `BCE/sessoes/2026-10-19_f3-1-dom01-e001-abertura.md`. |
 | E002 / L001-02 | `KNOWLEDGE/info/20260422_165052_Fonte para Arquitetura e Operação da Rede MeshWave - Manus/` (`content.txt`, `code_blocks.txt`, `links.txt`, `FULL.png`, `img_000.jpg`) | Cinco artefatos auditados diretamente em F3.1 | Roadmap de quatro fases/8 segmentos; captura alega POC Python e descreve Fase 1/Fase 2 (P2P, criptografia, consenso, SSI/DIDs). | Extração textual de interface repetida; blocos sem código; links vazios; nenhuma prova do POC, execução ou cronograma aprovado. Hashes 5/5 no checkpoint E002; classificação `BCE/fontes/CLASSIFICACAO_F3_1_DOM01_E002.md`. |
-| E003 / L001-03 | `KNOWLEDGE/info/20260422_165701_Hierarquia de CLA Continental e Roteamento - Manus/` | Contexto/imagem | Referência visual de grade/polígonos e aprovação conversacional como representação CLA/regional. | Analisado em DOM-02; sem legenda, algoritmo, cardinalidade, CRS ou parâmetros normativos. |
+| E003 / L001-03 | `KNOWLEDGE/info/20260422_165701_Hierarquia de CLA Continental e Roteamento - Manus/` (`content.txt`, `code_blocks.txt`, `links.txt`, `FULL.png`, `img_000.jpg`) | Cinco artefatos auditados diretamente em F3.1 | A conversa registra preferência pela imagem como referência; `img_000.jpg` mostra uma grade colorida numerada e sobreposições poligonais. | Hashes 5/5; transcrição de 788 linhas com repetição dominante; `FULL.png` mostra a transferência de contexto; não há planilha, legenda, CRS, escala, algoritmo ou código verificável. A extensão `.jpg` contém bytes PNG. Classificação `BCE/fontes/CLASSIFICACAO_F3_1_DOM01_E003.md`. |
 | E004 / L001-04 | `KNOWLEDGE/info/20260422_165745_ARC - Autenticação Recessiva Contextual com inferência Bayesiana - Manus/` | Texto/código transcrito | Proposta `ResilientValue`, sincronização e inferência condicionada à qualidade da evidência. | Código não comprovado em repositório/build/teste; segurança formal não avaliada. |
 | E005 / L001-06 | `KNOWLEDGE/johann/20260422_174331_Conhecimento sobre Meshwave, Sofia e módulos ARC-Bayes_ - Manus/` | Transcrição/captura/comandos editoriais | Intenção de dossiê integrado, papéis conceituais e exemplo de sinergia. | Predominam curadoria, instruções de Git e plano editorial; exemplos não são arquitetura implementada. |
 | E006 / L002-02 | `KNOWLEDGE/info/20260422_174130_Definição do identificador único do equipamento na rede - Manus/` | Plano textual/visual | Geohash, CPA/CLA, cache e organização como elementos considerados para identidade/localização. | Sem contrato de dados ou interoperabilidade; classificado como planejamento conceitual. |
@@ -164,6 +166,7 @@ A fonte ARC do Lote 001 registra uma escolha de design para evitar que ausência
 | E011 | `01_arquitetura_geral_meshwave.md` | Especificação arquitetural em Markdown | Modelo conceitual de cinco camadas e controlador SDN; ver DOM-02 §4. | Documento propositivo; versão declarada não ligada a release/código. Campo de contato existente no original foi omitido das sínteses BCE. |
 | E012 | `BCE/fontes/CLASSIFICACAO_F3_1_DOM01_E001.md` | Classificação curatorial derivada | Registra fatos observados, propostas, homônimos, conflitos, hashes e destino do primeiro contato. | Síntese derivada; consultar os quatro artefatos brutos para qualquer afirmação específica. |
 | E013 | `BCE/fontes/CLASSIFICACAO_F3_1_DOM01_E002.md`; `BCE/sessoes/2026-10-19_f3-1-dom01-e002-abertura.md` | Classificação e pré-registro derivados | E002/L001-02; inventário, hashes e leitura direta de cinco artefatos, com alegação de POC separada de prova operacional. | Síntese derivada; consultar os cinco artefatos brutos para qualquer afirmação específica. |
+| E014 | `BCE/fontes/CLASSIFICACAO_F3_1_DOM01_E003.md`; `BCE/sessoes/2026-10-19_f3-1-dom01-e003-abertura.md` | Classificação e pré-registro derivados | E003/L001-03; hashes 5/5; diferencia grade visual e preferência registrada de algoritmo, CRS e implantação não confirmados. | Síntese derivada; consultar os cinco artefatos brutos para qualquer afirmação específica. |
 
 Os `links.txt` das fontes estão representados pelo catálogo F1.6, que distingue ocorrências, destinos e limitações sem reproduzir parâmetros opacos. Nenhuma página externa foi usada nesta revisão como confirmação independente.
 
@@ -181,6 +184,7 @@ Os `links.txt` das fontes estão representados pelo catálogo F1.6, que distingu
 | C08 | A especificação E011 acrescenta uma decomposição de cinco camadas e controlador SDN ao mapa conceitual, mas não demonstra vigência nem relação operacional com SOFIA/ARC/Q-CyPIA. | E011; DOM-02 | A visão de ecossistema pode ser interpretada como arquitetura implantada ou compatível sem interfaces. | Manter a relação como proposta até validar versão, interfaces, componentes e evidência operacional em DOM-02/DOM-15. |
 | C09 | E001 mistura MeshWave do projeto com criptomoeda, visualização musical e classe do OpenFOAM; também chama “autenticação recessiva contextual” de termo não padronizado e apresenta interpretações concorrentes. | E001/L001-01; classificação `BCE/fontes/CLASSIFICACAO_F3_1_DOM01_E001.md` | Risco de importar homônimos, linguagem gerada ou interpretação para a arquitetura normativa. | Usar somente a associação explícita ao corpus MeshWave; manter o termo como hipótese/visão até especificação identificável. |
 | C10 | A captura afirma que existe um protótipo Python, mas E002 não contém código, commit, build, teste ou resultado que o sustente. | E002/L001-02 (`FULL.png`, `code_blocks.txt`); DOM-02 | A afirmação conversacional pode ser promovida indevidamente a implementação comprovada. | Localizar artefato versionado e evidência reproduzível; manter “alegado/não verificado” até então. |
+| C11 | E003 relata que uma imagem foi gerada a partir de uma planilha e que um arquivo de contexto foi criado, mas nem a planilha nem `previous_task_context.md` constam nos cinco arquivos físicos; o nome de imagem `2025-06-2623-34-14.png` também não corresponde a um artefato do conjunto. | E003/L001-03; `CLASSIFICACAO_F3_1_DOM01_E003.md`; DOM-02 | Não é possível recuperar a origem dos valores, a semântica da grade ou vincular com segurança o arquivo citado à representação presente. | Localizar a planilha, o contexto e a imagem original com proveniência; obter legenda, CRS, regras e parâmetros antes de tratar a figura como especificação. |
 
 ## 10. Lacunas e perguntas abertas
 
@@ -193,6 +197,7 @@ Os `links.txt` das fontes estão representados pelo catálogo F1.6, que distingu
 7. Existe conteúdo integral e rastreável do consolidado de 11 maio 2025 citado em E007?
 8. Quais afirmações conceituais se repetem nos 244 conjuntos ainda fora da cobertura semântica F1.2–F1.6?
 9. Qual artefato versionado e qual evidência reproduzível sustentam a alegação do protótipo Python de E002, e qual baseline aprovado sustenta o cronograma mostrado?
+10. Qual planilha, definição de grade/CRS e regra de geração sustentam a imagem CLA de E003, e onde estão o `previous_task_context.md` e o arquivo de imagem citado no replay?
 
 ## 11. Relações com outros documentos
 
@@ -214,7 +219,8 @@ Os `links.txt` das fontes estão representados pelo catálogo F1.6, que distingu
 | `0.2.1` | 2026-10-08 | Referencia a especificação de cinco camadas descoberta em F2.2, liga DOM-01 a DOM-02 e passa a F2.3 sem promover arquitetura proposta a estado implementado. | F2.2; commits relacionados registrados em `BCE/sessoes/2026-10-08_f2-2.md` e no controle mestre. |
 | `0.3.0` | 2026-10-19 | Consolida o contato E001/L001-01 em F3.1: audita os quatro artefatos, registra repetição/hashes, separa visão de homônimos e roadmap, explicita a transição `ANDROID_ID` → identidade resiliente e abre E002. | `BCE/fontes/CLASSIFICACAO_F3_1_DOM01_E001.md`; `BCE/sessoes/2026-10-19_f3-1-dom01-e001-abertura.md`; commit desta atualização. |
 | `0.3.1` | 2026-10-19 | Consolida E002/L001-02: identifica o roadmap visual, registra a alegação de POC Python sem promovê-la a implementação, confirma hashes 5/5 e abre E003. | `BCE/fontes/CLASSIFICACAO_F3_1_DOM01_E002.md`; checkpoint `BCE/sessoes/2026-10-19_f3-1-dom01-e002-abertura.md`; commit desta atualização. |
+| `0.3.2` | 2026-10-19 | Consolida E003/L001-03: audita cinco artefatos e hashes 5/5; distingue grade visual e preferência registrada de origem, algoritmo e coordenadas não confirmados; atualiza C11 e abre E004. | `BCE/fontes/CLASSIFICACAO_F3_1_DOM01_E003.md`; checkpoint `BCE/sessoes/2026-10-19_f3-1-dom01-e003-abertura.md`; commit desta atualização. |
 
 ## 13. Próximo passo de curadoria
 
-Continuar F3.1 com o contato **E003/L001-03**: pré-registrar os nomes, tamanhos e SHA-256 do caminho `KNOWLEDGE/info/20260422_165701_Hierarquia de CLA Continental e Roteamento - Manus/` antes de abrir seus artefatos. Comparar a fonte com DOM-01/DOM-02; manter DOM-01 em `REVISÃO` e distinguir representação CLA/roteamento de algoritmo ou implantação verificável. Não iniciar outros contatos nesta unidade.
+Continuar F3.1 com o contato **E004/L001-04**: antes de ler conteúdo, pré-registrar nomes, tamanhos e SHA-256 dos arquivos de `KNOWLEDGE/info/20260422_165745_ARC - Autenticação Recessiva Contextual com inferência Bayesiana - Manus/`. Depois, classificar a fonte e comparar os achados com DOM-01/DOM-05, sem elevar proposta ou trecho de conversa a implementação. Manter DOM-01 em `REVISÃO` e não processar outros contatos nesta unidade.
