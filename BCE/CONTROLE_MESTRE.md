@@ -7,7 +7,7 @@
 | Campo | Valor |
 |---|---|
 | Status global | `EM_ANDAMENTO — FASE 3: Curadoria profunda` |
-| Última atualização | 2026-10-20 11:29 (-03:00) |
+| Última atualização | 2026-10-20 12:28 (-03:00) |
 | Publicação de F2.6-07 | Os cinco commits da unidade (`c55e31d`, `b3c8864`, `8870caa`, `290895f`, `629125a`) foram publicados em `main`; a correção factual posterior foi registrada em `f8649ba`. |
 | Publicação de F2.6-08 | DOM-06 `74eba5f`; índice `14e2768` (cobertura) e `aec133d` (linha principal DOM-06); checkpoint de fechamento `6f99eaa`, todos publicados em `main`. |
 | Publicação de F2.6-09 | DOM-06 `97dea42`; índice `a39441b`; pré-registro `56c5ff8`; fechamento `f186adc`; controle `b79cf1d`, publicados em `main`.
@@ -19,16 +19,17 @@
 | Publicação de F2.6-15 | Pré-registro `12973d0`; DOM-06 `272a10c`; índice `1548201`; fechamento e checkpoint serão publicados após esta atualização. |
 | Publicação de F3.1/E003 | Pré-registro `c839662`; classificação `e0182a1`; DOM-01 v0.3.2 `54a5a96`; DOM-02 v0.1.1 `c915e1c`; índice `1330b49`; checkpoint `445b222`; publicados em `main`. |
 | Publicação de F3.1/E004 | Pré-registro `22c83ac`; correção de continuidade `4a5668c`; classificação `f8801bb`; DOM-01 v0.3.3 `bf632be`; DOM-05 v0.1.1 `be58d70`; índice `b2a3649`; fechamento `c76aec3`, publicados em `main`. |
-| Estado local/remoto | `main` sincronizada com `origin/main` em `c76aec3` antes desta atualização; controle mestre será publicado em commit próprio. |
+| Publicação de F3.1/E005 | Pré-registro `a50d277`; classificação `b1ff9a0`; DOM-01 v0.3.4 `b03c6ea`; índice `4c9dafd` e correção histórica `1d56ae1`; fechamento `d8c597f`; referência do fechamento no índice `c9cb35a`, publicados em `main`. |
+| Estado local/remoto | `main` sincronizada com `origin/main` em `c9cb35a` antes desta atualização; controle mestre será publicado em commit próprio. |
 | Branch de trabalho | `main` |
-| Último item concluído | `F3.1/E004` — quatro artefatos L001-04 auditados; hashes 4/4 confirmados; classificação (`f8801bb`), DOM-01 v0.3.3 (`bf632be`), DOM-05 v0.1.1 (`be58d70`), índice (`b2a3649`) e fechamento (`c76aec3`) publicados. E001–E003 também concluídas; F3.1 permanece em andamento. |
-| Item em andamento | `F3.1` — DOM-01/P0; E001–E004 concluídas. Próximo contato: E005/L001-06, ainda sem pré-registro. |
-| Último caminho processado | `KNOWLEDGE/info/20260422_165745_ARC - Autenticação Recessiva Contextual com inferência Bayesiana - Manus/` — E004; quatro arquivos conferidos, texto/blocos revistos em cópias redigidas, FULL.png inspecionada e links classificados sem seguir destinos. |
-| Fontes de governança/contexto lidas nesta unidade | `AGENTS.md`, skill BCE, orientação, controle, índice, registro de decisões, inventário narrativo, template, checkpoint de abertura/fechamento E004, classificação L001-04 e DOM-01/DOM-05; artefatos E004 revisados sem expor valores sensíveis. |
-| Arquivos curatoriais alterados | Classificação E004 (`f8801bb`), DOM-01 v0.3.3 (`bf632be`), DOM-05 v0.1.1 (`be58d70`), índice (`b2a3649`), checkpoint de fechamento (`c76aec3`) e este controle. Nenhum arquivo em `KNOWLEDGE/` foi alterado. |
-| Próximo item | F3.1/E005/L001-06: pré-registrar nomes, tamanhos e SHA-256 dos arquivos de `KNOWLEDGE/johann/20260422_174331_Conhecimento sobre Meshwave, Sofia e módulos ARC-Bayes_ - Manus/` em checkpoint versionado antes de qualquer leitura semântica. |
-| Conflitos, lacunas e impedimentos | E004 contém trechos com literais de aparência sensível, redigidos e não reproduzidos; se algum valor corresponder a credencial ativa, recomenda-se rotação/revogação ao responsável. Não foi possível confirmar uso real. Links local/nomeado não foram seguidos; nenhuma implementação, build, teste, calibração ou execução foi confirmada. DOM-01/DOM-05 permanecem em revisão. |
-| Responsável pela sessão | Manus — fechamento F3.1/E004; próxima ação: pré-registrar E005/L001-06 no caminho exato acima. |
+| Último item concluído | `F3.1/E005` — quatro artefatos L001-06 auditados; hashes 4/4 confirmados. Classificação (`b1ff9a0`), DOM-01 v0.3.4 (`b03c6ea`), índice (`4c9dafd`, `1d56ae1`, `c9cb35a`) e fechamento (`d8c597f`) publicados; E001–E004 também concluídas. F3.1 permanece em andamento. |
+| Item em andamento | `F3.1` — DOM-01/P0; E001–E005 concluídas. Próximo contato: E006/L002-02. |
+| Último caminho processado | `KNOWLEDGE/johann/20260422_174331_Conhecimento sobre Meshwave, Sofia e módulos ARC-Bayes_ - Manus/` — E005; quatro arquivos conferidos, texto/blocos revisados em cópias redigidas, FULL.png inspecionada e link de suporte não seguido. A fonte já havia sido auditada em F2.6-07; hashes/métricas coincidem. |
+| Fontes de governança/contexto lidas nesta unidade | Skill BCE, `AGENTS.md`, orientação, controle, índice, registro de decisões, inventários, template, checkpoint E004, checkpoint de abertura E005, classificação L001-06 e DOM-01/DOM-05/DOM-06; conteúdo textual E005 revisado apenas em cópias temporárias redigidas. |
+| Arquivos curatoriais alterados | Classificação E005 (`b1ff9a0`), DOM-01 v0.3.4 (`b03c6ea`), índice (`4c9dafd`, `1d56ae1`, `c9cb35a`), checkpoint de fechamento (`d8c597f`) e este controle. Nenhum arquivo em `KNOWLEDGE/` foi alterado. |
+| Próximo item | F3.1/E006/L002-02: pré-registrar nomes, tamanhos e SHA-256 dos arquivos de `KNOWLEDGE/info/20260422_174130_Definição do identificador único do equipamento na rede - Manus/` em checkpoint versionado antes de qualquer leitura semântica. |
+| Conflitos, lacunas e impedimentos | E005 registra uma visão de sinergia e planos de curadoria, mas não comprova integração, execução, acesso remoto ou criação do dossiê. A fonte contém instruções históricas sobre PAT/acesso remoto e 20 trechos com forma textual potencialmente sensível foram redigidos; não se confirmou que fossem credenciais reais ou ativas e nenhum valor foi reproduzido. Nenhum link/serviço foi acessado. DOM-01 permanece em revisão; DOM-05/DOM-06 mantêm os limites já registrados. |
+| Responsável pela sessão | Manus — fechamento F3.1/E005; próxima ação: pré-registrar E006/L002-02 no caminho exato acima. |
 
 ## Como retomar em cinco minutos
 
@@ -95,7 +96,7 @@
 
 | ID | Entrega | Status | Dependência |
 |---|---|---|---|
-| F3.1 | Consolidar fontes do domínio prioritário 1 | EM_ANDAMENTO — E001–E004 auditadas; DOM-01 v0.3.3 e DOM-05 v0.1.1 atualizados; próximo E005/L001-06, ainda sem pré-registro | F2; DOM-01/P0 |
+| F3.1 | Consolidar fontes do domínio prioritário 1 | EM_ANDAMENTO — E001–E005 auditadas; DOM-01 v0.3.4 atualizado; E005 é reauditoria da fonte F2.6-07, com hashes 4/4; próximo E006/L002-02, ainda não pré-registrado | F2; DOM-01/P0 |
 | F3.2 | Reconstruir arqueologia das decisões | PENDENTE | F3.1 |
 | F3.3 | Validar estado da arte contra código e imagens | PENDENTE | F3.1 |
 | F3.4 | Registrar conflitos, descartes e hipóteses | PENDENTE | F3.1 |
