@@ -6,8 +6,8 @@
 |---|---|
 | ID curatorial | `DOM-05` |
 | Status | `REVISÃO` — modelo conceitual e código transcrito; nenhuma implementação publicada, calibração ou validação reproduzível confirmada |
-| Versão do documento | `0.1.0` |
-| Última atualização | `2026-10-08` |
+| Versão do documento | `0.1.1` |
+| Última atualização | `2026-10-20` |
 | Curador(es) | `Manus — curadoria BCE MeshWave` |
 | Confiança geral | Média para a existência das propostas e do código transcrito; baixa para segurança, calibração, desempenho e produção |
 | Documento relacionado no índice | `BCE/INDICE_CURATORIAL.md` — DOM-05 |
@@ -19,6 +19,8 @@ O lote F2.5 combina três linhas de material: (1) uma transcrição extensa de u
 A evidência sustenta uma **proposta de arquitetura** e um **protótipo textual/transcrito**, não um sistema implementado e validado. O código descreve um protocolo ARC simples: deriva dois hashes SHA-256 de um identificador secreto e do timestamp do desafio, extrai um segmento da segunda hash e compara a resposta com o valor esperado. A sincronização produz um valor real ou um placeholder; o módulo bayesiano usa status de sincronização, latência e resultado da validação para calcular uma probabilidade posterior com priors e verossimilhanças fixos.
 
 Não há repositório de código associado ao lote, dependências completas, build, teste automatizado, vetor de teste, resultado de execução, análise de ameaça, mecanismo de compromisso/revelação efetivamente implementado, prova criptográfica, calibração com dados ou teste em FABRIC/COSMOS. Commit-reveal, HE, ZKP, federação e consenso aparecem na fonte de roteamento como recomendações ou alternativas, não como implementação confirmada.
+
+Uma auditoria direta F3.1 de E004/L001-04 (quatro artefatos; hashes 4/4) confirmou que a mesma transcrição apresenta ainda um roteiro de simulador web Ktor/Vue e uma proposta de integração Android. `FULL.png` é uma captura da interface de conversa; o roteiro não inclui projeto completo, build ou teste. Literais sensíveis de exemplo foram redigidos nas cópias temporárias e não são reproduzidos.
 
 **Estado curatorial:** manter em `REVISÃO`. O próximo desenvolvimento deve transformar o protótipo transcrito em especificação verificável, sem interpretar o rótulo “código completo e funcional” como prova de execução.
 
@@ -100,6 +102,8 @@ O material de integração Android menciona módulos `.aar`, `MeshPeerConnection
 - **Especificado:** derivação de segmento por SHA-256, `ResilientValue`, cálculo bayesiano com priors fixos e limiar de confiança.
 - **Hipótese:** DNA do hardware, PGC, federador descentralizado, HE, ZKP, bandits federados e calibração adaptativa.
 - **Contraditório ou incompleto:** a fonte chama o código de “completo e funcional”, mas também omite arquivos, funções, dependências e implementação de frontend; o material não permite confirmar essa alegação.
+
+**Reauditoria direta F3.1/E004:** a transcrição apresenta classes e trechos de sincronização, ARC e Bayes, mas também omite dependências/projeto e contém repetição dominante. A proposta Ktor/WebSocket e frontend Vue/JavaScript depende de um projeto-base a ser gerado; o `app.js` descrito tem stubs/omissões. A integração Android sugere módulos, sockets, coroutines e ViewModel/LiveData, mas deixa serialização, desserialização e conexões por implementar. Nem a captura de interface nem os rótulos de conclusão demonstram que o simulador ou o app foram executados. A classificação direta, métricas e hashes estão em `BCE/fontes/CLASSIFICACAO_F3_1_DOM01_E004.md`.
 
 ## 5. Arquitetura e modelo conceitual
 
@@ -194,11 +198,17 @@ Limitações técnicas observadas:
 
 A fonte de roteamento propõe `reward = w1 * (1 / latência_normalizada) + w2 * (1 - taxa_de_perda)`, mas não define normalização, limites, escolha de pesos, tratamento de divisão por zero, atualização online ou comparação com baseline.
 
+### 7.1 Reauditoria direta F3.1/E004
+
+`content.txt` tem 25.038 linhas (19.139 não vazias; 1.346 distintas após redação), e `code_blocks.txt` tem 1.609 linhas (1.286 não vazias; 487 distintas). A contagem é de linhas literais e não de afirmações independentes. Os quatro SHA-256 pós-leitura coincidem com o pré-registro E004.
+
+Além do fluxo Kotlin já sintetizado neste DOM, E004 propõe um servidor Ktor/WebSocket para simular a rede, uma UI Vue e adaptação dos módulos para Android. O servidor/frontend não vêm como projeto compilável; partes do JavaScript, serialização e conexão são placeholders. `FULL.png` mostra o resumo de integração numa interface de conversa, não runtime. `links.txt` tem uma referência a `localhost` e outra a host nomeado; ambas foram redigidas e não seguidas. O material contém literais de exemplo com aparência sensível em código/transcrição; foram omitidos e não é possível confirmar se algum correspondeu a credencial ativa. A classificação detalhada está em `BCE/fontes/CLASSIFICACAO_F3_1_DOM01_E004.md`.
+
 ## 8. Evidências e fontes
 
 | Evidência | Tipo | Caminho relativo | O que sustenta | Limitações |
 |---|---|---|---|---|
-| E05-01 | texto/código | `KNOWLEDGE/info/20260422_165745_ARC - Autenticação Recessiva Contextual com inferência Bayesiana - Manus/content.txt` | Fluxo completo alegado, `ResilientValue`, ARC, Bayes e integração planejada | Transcrição repetitiva; dependências e execução ausentes; alegações não verificadas |
+| E05-01 | texto/código | `KNOWLEDGE/info/20260422_165745_ARC - Autenticação Recessiva Contextual com inferência Bayesiana - Manus/` (`content.txt`, `code_blocks.txt`) | Fluxo alegado, `ResilientValue`, ARC, Bayes, simulador Ktor/Vue e integração Android proposta; auditada diretamente em F3.1 | Transcrição repetitiva; snippets incompletos; sem projeto, dependências/build, teste ou execução confirmados; literais sensíveis redigidos |
 | E05-02 | código | `KNOWLEDGE/info/20260422_165745_ARC - Autenticação Recessiva Contextual com inferência Bayesiana - Manus/code_blocks.txt` | Trechos Kotlin, classes de sincronização, ARC e Bayes | Blocos duplicados e incompletos; não são fonte compilável do projeto |
 | E05-03 | imagem | `KNOWLEDGE/info/20260422_165745_ARC - Autenticação Recessiva Contextual com inferência Bayesiana - Manus/FULL.png` | Captura com código e resumo de integração modular | Interface de conversa; não demonstra build, teste ou execução |
 | E05-04 | link | `KNOWLEDGE/info/20260422_165745_ARC - Autenticação Recessiva Contextual com inferência Bayesiana - Manus/links.txt` | Referência a Ktor e endereço local de simulador | Link local não é prova de serviço disponível; dependência externa não validada |
@@ -208,6 +218,7 @@ A fonte de roteamento propõe `reward = w1 * (1 / latência_normalizada) + w2 * 
 | E05-08 | código/diagrama | `KNOWLEDGE/info/20260422_171217_Roteamento Preditivo com Autenticação Contextual e Inferência Bayesiana - Manus/code_blocks.txt` | Fórmula de recompensa e marcadores `nonce`, `commit`, Circom e zkSNARKs | Fragmentos sem implementação, parâmetros ou circuito |
 | E05-09 | imagem | `KNOWLEDGE/info/20260422_171217_Roteamento Preditivo com Autenticação Contextual e Inferência Bayesiana - Manus/FULL.png` | Captura do resumo sobre ataques, overhead e artefatos | Captura de interface; não é testbed nem benchmark |
 | E05-10 | documentos relacionados | `BCE/temas/identidade-dids-e-identificador-de-equipamento.md` e `BCE/temas/rede-mesh-comunicacao-e-roteamento.md` | Dependências entre autenticação, identidade, localização e rota | Ambos permanecem provisórios e sem implementação verificada |
+| E05-11 | classificação/pré-registro derivados | `BCE/fontes/CLASSIFICACAO_F3_1_DOM01_E004.md`; `BCE/sessoes/2026-10-19_f3-1-dom01-e004-abertura.md` | Inventário, hashes 4/4, repetição, captura, links não seguidos e limites da reauditoria E004 | Síntese derivada; os quatro artefatos da fonte permanecem evidência primária |
 
 ## 9. Evolução arqueológica
 
@@ -268,10 +279,11 @@ Nenhuma dessas melhorias foi demonstrada como implementada no lote.
 | C05-01 | ARC é segmento de hash direto ou commit-reveal/ZKP? | Fonte ARC versus fonte de roteamento | Não há um protocolo único | Congelar mensagem, nonce, frescor e método de prova antes de integrar |
 | C05-02 | O DNA do hardware é metáfora, impressão digital ou atestado? | Fonte DNA e código ARC | Risco de prometer segurança física sem evidência | Definir ameaça, sensor/PUF, derivação, privacidade e teste |
 | C05-03 | O score bayesiano está calibrado? | Priors fixos da fonte versus recomendação de calibração | Decisões e limiar podem ser inválidos fora da simulação | Fornecer dataset, método, métricas e intervalos |
-| C05-04 | O código é executável? | “Código completo e funcional” versus placeholders, duplicatas e dependências ausentes | Não é possível afirmar protótipo operacional | Recuperar projeto, build e logs reproduzíveis |
+| C05-04 | O código é executável? | “Código completo e funcional” versus placeholders, duplicatas, dependências ausentes e roteiro Ktor/Vue/Android incompleto | Não é possível afirmar protótipo operacional ou integração entregue | Recuperar projeto, build e logs reproduzíveis |
 | C05-05 | Quem controla o federador? | Federador sugerido versus proposta de consenso distribuído | Ponto de falha e governança não definidos | Especificar membros, quórum, rotação e falhas |
 | C05-06 | Contexto de rota pode ser manipulado? | Bandit adaptativo versus alerta de envenenamento | Ataques podem forçar rotas ruins ou maliciosas | Criar testbed adversarial, limites e detecção de drift |
 | C05-07 | O placeholder é sempre conservador? | Priors reduzidos e likelihood neutro | Um prior inadequado ainda pode produzir score alto | Fazer análise de sensibilidade e política de rejeição explícita |
+| C05-08 | Literais de exemplo ARC podem ser credenciais ativas? | E004 contém valores com aparência sensível em trechos de simulação/integração, agora redigidos | Se reutilizados fora do exemplo, podem expor segredo; o corpus não confirma uso real | Não reproduzir; o responsável deve rotacionar/revogar qualquer valor correspondente a credencial ativa |
 
 ## 14. Lacunas e questões em aberto
 
@@ -285,6 +297,7 @@ Nenhuma dessas melhorias foi demonstrada como implementada no lote.
 8. **Privacidade:** avaliar exposição de timestamp, latência, perfil, localização e padrões de autenticação.
 9. **Desempenho:** medir overhead de ARC/Bayes e disponibilidade em dispositivos MeshWave/Android.
 10. **Testbeds:** confirmar se FABRIC/COSMOS foi usado; o lote contém apenas recomendação, não resultados.
+11. **Simulador/integração:** localizar eventual projeto Ktor/Vue ou app Android versionado e confirmar dependências, build, testes e execução; os trechos E004 não comprovam sua existência.
 
 ## 15. Relações com outros documentos
 
@@ -300,7 +313,8 @@ Nenhuma dessas melhorias foi demonstrada como implementada no lote.
 | Versão | Data | Alteração | Fontes/commit |
 |---|---|---|---|
 | `0.1.0` | `2026-10-08` | Primeira síntese F2.5; separação entre ARC, contexto, Bayes, roteamento e alternativas criptográficas | Três caminhos do `ESCOPO_F2_5_ARC_BAYES.md`; commit a publicar |
+| `0.1.1` | `2026-10-20` | Incorpora auditoria direta de E004/L001-04: hashes 4/4, repetição, proposta de simulador Ktor/Vue e integração Android, captura de conversa e literais sensíveis redigidos; mantém implementação não confirmada | `BCE/fontes/CLASSIFICACAO_F3_1_DOM01_E004.md`; checkpoint de abertura E004; commit desta atualização |
 
 ## 17. Próximo passo de curadoria
 
-Registrar o resultado da F2.5 no controle mestre e no índice, publicar este DOM-05 e criar checkpoint; depois iniciar a F2.6 lendo integralmente as fontes de SOFIA, agentes, missões e persistência indicadas no próximo escopo, sem elevar o protótipo ARC/Bayes a implementação validada.
+Continuar a auditoria F3.1 com E005/L001-06, `KNOWLEDGE/johann/20260422_174331_Conhecimento sobre Meshwave, Sofia e módulos ARC-Bayes_ - Manus/`: primeiro pré-registrar os arquivos físicos e hashes em checkpoint; depois comparar o conteúdo com DOM-01, DOM-05 e DOM-06. Manter este DOM-05 em `REVISÃO` e não elevar o protótipo ARC/Bayes a implementação validada.
