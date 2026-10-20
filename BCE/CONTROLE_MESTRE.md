@@ -7,7 +7,7 @@
 | Campo | Valor |
 |---|---|
 | Status global | `EM_ANDAMENTO — FASE 3: Curadoria profunda` |
-| Última atualização | 2026-10-20 11:19 (-03:00) |
+| Última atualização | 2026-10-20 11:29 (-03:00) |
 | Publicação de F2.6-07 | Os cinco commits da unidade (`c55e31d`, `b3c8864`, `8870caa`, `290895f`, `629125a`) foram publicados em `main`; a correção factual posterior foi registrada em `f8649ba`. |
 | Publicação de F2.6-08 | DOM-06 `74eba5f`; índice `14e2768` (cobertura) e `aec133d` (linha principal DOM-06); checkpoint de fechamento `6f99eaa`, todos publicados em `main`. |
 | Publicação de F2.6-09 | DOM-06 `97dea42`; índice `a39441b`; pré-registro `56c5ff8`; fechamento `f186adc`; controle `b79cf1d`, publicados em `main`.
@@ -18,17 +18,17 @@
 | Publicação de F2.6-14 | Pré-registro `0ebf77a`; DOM-06 `6001255`/`25c1768`; índice `afa3ec2`; fechamento e abertura serão publicados após esta atualização. |
 | Publicação de F2.6-15 | Pré-registro `12973d0`; DOM-06 `272a10c`; índice `1548201`; fechamento e checkpoint serão publicados após esta atualização. |
 | Publicação de F3.1/E003 | Pré-registro `c839662`; classificação `e0182a1`; DOM-01 v0.3.2 `54a5a96`; DOM-02 v0.1.1 `c915e1c`; índice `1330b49`; checkpoint `445b222`; publicados em `main`. |
-| Publicação de F3.1/E004 | Pré-registro de quatro artefatos em `22c83ac`, publicado em `main`; auditoria semântica ainda em andamento. |
-| Estado local/remoto | `main` sincronizada com `origin/main` em `22c83ac`; sem alterações locais antes desta atualização de controle. |
+| Publicação de F3.1/E004 | Pré-registro `22c83ac`; correção de continuidade `4a5668c`; classificação `f8801bb`; DOM-01 v0.3.3 `bf632be`; DOM-05 v0.1.1 `be58d70`; índice `b2a3649`; fechamento `c76aec3`, publicados em `main`. |
+| Estado local/remoto | `main` sincronizada com `origin/main` em `c76aec3` antes desta atualização; controle mestre será publicado em commit próprio. |
 | Branch de trabalho | `main` |
-| Último item concluído | `F3.1/E003` — cinco artefatos L001-03 auditados; hashes 5/5 confirmados; classificação (`e0182a1`), DOM-01 v0.3.2 (`54a5a96`), DOM-02 v0.1.1 (`c915e1c`), índice (`1330b49`) e checkpoint (`445b222`) publicados. E001 e E002 também concluídos; F3.1 permanece em andamento. |
-| Item em andamento | `F3.1` — DOM-01/P0; E001–E003 concluídas; E004/L001-04 pré-registrada (`22c83ac`). Textos e blocos de código estão sob revisão em cópias redigidas; FULL.png ainda pendente. |
-| Último caminho processado | `KNOWLEDGE/info/20260422_165745_ARC - Autenticação Recessiva Contextual com inferência Bayesiana - Manus/` — E004; `content.txt`, `code_blocks.txt` e `links.txt` revisados em cópias redigidas; FULL.png pendente. |
-| Fontes de governança/contexto lidas nesta unidade | `AGENTS.md`, skill BCE, orientação, controle, índice, decisões, inventário narrativo, template, checkpoint de abertura E004 e DOM-05; arquivos E004 textuais/código/links revisados somente em cópias redigidas. |
-| Arquivos curatoriais alterados | Pré-registro E004 (`22c83ac`); este controle mestre em atualização. Nenhum arquivo em `KNOWLEDGE/` foi alterado. |
-| Próximo item | Inspecionar `FULL.png` de E004; conferir hashes pós-leitura e limites de repetição; concluir classificação direta de `content.txt`, `code_blocks.txt` e `links.txt`; comparar com DOM-01/DOM-05 e publicar os artefatos curatoriais, sem processar outras fontes. |
-| Conflitos, lacunas e impedimentos | E003 mantém as ressalvas visuais registradas. E004 contém trechos/literais com aparência de identificadores secretos; foram redigidos em cópias temporárias e nenhum valor será reproduzido. Se algum literal corresponder a credencial real, recomenda-se rotação; isso não pode ser confirmado pelo corpus. Links locais/nomeados não foram seguidos. |
-| Responsável pela sessão | Manus — retomada F3.1/E004; próxima ação: inspecionar `FULL.png` e concluir a classificação E004. |
+| Último item concluído | `F3.1/E004` — quatro artefatos L001-04 auditados; hashes 4/4 confirmados; classificação (`f8801bb`), DOM-01 v0.3.3 (`bf632be`), DOM-05 v0.1.1 (`be58d70`), índice (`b2a3649`) e fechamento (`c76aec3`) publicados. E001–E003 também concluídas; F3.1 permanece em andamento. |
+| Item em andamento | `F3.1` — DOM-01/P0; E001–E004 concluídas. Próximo contato: E005/L001-06, ainda sem pré-registro. |
+| Último caminho processado | `KNOWLEDGE/info/20260422_165745_ARC - Autenticação Recessiva Contextual com inferência Bayesiana - Manus/` — E004; quatro arquivos conferidos, texto/blocos revistos em cópias redigidas, FULL.png inspecionada e links classificados sem seguir destinos. |
+| Fontes de governança/contexto lidas nesta unidade | `AGENTS.md`, skill BCE, orientação, controle, índice, registro de decisões, inventário narrativo, template, checkpoint de abertura/fechamento E004, classificação L001-04 e DOM-01/DOM-05; artefatos E004 revisados sem expor valores sensíveis. |
+| Arquivos curatoriais alterados | Classificação E004 (`f8801bb`), DOM-01 v0.3.3 (`bf632be`), DOM-05 v0.1.1 (`be58d70`), índice (`b2a3649`), checkpoint de fechamento (`c76aec3`) e este controle. Nenhum arquivo em `KNOWLEDGE/` foi alterado. |
+| Próximo item | F3.1/E005/L001-06: pré-registrar nomes, tamanhos e SHA-256 dos arquivos de `KNOWLEDGE/johann/20260422_174331_Conhecimento sobre Meshwave, Sofia e módulos ARC-Bayes_ - Manus/` em checkpoint versionado antes de qualquer leitura semântica. |
+| Conflitos, lacunas e impedimentos | E004 contém trechos com literais de aparência sensível, redigidos e não reproduzidos; se algum valor corresponder a credencial ativa, recomenda-se rotação/revogação ao responsável. Não foi possível confirmar uso real. Links local/nomeado não foram seguidos; nenhuma implementação, build, teste, calibração ou execução foi confirmada. DOM-01/DOM-05 permanecem em revisão. |
+| Responsável pela sessão | Manus — fechamento F3.1/E004; próxima ação: pré-registrar E005/L001-06 no caminho exato acima. |
 
 ## Como retomar em cinco minutos
 
@@ -95,7 +95,7 @@
 
 | ID | Entrega | Status | Dependência |
 |---|---|---|---|
-| F3.1 | Consolidar fontes do domínio prioritário 1 | EM_ANDAMENTO — E001–E003 auditadas; E004/L001-04 pré-registrada (`22c83ac`); textos/código revistos em cópias redigidas, com `FULL.png` ainda pendente | F2; DOM-01/P0 |
+| F3.1 | Consolidar fontes do domínio prioritário 1 | EM_ANDAMENTO — E001–E004 auditadas; DOM-01 v0.3.3 e DOM-05 v0.1.1 atualizados; próximo E005/L001-06, ainda sem pré-registro | F2; DOM-01/P0 |
 | F3.2 | Reconstruir arqueologia das decisões | PENDENTE | F3.1 |
 | F3.3 | Validar estado da arte contra código e imagens | PENDENTE | F3.1 |
 | F3.4 | Registrar conflitos, descartes e hipóteses | PENDENTE | F3.1 |
@@ -251,6 +251,7 @@ O agente atual só deve declarar a tarefa transferível quando:
 | 2026-10-19 | Manus — fechamento F2.6-15 e transição para F3.1 | F2.6-15 auditada; DOM-06 v0.3.5/índice atualizados; cobertura 23/23; F2.6 encerrada como auditoria de fontes | `12973d0` pré-registro; `272a10c` DOM-06; `1548201` índice; controle e checkpoint desta unidade serão publicados separadamente | Iniciar F3.1: consolidar fontes do domínio prioritário 1 |
 | 2026-10-19 | Manus — fechamento F3.1/DOM-01/E002 | Cinco artefatos L001-02 auditados; hashes 5/5; DOM-01 v0.3.1 e índice atualizados; alegação de POC mantida como não verificada; fontes brutas intactas | `e268a19` pré-registro; `ca27fd1` classificação; `2aa36f6` DOM-01; `b61fda9` índice; `337dff6` checkpoint; controle `f69f99a` | E003/L001-03 foi pré-registrada e auditada; ver a linha seguinte |
 | 2026-10-19 | Manus — fechamento F3.1/DOM-01/E003 | Cinco artefatos L001-03 auditados; hashes 5/5; grade visual mantida como conceito/referência relatada, sem algoritmo/CRS; DOM-01 v0.3.2, DOM-02 v0.1.1 e índice atualizados; fontes brutas intactas | `c839662` pré-registro; `e0182a1` classificação; `54a5a96` DOM-01; `c915e1c` DOM-02; `1330b49` índice; `445b222` fechamento; este controle em commit próprio | Pré-registrar `KNOWLEDGE/info/20260422_165745_ARC - Autenticação Recessiva Contextual com inferência Bayesiana - Manus/` como E004/L001-04 antes de ler conteúdo |
+| 2026-10-20 | Manus — fechamento F3.1/DOM-01/E004 | Quatro artefatos L001-04 auditados; hashes 4/4; ARC/Bayes, simulador Ktor/Vue e integração Android mantidos como proposta/código transcrito; literais sensíveis redigidos; fontes brutas intactas | `22c83ac` pré-registro; `4a5668c` correção de continuidade; `f8801bb` classificação; `bf632be` DOM-01; `be58d70` DOM-05; `b2a3649` índice; `c76aec3` fechamento | Pré-registrar `KNOWLEDGE/johann/20260422_174331_Conhecimento sobre Meshwave, Sofia e módulos ARC-Bayes_ - Manus/` como E005/L001-06 antes de ler conteúdo |
 
 
 ## Lote F1.5 registrado antes da leitura — catálogo de código
