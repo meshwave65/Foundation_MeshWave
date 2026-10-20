@@ -7,7 +7,7 @@
 | Campo | Valor |
 |---|---|
 | Status global | `EM_ANDAMENTO — FASE 3: Curadoria profunda` |
-| Última atualização | 2026-10-19 09:18 (-03:00) |
+| Última atualização | 2026-10-20 11:19 (-03:00) |
 | Publicação de F2.6-07 | Os cinco commits da unidade (`c55e31d`, `b3c8864`, `8870caa`, `290895f`, `629125a`) foram publicados em `main`; a correção factual posterior foi registrada em `f8649ba`. |
 | Publicação de F2.6-08 | DOM-06 `74eba5f`; índice `14e2768` (cobertura) e `aec133d` (linha principal DOM-06); checkpoint de fechamento `6f99eaa`, todos publicados em `main`. |
 | Publicação de F2.6-09 | DOM-06 `97dea42`; índice `a39441b`; pré-registro `56c5ff8`; fechamento `f186adc`; controle `b79cf1d`, publicados em `main`.
@@ -18,16 +18,17 @@
 | Publicação de F2.6-14 | Pré-registro `0ebf77a`; DOM-06 `6001255`/`25c1768`; índice `afa3ec2`; fechamento e abertura serão publicados após esta atualização. |
 | Publicação de F2.6-15 | Pré-registro `12973d0`; DOM-06 `272a10c`; índice `1548201`; fechamento e checkpoint serão publicados após esta atualização. |
 | Publicação de F3.1/E003 | Pré-registro `c839662`; classificação `e0182a1`; DOM-01 v0.3.2 `54a5a96`; DOM-02 v0.1.1 `c915e1c`; índice `1330b49`; checkpoint `445b222`; publicados em `main`. |
-| Estado local/remoto | `main`; commits de conteúdo, índice e checkpoint E003 publicados até `445b222`; este controle mestre segue em commit próprio. |
+| Publicação de F3.1/E004 | Pré-registro de quatro artefatos em `22c83ac`, publicado em `main`; auditoria semântica ainda em andamento. |
+| Estado local/remoto | `main` sincronizada com `origin/main` em `22c83ac`; sem alterações locais antes desta atualização de controle. |
 | Branch de trabalho | `main` |
 | Último item concluído | `F3.1/E003` — cinco artefatos L001-03 auditados; hashes 5/5 confirmados; classificação (`e0182a1`), DOM-01 v0.3.2 (`54a5a96`), DOM-02 v0.1.1 (`c915e1c`), índice (`1330b49`) e checkpoint (`445b222`) publicados. E001 e E002 também concluídos; F3.1 permanece em andamento. |
-| Item em andamento | `F3.1` — DOM-01/P0; E001/L001-01, E002/L001-02 e E003/L001-03 auditadas (14 artefatos físicos; hashes 4/4, 5/5 e 5/5); próximo contato E004/L001-04. |
-| Último caminho processado | `KNOWLEDGE/info/20260422_165701_Hierarquia de CLA Continental e Roteamento - Manus/` — E003 auditado; cinco arquivos e 269.604 bytes; SHA-256 5/5 confirmado. |
-| Fontes de governança/contexto lidas nesta unidade | `AGENTS.md`, `skills/meshwave-bce-curation/SKILL.md`, `BCE/ORIENTACAO_AGENTES.md`, controle, índice, registro de decisões, inventários `.md`/`.csv`, template, DOM-01/DOM-02, classificações L001-03 e F3.1/E001–E002, checkpoint E002 e fontes E003 (`content.txt`, `code_blocks.txt`, `links.txt`, `FULL.png`, `img_000.jpg`). |
-| Arquivos curatoriais alterados | Pré-registro e fechamento E003, classificação F3.1/E003, DOM-01 v0.3.2, DOM-02 v0.1.1, índice curatorial e este controle; nenhum arquivo em `KNOWLEDGE/` foi alterado. |
-| Próximo item | F3.1/E004/L001-04: pré-registrar nomes, bytes e SHA-256 de `KNOWLEDGE/info/20260422_165745_ARC - Autenticação Recessiva Contextual com inferência Bayesiana - Manus/` em checkpoint versionado antes de ler conteúdo; depois comparar com DOM-01/DOM-05. |
-| Conflitos, lacunas e impedimentos | E003 registra uma imagem gerada a partir de planilha/contexto não presentes nos cinco arquivos; `img_000.jpg` não tem legenda, CRS ou algoritmo e seus bytes são PNG apesar da extensão. Não há prova de roteamento implementado; preservar a figura como referência visual relatada, não especificação. Sem impedimento para continuar com E004. |
-| Responsável pela sessão | Manus — fechamento F3.1/E003; próxima ação: pré-registrar E004/L001-04. |
+| Item em andamento | `F3.1` — DOM-01/P0; E001–E003 concluídas; E004/L001-04 pré-registrada (`22c83ac`). Textos e blocos de código estão sob revisão em cópias redigidas; FULL.png ainda pendente. |
+| Último caminho processado | `KNOWLEDGE/info/20260422_165745_ARC - Autenticação Recessiva Contextual com inferência Bayesiana - Manus/` — E004; `content.txt`, `code_blocks.txt` e `links.txt` revisados em cópias redigidas; FULL.png pendente. |
+| Fontes de governança/contexto lidas nesta unidade | `AGENTS.md`, skill BCE, orientação, controle, índice, decisões, inventário narrativo, template, checkpoint de abertura E004 e DOM-05; arquivos E004 textuais/código/links revisados somente em cópias redigidas. |
+| Arquivos curatoriais alterados | Pré-registro E004 (`22c83ac`); este controle mestre em atualização. Nenhum arquivo em `KNOWLEDGE/` foi alterado. |
+| Próximo item | Inspecionar `FULL.png` de E004; conferir hashes pós-leitura e limites de repetição; concluir classificação direta de `content.txt`, `code_blocks.txt` e `links.txt`; comparar com DOM-01/DOM-05 e publicar os artefatos curatoriais, sem processar outras fontes. |
+| Conflitos, lacunas e impedimentos | E003 mantém as ressalvas visuais registradas. E004 contém trechos/literais com aparência de identificadores secretos; foram redigidos em cópias temporárias e nenhum valor será reproduzido. Se algum literal corresponder a credencial real, recomenda-se rotação; isso não pode ser confirmado pelo corpus. Links locais/nomeados não foram seguidos. |
+| Responsável pela sessão | Manus — retomada F3.1/E004; próxima ação: inspecionar `FULL.png` e concluir a classificação E004. |
 
 ## Como retomar em cinco minutos
 
@@ -94,7 +95,7 @@
 
 | ID | Entrega | Status | Dependência |
 |---|---|---|---|
-| F3.1 | Consolidar fontes do domínio prioritário 1 | EM_ANDAMENTO — E001/L001-01, E002/L001-02 e E003/L001-03 auditadas; DOM-01 v0.3.2; próximo contato E004/L001-04 deve ser pré-registrado | F2; DOM-01/P0 |
+| F3.1 | Consolidar fontes do domínio prioritário 1 | EM_ANDAMENTO — E001–E003 auditadas; E004/L001-04 pré-registrada (`22c83ac`); textos/código revistos em cópias redigidas, com `FULL.png` ainda pendente | F2; DOM-01/P0 |
 | F3.2 | Reconstruir arqueologia das decisões | PENDENTE | F3.1 |
 | F3.3 | Validar estado da arte contra código e imagens | PENDENTE | F3.1 |
 | F3.4 | Registrar conflitos, descartes e hipóteses | PENDENTE | F3.1 |
