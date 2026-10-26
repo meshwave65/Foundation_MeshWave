@@ -7,7 +7,7 @@
 | Campo | Valor |
 |---|---|
 | Status global | `EM_ANDAMENTO — FASE 3: Curadoria profunda` |
-| Última atualização | 2026-10-26 11:48 (-03:00) |
+| Última atualização | 2026-10-26 11:52 (-03:00) |
 | Publicação de F2.6-07 | Os cinco commits da unidade (`c55e31d`, `b3c8864`, `8870caa`, `290895f`, `629125a`) foram publicados em `main`; a correção factual posterior foi registrada em `f8649ba`. |
 | Publicação de F2.6-08 | DOM-06 `74eba5f`; índice `14e2768` (cobertura) e `aec133d` (linha principal DOM-06); checkpoint de fechamento `6f99eaa`, todos publicados em `main`. |
 | Publicação de F2.6-09 | DOM-06 `97dea42`; índice `a39441b`; pré-registro `56c5ff8`; fechamento `f186adc`; controle `b79cf1d`, publicados em `main`.
@@ -21,16 +21,16 @@
 | Publicação de F3.1/E004 | Pré-registro `22c83ac`; correção de continuidade `4a5668c`; classificação `f8801bb`; DOM-01 v0.3.3 `bf632be`; DOM-05 v0.1.1 `be58d70`; índice `b2a3649`; fechamento `c76aec3`, publicados em `main`. |
 | Publicação de F3.1/E005 | Pré-registro `a50d277`; classificação `b1ff9a0`; DOM-01 v0.3.4 `b03c6ea`; índice `4c9dafd` e correção histórica `1d56ae1`; fechamento `d8c597f`; referência do fechamento no índice `c9cb35a`, publicados em `main`. |
 | Publicação de F3.1/E006 | Pré-registro `d6d6db1`; classificação `5ba3e9f`; DOM-01 v0.3.5 `84fe537`; índice `ecbbb19`; checkpoint `b934e53`; controle `98ca271`, publicados em `main`; hashes 5/5 conferidos. |
-| Estado local/remoto | `main` sincronizada com `origin/main`; pré-registro E007 `a2475e0` publicado; esta reconciliação do controle será publicada em commit próprio. |
+| Estado local/remoto | `main` sincronizada com `origin/main`; pré-registro E007 `a2475e0` e classificação E007 `411671a` publicados; esta reconciliação será publicada em commit próprio. |
 | Branch de trabalho | `main` |
 | Último item concluído | `F3.1/E006` — cinco artefatos L002-02 auditados; classificação (`5ba3e9f`), DOM-01 v0.3.5 (`84fe537`), índice (`ecbbb19`) e fechamento (`b934e53`) publicados. A fonte permanece planejamento visual sem identidade normativa ou implementação verificável. |
-| Item em andamento | `F3.1` — DOM-01/P0; E001–E006 integradas. E007/L002-04 pré-registrada em `BCE/sessoes/2026-10-26_f3-1-dom01-e007-abertura.md` (`a2475e0`), hashes/tamanhos listados; leitura semântica pendente. |
-| Último caminho processado | `KNOWLEDGE/info/20260422_174130_Definição do identificador único do equipamento na rede - Manus/` — E006/L002-02: `content.txt`, `code_blocks.txt`, `links.txt`, `FULL.png` e `img_000.jpg` auditados; hashes 5/5 coincidem com o pré-registro. Nenhum código executado ou link seguido. |
-| Fontes de governança/contexto lidas nesta unidade | Orientação, controle, índice, decisões, skill BCE, pré-registro E006, inventário, classificação L002-02, DOM-01/DOM-03/DOM-04, template e fechamento E005. Os cinco artefatos E006 foram lidos/inspecionados; hashes pós-leitura coincidem 5/5. |
-| Arquivos curatoriais alterados | E006: classificação (`5ba3e9f`), DOM-01 v0.3.5 (`84fe537`), índice (`ecbbb19`), fechamento (`b934e53`), controle (`98ca271`). E007: pré-registro (`a2475e0`); este controle em commit próprio. Nenhum arquivo em `KNOWLEDGE/` foi alterado. |
-| Próximo item | F3.1/E007/L002-04: revalidar os quatro hashes pré-registrados em `BCE/sessoes/2026-10-26_f3-1-dom01-e007-abertura.md`; se coincidirem, auditar texto/blocos em cópia temporária, links sem seguir destinos e `FULL.png` visualmente. Persistir cada novo documento/alteração em commit próprio. Manter DOM-01 em `REVISÃO`. |
+| Item em andamento | `F3.1` — DOM-01/P0; E001–E006 integradas. E007/L002-04 auditada (hashes 4/4) e classificação `BCE/fontes/CLASSIFICACAO_F3_1_DOM01_E007.md` publicada (`411671a`); integração em DOM-01 e índice pendente. A fonte é reauditoria da mesma extração de F2.6-01, não evidência independente. |
+| Último caminho processado | `KNOWLEDGE/johann/20260422_175016_SOFIA and MeshWave Ecosystem Overview - Manus/` — E007/L002-04: `content.txt`, `code_blocks.txt`, `links.txt` e `FULL.png` auditados; hashes 4/4 coincidem com pré-registro e pós-leitura. Nenhum código executado ou link seguido. |
+| Fontes de governança/contexto lidas nesta unidade | Orientação, controle, índice, decisões, skill BCE, pré-registros/fechamento E006/E007, inventário, classificação Lote 002, DOM-01/DOM-03/DOM-05/DOM-06 e template. E007: quatro artefatos lidos/inspecionados, hashes pós-leitura 4/4; reauditoria da fonte F2.6-01. |
+| Arquivos curatoriais alterados | E006: classificação (`5ba3e9f`), DOM-01 v0.3.5 (`84fe537`), índice (`ecbbb19`), fechamento (`b934e53`), controle (`98ca271`). E007: pré-registro (`a2475e0`), classificação (`411671a`); este controle em commit próprio. Nenhum arquivo em `KNOWLEDGE/` foi alterado. |
+| Próximo item | F3.1/E007/L002-04: integrar a classificação publicada `BCE/fontes/CLASSIFICACAO_F3_1_DOM01_E007.md` a DOM-01 v0.3.6, preservando a reauditoria F2.6-01 como a mesma evidência e os limites de truncamento/ausência de testes; fazer commit próprio. Depois atualizar o índice e fechar a unidade em commits separados, apontando o próximo contato pela fila oficial. Manter DOM-01 em `REVISÃO`. |
 | Conflitos, lacunas e impedimentos | E006 é principalmente plano editorial/visual. A transcrição afirma criação de dois gráficos, mas as saídas não estão entre os cinco artefatos; a captura mostra erro/parada em 3/7 e replay concluído, sem confirmar exportação. `img_000.jpg` é WebP com rótulos/fronteiras ilegíveis. Não há esquema normativo nem implementação; contrato, geração e interoperabilidade não confirmados. Sem impedimento operacional. |
-| Responsável pela sessão | Manus — E006 encerrada; E007 pré-registrada (`a2475e0`); próxima ação: revalidar hashes e iniciar auditoria semântica. |
+| Responsável pela sessão | Manus — E007 auditada e classificada (`411671a`); próxima ação: integrar a evidência em DOM-01, depois índice e fechamento, cada qual em commit próprio. |
 
 ## Como retomar em cinco minutos
 
