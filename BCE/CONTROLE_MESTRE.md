@@ -7,7 +7,7 @@
 | Campo | Valor |
 |---|---|
 | Status global | `EM_ANDAMENTO — FASE 3: Curadoria profunda` |
-| Última atualização | 2026-10-26 11:43 (-03:00) |
+| Última atualização | 2026-10-26 11:45 (-03:00) |
 | Publicação de F2.6-07 | Os cinco commits da unidade (`c55e31d`, `b3c8864`, `8870caa`, `290895f`, `629125a`) foram publicados em `main`; a correção factual posterior foi registrada em `f8649ba`. |
 | Publicação de F2.6-08 | DOM-06 `74eba5f`; índice `14e2768` (cobertura) e `aec133d` (linha principal DOM-06); checkpoint de fechamento `6f99eaa`, todos publicados em `main`. |
 | Publicação de F2.6-09 | DOM-06 `97dea42`; índice `a39441b`; pré-registro `56c5ff8`; fechamento `f186adc`; controle `b79cf1d`, publicados em `main`.
@@ -20,17 +20,17 @@
 | Publicação de F3.1/E003 | Pré-registro `c839662`; classificação `e0182a1`; DOM-01 v0.3.2 `54a5a96`; DOM-02 v0.1.1 `c915e1c`; índice `1330b49`; checkpoint `445b222`; publicados em `main`. |
 | Publicação de F3.1/E004 | Pré-registro `22c83ac`; correção de continuidade `4a5668c`; classificação `f8801bb`; DOM-01 v0.3.3 `bf632be`; DOM-05 v0.1.1 `be58d70`; índice `b2a3649`; fechamento `c76aec3`, publicados em `main`. |
 | Publicação de F3.1/E005 | Pré-registro `a50d277`; classificação `b1ff9a0`; DOM-01 v0.3.4 `b03c6ea`; índice `4c9dafd` e correção histórica `1d56ae1`; fechamento `d8c597f`; referência do fechamento no índice `c9cb35a`, publicados em `main`. |
-| Publicação de F3.1/E006 | Pré-registro `d6d6db1`; classificação direta `5ba3e9f`, publicada em `main`; hashes 5/5 conferidos; integração em DOM-01, índice e fechamento ainda pendentes. |
-| Estado local/remoto | `main` sincronizada com `origin/main` após a publicação da classificação E006 (`5ba3e9f`); esta atualização do controle será publicada em commit próprio. |
+| Publicação de F3.1/E006 | Pré-registro `d6d6db1`; classificação `5ba3e9f`; DOM-01 v0.3.5 `84fe537`, publicados em `main`; hashes 5/5 conferidos; índice e fechamento ainda pendentes. |
+| Estado local/remoto | `main` sincronizada com `origin/main` após DOM-01 E006 (`84fe537`); esta atualização do controle será publicada em commit próprio. |
 | Branch de trabalho | `main` |
-| Último item concluído | `F3.1/E005` — quatro artefatos L001-06 auditados; classificação (`b1ff9a0`), DOM-01 v0.3.4 (`b03c6ea`), índice e fechamento publicados. E006 foi auditada diretamente e sua classificação (`5ba3e9f`) está publicada; integração ao tema e índice ainda não concluída. |
-| Item em andamento | `F3.1` — DOM-01/P0; E001–E005 integradas; E006/L002-02 auditada e classificação publicada (`5ba3e9f`), mas integração em DOM-01 e índice ainda pendente. Hashes E006 5/5 conferidos. |
+| Último item concluído | `F3.1/E005` — quatro artefatos L001-06 auditados; classificação (`b1ff9a0`), DOM-01 v0.3.4 (`b03c6ea`), índice e fechamento publicados. E006 foi auditada e classificada (`5ba3e9f`) e integrada em DOM-01 v0.3.5 (`84fe537`); índice e fechamento de E006 ainda pendentes. |
+| Item em andamento | `F3.1` — DOM-01/P0; E001–E005 integradas; E006/L002-02 auditada, hashes 5/5 confirmados, classificação e DOM-01 v0.3.5 publicados; índice e fechamento pendentes. |
 | Último caminho processado | `KNOWLEDGE/info/20260422_174130_Definição do identificador único do equipamento na rede - Manus/` — E006/L002-02: `content.txt`, `code_blocks.txt`, `links.txt`, `FULL.png` e `img_000.jpg` auditados; hashes 5/5 coincidem com o pré-registro. Nenhum código executado ou link seguido. |
 | Fontes de governança/contexto lidas nesta unidade | Orientação, controle, índice, decisões, skill BCE, pré-registro E006, inventário, classificação L002-02, DOM-01/DOM-03/DOM-04, template e fechamento E005. Os cinco artefatos E006 foram lidos/inspecionados; hashes pós-leitura coincidem 5/5. |
-| Arquivos curatoriais alterados | Classificação individual `BCE/fontes/CLASSIFICACAO_F3_1_DOM01_E006.md` (`5ba3e9f`); este controle mestre em commit próprio. Nenhum arquivo em `KNOWLEDGE/` foi alterado. |
-| Próximo item | F3.1/E006: integrar em `BCE/temas/visao-geral-ecossistema-meshwave.md` a classificação publicada `BCE/fontes/CLASSIFICACAO_F3_1_DOM01_E006.md`, registrar limites e atualizar versão/histórico; manter DOM-01 em `REVISÃO`. Depois atualizar o índice em commit separado e fechar E006 em checkpoint próprio. |
+| Arquivos curatoriais alterados | Classificação E006 (`5ba3e9f`); DOM-01 v0.3.5 (`84fe537`); este controle mestre em commit próprio. Nenhum arquivo em `KNOWLEDGE/` foi alterado. |
+| Próximo item | F3.1/E006: atualizar `BCE/INDICE_CURATORIAL.md` para DOM-01 v0.3.5 e F3.1/E006 auditada (índice em commit próprio); depois criar checkpoint de fechamento E006 em commit separado. Manter DOM-01 em `REVISÃO`. |
 | Conflitos, lacunas e impedimentos | E006 é principalmente plano editorial/visual. A transcrição afirma criação de dois gráficos, mas as saídas não estão entre os cinco artefatos; a captura mostra erro/parada em 3/7 e replay concluído, sem confirmar exportação. `img_000.jpg` é WebP com rótulos/fronteiras ilegíveis. Não há esquema normativo nem implementação; contrato, geração e interoperabilidade não confirmados. Sem impedimento operacional. |
-| Responsável pela sessão | Manus — auditoria direta E006 e classificação publicada; próxima ação: integrar E006 em DOM-01. |
+| Responsável pela sessão | Manus — auditoria E006, classificação e integração DOM-01 publicadas; próxima ação: atualizar o índice curatorial. |
 
 ## Como retomar em cinco minutos
 
@@ -97,7 +97,7 @@
 
 | ID | Entrega | Status | Dependência |
 |---|---|---|---|
-| F3.1 | Consolidar fontes do domínio prioritário 1 | EM_ANDAMENTO — E001–E005 integradas; E006/L002-02 auditada, hashes 5/5 confirmados e classificação publicada (`5ba3e9f`); integração DOM-01 e índice pendentes. | F2; DOM-01/P0 |
+| F3.1 | Consolidar fontes do domínio prioritário 1 | EM_ANDAMENTO — E001–E005 integradas; E006/L002-02 auditada (hashes 5/5), classificação `5ba3e9f` e DOM-01 v0.3.5 `84fe537` publicados; índice e fechamento pendentes. | F2; DOM-01/P0 |
 | F3.2 | Reconstruir arqueologia das decisões | PENDENTE | F3.1 |
 | F3.3 | Validar estado da arte contra código e imagens | PENDENTE | F3.1 |
 | F3.4 | Registrar conflitos, descartes e hipóteses | PENDENTE | F3.1 |
