@@ -6,8 +6,8 @@
 |---|---|
 | ID curatorial | `DOM-06` |
 | Status | `REVISÃO` |
-| Versão do documento | `0.3.5` |
-| Última atualização | `2026-10-19` |
+| Versão do documento | `0.3.6` |
+| Última atualização | `2026-10-26` |
 | Curador(es) | Agente BCE MeshWave |
 | Confiança geral | `média-baixa` |
 | Documento relacionado no índice | [`BCE/INDICE_CURATORIAL.md`](../INDICE_CURATORIAL.md) |
@@ -21,6 +21,8 @@ As fontes descrevem SOFIA como um sistema de obtenção e execução de missões
 As fontes auditadas dos itens 1–11 e 16–23 reforçam um problema recorrente: transcrições e capturas de interface narram obtenção de tarefas, consulta de rotas, execução, geração de relatórios, upload e finalização, mas geralmente não incluem método HTTP, requisição e resposta integrais, autenticação, timestamp, request-id, status numérico, payload ou verificação posterior. Uma fonte contém tentativas narradas com `HTTP Error 404: Not Found`; outras mencionam `Not Found`, sem status numérico demonstrável. F2.6-10 relata indisponibilidade da API por erro no túnel Cloudflare e apresenta um procedimento que alterna entre selecionar alvos no banco relacional e listá-los no workspace. Essas evidências demonstram o que foi relatado/mostrado, não que as rotas estejam ou não implementadas hoje.
 
 F2.6-02 acrescenta uma sequência de propostas corretivas para missões white-paper: forçar despacho direto pelo RH, preservar `GenesisPrompt` junto de `EnrichedDescription`, gerar `FinalReport.md` e `OperationalReport.md`, trocar a espera do lançador de um status de liberação para polling por `task_id`, e depois buscar detalhes completos da tarefa-mãe após relato de `NoneType` no Worker supervisor. A própria conversa registra que a correção anterior não resolveu o problema observado. São propostas e diagnósticos narrados; não há prova de que os patches foram aplicados ou passaram em execução.
+
+F3.1/L002-05 reaudita diretamente a mesma unidade física de F2.6-02 (`KNOWLEDGE/johann/20260422_175100_SOFIA and MeshWave Ecosystem Documents - Manus/`). Os quatro hashes coincidem com o pré-registro e a leitura confirma o diagnóstico de fatoração, perda de contexto e `blocks=None`/`NoneType`, além das versões conflitantes de correção do launcher e do supervisor. Esta reauditoria acrescenta rastreabilidade e não constitui evidência independente, teste, patch aplicado ou confirmação de backend.
 
 F2.6-03 é uma extração de replay/UI altamente repetitiva: o texto extraído contém sobretudo o título, controles e “Reprodução da tarefa Manus concluída”. A imagem preserva uma descrição do fluxo proposto (launcher → RH em modo estrategista/monitor → Executor → Escriba → RH → Worker), com estados 31, 41 e 1, além de um cartão de arquivo de código e a mensagem “algum erro grave... Este era nosso antigo launch”. A mesma tela diz que a arquitetura está correta, mas mostra também que o contexto ficou longo e recomenda iniciar outro chat. Isso documenta o conteúdo exibido na interface, não validação do fluxo, execução do código, estado do backend ou correção arquitetural. `code_blocks.txt` não contém código recuperável; `links.txt` contém somente o endereço de suporte do Manus, não documentação do SOFIA.
 
