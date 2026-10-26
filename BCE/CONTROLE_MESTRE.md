@@ -7,7 +7,7 @@
 | Campo | Valor |
 |---|---|
 | Status global | `EM_ANDAMENTO — FASE 3: Curadoria profunda` |
-| Última atualização | 2026-10-26 12:25 (-03:00) |
+| Última atualização | 2026-10-26 12:27 (-03:00) |
 | Publicação de F2.6-07 | Os cinco commits da unidade (`c55e31d`, `b3c8864`, `8870caa`, `290895f`, `629125a`) foram publicados em `main`; a correção factual posterior foi registrada em `f8649ba`. |
 | Publicação de F2.6-08 | DOM-06 `74eba5f`; índice `14e2768` (cobertura) e `aec133d` (linha principal DOM-06); checkpoint de fechamento `6f99eaa`, todos publicados em `main`. |
 | Publicação de F2.6-09 | DOM-06 `97dea42`; índice `a39441b`; pré-registro `56c5ff8`; fechamento `f186adc`; controle `b79cf1d`, publicados em `main`.
@@ -22,16 +22,16 @@
 | Publicação de F3.1/E005 | Pré-registro `a50d277`; classificação `b1ff9a0`; DOM-01 v0.3.4 `b03c6ea`; índice `4c9dafd` e correção histórica `1d56ae1`; fechamento `d8c597f`; referência do fechamento no índice `c9cb35a`, publicados em `main`. |
 | Publicação de F3.1/E006 | Pré-registro `d6d6db1`; classificação `5ba3e9f`; DOM-01 v0.3.5 `84fe537`; índice `ecbbb19`; checkpoint `b934e53`; controle `98ca271`, publicados em `main`; hashes 5/5 conferidos. |
 | Publicação de F3.1/E007 | Pré-registro `a2475e0`; classificação `411671a`; controle após classificação `d164694`; DOM-01 v0.3.6 `17869b4`; índice `3940767`/`8fba35b`; correção `93916a6`; fechamento `f4df418`; publicados em `main`. |
-| Estado local/remoto | `main` sincronizada com `origin/main` em `c62348c`; L002-03 auditada, classificada, integrada aos destinos e com lock `ENCERRADO`; nenhum lock ativo. |
+| Estado local/remoto | `main` sincronizada com `origin/main` em `5a04396`; L002-01 e L002-03 auditadas, classificadas, integradas aos destinos e com locks `ENCERRADO`; nenhum lock ativo. |
 | Branch de trabalho | `main` |
-| Último item concluído | `F3.1/L002-03` — seis artefatos auditados, hashes 6/6; classificação `56179b1`, DOM-01 v0.3.7 `c8c9e48`, DOM-02 v0.1.2 `fd162b5`, índice `2eeefd9` e fechamento `c62348c`. Roadmap de fases/módulos; implementação não confirmada. |
-| Item em andamento | `F3.1/L002-01` designado após fechamento de L002-03: “Identificador Único do Equipamento na Rede”, caminho `KNOWLEDGE/info/20260422_173855_Identificador Único do Equipamento na Rede - Manus/`, destino primário `DOM-04` como histórico. O contato deve ser reauditoria de proveniência, sem duplicar conclusões de F2.4. |
-| Último caminho processado | `KNOWLEDGE/info/20260422_174348_Complementar Módulos Faltantes do Diagrama de Implantação - Manus/` — L002-03: seis artefatos auditados; hashes 6/6 coincidem com pré-registro e pós-leitura. Nenhum código executado ou link seguido. |
+| Último item concluído | `F3.1/L002-01` — quatro artefatos auditados, hashes 4/4; classificação `c361c73`, DOM-04 v0.2.1 `9c8a985`, índice `c6c6bce` e fechamento `5a04396`. Reauditoria confirma contexto editorial, sem nova especificação DID. |
+| Item em andamento | Nenhum contato de fonte ativo. F3.1 do domínio prioritário 1 está pronta para fechamento administrativo após E001–E007 e L002-01/L002-03/L002-05 processados; F3.2 — reconstrução arqueológica das decisões — é a próxima unidade. |
+| Último caminho processado | `KNOWLEDGE/info/20260422_173855_Identificador Único do Equipamento na Rede - Manus/` — L002-01: quatro artefatos auditados; hashes 4/4 coincidem com pré-registro e pós-leitura. Nenhum código executado ou link seguido. |
 | Fontes de governança/contexto lidas nesta unidade | Orientação, controle, índice, decisões, skill BCE, pré-registros/fechamento E006/E007, inventário, classificação Lote 002, DOM-01/DOM-03/DOM-05/DOM-06, template e governança `AGENTS.md`/`BCE/LOCKS.md`. E007: quatro artefatos lidos/inspecionados, hashes pós-leitura 4/4; reauditoria da fonte F2.6-01. |
 | Arquivos curatoriais alterados | E006: classificação (`5ba3e9f`), DOM-01 v0.3.5 (`84fe537`), índice (`ecbbb19`), fechamento (`b934e53`), controle (`98ca271`). E007: pré-registro (`a2475e0`), classificação (`411671a`), controle após classificação (`d164694`), DOM-01 v0.3.6 (`17869b4`), índice (`3940767`, `8fba35`), correção do próximo passo (`93916a6`), fechamento (`f4df418`). L002-05: claim/pré-registro (`3fc922a`), classificação, DOM-06 v0.3.6, índice, fechamento da sessão, lock encerrado e controle nesta unidade. Nenhum arquivo em `KNOWLEDGE/` foi alterado. |
-| Próximo item | Publicar claim e pré-registro de `F3.1/L002-01`; revalidar os artefatos e, se os hashes coincidirem, auditar somente esse diretório. Não abrir outro contato durante o claim. |
-| Conflitos, lacunas e impedimentos | L002-03 confirmou somente roadmap e módulos narrados. L002-01 é uma reauditoria de fonte relacionada a identidade/organização já coberta em F2.4; deve preservar a distinção entre proveniência histórica e nova evidência, sem reabrir DOM-04 como implementação. |
-| Responsável pela sessão | Manus — L002-03 fechado em `c62348c`; próxima ação: reivindicar e pré-registrar F3.1/L002-01 atomicamente. |
+| Próximo item | Atualizar o backlog F3.1 para `CONCLUÍDO`, registrar o fechamento de L002-01/L002-03 e iniciar F3.2 com uma matriz arqueológica de decisões, alternativas, descartes e evolução. Não abrir outra fonte até a matriz de escopo de F3.2 estar publicada. |
+| Conflitos, lacunas e impedimentos | O conjunto L002 reauditado inclui fontes editoriais/roadmaps e não prova implementação. F3.1 integrou o domínio prioritário, mas a cobertura global permanece parcial: 273 conjuntos físicos no inventário; não inferir que a BCE inteira foi auditada. F3.2 deve usar somente fontes/classificações já publicadas nesta unidade antes de solicitar novas leituras. |
+| Responsável pela sessão | Manus — L002-01 fechado em `5a04396`; próxima ação: fechar administrativamente F3.1 e abrir F3.2 em commit próprio. |
 
 ## Como retomar em cinco minutos
 
@@ -98,8 +98,8 @@
 
 | ID | Entrega | Status | Dependência |
 |---|---|---|---|
-| F3.1 | Consolidar fontes do domínio prioritário 1 | EM_ANDAMENTO — E001–E005 integradas; E006/L002-02 auditada (hashes 5/5), classificação `5ba3e9f` e DOM-01 v0.3.5 `84fe537` publicados; índice e fechamento pendentes. | F2; DOM-01/P0 |
-| F3.2 | Reconstruir arqueologia das decisões | PENDENTE | F3.1 |
+| F3.1 | Consolidar fontes do domínio prioritário 1 | CONCLUÍDO ADMINISTRATIVAMENTE — E001–E007 e L002-01/L002-03/L002-05 processados; DOM-01 v0.3.7 e destinos atualizados; fontes permanecem heterogêneas e em `REVISÃO`, sem implementação global confirmada. | F2; DOM-01/P0 |
+| F3.2 | Reconstruir arqueologia das decisões | PRÓXIMO — matriz de decisões/alternativas/descartes a partir das classificações e históricos já publicados | F3.1 |
 | F3.3 | Validar estado da arte contra código e imagens | PENDENTE | F3.1 |
 | F3.4 | Registrar conflitos, descartes e hipóteses | PENDENTE | F3.1 |
 | F3.5 | Publicar revisão do domínio | PENDENTE | F3.2–F3.4 |
