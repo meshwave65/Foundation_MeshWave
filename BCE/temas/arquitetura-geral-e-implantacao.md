@@ -6,8 +6,8 @@
 |---|---|
 | ID curatorial | `DOM-02` |
 | Status | `REVISÃO` — síntese conceitual; arquitetura, cronograma e implantação não validados |
-| Versão do documento | `0.1.1` |
-| Última atualização | `2026-10-19` |
+| Versão do documento | `0.1.2` |
+| Última atualização | `2026-10-26` |
 | Curador | `Manus — curadoria BCE MeshWave` |
 | Confiança geral | Média para a existência da proposta arquitetural; baixa para vigência, implantação e funcionamento |
 | Documento relacionado no índice | `BCE/INDICE_CURATORIAL.md` — DOM-02 |
@@ -97,7 +97,7 @@ A imagem intitulada “Evolução e Implantação dos Módulos do Projeto MeshWa
 
 Os itens descrevem **planejamento gráfico**, não entregas realizadas. “Roteamento quântico”, “computação quântica”, “interface terahertz”, “segurança quântica”, “identidade universal” e termos semelhantes são mantidos como visão futura, sem inferência sobre viabilidade ou maturidade.
 
-A transcrição da fonte `174348` enumera arquivos de roteiro para módulos e relata sua conclusão, mas esses documentos não aparecem na lista de artefatos do conjunto nem foram encontrados no repositório pesquisado. O texto alterna alegações de cobertura das Fases 2–4 com títulos de roteiros encontrados sobretudo para Fases 3–4 e uma indicação de `8/8`; a contagem/abrangência não é reconciliável com os nomes listados. Logo, os roteiros são **artefatos mencionados, não anexos verificáveis**.
+A auditoria direta F3.1/L002-03 confirma, em seis artefatos e hashes 6/6, a matriz visual de quatro fases e oito segmentos, além da repetição da narrativa sobre roteiros. `img_000.jpg` e `img_001.jpg` são duplicatas byte a byte; `code_blocks.txt` contém somente narração sobre armazenamento P2P e `links.txt` está vazio. A transcrição enumera arquivos de roteiro e relata sua conclusão, mas esses documentos não aparecem na lista de artefatos do conjunto nem foram encontrados no repositório pesquisado. O texto alterna alegações de cobertura das Fases 2–4 com títulos de roteiros encontrados sobretudo para Fases 3–4 e uma indicação de `8/8`; a contagem/abrangência não é reconciliável com os nomes listados. Logo, os roteiros são **artefatos mencionados, não anexos verificáveis**, e o diagrama permanece roadmap, não implantação.
 
 ### 4.5 Implementado, prototipado ou apenas proposto
 
@@ -181,6 +181,7 @@ O usuário identificou o desenho CLA como referência visual para continuidade, 
 | C08 | Fallback celular/LEO e princípio “sem infraestrutura de operadoras” não têm política de prioridade definida. | Documento raiz e DOM-01 L001-01 | Pode afetar custo, conectividade, privacidade e autonomia. | Definir modos de operação, condições de fallback e dependências externas em DOM-03/DOM-15. |
 | C09 | Há um campo de contato pessoal no cabeçalho do documento arquitetural da raiz. | `01_arquitetura_geral_meshwave.md` | Dado não necessário para a síntese e potencialmente inadequado para redistribuição. | O valor não foi reproduzido nesta BCE; revisar necessidade de exposição no documento-fonte com o responsável. |
 | C10 | Sigla MCP é usada para computação de borda, sem contrato ou glossário. | `01_arquitetura_geral_meshwave.md` | Ambiguidade de camada/servidor e risco de interpretação errada. | Confirmar significado e terminologia normativa com fonte técnica. |
+| C11 | L002-03 afirma conclusão de roteiros e apresenta horizontes/fases, mas não entrega os roteiros nem evidência de implantação. | L002-03; `CLASSIFICACAO_F3_1_L002-03.md` | Risco de converter roadmap em inventário de componentes e cronograma aprovado. | Localizar roteiros versionados, critérios de aceite, código, testes e deployment; manter os módulos como proposta. |
 
 ## 10. Lacunas e questões abertas
 
@@ -221,6 +222,7 @@ O usuário identificou o desenho CLA como referência visual para continuidade, 
 | E06 | `KNOWLEDGE/info/20260422_165701_Hierarquia de CLA Continental e Roteamento - Manus/content.txt`, `code_blocks.txt`, `links.txt` e `FULL.png` | Transcrição/captura auditada diretamente em F3.1 | A conversa registra preferência pela figura e afirma que ela foi gerada após análise de planilha; `FULL.png` mostra a entrega/transferência de `previous_task_context.md`, não a geração técnica nem a imagem CLA. | Hashes 5/5 no checkpoint E003; `content.txt` tem 788 linhas, 627 não vazias e 28 literais distintas. `previous_task_context.md` e a planilha não estão entre os cinco arquivos; `code_blocks.txt` é textual e `links.txt` vazio. Ver `CLASSIFICACAO_F3_1_DOM01_E003.md`. |
 | E07 | `KNOWLEDGE/info/20260422_165701_Hierarquia de CLA Continental e Roteamento - Manus/img_000.jpg` | Imagem/grade raster auditada diretamente em F3.1 | Grade de células com rótulos decimais, áreas verdes/laranjas, contornos poligonais vermelhos e traçados escuros. | 853×379; bytes identificados como PNG apesar da extensão `.jpg`; sem legenda, eixos, escala, CRS, semântica, algoritmo, parâmetros ou dados-fonte. |
 | E08 | `BCE/fontes/CLASSIFICACAO_LOTE_001.md`, `BCE/fontes/CLASSIFICACAO_LOTE_002.md`, `BCE/fontes/RELATORIO_LACUNAS_E_QUALIDADE_F1_7.md` | Sínteses curatoriais | Qualidade e classificação prévias das fontes e limites da amostra. | São sínteses, não substituem arquivos brutos nem validam os componentes. |
+| E09 | `KNOWLEDGE/info/20260422_174348_Complementar Módulos Faltantes do Diagrama de Implantação - Manus/` (`content.txt`, `code_blocks.txt`, `links.txt`, `FULL.png`, `img_000.jpg`, `img_001.jpg`) | Roadmap, transcript e captura auditados em F3.1 | Fases, segmentos e módulos candidatos; narrativa de roteiros explicativos. | Seis artefatos/864.937 bytes; `content.txt` 2.035 linhas/64 literais distintas; hashes 6/6; duas imagens duplicadas; sem código, links, teste, cronograma aprovado ou implantação. Ver `CLASSIFICACAO_F3_1_L002-03.md`. |
 
 Os `links.txt` de E02, E04 e E06 têm zero bytes. Busca no repositório não localizou `previous_task_context.md` nem os arquivos de roteiro citados. Nenhum valor pessoal foi copiado. Os originais em `KNOWLEDGE/` foram mantidos intactos.
 
@@ -230,7 +232,8 @@ Os `links.txt` de E02, E04 e E06 têm zero bytes. Busca no repositório não loc
 |---|---|---|---|
 | `0.1.0` | 2026-10-08 | Primeira síntese F2.2 da arquitetura conceitual, roadmap e fontes indicadas pelo DOM-01. | `864d357`; ver checkpoint `BCE/sessoes/2026-10-08_f2-2.md`. |
 | `0.1.1` | 2026-10-19 | Integra a auditoria direta F3.1/E003, confirma a natureza visual da grade e qualifica como ausentes a planilha, o contexto e parâmetros que definiriam a interpretação. | Classificação `BCE/fontes/CLASSIFICACAO_F3_1_DOM01_E003.md`; pré-registro `BCE/sessoes/2026-10-19_f3-1-dom01-e003-abertura.md`; atualização desta sessão. |
+| `0.1.2` | 2026-10-26 | Integra a auditoria direta F3.1/L002-03: confirma matriz de fases/segmentos, duplicação visual e ausência dos roteiros/código; reforça a classificação de roadmap não implantado e acrescenta C11/E09. | `BCE/fontes/CLASSIFICACAO_F3_1_L002-03.md`; `BCE/sessoes/2026-10-26_f3-1-l002-03-abertura.md`; commit desta atualização. |
 
 ## 14. Próximo passo de curadoria
 
-Continuar **F3.1 com E004/L001-04** após pré-registrar os nomes, tamanhos e SHA-256 de `KNOWLEDGE/info/20260422_165745_ARC - Autenticação Recessiva Contextual com inferência Bayesiana - Manus/`. Comparar a evidência com DOM-01/DOM-05; manter a representação CLA como conceito visual sem promover o desenho a algoritmo. Após a conclusão da F3.1, retomar as lacunas de especificação, versão e implantação de DOM-02; mantê-lo em `REVISÃO` até haver evidência suficiente.
+Fechar o claim F3.1/L002-03 e manter DOM-02 em `REVISÃO`. A próxima fonte somente deve ser aberta após reconciliação explícita da fila no controle mestre; preservar o diagrama como roadmap e não promover módulos a implantação sem artefatos rastreáveis.
