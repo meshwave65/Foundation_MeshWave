@@ -6,8 +6,8 @@
 |---|---|
 | ID curatorial | `DOM-04` |
 | Status | `REVISÃO` — curadoria F2.4 concluída; propostas conceituais, sem esquema DID aprovado ou implementação verificável |
-| Versão do documento | `0.2.0` |
-| Última atualização | `2026-10-08 19:14 (-03:00)` |
+| Versão do documento | `0.2.1` |
+| Última atualização | `2026-10-26 12:25 (-03:00)` |
 | Curador | `Manus — curadoria BCE MeshWave` |
 | Confiança geral | Média para a existência das propostas e imagens; baixa para unicidade, segurança, conformidade DID, ciclo de vida e operação |
 | Documento relacionado no índice | `BCE/INDICE_CURATORIAL.md` — DOM-04 |
@@ -144,10 +144,11 @@ Nenhum trecho de geração de dígito verificador, hash, assinatura, derivação
 | E04-03 | imagem | `KNOWLEDGE/omaci2008/20260422_173034_Melhor forma de criar DIDs para rede mesh global - Manus/FULL.png` | A proposta foi apresentada ao usuário em uma interface | Captura não prova aprovação, adoção ou execução |
 | E04-04 | imagem | `KNOWLEDGE/omaci2008/20260422_172158_Imagem para Identidade Auto-Soberana e Verificação/` | Associação visual entre DNA do hardware, identidade resiliente, ARC e PGC | Arte conceitual; não prova criptografia, hardware ou SSI |
 | E04-05 | texto/imagem | `KNOWLEDGE/info/20260422_164535_DNA do Hardware_ Identidade Resiliente com ARC_PGC/` | Direção conceitual de identidade resiliente e ARC/PGC | Conteúdo principal é tarefa de apresentação; imagens não são especificação |
-| E04-06 | texto | `KNOWLEDGE/info/20260422_173855_Identificador Único do Equipamento na Rede - Manus/` | O tema Identificação/DIDs fazia parte da organização do site | Fonte predominantemente operacional; não define o identificador |
+| E04-06 | texto | `KNOWLEDGE/info/20260422_173855_Identificador Único do Equipamento na Rede - Manus/` | O tema Identificação/DIDs fazia parte da organização do site | Fonte predominantemente operacional; não define o identificador; reauditada diretamente em F3.1, hashes 4/4, sem evidência independente |
 | E04-07 | texto/imagem | `KNOWLEDGE/info/20260422_173802_Identificador Único do Equipamento na Rede - Manus/` | Proveniência da exportação/entrega da base MeshWave | Não contém especificação técnica do ID; ZIP e integridade não verificáveis no conjunto |
 | E04-08 | texto | `KNOWLEDGE/info/20260422_172056_Análise e continuidade sobre dispositivos Android antigos - Manus/` | Recomendação estratégica de manter suporte até Android 8.0 | Arquivos-base ausentes/vazios; não prova compatibilidade de identidade |
 | E04-09 | texto relacionado | `BCE/temas/rede-mesh-comunicacao-e-roteamento.md` | Geohash/CLA/CPA aparecem como indexação e cache propostos | DOM-03 também marca ausência de contrato formal e implementação |
+| E04-10 | reauditoria textual/captura | `KNOWLEDGE/info/20260422_173855_Identificador Único do Equipamento na Rede - Manus/` e `BCE/fontes/CLASSIFICACAO_F3_1_L002-01.md` | Confirma contexto de organização de abas, cronologias e tema Identificação (DIDs) | Quatro artefatos/204.513 bytes; transcript repetitivo; CSS transcrito, links de suporte e captura interrompida; não acrescenta formato, método DID, chave ou implementação |
 
 ## 9. Fechamento explícito da F2.4
 
@@ -223,6 +224,7 @@ Nenhuma dessas melhorias foi implementada no lote; são requisitos para a próxi
 | C04-05 | DNA do hardware é metáfora ou atestado? | `164535`/`172158` | Pode induzir promessa de segurança inexistente | DOM-05 deve fornecer protocolo, ameaça, métrica e teste |
 | C04-06 | O perfil é parte do identificador ou atributo externo? | Imagem `174130` e proposta compacta | Exposição de capacidades e fingerprinting | Não embutir até haver modelo de minimização e autorização |
 | C04-07 | Android 8.0 é requisito validado? | `172056` e arquivos-base ausentes | Pode orientar versão mínima sem teste | Tratar como recomendação; validar em matriz de dispositivos |
+| C04-08 | A organização de uma página “Identificação (DIDs)” pode ser confundida com especificação ou implementação de identidade. | L002-01/F3.1; `CLASSIFICACAO_F3_1_L002-01.md` | Pode elevar uma tarefa editorial interrompida a evidência de método DID ou decisão vigente. | Registrar como proveniência histórica; manter DOM-04 em `REVISÃO` e não alterar as decisões DEC-DOM04-001–003. |
 
 ## 14. Lacunas e questões em aberto
 
@@ -253,7 +255,8 @@ Nenhuma dessas melhorias foi implementada no lote; são requisitos para a próxi
 |---|---|---|---|
 | `0.1.0` | `2026-10-08` | Primeira síntese do lote F2.4; separação entre identidade, localização, autenticação e roteamento; conflitos e lacunas registrados | Sete caminhos do `ESCOPO_F2_4_IDENTIDADE_DIDS.md` |
 | `0.2.0` | `2026-10-08` | Fechamento explícito da F2.4; sete fontes e 12 imagens conferidas; fontes operacionais/visuais separadas de especificação; DOM-04 permanece em `REVISÃO` por ausência de método DID aprovado e implementação | `BCE/sessoes/2026-10-08_f2-4-fechamento.md`; commit de fechamento |
+| `0.2.1` | `2026-10-26` | Reaudita F3.1/L002-01 em quatro artefatos e hashes 4/4; confirma que o conjunto é contexto de organização do site/BCE, com CSS transcrito, links de suporte e interrupção por contexto; não acrescenta especificação DID nem evidência independente da F2.4. | `BCE/fontes/CLASSIFICACAO_F3_1_L002-01.md`; `BCE/sessoes/2026-10-26_f3-1-l002-01-abertura.md`; commit desta atualização |
 
 ## 17. Próximo passo de curadoria
 
-Iniciar a F2.6, sobre SOFIA, agentes, missões e persistência de conhecimento, conforme o controle mestre. Revisar DOM-04 somente se fontes futuras resolverem algum conflito de identidade ou alterarem o modelo de verificação.
+Fechar o claim F3.1/L002-01 e manter DOM-04 em `REVISÃO`. A reauditoria não acrescenta evidência independente; revisar o documento novamente somente se uma fonte futura trouxer método DID, ciclo de vida, chaves, resolução, testes ou decisão formal de identidade.
