@@ -76,6 +76,10 @@ Localize no controle mestre o item `EM_ANDAMENTO` e extraia sua **próxima açã
 - Antes de abrir fontes brutas, registre os caminhos exatos do lote e, quando útil, tamanhos e hashes em um escopo/checkpoint versionado.
 - Se não houver um único próximo passo inequívoco, registre o conflito no controle e não avance sobre fontes por inferência.
 
+### 3.1 Reivindicar um único contato
+
+Antes de ler qualquer artefato em `KNOWLEDGE/`, aplique [`BCE/LOCKS.md`](../../BCE/LOCKS.md): verifique claims ativos, crie um arquivo de claim para o caminho físico exato e publique-o em `main`. O claim publicado primeiro é o vencedor; uma corrida ou divergência exige parar, atualizar a árvore e não reprocessar o contato. Durante a sessão, não abra nem mapeie outro contato. Feche/libere o claim somente junto do checkpoint que registra a conclusão e o próximo item exato.
+
 ### Corpus documental BCE e Google Docs
 
 - Considere todo `BCE/` como corpus interno de referência: procure documentos pertinentes em governança, inventários, escopos/listas de artefatos, classificações, temas, artefatos visuais e sessões/checkpoints. Consulte o documento de escopo aplicável para determinar a lista exata da unidade. Contexto encontrado em outros documentos BCE não autoriza processar fontes fora do lote ativo.

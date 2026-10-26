@@ -53,6 +53,10 @@ Cada sessão/agente deve iniciar e finalizar registrando:
 
 O agente que assumir a tarefa não deve inferir o ponto de parada a partir de mensagens de chat. O documento mestre e o histórico Git são a fonte operacional de continuidade.
 
+## 3.1 Bloqueio exclusivo por contato
+
+Para evitar que agentes concorrentes processem a mesma fonte, siga [`BCE/LOCKS.md`](LOCKS.md). Antes de abrir qualquer artefato bruto do contato, crie e publique um claim em `BCE/locks/` com o caminho físico exato, agente/sessão, timestamp, commit-base e próximo passo. O primeiro claim publicado vence; uma corrida, divergência ou claim ativo impede a leitura daquele contato. Cada sessão deve processar somente o caminho reivindicado, liberar/fechar o claim no checkpoint e registrar o próximo contato único no controle mestre. Nunca use `git push --force` para obter um bloqueio.
+
 ## 4. Regra de commits
 
 É obrigatório fazer commits pequenos e frequentes. Não acumular alterações de tarefas distintas para um commit final.
