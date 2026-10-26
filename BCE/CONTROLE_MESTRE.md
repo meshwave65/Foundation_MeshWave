@@ -7,7 +7,7 @@
 | Campo | Valor |
 |---|---|
 | Status global | `EM_ANDAMENTO — FASE 3: Curadoria profunda` |
-| Última atualização | 2026-10-26 12:22 (-03:00) |
+| Última atualização | 2026-10-26 12:25 (-03:00) |
 | Publicação de F2.6-07 | Os cinco commits da unidade (`c55e31d`, `b3c8864`, `8870caa`, `290895f`, `629125a`) foram publicados em `main`; a correção factual posterior foi registrada em `f8649ba`. |
 | Publicação de F2.6-08 | DOM-06 `74eba5f`; índice `14e2768` (cobertura) e `aec133d` (linha principal DOM-06); checkpoint de fechamento `6f99eaa`, todos publicados em `main`. |
 | Publicação de F2.6-09 | DOM-06 `97dea42`; índice `a39441b`; pré-registro `56c5ff8`; fechamento `f186adc`; controle `b79cf1d`, publicados em `main`.
@@ -22,16 +22,16 @@
 | Publicação de F3.1/E005 | Pré-registro `a50d277`; classificação `b1ff9a0`; DOM-01 v0.3.4 `b03c6ea`; índice `4c9dafd` e correção histórica `1d56ae1`; fechamento `d8c597f`; referência do fechamento no índice `c9cb35a`, publicados em `main`. |
 | Publicação de F3.1/E006 | Pré-registro `d6d6db1`; classificação `5ba3e9f`; DOM-01 v0.3.5 `84fe537`; índice `ecbbb19`; checkpoint `b934e53`; controle `98ca271`, publicados em `main`; hashes 5/5 conferidos. |
 | Publicação de F3.1/E007 | Pré-registro `a2475e0`; classificação `411671a`; controle após classificação `d164694`; DOM-01 v0.3.6 `17869b4`; índice `3940767`/`8fba35b`; correção `93916a6`; fechamento `f4df418`; publicados em `main`. |
-| Estado local/remoto | `main` sincronizada com `origin/main` em `f0a5dba`; L002-05 auditada, classificada e com lock `ENCERRADO`; nenhum contato adicional foi aberto antes desta reconciliação. |
+| Estado local/remoto | `main` sincronizada com `origin/main` em `c62348c`; L002-03 auditada, classificada, integrada aos destinos e com lock `ENCERRADO`; nenhum lock ativo. |
 | Branch de trabalho | `main` |
-| Último item concluído | `F3.1/E007` — quatro artefatos L002-04 auditados, hashes 4/4; classificação (`411671a`), DOM-01 v0.3.6 (`17869b4`), índice (`3940767`, `8fba35b`), correção de continuidade (`93916a6`) e checkpoint (`f4df418`) publicados. Reauditoria da fonte F2.6-01, sem evidência independente. |
-| Item em andamento | `F3.1/L002-03` designado após reconciliação: “Complementar Módulos Faltantes do Diagrama de Implantação”, caminho `KNOWLEDGE/info/20260422_174348_Complementar Módulos Faltantes do Diagrama de Implantação - Manus/`, destinos `DOM-01`, `DOM-02`, `DOM-11`, `DOM-15`. L002-05 permanece encerrado; DOM-01 permanece em `REVISÃO`. |
-| Último caminho processado | `KNOWLEDGE/johann/20260422_175016_SOFIA and MeshWave Ecosystem Overview - Manus/` — E007/L002-04: `content.txt`, `code_blocks.txt`, `links.txt` e `FULL.png` auditados; hashes 4/4 coincidem com pré-registro e pós-leitura. Nenhum código executado ou link seguido. |
+| Último item concluído | `F3.1/L002-03` — seis artefatos auditados, hashes 6/6; classificação `56179b1`, DOM-01 v0.3.7 `c8c9e48`, DOM-02 v0.1.2 `fd162b5`, índice `2eeefd9` e fechamento `c62348c`. Roadmap de fases/módulos; implementação não confirmada. |
+| Item em andamento | `F3.1/L002-01` designado após fechamento de L002-03: “Identificador Único do Equipamento na Rede”, caminho `KNOWLEDGE/info/20260422_173855_Identificador Único do Equipamento na Rede - Manus/`, destino primário `DOM-04` como histórico. O contato deve ser reauditoria de proveniência, sem duplicar conclusões de F2.4. |
+| Último caminho processado | `KNOWLEDGE/info/20260422_174348_Complementar Módulos Faltantes do Diagrama de Implantação - Manus/` — L002-03: seis artefatos auditados; hashes 6/6 coincidem com pré-registro e pós-leitura. Nenhum código executado ou link seguido. |
 | Fontes de governança/contexto lidas nesta unidade | Orientação, controle, índice, decisões, skill BCE, pré-registros/fechamento E006/E007, inventário, classificação Lote 002, DOM-01/DOM-03/DOM-05/DOM-06, template e governança `AGENTS.md`/`BCE/LOCKS.md`. E007: quatro artefatos lidos/inspecionados, hashes pós-leitura 4/4; reauditoria da fonte F2.6-01. |
 | Arquivos curatoriais alterados | E006: classificação (`5ba3e9f`), DOM-01 v0.3.5 (`84fe537`), índice (`ecbbb19`), fechamento (`b934e53`), controle (`98ca271`). E007: pré-registro (`a2475e0`), classificação (`411671a`), controle após classificação (`d164694`), DOM-01 v0.3.6 (`17869b4`), índice (`3940767`, `8fba35`), correção do próximo passo (`93916a6`), fechamento (`f4df418`). L002-05: claim/pré-registro (`3fc922a`), classificação, DOM-06 v0.3.6, índice, fechamento da sessão, lock encerrado e controle nesta unidade. Nenhum arquivo em `KNOWLEDGE/` foi alterado. |
-| Próximo item | Publicar claim e pré-registro de `F3.1/L002-03`; revalidar os artefatos e, se os hashes coincidirem, auditar somente esse diretório. Não abrir outro contato durante o claim. |
-| Conflitos, lacunas e impedimentos | E007 associa Q-CyPIA/SDN a multipath/anonimato e ARC-Bayes/PGC, mas há truncamento/repetição, captura em página 2/5 com parada por contexto longo e nenhum contrato, API, teste ou integração comprovados; fonte reaudita F2.6-01. L002-05 foi encerrada por outro agente. A fila não designava contato subsequente; L002-03 foi escolhido por vínculo explícito com arquitetura/implantação e por ainda não possuir auditoria F3.1 direta. |
-| Responsável pela sessão | Manus — reconciliação publicada; próxima ação: reivindicar e pré-registrar F3.1/L002-03 atomicamente. |
+| Próximo item | Publicar claim e pré-registro de `F3.1/L002-01`; revalidar os artefatos e, se os hashes coincidirem, auditar somente esse diretório. Não abrir outro contato durante o claim. |
+| Conflitos, lacunas e impedimentos | L002-03 confirmou somente roadmap e módulos narrados. L002-01 é uma reauditoria de fonte relacionada a identidade/organização já coberta em F2.4; deve preservar a distinção entre proveniência histórica e nova evidência, sem reabrir DOM-04 como implementação. |
+| Responsável pela sessão | Manus — L002-03 fechado em `c62348c`; próxima ação: reivindicar e pré-registrar F3.1/L002-01 atomicamente. |
 
 ## Como retomar em cinco minutos
 
