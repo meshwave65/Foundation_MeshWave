@@ -7,7 +7,7 @@
 | Campo | Valor |
 |---|---|
 | Status global | `EM_ANDAMENTO — FASE 3: Curadoria profunda` |
-| Última atualização | 2026-10-26 11:45 (-03:00) |
+| Última atualização | 2026-10-26 11:46 (-03:00) |
 | Publicação de F2.6-07 | Os cinco commits da unidade (`c55e31d`, `b3c8864`, `8870caa`, `290895f`, `629125a`) foram publicados em `main`; a correção factual posterior foi registrada em `f8649ba`. |
 | Publicação de F2.6-08 | DOM-06 `74eba5f`; índice `14e2768` (cobertura) e `aec133d` (linha principal DOM-06); checkpoint de fechamento `6f99eaa`, todos publicados em `main`. |
 | Publicação de F2.6-09 | DOM-06 `97dea42`; índice `a39441b`; pré-registro `56c5ff8`; fechamento `f186adc`; controle `b79cf1d`, publicados em `main`.
@@ -20,17 +20,17 @@
 | Publicação de F3.1/E003 | Pré-registro `c839662`; classificação `e0182a1`; DOM-01 v0.3.2 `54a5a96`; DOM-02 v0.1.1 `c915e1c`; índice `1330b49`; checkpoint `445b222`; publicados em `main`. |
 | Publicação de F3.1/E004 | Pré-registro `22c83ac`; correção de continuidade `4a5668c`; classificação `f8801bb`; DOM-01 v0.3.3 `bf632be`; DOM-05 v0.1.1 `be58d70`; índice `b2a3649`; fechamento `c76aec3`, publicados em `main`. |
 | Publicação de F3.1/E005 | Pré-registro `a50d277`; classificação `b1ff9a0`; DOM-01 v0.3.4 `b03c6ea`; índice `4c9dafd` e correção histórica `1d56ae1`; fechamento `d8c597f`; referência do fechamento no índice `c9cb35a`, publicados em `main`. |
-| Publicação de F3.1/E006 | Pré-registro `d6d6db1`; classificação `5ba3e9f`; DOM-01 v0.3.5 `84fe537`, publicados em `main`; hashes 5/5 conferidos; índice e fechamento ainda pendentes. |
-| Estado local/remoto | `main` sincronizada com `origin/main` após DOM-01 E006 (`84fe537`); esta atualização do controle será publicada em commit próprio. |
+| Publicação de F3.1/E006 | Pré-registro `d6d6db1`; classificação `5ba3e9f`; DOM-01 v0.3.5 `84fe537`; índice `ecbbb19`; checkpoint de fechamento `b934e53`, todos publicados em `main`; hashes 5/5 conferidos. |
+| Estado local/remoto | `main` sincronizada com `origin/main` após o checkpoint E006 (`b934e53`); este controle será publicado em commit próprio. |
 | Branch de trabalho | `main` |
-| Último item concluído | `F3.1/E005` — quatro artefatos L001-06 auditados; classificação (`b1ff9a0`), DOM-01 v0.3.4 (`b03c6ea`), índice e fechamento publicados. E006 foi auditada e classificada (`5ba3e9f`) e integrada em DOM-01 v0.3.5 (`84fe537`); índice e fechamento de E006 ainda pendentes. |
-| Item em andamento | `F3.1` — DOM-01/P0; E001–E005 integradas; E006/L002-02 auditada, hashes 5/5 confirmados, classificação e DOM-01 v0.3.5 publicados; índice e fechamento pendentes. |
+| Último item concluído | `F3.1/E006` — cinco artefatos L002-02 auditados; classificação (`5ba3e9f`), DOM-01 v0.3.5 (`84fe537`), índice (`ecbbb19`) e fechamento (`b934e53`) publicados. A fonte permanece planejamento visual sem identidade normativa ou implementação verificável. |
+| Item em andamento | `F3.1` — DOM-01/P0; E001–E006 integradas. E007/L002-04 é o próximo contato, ainda sem pré-registro físico nesta unidade. |
 | Último caminho processado | `KNOWLEDGE/info/20260422_174130_Definição do identificador único do equipamento na rede - Manus/` — E006/L002-02: `content.txt`, `code_blocks.txt`, `links.txt`, `FULL.png` e `img_000.jpg` auditados; hashes 5/5 coincidem com o pré-registro. Nenhum código executado ou link seguido. |
 | Fontes de governança/contexto lidas nesta unidade | Orientação, controle, índice, decisões, skill BCE, pré-registro E006, inventário, classificação L002-02, DOM-01/DOM-03/DOM-04, template e fechamento E005. Os cinco artefatos E006 foram lidos/inspecionados; hashes pós-leitura coincidem 5/5. |
-| Arquivos curatoriais alterados | Classificação E006 (`5ba3e9f`); DOM-01 v0.3.5 (`84fe537`); este controle mestre em commit próprio. Nenhum arquivo em `KNOWLEDGE/` foi alterado. |
-| Próximo item | F3.1/E006: atualizar `BCE/INDICE_CURATORIAL.md` para DOM-01 v0.3.5 e F3.1/E006 auditada (índice em commit próprio); depois criar checkpoint de fechamento E006 em commit separado. Manter DOM-01 em `REVISÃO`. |
+| Arquivos curatoriais alterados | Classificação E006 (`5ba3e9f`); DOM-01 v0.3.5 (`84fe537`); índice (`ecbbb19`); checkpoint de fechamento (`b934e53`); este controle mestre em commit próprio. Nenhum arquivo em `KNOWLEDGE/` foi alterado. |
+| Próximo item | F3.1/E007/L002-04: pré-registrar nomes, tamanhos e SHA-256 dos artefatos de `KNOWLEDGE/johann/20260422_175016_SOFIA and MeshWave Ecosystem Overview - Manus/` antes da leitura semântica; depois auditar texto, blocos, links e imagens em commits atômicos. Manter DOM-01 em `REVISÃO`. |
 | Conflitos, lacunas e impedimentos | E006 é principalmente plano editorial/visual. A transcrição afirma criação de dois gráficos, mas as saídas não estão entre os cinco artefatos; a captura mostra erro/parada em 3/7 e replay concluído, sem confirmar exportação. `img_000.jpg` é WebP com rótulos/fronteiras ilegíveis. Não há esquema normativo nem implementação; contrato, geração e interoperabilidade não confirmados. Sem impedimento operacional. |
-| Responsável pela sessão | Manus — auditoria E006, classificação e integração DOM-01 publicadas; próxima ação: atualizar o índice curatorial. |
+| Responsável pela sessão | Manus — auditoria E006 encerrada; próxima ação: pré-registrar e auditar E007/L002-04. |
 
 ## Como retomar em cinco minutos
 
@@ -254,6 +254,8 @@ O agente atual só deve declarar a tarefa transferível quando:
 | 2026-10-19 | Manus — fechamento F3.1/DOM-01/E002 | Cinco artefatos L001-02 auditados; hashes 5/5; DOM-01 v0.3.1 e índice atualizados; alegação de POC mantida como não verificada; fontes brutas intactas | `e268a19` pré-registro; `ca27fd1` classificação; `2aa36f6` DOM-01; `b61fda9` índice; `337dff6` checkpoint; controle `f69f99a` | E003/L001-03 foi pré-registrada e auditada; ver a linha seguinte |
 | 2026-10-19 | Manus — fechamento F3.1/DOM-01/E003 | Cinco artefatos L001-03 auditados; hashes 5/5; grade visual mantida como conceito/referência relatada, sem algoritmo/CRS; DOM-01 v0.3.2, DOM-02 v0.1.1 e índice atualizados; fontes brutas intactas | `c839662` pré-registro; `e0182a1` classificação; `54a5a96` DOM-01; `c915e1c` DOM-02; `1330b49` índice; `445b222` fechamento; este controle em commit próprio | Pré-registrar `KNOWLEDGE/info/20260422_165745_ARC - Autenticação Recessiva Contextual com inferência Bayesiana - Manus/` como E004/L001-04 antes de ler conteúdo |
 | 2026-10-20 | Manus — fechamento F3.1/DOM-01/E004 | Quatro artefatos L001-04 auditados; hashes 4/4; ARC/Bayes, simulador Ktor/Vue e integração Android mantidos como proposta/código transcrito; literais sensíveis redigidos; fontes brutas intactas | `22c83ac` pré-registro; `4a5668c` correção de continuidade; `f8801bb` classificação; `bf632be` DOM-01; `be58d70` DOM-05; `b2a3649` índice; `c76aec3` fechamento | Pré-registrar `KNOWLEDGE/johann/20260422_174331_Conhecimento sobre Meshwave, Sofia e módulos ARC-Bayes_ - Manus/` como E005/L001-06 antes de ler conteúdo |
+
+| 2026-10-26 | Manus — fechamento F3.1/DOM-01/E006 | Cinco artefatos L002-02 auditados; hashes 5/5; identificador composto, Geohash/CPA/CLA/cache classificados como plano visual sem schema ou implementação; DOM-01 v0.3.5 e índice atualizados; fontes brutas intactas | `5ba3e9f` classificação; `84fe537` DOM-01; `ecbbb19` índice; `b934e53` checkpoint de fechamento | Pré-registrar `KNOWLEDGE/johann/20260422_175016_SOFIA and MeshWave Ecosystem Overview - Manus/` como E007/L002-04 antes de ler conteúdo |
 
 
 ## Lote F1.5 registrado antes da leitura — catálogo de código
