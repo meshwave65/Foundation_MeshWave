@@ -136,8 +136,6 @@ Fontes que apenas mencionam o projeto sem conteúdo técnico devem ser registrad
 ## Classificações de fontes publicadas
 
 | Artefato | Escopo | Resultado e limites |
-
-| Artefato | Escopo | Resultado e limites |
 |---|---|---|
 | `BCE/fontes/CLASSIFICACAO_LOTE_001.md` | Lote 001 | Classificação semântica inicial; consultar o documento para os caminhos e limites de cada fonte. |
 | `BCE/fontes/CLASSIFICACAO_LOTE_002.md` | Lote 002 | Identidade, implantação e SOFIA; planos e alegações não são tratados como implementação confirmada. |
