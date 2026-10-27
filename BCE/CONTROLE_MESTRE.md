@@ -7,7 +7,7 @@
 | Campo | Valor |
 |---|---|
 | Status global | `EM_ANDAMENTO — FASE 3: Curadoria profunda` |
-| Última atualização | 2026-10-26 21:37 (-03:00) |
+| Última atualização | 2026-10-26 21:55 (-03:00) |
 | Publicação de F2.6-07 | Os cinco commits da unidade (`c55e31d`, `b3c8864`, `8870caa`, `290895f`, `629125a`) foram publicados em `main`; a correção factual posterior foi registrada em `f8649ba`. |
 | Publicação de F2.6-08 | DOM-06 `74eba5f`; índice `14e2768` (cobertura) e `aec133d` (linha principal DOM-06); checkpoint de fechamento `6f99eaa`, todos publicados em `main`. |
 | Publicação de F2.6-09 | DOM-06 `97dea42`; índice `a39441b`; pré-registro `56c5ff8`; fechamento `f186adc`; controle `b79cf1d`, publicados em `main`.
@@ -22,16 +22,18 @@
 | Publicação de F3.1/E005 | Pré-registro `a50d277`; classificação `b1ff9a0`; DOM-01 v0.3.4 `b03c6ea`; índice `4c9dafd` e correção histórica `1d56ae1`; fechamento `d8c597f`; referência do fechamento no índice `c9cb35a`, publicados em `main`. |
 | Publicação de F3.1/E006 | Pré-registro `d6d6db1`; classificação `5ba3e9f`; DOM-01 v0.3.5 `84fe537`; índice `ecbbb19`; checkpoint `b934e53`; controle `98ca271`, publicados em `main`; hashes 5/5 conferidos. |
 | Publicação de F3.1/E007 | Pré-registro `a2475e0`; classificação `411671a`; controle após classificação `d164694`; DOM-01 v0.3.6 `17869b4`; índice `3940767`/`8fba35b`; correção `93916a6`; fechamento `f4df418`; publicados em `main`. |
-| Estado local/remoto | `main` sincronizada com `origin/main` em `d146207`; F3.1 concluída administrativamente; claims F3.1/L002-01, L002-03 e L002-05 encerrados; nenhum claim ativo; matriz-base F3.2 publicada em `d146207`. |
+| Estado local/remoto | Base remota pré-unidade `origin/main=d146207`; commits `8fbb4f1` (reconciliação), `e504150` (matriz), `f43dedc`/`1aaf728`/`b633258` (índice) e este controle/checkpoint. Sem avanço remoto concorrente; F3.1 encerrada; claims F3.1/L002-01, L002-03 e L002-05 fechados; nenhum ativo. |
 | Branch de trabalho | `main` |
-| Último item concluído | `F3.1/L002-01` — quatro artefatos auditados, hashes 4/4; classificação `c361c73`, DOM-04 v0.2.1 `9c8a985`, índice `c6c6bce` e fechamento `5a04396`. Reauditoria confirma contexto editorial, sem nova especificação DID. |
-| Item em andamento | F3.2 — ampliar e validar a matriz-base v0.1.0 (`d146207`) a partir dos documentos curados DOM-01–DOM-06; não abrir fontes brutas nesta unidade. Nenhum claim ativo. |
-| Último caminho processado | `KNOWLEDGE/info/20260422_173855_Identificador Único do Equipamento na Rede - Manus/` — L002-01: quatro artefatos auditados; hashes 4/4 coincidem com pré-registro e pós-leitura. Nenhum código executado ou link seguido. |
-| Fontes de governança/contexto lidas nesta unidade | Orientação, controle, índice, decisões, skill BCE, pré-registros/fechamento E006/E007, inventário, classificação Lote 002, DOM-01/DOM-03/DOM-05/DOM-06, template e governança `AGENTS.md`/`BCE/LOCKS.md`. E007: quatro artefatos lidos/inspecionados, hashes pós-leitura 4/4; reauditoria da fonte F2.6-01. |
-| Arquivos curatoriais alterados | F3.2: matriz arqueológica-base v0.1.0 criada em `BCE/arqueologia/MATRIZ_DECISOES_F3_2.md` (`d146207`); requer expansão, validação e indexação. Publicações de F3.1/E006–E007 e L002-01/L002-03/L002-05 constam nos registros anteriores; nenhum arquivo em `KNOWLEDGE/` foi alterado. |
-| Próximo item | Revisar DOM-01–DOM-06, validar A-01–A-10 e acrescentar decisões, alternativas, mudanças editoriais e lacunas ainda ausentes na matriz F3.2. Usar somente documentos/classificações BCE já publicados; não abrir fontes brutas até a matriz-base estar validada. |
-| Conflitos, lacunas e impedimentos | O conjunto L002 reauditado inclui fontes editoriais/roadmaps e não prova implementação. F3.1 integrou o domínio prioritário, mas a cobertura global permanece parcial: 273 conjuntos físicos no inventário; não inferir que a BCE inteira foi auditada. F3.2 deve usar somente fontes/classificações já publicadas nesta unidade antes de solicitar novas leituras. |
-| Responsável pela sessão | Manus — F3.1 já concluída; matriz-base F3.2 publicada em `d146207`; próxima ação: validar e expandir a matriz a partir de DOM-01–DOM-06, sem abrir fontes brutas. |
+| Último item concluído | F3.2 — expansão documental da matriz v0.2.0: A-01–A-17; DOM-01–DOM-06 comparados; A-01/A-03/A-09 complementados e A-11–A-17 adicionados. Fontes primárias não reabertas; suas referências permanecem mediadas pelos DOMs. |
+| Item em andamento | F3.3 — somente delimitação inicial de escopo; fonte de código/imagem ainda não selecionada e nenhum material bruto aberto. F3.2 concluída documentalmente, sem alegação de validação técnica global. |
+| Último caminho processado | `KNOWLEDGE/info/20260422_173855_Identificador Único do Equipamento na Rede - Manus/` — L002-01; quatro artefatos, hashes 4/4. Nenhuma fonte em `KNOWLEDGE/` foi aberta nesta unidade F3.2. |
+| Fontes de governança/contexto lidas nesta unidade | Orientação, controle, índice, registro de decisões, checkpoint F3.2, inventário, template, `BCE/LOCKS.md`, matriz F3.2 e análise documental dos DOM-01–DOM-06 via workflow. Nenhuma fonte primária, link externo ou código foi aberto/executado nesta unidade. |
+| Arquivos curatoriais alterados | `BCE/arqueologia/MATRIZ_DECISOES_F3_2.md` v0.2.0 (`e504150`); `BCE/INDICE_CURATORIAL.md` (`f43dedc`, `1aaf728`, `b633258`); `BCE/CONTROLE_MESTRE.md`; checkpoint `BCE/sessoes/2026-10-26_f3-2-matriz-documental.md`. Nenhum arquivo em `KNOWLEDGE/` foi alterado. |
+| Próximo item | Consultar `BCE/fontes/ESCOPO_F2_3_REDE_MESH.md` e `BCE/temas/rede-mesh-comunicacao-e-roteamento.md` (DOM-03) para definir um único escopo F3.3 de código/imagem; conferir no inventário se o contato já foi processado. Antes de abrir qualquer arquivo bruto, verificar locks, criar e publicar claim e pré-registro para o caminho físico exato. |
+| Conflitos, lacunas e impedimentos | F3.2 registra propostas e evoluções conforme DOMs publicados; nenhuma referência primária foi reaberta, então a matriz não valida aprovação técnica, implementação, teste ou operação. Cobertura global continua parcial (29/273 conjuntos na amostra integrada); não inferir inexistência fora da amostra. Nenhum claim ativo. |
+| Responsável pela sessão | Manus — F3.2 concluída documentalmente em v0.2.0; próximo passo: delimitar F3.3 com DOM-03 e escopo F2.3, sem abrir fontes até claim e pré-registro. |
+
+## Como retomar em cinco minutos
 
 ## Como retomar em cinco minutos
 
@@ -99,8 +101,8 @@
 | ID | Entrega | Status | Dependência |
 |---|---|---|---|
 | F3.1 | Consolidar fontes do domínio prioritário 1 | CONCLUÍDO ADMINISTRATIVAMENTE — E001–E007 e L002-01/L002-03/L002-05 processados; DOM-01 v0.3.7 e destinos atualizados; fontes permanecem heterogêneas e em `REVISÃO`, sem implementação global confirmada. | F2; DOM-01/P0 |
-| F3.2 | Reconstruir arqueologia das decisões | EM_ANDAMENTO — matriz-base v0.1.0 publicada em `d146207`; validar A-01–A-10 e expandir decisões dos DOM-01–DOM-06 usando somente material BCE já publicado | F3.1 |
-| F3.3 | Validar estado da arte contra código e imagens | PENDENTE | F3.1 |
+| F3.2 | Reconstruir arqueologia das decisões | CONCLUÍDA DOCUMENTALMENTE — matriz v0.2.0, A-01–A-17, comparação DOM-01–DOM-06; fontes primárias não reabertas e referências marcadas como mediadas | F3.1 |
+| F3.3 | Validar estado da arte contra código e imagens | PENDENTE — delimitar escopo por contato antes de abrir fontes brutas | F3.1 |
 | F3.4 | Registrar conflitos, descartes e hipóteses | PENDENTE | F3.1 |
 | F3.5 | Publicar revisão do domínio | PENDENTE | F3.2–F3.4 |
 | F3.6 | Repetir para cada domínio | PENDENTE | F3.5 |
