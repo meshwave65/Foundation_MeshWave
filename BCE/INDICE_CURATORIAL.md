@@ -131,8 +131,11 @@ Fontes que apenas mencionam o projeto sem conteúdo técnico devem ser registrad
 | Artefato | Escopo | Resultado e limites |
 |---|---|---|
 | `BCE/arqueologia/MATRIZ_DECISOES_F3_2.md` | F3.2 — arqueologia de decisões e alternativas | v0.2.0; 17 registros (A-01–A-17), revisão documental de DOM-01–DOM-06. `KNOWLEDGE/`, fontes primárias e links não foram reabertos nesta unidade; referências primárias citadas nos DOMs são mediadas, não auditoria direta. Nenhuma proposta foi promovida a implementação ou decisão normativa. |
+| `BCE/sessoes/2026-10-26_f3-2-matriz-documental.md` | F3.2 — checkpoint da expansão documental | Registra A-01–A-17, limites de evidência mediada, commits e o próximo passo de delimitação de F3.3; nenhuma fonte primária foi reaberta. |
 
 ## Classificações de fontes publicadas
+
+| Artefato | Escopo | Resultado e limites |
 
 | Artefato | Escopo | Resultado e limites |
 |---|---|---|
