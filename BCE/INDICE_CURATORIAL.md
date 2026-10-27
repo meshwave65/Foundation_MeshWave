@@ -119,12 +119,18 @@ Fontes que apenas mencionam o projeto sem conteúdo técnico devem ser registrad
 ## Estado do índice
 
 - Este é um mapa inicial baseado em títulos e inventário preliminar.
-- DOM-01 recebeu revisão F2.1/F2.2 e auditoria direta F3.1 de E001–E007 (`0.3.6`); permanece em `REVISÃO`: relações são propostas; E002 não comprova POC, E003 não tem semântica espacial/algoritmo, E004 contém design/código transcrito sem execução, E005 é plano editorial, E006 é plano visual sem esquema/saída íntegra, e E007 é reauditoria da mesma extração F2.6-01, com truncamento e sem API/teste/integração. A base semântica permanece amostral (29/273 conjuntos). F3.1/L002-05 foi processada fora de DOM-01 e encerrada como reauditoria de F2.6-02 nos destinos DOM-06/12/13.
-- DOM-02 recebeu síntese F2.2 e verificação cruzada F3.1/E003 (`0.1.1`), permanece em `REVISÃO`: cinco camadas e roadmap são conceituais; E002 não confirma a alegação de POC e E003 não fornece legenda, CRS ou algoritmo para a grade CLA. F2.3 já produziu DOM-03; deployment e cronologia continuam sem validação operacional.
-- DOM-03 recebeu primeira síntese F2.3 (`0.1.0`): as 12 fontes foram lidas em texto, blocos, links e imagens quando presentes. A síntese separa proposta, protótipo alegado, transcrição de código e hipótese GSM/LTE; não confirma implementação, build, teste físico, interoperabilidade ou resultados de roteamento.
+- DOM-01 (v0.3.7): F2.1/F2.2, auditoria F3.1 E001–E007 e integração L002-03; segue em `REVISÃO`. E002 não comprova POC; E003 carece de semântica espacial/algoritmo; E004 é design/código transcrito; E005 plano editorial; E006 plano visual sem saída íntegra; E007 reauditoria truncada sem API/teste/integração. Amostra semântica: 29/273. F3.1/L002-05 reaudita F2.6-02 em DOM-06/12/13.
+- DOM-02 (v0.1.2): cinco camadas, SDN e roadmap conceituais; E002 não comprova POC e E003 não fornece legenda, CRS ou algoritmo para a grade CLA. L002-03 integra matriz de fases/módulos; sem implantação ou cronograma validado. Segue em `REVISÃO`.
+- DOM-03 (v0.1.0): síntese das 12 fontes separa proposta, protótipo alegado, código transcrito e hipótese GSM/LTE; não confirma implementação, build, teste físico, interoperabilidade ou resultados de roteamento.
 - A classificação deve ser revisada após a leitura integral de `content.txt`, `code_blocks.txt`, `links.txt` e imagens.
 - Um documento-alvo pode ser dividido ou fundido somente com decisão registrada em `BCE/REGISTRO_DECISOES.md`.
 - Nenhuma fonte deve ser considerada processada apenas porque seu título aparece neste índice.
+
+## Matriz arqueológica de decisões
+
+| Artefato | Escopo | Resultado e limites |
+|---|---|---|
+| `BCE/arqueologia/MATRIZ_DECISOES_F3_2.md` | F3.2 — arqueologia de decisões e alternativas | v0.2.0; 17 registros (A-01–A-17), revisão documental de DOM-01–DOM-06. `KNOWLEDGE/`, fontes primárias e links não foram reabertos nesta unidade; referências primárias citadas nos DOMs são mediadas, não auditoria direta. Nenhuma proposta foi promovida a implementação ou decisão normativa. |
 
 ## Classificações de fontes publicadas
 
@@ -144,10 +150,10 @@ Fontes que apenas mencionam o projeto sem conteúdo técnico devem ser registrad
 | `BCE/fontes/CLASSIFICACAO_F3_1_DOM01_E005.md` e checkpoints de abertura/fechamento (`BCE/sessoes/2026-10-20_f3-1-dom01-e005-abertura.md`, `BCE/sessoes/2026-10-20_f3-1-dom01-e005-fechamento.md`) | F3.1 — DOM-01/E005/L001-06 | Quatro artefatos auditados diretamente; hashes 4/4; reauditoria da fonte já coberta em F2.6-07; visão de sinergia e plano editorial sem integração, acesso ou execução comprovados. O contato seguinte E006 foi concluído. |
 | `BCE/fontes/CLASSIFICACAO_F3_1_DOM01_E006.md` | F3.1 — DOM-01/E006/L002-02 | Cinco artefatos, 462.562 bytes, hashes 5/5; plano editorial/visual de 14 gráficos, sem código ou esquema normativo; imagem de registro ilegível, replay em 3/7, sem saídas gráficas íntegras no conjunto. Integrado em DOM-01 v0.3.5. |
 | `BCE/sessoes/2026-10-20_f3-1-dom01-e006-abertura.md` | F3.1 — DOM-01/E006/L002-02 | Cinco artefatos pré-registrados, hashes 5/5 confirmados novamente após leitura; nenhum comando executado ou link seguido. |
-| `BCE/fontes/CLASSIFICACAO_F3_1_DOM01_E007.md` | F3.1 — DOM-01/E007/L002-04 | Quatro artefatos, 218.674 bytes, hashes 4/4; reauditoria da fonte F2.6-01; narrativa de Q-CyPIA/SDN, multipath/anonimato e ARC-Bayes/PGC sem código, contrato, teste ou resultado verificável. Integrado em DOM-01 v0.3.6. |
+| `BCE/fontes/CLASSIFICACAO_F3_1_DOM01_E007.md` | F3.1 — DOM-01/E007/L002-04 | Quatro artefatos, 218.674 bytes, hashes 4/4; reauditoria da fonte F2.6-01; narrativa de Q-CyPIA/SDN, multipath/anonimato e ARC-Bayes/PGC sem código, contrato, teste ou resultado verificável. Integrado inicialmente em DOM-01 v0.3.6; versão atual v0.3.7 também incorpora L002-03. |
 | `BCE/sessoes/2026-10-26_f3-1-dom01-e007-abertura.md` | F3.1 — DOM-01/E007/L002-04 | Pré-registro de quatro artefatos; hashes 4/4 revalidados antes/depois da leitura; nenhum link seguido/código executado. |
 | `BCE/sessoes/2026-10-26_f3-1-dom01-e007-fechamento.md` | F3.1 — DOM-01/E007/L002-04 | Fechamento da auditoria e commits; hashes 4/4; documenta a nova regra de claim publicada após a leitura, ausência de claim ativo e próximo passo de reconciliação da fila antes de outra fonte. |
-| `BCE/temas/arquitetura-geral-e-implantacao.md` | F2.2 — DOM-02, arquitetura geral e implantação | Síntese v0.1.1 das cinco camadas e do controlador SDN propostos, roadmap 2025–2032 e grade CLA; a verificação cruzada E003 refina os limites de proveniência e semântica. F2.3 já gerou DOM-03; DOM-02 segue em revisão. |
+| `BCE/temas/arquitetura-geral-e-implantacao.md` | F2.2/F3.1 — DOM-02, arquitetura geral e implantação | Versão atual v0.1.2; cinco camadas, SDN, roadmap e módulos permanecem conceituais. L002-03 foi integrada como matriz de fases/módulos, sem implantação, teste ou cronograma aprovado. DOM-02 segue em `REVISÃO`. |
 | `BCE/fontes/ESCOPO_F2_3_REDE_MESH.md` | F2.3 — lote fechado de 12 conjuntos de rede, comunicação e roteamento | Escopo físico registrado antes da leitura; consultar DOM-03 para a síntese, rastreabilidade, conflitos e lacunas. |
 | `BCE/fontes/ESCOPO_F2_5_ARC_BAYES.md` | F2.5 — lote fechado de ARC/PGC, DNA do hardware e inferência bayesiana | Três conjuntos processados em paralelo; consultar DOM-05 para a síntese e limitações. |
 | `BCE/sessoes/2026-10-08_f2-4-fechamento.md` | F2.4 — checkpoint de fechamento explícito | Sete fontes e 12 imagens conferidas; F2.4 concluída como unidade de curadoria; próximo passo F2.6. |
