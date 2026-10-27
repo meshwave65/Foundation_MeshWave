@@ -246,6 +246,13 @@ Se o participante recebe moeda fiduciária pela venda efetiva de MWN ou por uma 
 13. **Liquidez distribuída potencial:** os participantes podem autorizar a disponibilização de UMS elegíveis, sem exigir uma reserva central única de MWN.
 14. **Equilíbrio não garantido:** mecanismos de feedback podem moderar escassez ou excesso, mas não garantem preço estável nem valorização.
 15. **Cotação externa não é garantia fiduciária:** preço de mercado e conversão interna são dimensões distintas.
+16. **Validação de consenso é trabalho elegível à PoUW:** a avaliação e o voto sobre operações e blocos podem constituir uma categoria própria de trabalho útil, desde que a participação seja registrada conforme o protocolo.
+17. **O voto comprova a participação:** um voto autenticado, vinculado à operação designada e registrado dentro do prazo é a evidência operacional da execução da tarefa de validação. Não se exige uma segunda prova independente de que o validador analisou a operação.
+18. **Ausência de voto não gera UMS pela tarefa:** se o validador não registrar resposta dentro do prazo, não recebe a recompensa de validação daquela requisição; a ausência também alimenta a avaliação de disponibilidade e credibilidade.
+19. **A recompensa não depende de concordar com a maioria:** votos válidos pela aprovação ou rejeição podem ser remuneráveis. O resultado coletivo do consenso e o reconhecimento econômico da participação são decisões distintas.
+20. **Credibilidade dinâmica dos validadores:** respostas válidas e consistentes preservam ou recuperam credibilidade; ausências recorrentes podem reduzir prioridade, suspender a condição de validador primário e, abaixo de um limite, retirar a elegibilidade para validar.
+21. **Crédito único e atribuição verificável:** votos devem ser autenticados, vinculados à tarefa e contabilizados de forma idempotente, para que retransmissões não gerem UMS duplicadas.
+22. **Consenso não basta para provar utilidade econômica da operação:** o protocolo deve distinguir a validade formal de uma transação/bloco da elegibilidade econômica do trabalho que ela representa, para limitar operações fabricadas ou conluio voltado à obtenção de UMS.
 
 ## 10. Questões em aberto para especificação futura
 
@@ -280,6 +287,13 @@ Este relatório registra conceitos, não fecha as regras de implementação. Os 
 - Como o protocolo protege saldos reservados contra operações concorrentes?
 - Como são apresentados consentimento, histórico, limites e possibilidade de interrupção da automação?
 
+### 10.6 Validação de consenso e credibilidade dos nós
+- Quais são os prazos de resposta, os critérios para considerar um voto válido e o tratamento de votos tardios?
+- Como serão calculados os níveis de credibilidade, as janelas de avaliação, os limites de prioridade, a suspensão e a remoção de validadores?
+- Como o sistema distingue indisponibilidade do nó de falhas de comunicação ou de infraestrutura compartilhada, sem conceder UMS por uma tarefa sem voto registrado?
+- Como a seleção e a distribuição de tarefas reduzem o risco de identidades sob controle comum formarem um quórum para fabricar operações remuneráveis?
+- Qual será a política de recompensa por participação, sem vincular o pagamento à aprovação da operação nem permitir crédito duplicado?
+
 ### 10.6 Liquidação fiduciária e mercado externo
 - Como se distinguem cotação indicativa, ordem de venda e liquidação efetiva?
 - Quem provê liquidez fiduciária e sob quais condições?
@@ -292,6 +306,8 @@ O modelo conceitual discutido separa a geração de valor útil, sua contabiliza
 **PoUW útil comprovado → remuneração obrigatória em UMS → conversão de UMS elegíveis em MWN conforme a demanda → transferência de MWN → eventual reconversão para UMS.**
 
 A analogia do reservatório expressa a ideia de que a economia interna pode acumular potencial em UMS sem materializar todo esse valor em MWN ao mesmo tempo. O PoUW alimenta o reservatório; as regras de conversão controlam a passagem para a circulação; e a reconversão permite o retorno contábil do valor.
+
+A validação de consenso também pode ser reconhecida como categoria própria de PoUW: o voto autenticado e registrado comprova a participação do validador; a ausência de voto não gera UMS pela tarefa e afeta sua credibilidade. A credibilidade determina a prioridade e a permanência no conjunto de validadores, enquanto o consenso determina a validade da operação. Essas funções devem permanecer separadas.
 
 A integridade do modelo depende de remunerar a utilidade efetiva e impedir que atividade computacional ou demanda fabricada seja confundida com contribuição útil. A gestão automatizada de reservas e conversões pode distribuir a liquidez entre participantes, preservando a autonomia de quem escolhe o modo manual.
 
