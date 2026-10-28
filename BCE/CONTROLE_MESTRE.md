@@ -7,7 +7,7 @@
 | Campo | Valor |
 |---|---|
 | Status global | `EM_ANDAMENTO — FASE 3: Curadoria profunda` |
-| Última atualização | 2026-10-26 21:55 (-03:00) |
+| Última atualização | 2026-10-27 — atualização documental lateral do módulo Mercado; fila F3.3 preservada |
 | Publicação de F2.6-07 | Os cinco commits da unidade (`c55e31d`, `b3c8864`, `8870caa`, `290895f`, `629125a`) foram publicados em `main`; a correção factual posterior foi registrada em `f8649ba`. |
 | Publicação de F2.6-08 | DOM-06 `74eba5f`; índice `14e2768` (cobertura) e `aec133d` (linha principal DOM-06); checkpoint de fechamento `6f99eaa`, todos publicados em `main`. |
 | Publicação de F2.6-09 | DOM-06 `97dea42`; índice `a39441b`; pré-registro `56c5ff8`; fechamento `f186adc`; controle `b79cf1d`, publicados em `main`.
@@ -32,6 +32,7 @@
 | Próximo item | Consultar `BCE/fontes/ESCOPO_F2_3_REDE_MESH.md` e `BCE/temas/rede-mesh-comunicacao-e-roteamento.md` (DOM-03) para definir um único escopo F3.3 de código/imagem; conferir no inventário se o contato já foi processado. Antes de abrir qualquer arquivo bruto, verificar locks, criar e publicar claim e pré-registro para o caminho físico exato. |
 | Conflitos, lacunas e impedimentos | F3.2 registra propostas e evoluções conforme DOMs publicados; nenhuma referência primária foi reaberta, então a matriz não valida aprovação técnica, implementação, teste ou operação. Cobertura global continua parcial (29/273 conjuntos na amostra integrada); não inferir inexistência fora da amostra. Nenhum claim ativo. |
 | Responsável pela sessão | Manus — F3.2 concluída documentalmente em v0.2.0; próximo passo: delimitar F3.3 com DOM-03 e escopo F2.3, sem abrir fontes até claim e pré-registro. |
+| Atualização lateral 2026-10-27 | Clarificação do Mercado como exchange/integrador de fronteira registrada em DOM-20; conteúdo `31cde69`, índice `1418103`, checkpoint `71b9ed0`, publicados em `main`. Não abriu fontes brutas e não substitui o próximo passo F3.3. |
 
 ## Como retomar em cinco minutos
 
@@ -204,6 +205,7 @@ O agente atual só deve declarar a tarefa transferível quando:
 
 | Data | Agente | Evento | Commit | Próximo passo |
 |---|---|---|---|---|
+| 2026-10-27 | Manus — atualização documental lateral de DOM-20 | Clarificação do Mercado como exchange de fronteira, distinção UMS interna/MWN externo e estados de execução/liquidação; código do simulador não confirmado. | `31cde69` conteúdo; `1418103` índice; `71b9ed0` checkpoint; este controle em commit próprio | Retomar o próximo passo já registrado para F3.3; confirmar o fluxo no código do simulador somente após delimitação e claim correspondente |
 | 2026-10-08 | Agente BCE MeshWave | Criada orientação operacional | `1402184` | Criar controle mestre |
 | 2026-10-08 | Agente BCE MeshWave | Criado controle mestre | `2e6a935` | Criar índice curatorial |
 | 2026-10-08 | Agente BCE MeshWave | Criado índice curatorial | `849a31b` | Criar registro de decisões |
