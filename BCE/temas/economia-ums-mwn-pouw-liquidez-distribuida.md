@@ -320,3 +320,32 @@ Essas conclusões formam uma base conceitual para especificação posterior. Nã
 Este documento foi elaborado a partir da discussão conceitual realizada em 25 de outubro de 2026. Ele registra as definições e hipóteses explicitamente estabelecidas durante essa conversa, organiza suas consequências arquiteturais e lista questões ainda não resolvidas.
 
 Não foram realizadas, como parte deste registro, validação de código, auditoria de contratos inteligentes, simulação quantitativa, parecer jurídico/financeiro ou verificação independente de implementação.
+
+## 13. Clarificação do módulo Mercado como exchange de fronteira — 2026-10-27
+
+**Origem:** esclarecimento do responsável pelo projeto nesta sessão. Esta seção registra a arquitetura pretendida; não é evidência de implementação nem substitui a especificação operacional.
+
+### 13.1 Posição arquitetural
+
+O módulo denominado **Mercado** no simulador é entendido como uma exchange/integrador de fronteira do ecossistema MeshWave. Faz parte da arquitetura do produto, mas não da economia operacional interna. Sua função é conectar saldos UMS isolados por usuário ao mercado externo de MWN e, quando aplicável, à liquidação fiduciária.
+
+Dentro do ecossistema, serviços, geração de demanda e disponibilização de recursos dos nós são contabilizados em UMS. MWN não é unidade de pagamento desses serviços internos. A UMS de um usuário não é transferida diretamente para outro usuário. Uma transferência de valor entre contas exige a passagem pela fronteira: UMS elegível do remetente → MWN negociável externamente → MWN adquirido para o destinatário → UMS creditada na conta interna do destinatário, conforme as regras de conversão.
+
+### 13.2 Operação com provedores externos
+
+O Mercado pode operar uma exchange MeshWave própria, integrar uma ou mais exchanges parceiras, ou combinar esses modelos. Um parceiro como a Binance é apenas um exemplo de executor externo e não precisa operar nem conhecer UMS. A escolha do operador não altera a separação entre UMS interna e MWN na fronteira.
+
+**Disponibilização/venda:** o usuário autoriza disponibilizar MWN. O Mercado registra a quantidade como disponível ou vinculada a uma ordem. Enquanto a ordem não for executada e liquidada, ela permanece pendente; não deve ser apresentada como moeda fiduciária recebida. Após confirmação da execução e liquidação externa, o Mercado atualiza o estado da operação e o saldo fiduciário correspondente, conforme o arranjo de custódia e liquidação adotado.
+
+**Compra/recomposição:** quando uma conta precisa recompor UMS para manter suas operações internas, o Mercado pode, se autorizado e dentro dos limites do usuário, usar saldo fiduciário disponível para solicitar a compra de MWN no provedor externo. Depois de confirmar a compra e o recebimento de MWN, o módulo converte o montante segundo as regras vigentes e credita UMS na conta interna do usuário. O serviço interno continua liquidado em UMS.
+
+### 13.3 Estados e controles necessários
+
+A implementação deve distinguir pelo menos: (a) MWN disponibilizada; (b) ordem aberta; (c) execução confirmada; (d) liquidação fiduciária confirmada; (e) MWN comprada/recebida; e (f) UMS convertida e creditada. Cada transição deve manter referência idempotente à ordem/operação externa para evitar crédito ou conversão duplicados, permitir reconciliação de estados e tratar execução parcial, cancelamento, falha e atraso do provedor.
+
+O parceiro não recebe autoridade para creditar UMS. Somente o módulo de fronteira, após validar a operação externa e aplicar os limites/autorização do usuário, pode solicitar a conversão interna. A custódia de MWN, a titularidade dos saldos fiduciários, o tratamento de taxas, execução parcial, falhas e reconciliação entre exchanges permanecem requisitos a especificar.
+
+### 13.4 Estado da evidência
+
+O responsável pelo projeto esclareceu que essa é a lógica pretendida para o Mercado e considera possível que o ciclo já esteja operacional no simulador. A árvore e a documentação técnica do repositório examinadas nesta análise não expõem código do simulador nem uma implementação verificável desse fluxo. Portanto, o desenho acima é **clarificação arquitetural fornecida pelo responsável**; a existência e o comportamento do fluxo no simulador permanecem **não confirmados** até inspeção do código executável ou demonstração reproduzível.
+
