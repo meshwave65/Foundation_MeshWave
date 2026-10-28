@@ -7,7 +7,7 @@
 | Campo | Valor |
 |---|---|
 | Status global | `EM_ANDAMENTO — FASE 3: Curadoria profunda` |
-| Última atualização | 2026-10-27 — atualização documental lateral do módulo Mercado; fila F3.3 preservada |
+| Última atualização | 2026-10-27 21:42 (-03:00) — abertura do claim F3.3/ID-229; pré-registro pendente. |
 | Publicação de F2.6-07 | Os cinco commits da unidade (`c55e31d`, `b3c8864`, `8870caa`, `290895f`, `629125a`) foram publicados em `main`; a correção factual posterior foi registrada em `f8649ba`. |
 | Publicação de F2.6-08 | DOM-06 `74eba5f`; índice `14e2768` (cobertura) e `aec133d` (linha principal DOM-06); checkpoint de fechamento `6f99eaa`, todos publicados em `main`. |
 | Publicação de F2.6-09 | DOM-06 `97dea42`; índice `a39441b`; pré-registro `56c5ff8`; fechamento `f186adc`; controle `b79cf1d`, publicados em `main`.
@@ -22,16 +22,17 @@
 | Publicação de F3.1/E005 | Pré-registro `a50d277`; classificação `b1ff9a0`; DOM-01 v0.3.4 `b03c6ea`; índice `4c9dafd` e correção histórica `1d56ae1`; fechamento `d8c597f`; referência do fechamento no índice `c9cb35a`, publicados em `main`. |
 | Publicação de F3.1/E006 | Pré-registro `d6d6db1`; classificação `5ba3e9f`; DOM-01 v0.3.5 `84fe537`; índice `ecbbb19`; checkpoint `b934e53`; controle `98ca271`, publicados em `main`; hashes 5/5 conferidos. |
 | Publicação de F3.1/E007 | Pré-registro `a2475e0`; classificação `411671a`; controle após classificação `d164694`; DOM-01 v0.3.6 `17869b4`; índice `3940767`/`8fba35b`; correção `93916a6`; fechamento `f4df418`; publicados em `main`. |
-| Estado local/remoto | Base remota pré-unidade `origin/main=d146207`; commits `8fbb4f1` (reconciliação), `e504150` (matriz), `f43dedc`/`1aaf728`/`b633258` (índice) e este controle/checkpoint. Sem avanço remoto concorrente; F3.1 encerrada; claims F3.1/L002-01, L002-03 e L002-05 fechados; nenhum ativo. |
+| Publicação de F3.3/ID-229 | Claim ativo publicado em `edd2262`; pré-registro ainda pendente; nenhuma fonte bruta aberta. |
+| Estado local/remoto | `main` sincronizada com `origin/main=edd2262`; claim exclusivo F3.3/ID-229 publicado, sem abertura semântica de fonte. Claims F3.1/L002-01, L002-03 e L002-05 encerrados; F3.3/ID-229 ativo. |
 | Branch de trabalho | `main` |
 | Último item concluído | F3.2 — expansão documental da matriz v0.2.0: A-01–A-17; DOM-01–DOM-06 comparados; A-01/A-03/A-09 complementados e A-11–A-17 adicionados. Fontes primárias não reabertas; suas referências permanecem mediadas pelos DOMs. |
-| Item em andamento | F3.3 — somente delimitação inicial de escopo; fonte de código/imagem ainda não selecionada e nenhum material bruto aberto. F3.2 concluída documentalmente, sem alegação de validação técnica global. |
+| Item em andamento | `F3.3/ID-229` — caminho `KNOWLEDGE/meshwave65/20260422_meshwave simulator script - Manus/`, selecionado para investigar a lacuna DOM-03 §14.12 (origem, versão, testes e dados do simulador). Claim `BCE/locks/F3.3-ID229.lock.md` ativo (`edd2262`); fonte bruta ainda não lida semanticamente. |
 | Último caminho processado | `KNOWLEDGE/info/20260422_173855_Identificador Único do Equipamento na Rede - Manus/` — L002-01; quatro artefatos, hashes 4/4. Nenhuma fonte em `KNOWLEDGE/` foi aberta nesta unidade F3.2. |
-| Fontes de governança/contexto lidas nesta unidade | Orientação, controle, índice, registro de decisões, checkpoint F3.2, inventário, template, `BCE/LOCKS.md`, matriz F3.2 e análise documental dos DOM-01–DOM-06 via workflow. Nenhuma fonte primária, link externo ou código foi aberto/executado nesta unidade. |
-| Arquivos curatoriais alterados | `BCE/arqueologia/MATRIZ_DECISOES_F3_2.md` v0.2.0 (`e504150`); `BCE/INDICE_CURATORIAL.md` (`f43dedc`, `1aaf728`, `b633258`); `BCE/CONTROLE_MESTRE.md`; checkpoint `BCE/sessoes/2026-10-26_f3-2-matriz-documental.md`. Nenhum arquivo em `KNOWLEDGE/` foi alterado. |
-| Próximo item | Consultar `BCE/fontes/ESCOPO_F2_3_REDE_MESH.md` e `BCE/temas/rede-mesh-comunicacao-e-roteamento.md` (DOM-03) para definir um único escopo F3.3 de código/imagem; conferir no inventário se o contato já foi processado. Antes de abrir qualquer arquivo bruto, verificar locks, criar e publicar claim e pré-registro para o caminho físico exato. |
-| Conflitos, lacunas e impedimentos | F3.2 registra propostas e evoluções conforme DOMs publicados; nenhuma referência primária foi reaberta, então a matriz não valida aprovação técnica, implementação, teste ou operação. Cobertura global continua parcial (29/273 conjuntos na amostra integrada); não inferir inexistência fora da amostra. Nenhum claim ativo. |
-| Responsável pela sessão | Manus — F3.2 concluída documentalmente em v0.2.0; próximo passo: delimitar F3.3 com DOM-03 e escopo F2.3, sem abrir fontes até claim e pré-registro. |
+| Fontes de governança/contexto lidas nesta unidade | `AGENTS.md`, `BCE/LOCKS.md`, orientação, controle, índice, decisões, skill BCE, checkpoint F3.2 e atualização lateral, escopo F2.3, DOM-03, matriz F3.2, template e metadados do inventário. Nenhum artefato bruto de F3.3 foi aberto. |
+| Arquivos curatoriais alterados | F3.3: claim `BCE/locks/F3.3-ID229.lock.md` (`edd2262`); este controle em commit próprio. Nenhum arquivo em `KNOWLEDGE/` foi alterado. |
+| Próximo item | Pré-registrar antes de qualquer leitura semântica os nomes, bytes e SHA-256 dos quatro artefatos no caminho `KNOWLEDGE/meshwave65/20260422_meshwave simulator script - Manus/` (`content.txt`, `code_blocks.txt`, `links.txt`, `FULL.png`); publicar o pré-registro em commit próprio. Depois auditar somente esse contato e fechar o claim no checkpoint; não executar código nem seguir links. |
+| Conflitos, lacunas e impedimentos | DOM-03 §14.12 pergunta se o simulador implementa encaminhamento e onde estão fontes/versão/testes/dados. O ID 229 do inventário (4 arquivos, 3 textuais/código, 1 imagem) não consta de classificação BCE anterior; a seleção foi feita por essa lacuna, não apenas pelo título. Claim exclusivo publicado em `edd2262`; prazo `2026-10-28T21:41:40-03:00`. Sem outra claim ativa no momento da publicação. |
+| Responsável pela sessão | Manus — escopo F3.3/ID-229 reivindicado (`edd2262`), sem leitura semântica; próxima ação: pré-registro físico e publicação, depois auditoria apenas do caminho reivindicado. |
 | Atualização lateral 2026-10-27 | Clarificação do Mercado como exchange/integrador de fronteira registrada em DOM-20; conteúdo `31cde69`, índice `1418103`, checkpoint `71b9ed0`, publicados em `main`. Não abriu fontes brutas e não substitui o próximo passo F3.3. |
 
 ## Como retomar em cinco minutos
@@ -262,6 +263,8 @@ O agente atual só deve declarar a tarefa transferível quando:
 
 | 2026-10-26 | Manus — fechamento F3.1/DOM-01/E006 | Cinco artefatos L002-02 auditados; hashes 5/5; identificador composto, Geohash/CPA/CLA/cache classificados como plano visual sem schema ou implementação; DOM-01 v0.3.5 e índice atualizados; fontes brutas intactas | `5ba3e9f` classificação; `84fe537` DOM-01; `ecbbb19` índice; `b934e53` checkpoint de fechamento | Pré-registrar `KNOWLEDGE/johann/20260422_175016_SOFIA and MeshWave Ecosystem Overview - Manus/` como E007/L002-04 antes de ler conteúdo |
 | 2026-10-26 | Manus — fechamento F3.1/DOM-01/E007 | Quatro artefatos L002-04 auditados, hashes 4/4; reauditoria F2.6-01, sem evidência independente; DOM-01 v0.3.6/índice atualizados; truncamento e ausência de API/teste/integração preservados; fontes brutas intactas | `411671a` classificação; `17869b4` DOM-01; `3940767`/`8fba35b` índice; `93916a6` correção; `f4df418` checkpoint; governança nova `a32cd3e` chegou após a leitura; este controle em commit próprio | Reconciliar a fila F3.1 e definir próximo contato ID/caminho; depois claim exclusivo e pré-registro antes de ler |
+| 2026-10-26 | Manus — fechamento documental F3.2 | Matriz arqueológica v0.2.0 (A-01–A-17), comparação de DOM-01–DOM-06; fontes primárias não reabertas; F3.2 concluída sem validação técnica global | `e504150` matriz; `f43dedc`, `1aaf728`, `b633258` índice; `a1d0f29` controle/fechamento | Delimitar um escopo de código/imagem F3.3 com DOM-03 e escopo F2.3; exigir claim e pré-registro antes de abrir fonte |
+| 2026-10-27 | Manus — abertura F3.3/ID-229 | Selecionado o contato do inventário ID 229 para investigar DOM-03 §14.12; ainda sem leitura semântica | `edd2262` claim exclusivo `ATIVO`; este controle em commit próprio | Pré-registrar nomes, bytes e hashes de `content.txt`, `code_blocks.txt`, `links.txt` e `FULL.png` do caminho reivindicado |
 
 
 ## Lote F1.5 registrado antes da leitura — catálogo de código
