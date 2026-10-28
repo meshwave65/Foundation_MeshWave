@@ -62,6 +62,8 @@ Este índice define a arquitetura documental da Base de Conhecimento Evolutivo. 
 | DOM-14 | `BCE/temas/seguranca-privacidade-lgpd-e-governanca.md` | Quais princípios de segurança, privacidade, LGPD, controle e governança existem? | material LGPD, autenticação, identidade, persistência, exposição de credenciais e práticas operacionais | PENDENTE |
 | DOM-15 | `BCE/temas/apis-integracoes-e-protocolos.md` | Quais APIs, protocolos e integrações conectam os módulos? | Sofia API, DafsAPI, APIs de desenvolvedores, MWC/UMS, Briar e Chroma; L002-03 como mapa de Integração 6G, SDN, SATSI, LEO e interface terahertz | PENDENTE — L002-03 fornece somente rótulos de integração/roadmap, sem contratos ou protocolos verificáveis |
 
+| DOM-20 | `BCE/temas/economia-ums-mwn-pouw-liquidez-distribuida.md` | Como UMS, MWN e o módulo Mercado conectam a economia interna isolada à negociação e liquidação externas? | Documento conceitual BCE e clarificação do responsável do projeto em 2026-10-27 | REVISÃO — clarificação arquitetural do Mercado como exchange de fronteira; código do simulador e operação do fluxo não confirmados |
+
 ### P3 — Estratégia, implantação institucional e contexto externo
 
 | ID | Documento-alvo | Pergunta central | Fontes candidatas observadas | Status |
