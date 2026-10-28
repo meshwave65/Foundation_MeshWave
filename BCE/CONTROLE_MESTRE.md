@@ -7,7 +7,7 @@
 | Campo | Valor |
 |---|---|
 | Status global | `EM_ANDAMENTO — FASE 3: Curadoria profunda` |
-| Última atualização | 2026-10-27 21:55 (-03:00) — auditoria semântica ID-229 concluída; classificação, DOM-03 e índice publicados; checkpoint de fechamento pendente. |
+| Última atualização | 2026-10-27 21:59 (-03:00) — ID-229 fechado com hashes 4/4; F3.3 permanece em andamento e DOM-03 §14.12 continua aberto. |
 | Publicação de F2.6-07 | Os cinco commits da unidade (`c55e31d`, `b3c8864`, `8870caa`, `290895f`, `629125a`) foram publicados em `main`; a correção factual posterior foi registrada em `f8649ba`. |
 | Publicação de F2.6-08 | DOM-06 `74eba5f`; índice `14e2768` (cobertura) e `aec133d` (linha principal DOM-06); checkpoint de fechamento `6f99eaa`, todos publicados em `main`. |
 | Publicação de F2.6-09 | DOM-06 `97dea42`; índice `a39441b`; pré-registro `56c5ff8`; fechamento `f186adc`; controle `b79cf1d`, publicados em `main`.
@@ -22,17 +22,17 @@
 | Publicação de F3.1/E005 | Pré-registro `a50d277`; classificação `b1ff9a0`; DOM-01 v0.3.4 `b03c6ea`; índice `4c9dafd` e correção histórica `1d56ae1`; fechamento `d8c597f`; referência do fechamento no índice `c9cb35a`, publicados em `main`. |
 | Publicação de F3.1/E006 | Pré-registro `d6d6db1`; classificação `5ba3e9f`; DOM-01 v0.3.5 `84fe537`; índice `ecbbb19`; checkpoint `b934e53`; controle `98ca271`, publicados em `main`; hashes 5/5 conferidos. |
 | Publicação de F3.1/E007 | Pré-registro `a2475e0`; classificação `411671a`; controle após classificação `d164694`; DOM-01 v0.3.6 `17869b4`; índice `3940767`/`8fba35b`; correção `93916a6`; fechamento `f4df418`; publicados em `main`. |
-| Publicação de F3.3/ID-229 | Claim `edd2262`; pré-registro `38876c9`; classificação `38ea48a`; DOM-03 v0.1.1 `623d911`; índice `593a497`, todos publicados em `main`; hashes 4/4 conferidos. Controle atualizado; checkpoint de fechamento e liberação do claim pendentes. |
-| Estado local/remoto | Imediatamente antes desta atualização, `main` e `origin/main` estavam sincronizadas em `593a497`, com árvore limpa; claim exclusivo ID-229 ainda ativo; nenhum outro contato foi processado. |
+| Publicação de F3.3/ID-229 | Claim `edd2262`; pré-registro `38876c9`; classificação `38ea48a`; DOM-03 v0.1.1 `623d911`; índice `593a497`; controle pré-fechamento `5bf470e`; checkpoint e estado `CONCLUÍDO` do claim publicados conjuntamente no commit de fechamento. Hashes 4/4 conferidos. |
+| Estado local/remoto | Base imediatamente antes do fechamento: `main` e `origin/main` sincronizadas em `5bf470e`, árvore limpa e claim ID-229 ativo; o commit de fechamento publica checkpoint, lock `CONCLUÍDO`, índice e controle. |
 | Branch de trabalho | `main` |
-| Último item concluído | F3.2 — expansão documental da matriz v0.2.0: A-01–A-17; DOM-01–DOM-06 comparados; A-01/A-03/A-09 complementados e A-11–A-17 adicionados. Fontes primárias não reabertas; suas referências permanecem mediadas pelos DOMs. |
-| Item em andamento | `F3.3/ID-229` — auditoria semântica concluída para `KNOWLEDGE/meshwave65/20260422_meshwave simulator script - Manus/`; classificação, DOM-03 v0.1.1 e índice publicados. O claim permanece ativo até o checkpoint de fechamento. |
+| Último item concluído | F3.3/ID-229 — quatro artefatos auditados, hashes 4/4; classificação, DOM-03 v0.1.1, índice e checkpoint publicados; claim encerrado. DOM-03 §14.12 continua aberto, sem confirmação de fonte completa, versão, testes ou encaminhamento. |
+| Item em andamento | F3.3 — ID-229 concluído; a próxima unidade ainda não foi selecionada. Próximo passo: reconciliar a fila pelo inventário e DOM-03 antes de registrar novo claim. |
 | Último caminho processado | `KNOWLEDGE/meshwave65/20260422_meshwave simulator script - Manus/` — ID-229; `content.txt`, `code_blocks.txt`, `links.txt` (vazio) e `FULL.png`; hashes 4/4 revalidados. Nenhum outro contato foi aberto. |
 | Fontes de governança/contexto lidas nesta unidade | `AGENTS.md`, skill `meshwave-bce-curation`, skills `image-processing` e `github-integration`, orientação, controle, índice, registro de decisões, `BCE/LOCKS.md`, claim ID-229, abertura F3.3/ID-229, checkpoint F3.2, escopo F2.3, DOM-03, template e linha ID-229 do inventário CSV. Artefatos brutos lidos/inspecionados somente no contato reivindicado; links vazios, código não executado e nenhuma fonte externa acessada. |
-| Arquivos curatoriais alterados | Classificação ID-229 (`38ea48a`); DOM-03 v0.1.1 (`623d911`); índice (`593a497`); este controle. Fechamento e claim ainda pendentes. Nenhum arquivo em `KNOWLEDGE/` foi alterado. |
-| Próximo item | Criar `BCE/sessoes/2026-10-27_f3-3-id229-fechamento.md`, registrar fontes/limites/commits e hashes 4/4, então fechar o claim no mesmo commit de checkpoint. Depois, reconciliar a fila F3.3 no inventário e em DOM-03 antes de selecionar um único novo caminho; publicar claim e pré-registro antes de abrir qualquer outro artefato bruto. |
-| Conflitos, lacunas e impedimentos | DOM-03 §14.12 permanece aberto: a captura mostra um anexo `meshwave_simulator.py` de 19,67 KB, mas o arquivo-fonte completo não consta do pacote e o excerto está truncado; versão, commit, dependências, testes, dados, logs e encaminhamento não confirmados. Claim `edd2262` segue ativo até o fechamento; hashes 4/4 coincidem. |
-| Responsável pela sessão | Manus — F3.3/ID-229 auditada e integrada (`38ea48a`, `623d911`, `593a497`); próxima ação: publicar o checkpoint de fechamento e liberar o claim atomicamente. |
+| Arquivos curatoriais alterados | Classificação ID-229 (`38ea48a`); DOM-03 v0.1.1 (`623d911`); índice (`593a497` e referência final ao checkpoint); controle pré-fechamento (`5bf470e`); checkpoint e fechamento do claim neste commit. Nenhum arquivo em `KNOWLEDGE/` foi alterado. |
+| Próximo item | Reconciliar a fila F3.3 consultando `BCE/fontes/INVENTARIO_FONTES.md`, `BCE/fontes/INVENTARIO_FONTES.csv` e DOM-03 §14.12; selecionar um único próximo caminho `KNOWLEDGE/...`. Antes de qualquer leitura bruta, publicar claim e pré-registro para esse caminho. Nenhum próximo contato foi aberto ou presumido nesta unidade. |
+| Conflitos, lacunas e impedimentos | DOM-03 §14.12 permanece aberto: a captura mostra um anexo `meshwave_simulator.py` de 19,67 KB, mas o arquivo-fonte completo não consta do pacote e o excerto está truncado; versão, commit, dependências, testes, dados, logs e encaminhamento não confirmados. Claim ID-229 encerrado neste commit; nenhum novo contato ativo foi criado. |
+| Responsável pela sessão | Manus — F3.3/ID-229 fechado; próxima ação: reconciliar inventário e DOM-03, selecionar um contato único e reivindicá-lo antes da leitura bruta. |
 | Atualização lateral 2026-10-27 | Clarificação do Mercado como exchange/integrador de fronteira registrada em DOM-20; conteúdo `31cde69`, índice `1418103`, checkpoint `71b9ed0`, publicados em `main`. Não abriu fontes brutas e não substitui o próximo passo F3.3. |
 
 ## Como retomar em cinco minutos
@@ -104,7 +104,7 @@
 |---|---|---|---|
 | F3.1 | Consolidar fontes do domínio prioritário 1 | CONCLUÍDO ADMINISTRATIVAMENTE — E001–E007 e L002-01/L002-03/L002-05 processados; DOM-01 v0.3.7 e destinos atualizados; fontes permanecem heterogêneas e em `REVISÃO`, sem implementação global confirmada. | F2; DOM-01/P0 |
 | F3.2 | Reconstruir arqueologia das decisões | CONCLUÍDA DOCUMENTALMENTE — matriz v0.2.0, A-01–A-17, comparação DOM-01–DOM-06; fontes primárias não reabertas e referências marcadas como mediadas | F3.1 |
-| F3.3 | Validar estado da arte contra código e imagens | EM_ANDAMENTO — ID-229 auditada e integrada documentalmente; falta o checkpoint de fechamento e a lacuna DOM-03 §14.12 continua aberta. | F3.1 |
+| F3.3 | Validar estado da arte contra código e imagens | EM_ANDAMENTO — ID-229 concluída e documentada; próxima unidade depende de reconciliação da fila; lacuna DOM-03 §14.12 aberta. | F3.1 |
 | F3.4 | Registrar conflitos, descartes e hipóteses | PENDENTE | F3.1 |
 | F3.5 | Publicar revisão do domínio | PENDENTE | F3.2–F3.4 |
 | F3.6 | Repetir para cada domínio | PENDENTE | F3.5 |
@@ -265,6 +265,7 @@ O agente atual só deve declarar a tarefa transferível quando:
 | 2026-10-26 | Manus — fechamento F3.1/DOM-01/E007 | Quatro artefatos L002-04 auditados, hashes 4/4; reauditoria F2.6-01, sem evidência independente; DOM-01 v0.3.6/índice atualizados; truncamento e ausência de API/teste/integração preservados; fontes brutas intactas | `411671a` classificação; `17869b4` DOM-01; `3940767`/`8fba35b` índice; `93916a6` correção; `f4df418` checkpoint; governança nova `a32cd3e` chegou após a leitura; este controle em commit próprio | Reconciliar a fila F3.1 e definir próximo contato ID/caminho; depois claim exclusivo e pré-registro antes de ler |
 | 2026-10-26 | Manus — fechamento documental F3.2 | Matriz arqueológica v0.2.0 (A-01–A-17), comparação de DOM-01–DOM-06; fontes primárias não reabertas; F3.2 concluída sem validação técnica global | `e504150` matriz; `f43dedc`, `1aaf728`, `b633258` índice; `a1d0f29` controle/fechamento | Delimitar um escopo de código/imagem F3.3 com DOM-03 e escopo F2.3; exigir claim e pré-registro antes de abrir fonte |
 | 2026-10-27 | Manus — abertura F3.3/ID-229 | Contato ID 229 selecionado para investigar DOM-03 §14.12; quatro artefatos pré-registrados, 133.621 bytes, hashes SHA-256 4/4; leitura semântica pendente | `edd2262` claim exclusivo ativo; `38876c9` pré-registro; este controle em commit próprio | Auditar somente os quatro artefatos reivindicados; não executar código nem seguir links |
+| 2026-10-27 | Manus — fechamento F3.3/ID-229 | Quatro artefatos auditados e hashes 4/4 revalidados; classificação/DOM-03/índice atualizados; script completo, versão, teste e encaminhamento não confirmados; claim encerrado; DOM-03 §14.12 continua aberto | `38ea48a` classificação; `623d911` DOM-03; `593a497` índice; `5bf470e` controle pré-fechamento; checkpoint, índice final, controle e claim neste commit | Reconciliar `BCE/fontes/INVENTARIO_FONTES.md`/`.csv` e DOM-03 §14.12; selecionar um único próximo caminho e publicar claim/pré-registro antes de ler |
 
 
 ## Lote F1.5 registrado antes da leitura — catálogo de código
