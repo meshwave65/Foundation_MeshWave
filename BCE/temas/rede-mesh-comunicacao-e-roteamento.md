@@ -6,8 +6,8 @@
 |---|---|
 | ID curatorial | `DOM-03` |
 | Status | `REVISÃO` — primeira síntese do lote F2.3; protocolos e implementação não validados |
-| Versão do documento | `0.1.0` |
-| Última atualização | `2026-10-08` |
+| Versão do documento | `0.1.1` |
+| Última atualização | `2026-10-27` |
 | Curador | `Manus — curadoria BCE MeshWave` |
 | Confiança geral | Média para a existência das propostas e do histórico de decisões; baixa para implementação, interoperabilidade e operação em rede |
 | Documento relacionado no índice | `BCE/INDICE_CURATORIAL.md` — DOM-03 |
@@ -64,7 +64,7 @@ A proposta Android distingue descoberta passiva de formação de rede. `discover
 | Roteador preditivo | Selecionar rotas por latência, perda, fila, energia e contexto. | Modelo conceitual; fragmentos não demonstram execução. |
 | GSM/LTE/5G | Transporte hipotético de longo alcance e maior capacidade. | Hipótese de engenharia; não há prova de comunicação direta entre aparelhos. |
 | Gateway | Oferecer saída para rede tradicional, satélite ou outro domínio. | Requisito/proposta; política de seleção e fallback não especificadas. |
-| Simulador | Demonstrar topologia, métricas e ajustes de número de dispositivos. | Protótipo visual alegado; não valida rádio ou encaminhamento real. |
+| Simulador | Demonstrar topologia, métricas e ajustes de número de dispositivos. | Protótipo visual alegado em E03-09; ID-229 mostra um anexo Python e um fragmento incompleto, mas o fonte não está no pacote auditado e a análise foi interrompida. Não confirma visualização exclusiva nem encaminhamento. |
 
 ### 4.3 Interfaces, entradas e saídas
 
@@ -136,6 +136,8 @@ O modelo de roteamento preditivo tem uma função de recompensa textual e menç�
 
 A fonte de erro `ch.hsr.geohash` registra problemas de dependência e de integração entre threads Android. A correção proposta é passar referências explícitas, limpar e reconstruir, mas a sessão termina sem resultado de build. O título não prova que a biblioteca Geohash seja a causa única nem que a correção tenha sido aplicada.
 
+F3.3/ID-229 acrescenta uma captura da tarefa Manus Lite com um anexo chamado `meshwave_simulator.py` (19,67 KB na interface) e um excerto truncado que compara um nó candidato ao nó de destino. O arquivo `.py` completo não consta dos quatro artefatos do contato; a transcrição afirma que a análise foi interrompida a pedido do usuário. O estado “Reprodução da tarefa Manus concluída” não é resultado de execução do simulador. Sem fonte completa e contexto, o excerto não comprova encaminhamento nem permite avaliar se o simulador é apenas visual.
+
 ## 8. Evidências e fontes
 
 | Evidência | Tipo | Caminho relativo | O que sustenta | Limitações |
@@ -152,6 +154,7 @@ A fonte de erro `ch.hsr.geohash` registra problemas de dependência e de integra
 | E03-10 | texto/imagem | `KNOWLEDGE/johann/20260422_174924_Capacidade de uma rede GSM Mesh sem antenas - Manus/` | Hipótese GSM/LTE/5G como transporte, alcance, energia, espectro, sincronização e Fog/Edge | A própria fonte chama o cenário de hipotético; números de alcance são teóricos e não medidos |
 | E03-11 | texto/código/imagem | `KNOWLEDGE/mateus/20260422_174421_Package ch.hsr.geohash does not exist error - Manus/` | Erros de integração de threads, Handler, peers e `updateCacheLocal` | Título e conteúdo divergem; build termina sem confirmação |
 | E03-12 | texto/código/link/imagem | `KNOWLEDGE/omaci2008/20260422_172337_Roteamento preditivo com genes recessivos e aplicação bayesiana - Manus/` | Relato de relatório atualizado, latência, Geohash, gráficos de latência/sucesso/falsos positivos/negativos | PDF não está entre os artefatos do conjunto; gráficos não têm dataset, código ou protocolo experimental |
+| E03-13 | texto/código truncado/imagem | `KNOWLEDGE/meshwave65/20260422_meshwave simulator script - Manus/` | Captura de anexo `meshwave_simulator.py` (19,67 KB na interface), fragmento de comparação candidato/destino e tarefa de análise interrompida | O `.py` não está no pacote; o excerto está truncado; sem versão, commit, dependências, dados, testes, logs ou evidência de execução/encaminhamento. Ver `BCE/fontes/CLASSIFICACAO_F3_3_ID229.md`. |
 
 Os `links.txt` incluem links de ação, redirecionadores e um destino de relatório externo. Eles foram registrados como referências declaradas, sem seguir endpoints de ação ou reproduzir parâmetros opacos. A fonte Briar menciona token inválido/novo token em seu histórico; nenhum valor foi copiado. O material sensível deve ser rotacionado/revogado se algum valor real ainda estiver presente fora desta síntese.
 
@@ -166,6 +169,7 @@ Os `links.txt` incluem links de ação, redirecionadores e um destino de relató
 | Roteamento preditivo | Seleção contextual com latência/perda | Bandits adaptativos, clusters e calibração | Relatórios e análises conceituais | Algoritmo e resultados não reproduzíveis no conjunto |
 | Hipótese GSM mesh | Celular dependente de ERB | Rádio celular como transporte de nós ad hoc | Discussão de alcance e autonomia | Hipótese de futuro; desafios de espectro, sincronização e energia permanecem |
 | Simulador | Interface interativa | Ajuste de dispositivos e dashboard | Captura e relato de testes local/publicado | Demonstração visual alegada; não valida a rede física |
+| Auditoria F3.3/ID-229 (2026-10-27; prefixo do caminho bruto: 2026-04-22) | Tarefa Manus Lite para analisar `meshwave_simulator.py` | Análise interrompida a pedido do usuário; a interface mostra a reprodução da tarefa concluída | `content.txt`, `code_blocks.txt`, `FULL.png` | Apenas anexo anunciado e excerto incompleto; não é evidência de execução do simulador nem resolve se há encaminhamento |
 
 ## 10. Decisões tomadas
 
@@ -194,7 +198,7 @@ As correções Android registradas atacam recursos XML ausentes, referências de
 | C03-D03 | Descentralização completa convive com Group Owner, gateway e possível controlador/edge. | `165238`, `165337`, DOM-02 | Pode haver ponto único de falha ou dependência externa. | Definir plano de controle distribuído, eleição, partições e operação sem gateway. |
 | C07-D03 | A imagem CLA pode ser confundida com Geohash ou grade executável. | `165701`, `165509`, `omaci2008/172337` | Risco de inferir coordenadas, vizinhança e rota inexistentes. | Recuperar a planilha/contexto citado e publicar legenda, CRS, algoritmo e teste. |
 | C08-D03 | Fallback celular/LEO/gateway não tem prioridade nem condição de acionamento. | DOM-02, `165238`, `174924` | Afeta custo, autonomia, privacidade e disponibilidade. | Definir máquina de estados, política de seleção e retorno à malha. |
-| C11-D03 | “Compila sem erros”/“funcional” aparece junto a erros e testes futuros. | `165238`, `170852`, `174421` | Não é possível classificar o app como protótipo funcional. | Exigir commit, build limpo, APK/hash, logs e teste físico. |
+| C11-D03 | “Compila sem erros”/“funcional” aparece junto a erros e testes futuros; ID-229 mostra anexo e código truncado, mas a análise foi interrompida. | `165238`, `170852`, `174421`, ID-229 | Rótulos de tarefa ou presença de código podem ser confundidos com execução funcional do app/simulador. | Exigir fonte completa, versão/commit, build ou execução reproduzível, dados, logs e teste físico. |
 | C12-D03 | Alcance GSM de quilômetros é apresentado como capacidade teórica e como viabilidade futura. | `174924`, DOM-02 | Números podem ser lidos como desempenho medido. | Marcar como hipótese; medir com SDR/hardware autorizado e cenário definido. |
 | C13-D03 | Gráficos de roteamento parecem resultados, mas não têm experimento reproduzível. | `omaci2008/172337`, `171217` | Pode promover ilustração ou simulação alegada a benchmark. | Localizar PDF/dataset/código, parâmetros, seed, baseline e logs. |
 | C14-D03 | CLA, CPA, CP e localização atual alternam sem glossário formal. | `165701`, `165509`, `165238`, `165337` | Interfaces e cache podem ser incompatíveis. | Criar glossário normativo e esquema versionado. |
@@ -213,7 +217,7 @@ As correções Android registradas atacam recursos XML ausentes, referências de
 9. É tecnicamente possível e autorizado usar rádios celulares de aparelhos comerciais para comunicação direta sem ERB? Qual hardware/SDR e modo regulatório seriam necessários?
 10. Como se resolvem sincronização de tempo/frequência, espectro, interferência, potência e bateria na hipótese GSM mesh?
 11. Qual é a política formal de gateway/fallback, incluindo consentimento, privacidade, custo, retorno e comportamento sem conectividade externa?
-12. O simulador publicado é apenas visual ou implementa encaminhamento; onde estão seus fontes, versão, testes e dados?
+12. O simulador publicado é apenas visual ou implementa encaminhamento; onde estão seus fontes, versão, testes e dados? ID-229 mostra na interface um anexo `meshwave_simulator.py` de 19,67 KB e um fragmento truncado, mas o arquivo completo não integra o pacote; a análise foi interrompida. Localizar o fonte auditável com versão/commit, dependências, entradas, testes, dados e logs. O status de reprodução da tarefa não confirma execução do simulador.
 13. O relatório Briar foi realmente publicado e qual é o conteúdo técnico do plugin; o material sensível histórico foi revogado?
 14. Onde estão os arquivos `previous_task_context.md`, planilhas e roteiros citados pelas fontes?
 
@@ -235,6 +239,7 @@ As correções Android registradas atacam recursos XML ausentes, referências de
 | Versão | Data | Alteração | Fontes/commit |
 |---|---|---|---|
 | `0.1.0` | `2026-10-08` | Primeira síntese F2.3 a partir de 12 fontes; registro de proposta versus implementação, arqueologia, conflitos e lacunas. | Lote `BCE/fontes/ESCOPO_F2_3_REDE_MESH.md`; commit de conteúdo a publicar |
+| `0.1.1` | `2026-10-27` | Integrada a auditoria F3.3/ID-229; anexo e fragmento de código registrados sem confirmar execução ou encaminhamento; §14.12 permanece em aberto. | `BCE/fontes/CLASSIFICACAO_F3_3_ID229.md` (`38ea48a`) |
 
 ## 17. Próximo passo de curadoria
 
