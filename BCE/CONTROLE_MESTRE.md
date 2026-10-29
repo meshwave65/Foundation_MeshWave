@@ -7,7 +7,7 @@
 | Campo | Valor |
 |---|---|
 | Status global | `EM_ANDAMENTO — FASE 3: Curadoria profunda` |
-| Última atualização | 2026-10-28 23:26 (-03:00) — responsável selecionou ID-206; claim e pré-registro publicados antes da leitura. |
+| Última atualização | 2026-10-28 23:28 (-03:00) — ID-206 auditado, integrado, indexado e lock encerrado; ID-262 é o próximo candidato mapeado. |
 | Publicação de F2.6-07 | Os cinco commits da unidade (`c55e31d`, `b3c8864`, `8870caa`, `290895f`, `629125a`) foram publicados em `main`; a correção factual posterior foi registrada em `f8649ba`. |
 | Publicação de F2.6-08 | DOM-06 `74eba5f`; índice `14e2768` (cobertura) e `aec133d` (linha principal DOM-06); checkpoint de fechamento `6f99eaa`, todos publicados em `main`. |
 | Publicação de F2.6-09 | DOM-06 `97dea42`; índice `a39441b`; pré-registro `56c5ff8`; fechamento `f186adc`; controle `b79cf1d`, publicados em `main`.
@@ -23,16 +23,16 @@
 | Publicação de F3.1/E006 | Pré-registro `d6d6db1`; classificação `5ba3e9f`; DOM-01 v0.3.5 `84fe537`; índice `ecbbb19`; checkpoint `b934e53`; controle `98ca271`, publicados em `main`; hashes 5/5 conferidos. |
 | Publicação de F3.1/E007 | Pré-registro `a2475e0`; classificação `411671a`; controle após classificação `d164694`; DOM-01 v0.3.6 `17869b4`; índice `3940767`/`8fba35b`; correção `93916a6`; fechamento `f4df418`; publicados em `main`. |
 | Publicação de F3.3/ID-229 | Claim `edd2262`; pré-registro `38876c9`; classificação `38ea48a`; DOM-03 v0.1.1 `623d911`; índice `593a497`; controle pré-fechamento `5bf470e`; checkpoint e estado `CONCLUÍDO` do claim publicados conjuntamente no commit de fechamento. Hashes 4/4 conferidos. |
-| Estado local/remoto | `main` e `origin/main` sincronizadas em `91f20d2` antes da seleção; claim ID-206 e pré-registro estão locais até o commit de publicação; nenhum outro claim `ATIVO` encontrado. |
+| Estado local/remoto | `main` e `origin/main` sincronizadas em `1d97910` antes do fechamento; fechamento do ID-206 e controle estão locais até o commit de publicação; nenhum claim `ATIVO` após o fechamento. |
 | Branch de trabalho | `main` |
 | Último item concluído | F3.3/ID-229 — quatro artefatos auditados, hashes 4/4; classificação, DOM-03 v0.1.1, índice e checkpoint publicados; claim encerrado. DOM-03 §14.12 continua aberto, sem confirmação de fonte completa, versão, testes ou encaminhamento. |
-| Item em andamento | `MISSION_0011` / F3.3 — coordenação concluída para ID-206; unidade `F3.3/ID-206` em `PROGRESS` sob claim exclusivo. Ler somente os cinco artefatos pré-registrados após revalidar os hashes. |
-| Último caminho processado | `KNOWLEDGE/meshwave65/20260422_meshwave simulator script - Manus/` — ID-229; `content.txt`, `code_blocks.txt`, `links.txt` (vazio) e `FULL.png`; hashes 4/4 revalidados. Nenhum outro contato foi aberto. |
-| Fontes de governança/contexto lidas nesta unidade | `SofiaControlPanel@main 9d6bab8`: `AGENTS.md`, `MISSION_0010`, blueprint, tarefas, catálogo de skills, `operational-task-lifecycle`, `skill-governance-oracle` e template OR. BCE: orientação, controle, índice, `BCE/LOCKS.md`, skill BCE, blueprint F3.3, checkpoint ID-229, inventário e mapa de candidatos. Nenhum artefato semântico de `KNOWLEDGE/` foi aberto antes do claim. |
-| Arquivos curatoriais alterados | Classificação ID-229 (`38ea48a`); DOM-03 v0.1.1 (`623d911`); índice (`593a497`); checkpoint e encerramento ID-229 (`c92ea04`); blueprint F3.3 base (`ba67a86`); índice do blueprint (`1ad2f8b`); revisão de governança do SofiaControlPanel (`93a4033`). Nesta unidade: `MISSION_0011`, tarefas da missão, protocolo de missão/handoff, checkpoint, mapa de candidatos e ajustes de instruções. Fontes brutas intactas. |
-| Próximo item | `MISSION_0011/F3.3-UNIT-001`: revalidar os cinco SHA-256 do ID-206 e ler somente `KNOWLEDGE/meshwave65/20260422_Desenvolvimento de simulador - Manus/`; não abrir ID-262 nem qualquer outro caminho durante o claim. |
-| Conflitos, lacunas e impedimentos | DOM-03 §14.12 permanece aberto: o pacote ID-229 não contém o fonte completo do simulador. ID-206 foi selecionado formalmente; claim `F3.3-ID206` está `ATIVO`. ID-262 permanece apenas como candidato não processado. |
-| Responsável pela sessão | Manus — seleção do ID-206 registrada; claim e pré-registro devem ser publicados antes da leitura; durante o claim nenhum outro contato será aberto. |
+| Item em andamento | `MISSION_0011` / F3.3 — ID-206 concluído e documentado; coordenação seguinte é reconciliar e, se confirmado, reivindicar ID-262 em unidade separada. |
+| Último caminho processado | `KNOWLEDGE/meshwave65/20260422_Desenvolvimento de simulador - Manus/` — ID-206; `content.txt`, `code_blocks.txt`, `links.txt`, `FULL.png` e `img_000.jpg`; hashes 5/5 revalidados. Nenhum outro contato foi aberto sob o claim. |
+| Fontes de governança/contexto lidas nesta unidade | `SofiaControlPanel@main 9d6bab8`: `AGENTS.md`, `MISSION_0010`, blueprint, tarefas, catálogo de skills, `operational-task-lifecycle`, `skill-governance-oracle` e template OR. BCE: orientação, controle, índice, `BCE/LOCKS.md`, skill BCE, blueprint F3.3, checkpoint ID-229, inventário, mapa de candidatos e os cinco artefatos do ID-206. Nenhum outro contato foi aberto. |
+| Arquivos curatoriais alterados | Classificação ID-206 (`cc82908`); DOM-03 v0.1.2 (`65ee2e2`); índice (`1d97910`); fechamento e lock encerrado nesta unidade. Fontes brutas intactas. |
+| Próximo item | `MISSION_0011/F3.3-COORD-002`: reconciliar `origin/main` e locks; candidato imediato `ID-262` em `KNOWLEDGE/omaci2008/20260422_172245_Inconsistências nos Resultados do Simulador e Código-Fonte - Manus/`; publicar claim e pré-registro antes de qualquer leitura. |
+| Conflitos, lacunas e impedimentos | DOM-03 §14.12 permanece aberto: ID-206 confirma interface/replay e código Vite parcial, sem fonte Python, versão, testes, dados, logs ou encaminhamento. ID-262 está apenas mapeado; não foi aberto. Nenhum claim ativo após o fechamento. |
+| Responsável pela sessão | Manus — ID-206 concluído, lock encerrado e próximo candidato registrado; a próxima unidade deve começar por reconciliação remota e novo claim exclusivo. |
 | Atualização lateral 2026-10-27 | Clarificação do Mercado como exchange/integrador de fronteira registrada em DOM-20; conteúdo `31cde69`, índice `1418103`, checkpoint `71b9ed0`, publicados em `main`. Não abriu fontes brutas e não substitui o próximo passo F3.3. |
 
 ## Como retomar em cinco minutos
