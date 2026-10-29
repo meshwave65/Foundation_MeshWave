@@ -7,7 +7,7 @@
 | Campo | Valor |
 |---|---|
 | Status global | `EM_ANDAMENTO — FASE 3: Curadoria profunda` |
-| Última atualização | 2026-10-28 21:58 (-03:00) — remoto reconciliado sem commits concorrentes; escopo F2.3 e ID-229 fechados; nenhum próximo contato F3.3 está designado inequivocamente. |
+| Última atualização | 2026-10-28 23:02 (-03:00) — blueprint operacional F3.3 publicado; remoto reconciliado; nenhum próximo contato físico está designado inequivocamente. |
 | Publicação de F2.6-07 | Os cinco commits da unidade (`c55e31d`, `b3c8864`, `8870caa`, `290895f`, `629125a`) foram publicados em `main`; a correção factual posterior foi registrada em `f8649ba`. |
 | Publicação de F2.6-08 | DOM-06 `74eba5f`; índice `14e2768` (cobertura) e `aec133d` (linha principal DOM-06); checkpoint de fechamento `6f99eaa`, todos publicados em `main`. |
 | Publicação de F2.6-09 | DOM-06 `97dea42`; índice `a39441b`; pré-registro `56c5ff8`; fechamento `f186adc`; controle `b79cf1d`, publicados em `main`.
@@ -23,16 +23,16 @@
 | Publicação de F3.1/E006 | Pré-registro `d6d6db1`; classificação `5ba3e9f`; DOM-01 v0.3.5 `84fe537`; índice `ecbbb19`; checkpoint `b934e53`; controle `98ca271`, publicados em `main`; hashes 5/5 conferidos. |
 | Publicação de F3.1/E007 | Pré-registro `a2475e0`; classificação `411671a`; controle após classificação `d164694`; DOM-01 v0.3.6 `17869b4`; índice `3940767`/`8fba35b`; correção `93916a6`; fechamento `f4df418`; publicados em `main`. |
 | Publicação de F3.3/ID-229 | Claim `edd2262`; pré-registro `38876c9`; classificação `38ea48a`; DOM-03 v0.1.1 `623d911`; índice `593a497`; controle pré-fechamento `5bf470e`; checkpoint e estado `CONCLUÍDO` do claim publicados conjuntamente no commit de fechamento. Hashes 4/4 conferidos. |
-| Estado local/remoto | Retomada em `main`; `HEAD` e `origin/main` sincronizadas em `c92ea04`, árvore limpa antes desta atualização; nenhum commit remoto posterior nem claim `ATIVO` encontrado. |
+| Estado local/remoto | `main` e `origin/main` sincronizadas em `1ad2f8b`; blueprint F3.3 publicado em `ba67a86`, índice em `1ad2f8b`; nenhum claim `ATIVO` encontrado. |
 | Branch de trabalho | `main` |
 | Último item concluído | F3.3/ID-229 — quatro artefatos auditados, hashes 4/4; classificação, DOM-03 v0.1.1, índice e checkpoint publicados; claim encerrado. DOM-03 §14.12 continua aberto, sem confirmação de fonte completa, versão, testes ou encaminhamento. |
 | Item em andamento | F3.3 — ID-229 concluído; reconciliação documental feita em 2026-10-28. Escopo F2.3 contém 12 fontes já processadas; nenhum próximo contato único está mapeado. Aguardar indicação/aprovação de novo caminho antes de claim ou leitura bruta. |
 | Último caminho processado | `KNOWLEDGE/meshwave65/20260422_meshwave simulator script - Manus/` — ID-229; `content.txt`, `code_blocks.txt`, `links.txt` (vazio) e `FULL.png`; hashes 4/4 revalidados. Nenhum outro contato foi aberto. |
 | Fontes de governança/contexto lidas nesta unidade | Na retomada: orientação, controle, índice, registro de decisões, `BCE/LOCKS.md`, skill `meshwave-bce-curation`, skill `github-integration`, checkpoint F3.3/ID-229, checkpoint lateral Mercado, escopo F2.3, DOM-03, inventário CSV/MD e template. Nenhum artefato de `KNOWLEDGE/` foi aberto nesta retomada. |
-| Arquivos curatoriais alterados | Classificação ID-229 (`38ea48a`); DOM-03 v0.1.1 (`623d911`); índice (`593a497`); checkpoint e encerramento ID-229 (`c92ea04`); nesta retomada, controle mestre e checkpoint de reconciliação. Fontes brutas intactas. |
-| Próximo item | Bloqueado aguardando seleção/aprovação do responsável: designar um caminho físico novo para a verificação de DOM-03 §14.12. A reconciliação atual confirma F2.3 (12/12 fontes processadas) e ID-229 encerrado, sem próximo contato único mapeado. Depois da seleção, publicar claim e pré-registro antes de qualquer leitura de `KNOWLEDGE/`. |
+| Arquivos curatoriais alterados | Classificação ID-229 (`38ea48a`); DOM-03 v0.1.1 (`623d911`); índice (`593a497`); checkpoint e encerramento ID-229 (`c92ea04`); blueprint F3.3 (`ba67a86`); índice do blueprint (`1ad2f8b`). Fontes brutas intactas. |
+| Próximo item | Bloqueado aguardando seleção/aprovação do responsável: designar um caminho físico novo para a verificação de DOM-03 §14.12. Blueprint publicado em `BCE/BLUEPRINT_F3_3_EXECUCAO_PARALELA.md`; depois da seleção, publicar claim e pré-registro antes de qualquer leitura de `KNOWLEDGE/`. |
 | Conflitos, lacunas e impedimentos | DOM-03 §14.12 permanece aberto: o pacote ID-229 não contém o fonte completo do simulador; não há outro contato designado inequivocamente na fila atual. Não inferir candidato por título, numeração ou reabrir fonte encerrada. Nenhum claim ativo foi encontrado. |
-| Responsável pela sessão | Manus — remoto reconciliado em `c92ea04`; F3.3 parada em ponto seguro até seleção explícita de novo caminho; nenhuma fonte bruta aberta. |
+| Responsável pela sessão | Manus — blueprint F3.3 preparado e indexado; F3.3 parada em ponto seguro até seleção explícita de novo caminho; nenhuma fonte bruta aberta. |
 | Atualização lateral 2026-10-27 | Clarificação do Mercado como exchange/integrador de fronteira registrada em DOM-20; conteúdo `31cde69`, índice `1418103`, checkpoint `71b9ed0`, publicados em `main`. Não abriu fontes brutas e não substitui o próximo passo F3.3. |
 
 ## Como retomar em cinco minutos
