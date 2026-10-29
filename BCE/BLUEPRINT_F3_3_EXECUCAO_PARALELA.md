@@ -156,4 +156,5 @@ A lacuna conhecida permanece: o pacote ID-229 anuncia `meshwave_simulator.py`, m
 | Versão | Data | Alteração | Commit |
 |---|---|---|---|
 | `0.1.0` | `2026-10-28` | Blueprint inicial de execução coordenada da F3.3; incorpora regras verificáveis de Foundation_MeshWave. | `ba67a86` |
-| `0.2.0` | `2026-10-28` | Reconciliado após consulta ao `meshwave65/SofiaControlPanel` em `main@1957359`; incorpora leitura obrigatória de blueprint/tarefa, seleção de skill, Operational Report, handoff, proteção de segredos e separação entre BCE e Missão 0009. | Este commit |
+| `0.2.0` | `2026-10-28` | Reconciliado após consulta ao `meshwave65/SofiaControlPanel` em `main@1957359`; incorpora leitura obrigatória de blueprint/tarefa, seleção de skill, Operational Report, handoff, proteção de segredos e separação entre BCE e Missão 0009. | Commit anterior |
+| `0.3.0` | `2026-10-28` | Consultado `SofiaControlPanel@main 9d6bab8` e criado `MISSION_0011` com protocolo reutilizável de missão/handoff; F3.3 permanece `BLOCKED` sem caminho físico novo. | Commit desta unidade |

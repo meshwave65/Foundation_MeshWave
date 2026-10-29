@@ -29,6 +29,7 @@ Este índice define a arquitetura documental da Base de Conhecimento Evolutivo. 
 | GOV-08 | `BCE/sessoes/` | Checkpoints de sessões e transferências; atualizar a cada retomada | EM_CURADORIA |
 | GOV-09 | `BCE/PROMPT_RETOMADA_AGENTE.md` | Prompt reutilizável para iniciar agentes sucessores | CONCLUÍDO |
 | GOV-10 | `skills/meshwave-bce-curation/SKILL.md` | Skill reutilizável para auditoria, curadoria e retomada por agentes | CONCLUÍDO |
+| GOV-11 | `BCE/PROTOCOLO_MISSOES_E_HANDOFF.md`, `MISSION_00XX - * - PROGRESS.md` | Missões, seleção de skill, checkpoints e handoff entre agentes | CONCLUÍDO — MISSION_0011 |
 
 ## Documentos de estado da arte
 

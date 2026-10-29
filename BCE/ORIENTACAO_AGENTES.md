@@ -57,6 +57,14 @@ O agente que assumir a tarefa não deve inferir o ponto de parada a partir de me
 
 Para evitar que agentes concorrentes processem a mesma fonte, siga [`BCE/LOCKS.md`](LOCKS.md). Antes de abrir qualquer artefato bruto do contato, crie e publique um claim em `BCE/locks/` com o caminho físico exato, agente/sessão, timestamp, commit-base e próximo passo. O primeiro claim publicado vence; uma corrida, divergência ou claim ativo impede a leitura daquele contato. Cada sessão deve processar somente o caminho reivindicado, liberar/fechar o claim no checkpoint e registrar o próximo contato único no controle mestre. Nunca use `git push --force` para obter um bloqueio.
 
+## 3.2 Missões, skills e handoff
+
+Quando houver um arquivo `MISSION_00XX`, ele é o envelope de continuidade da tarefa e deve ser lido junto de seu arquivo `MISSION_00XX - TASKS`, do blueprint aplicável e do checkpoint mais recente. Antes de agir, confirme a definição formal, os critérios de aceite, a instância atribuída, o estado remoto e a única próxima ação. Não assuma uma tarefa `PROGRESS` de outro agente nem escolha um item `STAGED` por numeração, proximidade ou semelhança.
+
+Selecione a skill pela fonte versionada e registre nome, versão e commit no checkpoint. Para curadoria BCE, use `meshwave-bce-curation`; se a tarefa for executada no `SofiaControlPanel`, aplique também `operational-task-lifecycle`, produza o Operational Report canônico com `oracle_status: PENDING` e atualize seu índice. Não misture contatos, locks, artefatos ou commits dos dois pipelines.
+
+O handoff deve declarar objetivo, entradas, saídas, validações, incertezas, impedimentos, commits publicados e próximo passo único. Se faltar caminho físico, autorização ou estado inequívoco, registrar `BLOCKED` e não abrir fonte bruta.
+
 ## 4. Regra de commits
 
 É obrigatório fazer commits pequenos e frequentes. Não acumular alterações de tarefas distintas para um commit final.
@@ -213,3 +221,5 @@ Ao assumir uma sessão interrompida:
 ```
 
 Se houver divergência entre o controle mestre e o Git, confiar no histórico Git para o que foi efetivamente publicado e corrigir o controle mestre imediatamente.
+
+Para uma retomada por missão, localizar primeiro `MISSION_00XX - * - PROGRESS.md` e `MISSION_00XX - TASKS - PROGRESS.md`, ler [`BCE/PROTOCOLO_MISSOES_E_HANDOFF.md`](PROTOCOLO_MISSOES_E_HANDOFF.md), confirmar o commit em `origin/main` e executar somente a linha de tarefa indicada. Se a missão estiver `BLOCKED`, o agente deve preservar o ponto seguro e registrar a dependência, não fabricar a próxima unidade.
