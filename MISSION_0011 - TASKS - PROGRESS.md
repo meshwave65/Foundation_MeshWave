@@ -3,12 +3,12 @@
 **Repositório canônico:** `https://github.com/meshwave65/Foundation_MeshWave`
 **Blueprint:** `BCE/BLUEPRINT_F3_3_EXECUCAO_PARALELA.md`
 **Protocolo de handoff:** `BCE/PROTOCOLO_MISSOES_E_HANDOFF.md`
-**Último checkpoint remoto confirmado na abertura:** `origin/main@f99069e`
+**Último checkpoint remoto confirmado:** `origin/main@d078a90`; mapa documental publicado em `BCE/sessoes/2026-10-28_mission-0011-mapa-candidatos.md`
 **Estado da missão:** `BLOCKED`
 
 | ID | Tarefa | Status | Instância | Repositório/artefato | Próxima ação única |
 |---|---|---|---|---|---|
-| F3.3-COORD-001 | Reconciliar fila e obter seleção/aprovação de um novo caminho físico para responder à lacuna DOM-03 §14.12 | BLOCKED | — | `BCE/CONTROLE_MESTRE.md`; `BCE/BLUEPRINT_F3_3_EXECUCAO_PARALELA.md` | Não abrir `KNOWLEDGE/`; verificar `origin/main`/locks e solicitar ou registrar a seleção formal de ID + caminho |
+| F3.3-COORD-001 | Reconciliar fila e obter seleção/aprovação de um novo caminho físico para responder à lacuna DOM-03 §14.12 | BLOCKED | — | `BCE/CONTROLE_MESTRE.md`; `BCE/BLUEPRINT_F3_3_EXECUCAO_PARALELA.md`; mapa de candidatos | Shortlist publicada: escolher explicitamente ID-206 ou ID-262, ou designar outro ID + caminho; não abrir `KNOWLEDGE/` nem criar claim antes da escolha |
 | F3.3-UNIT-001 | Auditar a unidade física selecionada com lock exclusivo | STAGED | — | `BCE/locks/`, `BCE/sessoes/`, `BCE/fontes/` | Só iniciar após F3.3-COORD-001 sair de `BLOCKED` e o claim ser publicado |
 | F3.3-CLOSE-001 | Integrar classificação, fechar lock e emitir handoff | STAGED | — | DOM de destino, índice e controle mestre | Executar somente após classificação publicada e hashes/commits validados |
 
