@@ -7,7 +7,7 @@
 | Campo | Valor |
 |---|---|
 | Status global | `EM_ANDAMENTO — FASE 3: Curadoria profunda` |
-| Última atualização | 2026-10-28 23:29 (-03:00) — ID-206 encerrado; ID-262 reivindicado e pré-registrado antes da leitura. |
+| Última atualização | 2026-10-28 23:31 (-03:00) — ID-262 auditado, integrado, indexado e lock encerrado; fila requer nova reconciliação. |
 | Publicação de F2.6-07 | Os cinco commits da unidade (`c55e31d`, `b3c8864`, `8870caa`, `290895f`, `629125a`) foram publicados em `main`; a correção factual posterior foi registrada em `f8649ba`. |
 | Publicação de F2.6-08 | DOM-06 `74eba5f`; índice `14e2768` (cobertura) e `aec133d` (linha principal DOM-06); checkpoint de fechamento `6f99eaa`, todos publicados em `main`. |
 | Publicação de F2.6-09 | DOM-06 `97dea42`; índice `a39441b`; pré-registro `56c5ff8`; fechamento `f186adc`; controle `b79cf1d`, publicados em `main`.
@@ -23,16 +23,16 @@
 | Publicação de F3.1/E006 | Pré-registro `d6d6db1`; classificação `5ba3e9f`; DOM-01 v0.3.5 `84fe537`; índice `ecbbb19`; checkpoint `b934e53`; controle `98ca271`, publicados em `main`; hashes 5/5 conferidos. |
 | Publicação de F3.1/E007 | Pré-registro `a2475e0`; classificação `411671a`; controle após classificação `d164694`; DOM-01 v0.3.6 `17869b4`; índice `3940767`/`8fba35b`; correção `93916a6`; fechamento `f4df418`; publicados em `main`. |
 | Publicação de F3.3/ID-229 | Claim `edd2262`; pré-registro `38876c9`; classificação `38ea48a`; DOM-03 v0.1.1 `623d911`; índice `593a497`; controle pré-fechamento `5bf470e`; checkpoint e estado `CONCLUÍDO` do claim publicados conjuntamente no commit de fechamento. Hashes 4/4 conferidos. |
-| Estado local/remoto | `main` e `origin/main` sincronizadas em `cf05d8a` antes do ID-262; claim e pré-registro ID-262 estão locais até o commit de publicação; nenhum outro claim `ATIVO`. |
+| Estado local/remoto | `main` e `origin/main` sincronizadas em `3f69a04` antes do fechamento; fechamento do ID-262 e controle estão locais até o commit de publicação; nenhum claim `ATIVO` após o encerramento. |
 | Branch de trabalho | `main` |
 | Último item concluído | F3.3/ID-229 — quatro artefatos auditados, hashes 4/4; classificação, DOM-03 v0.1.1, índice e checkpoint publicados; claim encerrado. DOM-03 §14.12 continua aberto, sem confirmação de fonte completa, versão, testes ou encaminhamento. |
-| Item em andamento | `MISSION_0011` / F3.3 — ID-206 concluído; unidade `F3.3/ID-262` em `PROGRESS` sob claim exclusivo. Revalidar hashes antes da leitura semântica. |
-| Último caminho processado | `KNOWLEDGE/meshwave65/20260422_Desenvolvimento de simulador - Manus/` — ID-206; cinco artefatos, hashes 5/5; lock encerrado. ID-262 está aberto somente em claim, sem leitura semântica ainda. |
-| Fontes de governança/contexto lidas nesta unidade | Diretrizes SCP e governança BCE já registradas; fechamento ID-206, mapa de candidatos e metadados/hash do ID-262. Nenhum artefato semântico do ID-262 foi aberto antes do claim. |
-| Arquivos curatoriais alterados | Classificação ID-206 (`cc82908`); DOM-03 v0.1.2 (`65ee2e2`); índice (`1d97910`); fechamento/lock ID-206 (`cf05d8a`); abertura/claim ID-262 em publicação desta unidade. Fontes brutas intactas. |
-| Próximo item | `MISSION_0011/F3.3-UNIT-002`: revalidar os cinco SHA-256 do ID-262 e ler somente `KNOWLEDGE/omaci2008/20260422_172245_Inconsistências nos Resultados do Simulador e Código-Fonte - Manus/`; não abrir outro caminho. |
-| Conflitos, lacunas e impedimentos | DOM-03 §14.12 permanece aberto após ID-206. ID-262 foi selecionado como próximo candidato e está sob claim `F3.3-ID262`; qualquer divergência de hash interrompe a leitura. |
-| Responsável pela sessão | Manus — ID-206 encerrado e ID-262 reivindicado de forma exclusiva; processar somente o caminho pré-registrado. |
+| Item em andamento | `MISSION_0011` / F3.3 — ID-206 e ID-262 concluídos; coordenação F3.3-COORD-003 está `STAGED` para reconciliação de um único próximo caminho. |
+| Último caminho processado | `KNOWLEDGE/omaci2008/20260422_172245_Inconsistências nos Resultados do Simulador e Código-Fonte - Manus/` — ID-262; cinco artefatos, hashes 5/5; lock encerrado. Nenhum outro contato está aberto. |
+| Fontes de governança/contexto lidas nesta unidade | Diretrizes SCP e governança BCE já registradas; fechamento ID-206, claim/pré-registro ID-262, cinco artefatos ID-262 e seus hashes. Nenhum terceiro caminho foi aberto. |
+| Arquivos curatoriais alterados | Classificação ID-262 (`823ed6f`); DOM-03 v0.1.3 (`fa003f9`); índice (`3f69a04`); fechamento/lock ID-262 nesta unidade. Fontes brutas intactas. |
+| Próximo item | `MISSION_0011/F3.3-COORD-003`: sincronizar `origin/main`, confirmar nenhum lock ativo e mapear por inventário/metadados um único próximo caminho F3.3 antes de criar claim. |
+| Conflitos, lacunas e impedimentos | DOM-03 §14.12 permanece aberto: ID-262 mostra resultados tabulares alegados e conflito com rotas gráficas, mas não fornece código, commit, logs, CSV completo ou reprodução independente. Não há claim ativo após o fechamento. |
+| Responsável pela sessão | Manus — ID-262 concluído e lock encerrado; a próxima unidade deve começar por reconciliação da fila, sem reabrir ID-206/ID-262. |
 | Atualização lateral 2026-10-27 | Clarificação do Mercado como exchange/integrador de fronteira registrada em DOM-20; conteúdo `31cde69`, índice `1418103`, checkpoint `71b9ed0`, publicados em `main`. Não abriu fontes brutas e não substitui o próximo passo F3.3. |
 
 ## Como retomar em cinco minutos
