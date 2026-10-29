@@ -6,7 +6,7 @@ Este documento é o plano canônico para que múltiplos agentes possam trabalhar
 
 **Estado na abertura:** `PLANEJAMENTO PUBLICADO — execução de fontes bloqueada até seleção explícita de um próximo caminho físico`.
 
-**Último estado confirmado:** `origin/main` em `6425b79` no início da preparação desta versão; a branch já contém a reconciliação da fila F3.3 e o fechamento de ID-229. O controle mestre é a autoridade operacional mais recente; sempre sincronizar novamente antes de agir.
+**Último estado confirmado:** `origin/main` em `6425b79` no início da preparação da versão 0.1.0; o estado atual deve ser sincronizado novamente antes de agir. O controle mestre é a autoridade operacional mais recente.
 
 **Missão:** validar o estado da arte dos documentos de domínio contra evidência física de código, imagens, builds, testes, versões e artefatos de execução, começando pela lacuna DOM-03 §14.12 sobre o simulador MeshWave.
 
@@ -14,9 +14,9 @@ Este documento é o plano canônico para que múltiplos agentes possam trabalhar
 
 ## 1. Diretrizes normativas aplicadas
 
-O repositório `meshwave65/SofiaControlPanel`/`SofiaControlPanel` não foi localizado publicamente durante a preparação deste blueprint. Nenhum `AGENTS.md` desse projeto foi obtido; suas regras não podem ser presumidas. Quando o responsável fornecer o caminho exato, URL, branch ou arquivo, o agente coordenador deve incorporar as regras em um commit separado e marcar esta seção como reconciliada.
+O repositório `meshwave65/SofiaControlPanel` foi localizado e consultado em `main@1957359`. O `AGENTS.md` específico foi lido integralmente. Também foram consultados `governance/missions/0009/BLUEPRINT.md`, `governance/registry/skills.csv`, `governance/skills/operational-task-lifecycle/SKILL.md` e `governance/skills/skill-governance-oracle/SKILL.md`.
 
-Até lá, aplicam-se as regras verificáveis de:
+Para a auditoria BCE, aplicam-se as regras verificáveis de:
 
 1. `AGENTS.md` na raiz de `Foundation_MeshWave`;
 2. `BCE/ORIENTACAO_AGENTES.md`;
@@ -24,6 +24,25 @@ Até lá, aplicam-se as regras verificáveis de:
 4. `skills/meshwave-bce-curation/SKILL.md`;
 5. `BCE/CONTROLE_MESTRE.md` e o checkpoint mais recente;
 6. escopo físico do domínio correspondente e classificações já publicadas.
+
+### 1.1 Regras adicionais incorporadas do SofiaControlPanel
+
+Quando uma unidade da F3.3 também tocar o SofiaControlPanel ou seus artefatos de missão, o agente deverá adicionalmente:
+
+- ler o blueprint aplicável e a definição formal da tarefa antes de editar;
+- reconciliar branch, status, commits recentes, estado remoto e locks dos dois repositórios;
+- consultar `governance/registry/skills.csv` e selecionar a skill mais específica e compatível;
+- registrar no plano e no Operational Report o nome, a versão e o commit da skill utilizada;
+- criar uma skill `DRAFT` somente pelo processo oficial quando nenhuma skill adequada existir; nunca inventar uma skill;
+- fazer alterações pequenas, validar cada unidade e preservar alterações de outros agentes;
+- produzir um **Operational Report** para toda tarefa assumida, inclusive parcial, bloqueada ou malsucedida;
+- usar `governance/skills/skill-governance-oracle/templates/OperationalReport.template.md`, gerar OR-ID sem colisão, adicionar uma única linha a `governance/operational_reports/INDEX.csv`, manter `oracle_status: PENDING` e publicar OR/índice em commit rastreável;
+- entregar handoff com resultado, validações, commit, OR-ID, impedimentos e próximo passo;
+- não enviar mensagens ou convites sem autorização humana explícita;
+- não copiar tokens, senhas, dados pessoais desnecessários ou credenciais para OR, BCE, chat ou commits;
+- não criar automação que simule uma chamada Oracle sem endpoint autorizado, autenticação mínima, payload validado e proteção contra recursão.
+
+O blueprint vigente da Missão 0009 é de orquestração de contatos MWC/SOFIA-SWE no repositório `network`; ele não autoriza misturar contatos, fichas, avaliações HH, mensagens ou relatórios do SCP com a curadoria BCE. Para trabalho de contato/reunião, aplicar `network-contact-orchestration` conforme o catálogo do SofiaControlPanel. Para auditoria BCE, aplicar `meshwave-bce-curation` no `Foundation_MeshWave`. Os dois pipelines devem permanecer separados.
 
 Regras não negociáveis:
 
@@ -136,4 +155,5 @@ A lacuna conhecida permanece: o pacote ID-229 anuncia `meshwave_simulator.py`, m
 
 | Versão | Data | Alteração | Commit |
 |---|---|---|---|
-| `0.1.0` | `2026-10-28` | Blueprint inicial de execução coordenada da F3.3; incorpora regras verificáveis de Foundation_MeshWave e registra a dependência não resolvida do `SofiaControlPanel/AGENTS.md`. | A publicar |
+| `0.1.0` | `2026-10-28` | Blueprint inicial de execução coordenada da F3.3; incorpora regras verificáveis de Foundation_MeshWave. | `ba67a86` |
+| `0.2.0` | `2026-10-28` | Reconciliado após consulta ao `meshwave65/SofiaControlPanel` em `main@1957359`; incorpora leitura obrigatória de blueprint/tarefa, seleção de skill, Operational Report, handoff, proteção de segredos e separação entre BCE e Missão 0009. | Este commit |
