@@ -7,7 +7,7 @@
 | Campo | Valor |
 |---|---|
 | Status global | `EM_ANDAMENTO — FASE 3: Curadoria profunda` |
-| Última atualização | 2026-10-28 23:23 (-03:00) — shortlist documental F3.3 publicada; seleção física ainda pendente. |
+| Última atualização | 2026-10-28 23:26 (-03:00) — responsável selecionou ID-206; claim e pré-registro publicados antes da leitura. |
 | Publicação de F2.6-07 | Os cinco commits da unidade (`c55e31d`, `b3c8864`, `8870caa`, `290895f`, `629125a`) foram publicados em `main`; a correção factual posterior foi registrada em `f8649ba`. |
 | Publicação de F2.6-08 | DOM-06 `74eba5f`; índice `14e2768` (cobertura) e `aec133d` (linha principal DOM-06); checkpoint de fechamento `6f99eaa`, todos publicados em `main`. |
 | Publicação de F2.6-09 | DOM-06 `97dea42`; índice `a39441b`; pré-registro `56c5ff8`; fechamento `f186adc`; controle `b79cf1d`, publicados em `main`.
@@ -23,16 +23,16 @@
 | Publicação de F3.1/E006 | Pré-registro `d6d6db1`; classificação `5ba3e9f`; DOM-01 v0.3.5 `84fe537`; índice `ecbbb19`; checkpoint `b934e53`; controle `98ca271`, publicados em `main`; hashes 5/5 conferidos. |
 | Publicação de F3.1/E007 | Pré-registro `a2475e0`; classificação `411671a`; controle após classificação `d164694`; DOM-01 v0.3.6 `17869b4`; índice `3940767`/`8fba35b`; correção `93916a6`; fechamento `f4df418`; publicados em `main`. |
 | Publicação de F3.3/ID-229 | Claim `edd2262`; pré-registro `38876c9`; classificação `38ea48a`; DOM-03 v0.1.1 `623d911`; índice `593a497`; controle pré-fechamento `5bf470e`; checkpoint e estado `CONCLUÍDO` do claim publicados conjuntamente no commit de fechamento. Hashes 4/4 conferidos. |
-| Estado local/remoto | `main` e `origin/main` sincronizadas em `d078a90` antes do mapa; shortlist e atualização de controle estão locais até o commit de publicação; nenhum claim `ATIVO` encontrado. |
+| Estado local/remoto | `main` e `origin/main` sincronizadas em `91f20d2` antes da seleção; claim ID-206 e pré-registro estão locais até o commit de publicação; nenhum outro claim `ATIVO` encontrado. |
 | Branch de trabalho | `main` |
 | Último item concluído | F3.3/ID-229 — quatro artefatos auditados, hashes 4/4; classificação, DOM-03 v0.1.1, índice e checkpoint publicados; claim encerrado. DOM-03 §14.12 continua aberto, sem confirmação de fonte completa, versão, testes ou encaminhamento. |
-| Item em andamento | `MISSION_0011` / F3.3 — ID-229 concluído; missão de continuidade criada em `BLOCKED`. Escopo F2.3 contém 12 fontes já processadas; nenhum próximo contato único está mapeado. Aguardar indicação/aprovação de novo caminho antes de claim ou leitura bruta. |
+| Item em andamento | `MISSION_0011` / F3.3 — coordenação concluída para ID-206; unidade `F3.3/ID-206` em `PROGRESS` sob claim exclusivo. Ler somente os cinco artefatos pré-registrados após revalidar os hashes. |
 | Último caminho processado | `KNOWLEDGE/meshwave65/20260422_meshwave simulator script - Manus/` — ID-229; `content.txt`, `code_blocks.txt`, `links.txt` (vazio) e `FULL.png`; hashes 4/4 revalidados. Nenhum outro contato foi aberto. |
-| Fontes de governança/contexto lidas nesta unidade | `SofiaControlPanel@main 9d6bab8`: `AGENTS.md`, `MISSION_0010`, blueprint, tarefas, catálogo de skills, `operational-task-lifecycle`, `skill-governance-oracle` e template OR. BCE: orientação, controle, índice, `BCE/LOCKS.md`, skill BCE, blueprint F3.3, checkpoint ID-229. Nenhum artefato de `KNOWLEDGE/` foi aberto. |
+| Fontes de governança/contexto lidas nesta unidade | `SofiaControlPanel@main 9d6bab8`: `AGENTS.md`, `MISSION_0010`, blueprint, tarefas, catálogo de skills, `operational-task-lifecycle`, `skill-governance-oracle` e template OR. BCE: orientação, controle, índice, `BCE/LOCKS.md`, skill BCE, blueprint F3.3, checkpoint ID-229, inventário e mapa de candidatos. Nenhum artefato semântico de `KNOWLEDGE/` foi aberto antes do claim. |
 | Arquivos curatoriais alterados | Classificação ID-229 (`38ea48a`); DOM-03 v0.1.1 (`623d911`); índice (`593a497`); checkpoint e encerramento ID-229 (`c92ea04`); blueprint F3.3 base (`ba67a86`); índice do blueprint (`1ad2f8b`); revisão de governança do SofiaControlPanel (`93a4033`). Nesta unidade: `MISSION_0011`, tarefas da missão, protocolo de missão/handoff, checkpoint, mapa de candidatos e ajustes de instruções. Fontes brutas intactas. |
-| Próximo item | `MISSION_0011/F3.3-COORD-001`: seleção explícita de `ID-206` (`KNOWLEDGE/meshwave65/20260422_Desenvolvimento de simulador - Manus/`) ou `ID-262` (`KNOWLEDGE/omaci2008/20260422_172245_Inconsistências nos Resultados do Simulador e Código-Fonte - Manus/`), ou outro ID/caminho formalmente designado. Não abrir `KNOWLEDGE/`, não criar claim e não escolher por inferência enquanto a tarefa estiver `BLOCKED`. |
-| Conflitos, lacunas e impedimentos | DOM-03 §14.12 permanece aberto: o pacote ID-229 não contém o fonte completo do simulador; não há outro contato designado inequivocamente na fila atual. Não inferir candidato por título, numeração ou reabrir fonte encerrada. Nenhum claim ativo foi encontrado. |
-| Responsável pela sessão | Manus — diretrizes SCP consultadas, protocolo ajustado e `MISSION_0011` criada; F3.3 permanece em ponto seguro até seleção explícita de novo caminho; nenhuma fonte bruta aberta. |
+| Próximo item | `MISSION_0011/F3.3-UNIT-001`: revalidar os cinco SHA-256 do ID-206 e ler somente `KNOWLEDGE/meshwave65/20260422_Desenvolvimento de simulador - Manus/`; não abrir ID-262 nem qualquer outro caminho durante o claim. |
+| Conflitos, lacunas e impedimentos | DOM-03 §14.12 permanece aberto: o pacote ID-229 não contém o fonte completo do simulador. ID-206 foi selecionado formalmente; claim `F3.3-ID206` está `ATIVO`. ID-262 permanece apenas como candidato não processado. |
+| Responsável pela sessão | Manus — seleção do ID-206 registrada; claim e pré-registro devem ser publicados antes da leitura; durante o claim nenhum outro contato será aberto. |
 | Atualização lateral 2026-10-27 | Clarificação do Mercado como exchange/integrador de fronteira registrada em DOM-20; conteúdo `31cde69`, índice `1418103`, checkpoint `71b9ed0`, publicados em `main`. Não abriu fontes brutas e não substitui o próximo passo F3.3. |
 
 ## Como retomar em cinco minutos
