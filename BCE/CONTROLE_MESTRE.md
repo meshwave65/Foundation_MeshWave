@@ -7,7 +7,7 @@
 | Campo | Valor |
 |---|---|
 | Status global | `EM_ANDAMENTO — FASE 3: Curadoria profunda` |
-| Última atualização | 2026-10-31 10:46 (-03:00) — estado remoto reconciliado sem intervenção concorrente; ID-117 selecionado, reivindicado e pré-registrado antes da leitura. |
+| Última atualização | 2026-10-31 10:47 (-03:00) — ID-117 auditado, integrado e lock encerrado; nenhum conflito concorrente detectado. |
 | Publicação de F2.6-07 | Os cinco commits da unidade (`c55e31d`, `b3c8864`, `8870caa`, `290895f`, `629125a`) foram publicados em `main`; a correção factual posterior foi registrada em `f8649ba`. |
 | Publicação de F2.6-08 | DOM-06 `74eba5f`; índice `14e2768` (cobertura) e `aec133d` (linha principal DOM-06); checkpoint de fechamento `6f99eaa`, todos publicados em `main`. |
 | Publicação de F2.6-09 | DOM-06 `97dea42`; índice `a39441b`; pré-registro `56c5ff8`; fechamento `f186adc`; controle `b79cf1d`, publicados em `main`.
@@ -23,16 +23,16 @@
 | Publicação de F3.1/E006 | Pré-registro `d6d6db1`; classificação `5ba3e9f`; DOM-01 v0.3.5 `84fe537`; índice `ecbbb19`; checkpoint `b934e53`; controle `98ca271`, publicados em `main`; hashes 5/5 conferidos. |
 | Publicação de F3.1/E007 | Pré-registro `a2475e0`; classificação `411671a`; controle após classificação `d164694`; DOM-01 v0.3.6 `17869b4`; índice `3940767`/`8fba35b`; correção `93916a6`; fechamento `f4df418`; publicados em `main`. |
 | Publicação de F3.3/ID-229 | Claim `edd2262`; pré-registro `38876c9`; classificação `38ea48a`; DOM-03 v0.1.1 `623d911`; índice `593a497`; controle pré-fechamento `5bf470e`; checkpoint e estado `CONCLUÍDO` do claim publicados conjuntamente no commit de fechamento. Hashes 4/4 conferidos. |
-| Estado local/remoto | `main` e `origin/main` sincronizadas em `922b785` antes do ID-117; claim/pré-registro e controle estão locais até o commit de publicação; nenhum outro claim `ATIVO`. |
+| Estado local/remoto | `main` e `origin/main` sincronizadas em `046391d` antes do fechamento; fechamento/controle do ID-117 estão locais até o commit de publicação; nenhum claim `ATIVO`. |
 | Branch de trabalho | `main` |
 | Último item concluído | F3.3/ID-229 — quatro artefatos auditados, hashes 4/4; classificação, DOM-03 v0.1.1, índice e checkpoint publicados; claim encerrado. DOM-03 §14.12 continua aberto, sem confirmação de fonte completa, versão, testes ou encaminhamento. |
-| Item em andamento | `MISSION_0011` / F3.3 — ID-206, ID-262 e ID-120 concluídos; unidade `F3.3/ID-117` em `PROGRESS` sob claim exclusivo. Revalidar hashes antes da leitura semântica. |
-| Último caminho processado | `KNOWLEDGE/info/20260422_175707_É possível criar um app para simuladores_ - Manus/` — ID-120; cinco artefatos, hashes 5/5; lock encerrado. ID-117 está aberto somente em claim/pré-registro. |
-| Fontes de governança/contexto lidas nesta unidade | Diretrizes SCP e governança BCE já registradas; estado remoto, locks, inventário/metadados da fila e pré-registro ID-117. Não houve intervenção concorrente; nenhum artefato semântico do ID-117 foi aberto antes do claim. |
-| Arquivos curatoriais alterados | Classificação ID-120 (`349b60a`); DOM-03 v0.1.4 e índice (`da7ec69`); fechamento/lock ID-120 (`922b785`); abertura/claim ID-117 em publicação desta unidade. Fontes brutas intactas. |
-| Próximo item | `MISSION_0011/F3.3-UNIT-004`: revalidar os quatro SHA-256 do ID-117 e ler somente `KNOWLEDGE/info/20260422_175452_Como criar um simulador gráfico com execução simplificada - Manus/`; não abrir outro caminho. |
-| Conflitos, lacunas e impedimentos | DOM-03 §14.12 permanece aberto após ID-120. ID-117 foi escolhido por ser o próximo candidato não processado diretamente relacionado a simulador gráfico; qualquer divergência de hash interrompe a leitura. |
-| Responsável pela sessão | Manus — estado remoto sincronizado e ID-117 reivindicado de forma exclusiva; processar somente o caminho pré-registrado. |
+| Item em andamento | `MISSION_0011` / F3.3 — ID-206, ID-262, ID-120 e ID-117 concluídos; coordenação F3.3-COORD-005 está `STAGED` para nova reconciliação de fila. |
+| Último caminho processado | `KNOWLEDGE/info/20260422_175452_Como criar um simulador gráfico com execução simplificada - Manus/` — ID-117; quatro artefatos, hashes 4/4; lock encerrado. Nenhum outro contato está aberto. |
+| Fontes de governança/contexto lidas nesta unidade | Diretrizes SCP e governança BCE já registradas; estado remoto, locks, inventário/metadados, pré-registro e quatro artefatos do ID-117. Não houve intervenção concorrente; nenhum terceiro caminho foi aberto. |
+| Arquivos curatoriais alterados | Classificação ID-117 (`8847661`); DOM-03 v0.1.5 e índice (`046391d`); fechamento/lock ID-117 neste checkpoint. Fontes brutas intactas. |
+| Próximo item | `MISSION_0011/F3.3-COORD-005`: sincronizar `origin/main`, confirmar nenhum lock ativo e mapear por inventário/metadados um único próximo caminho F3.3 antes de criar claim. |
+| Conflitos, lacunas e impedimentos | DOM-03 §14.12 permanece aberto: ID-117 fornece somente configuração de atalho para script externo, sem script, código, logs ou execução verificável. Não há claim ativo após o fechamento. |
+| Responsável pela sessão | Manus — ID-117 concluído e lock encerrado; a próxima unidade deve começar por reconciliação da fila, sem reabrir ID-206/ID-262/ID-120/ID-117. |
 | Atualização lateral 2026-10-27 | Clarificação do Mercado como exchange/integrador de fronteira registrada em DOM-20; conteúdo `31cde69`, índice `1418103`, checkpoint `71b9ed0`, publicados em `main`. Não abriu fontes brutas e não substitui o próximo passo F3.3. |
 
 ## Como retomar em cinco minutos
