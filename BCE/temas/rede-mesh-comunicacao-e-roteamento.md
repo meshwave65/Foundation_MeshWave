@@ -5,9 +5,9 @@
 | Campo | Valor |
 |---|---|
 | ID curatorial | `DOM-03` |
-| Status | `REVISÃO` — primeira síntese do lote F2.3; protocolos e implementação não validados |
-| Versão do documento | `0.1.1` |
-| Última atualização | `2026-10-27` |
+| Status | `REVISÃO` — síntese F2.3 com auditorias F3.3; protocolos e implementação não validados |
+| Versão do documento | `0.1.4` |
+| Última atualização | `2026-10-31` |
 | Curador | `Manus — curadoria BCE MeshWave` |
 | Confiança geral | Média para a existência das propostas e do histórico de decisões; baixa para implementação, interoperabilidade e operação em rede |
 | Documento relacionado no índice | `BCE/INDICE_CURATORIAL.md` — DOM-03 |
@@ -142,6 +142,8 @@ F3.3/ID-206 acrescenta uma interface visual de configuração de simulação Mes
 
 F3.3/ID-262 registra alegações de correção de endpoints, recompilação e redeploy do simulador, com teste narrado em grade 5×8: 40 CPAs, 280 usuários, 10 etapas e CSV dinâmico. `img_000.jpg` mostra uma aba de resultados com esses números e uma prévia de CSV contendo linhas `SUCESSO` e saltos de rota. Entretanto, não há código, commit, versão, logs, CSV completo ou requisições/respostas; `code_blocks.txt` está vazio na prática. A própria transcrição repete que os resultados não se refletem graficamente nas rotas e termina com créditos esgotados. ID-262 é interface/replay com resultados alegados e conflito interno, não implementação verificável.
 
+F3.3/ID-120 registra um frontend PWA Vite + Vue destinado a selecionar e executar simuladores. A fonte afirma ajustes de hosts permitidos e reinícios do frontend, mas o usuário relata tela branca persistente no iPhone; `img_000.jpg` mostra o navegador móvel sem interface. `FULL.png` registra diagnóstico, validação pendente e sugestões de console/logs/build de produção. `code_blocks.txt` contém apenas a saída de inicialização do Vite 6.3.5, sem componentes, configuração, dependências, backend, logs ou build. ID-120 é replay de diagnóstico de interface com falha observada, não simulador executável nem evidência de encaminhamento.
+
 ## 8. Evidências e fontes
 
 | Evidência | Tipo | Caminho relativo | O que sustenta | Limitações |
@@ -161,6 +163,7 @@ F3.3/ID-262 registra alegações de correção de endpoints, recompilação e re
 | E03-13 | texto/código truncado/imagem | `KNOWLEDGE/meshwave65/20260422_meshwave simulator script - Manus/` | Captura de anexo `meshwave_simulator.py` (19,67 KB na interface), fragmento de comparação candidato/destino e tarefa de análise interrompida | O `.py` não está no pacote; o excerto está truncado; sem versão, commit, dependências, dados, testes, logs ou evidência de execução/encaminhamento. Ver `BCE/fontes/CLASSIFICACAO_F3_3_ID229.md`. |
 | E03-14 | interface/replay e código transcrito parcial | `KNOWLEDGE/meshwave65/20260422_Desenvolvimento de simulador - Manus/` | Formulário visual de parâmetros para CPAs, usuários e mobilidade e fragmento Vite/React/Tailwind | Não há simulador Python, projeto completo, versão, commit, dependências, dados, testes, logs, saída ou evidência de encaminhamento. Ver `BCE/fontes/CLASSIFICACAO_F3_3_ID206.md`. |
 | E03-15 | interface/replay, imagem de resultados e alegação de redeploy | `KNOWLEDGE/omaci2008/20260422_172245_Inconsistências nos Resultados do Simulador e Código-Fonte - Manus/` | Captura de resultados com 40 CPAs, 280 usuários, 10 etapas e prévia CSV; transcrição de correção de endpoints e teste 5×8 | Sem código, commit, versão, logs, CSV completo, requisições/respostas, gráfico de rotas ou reprodução independente; a fonte registra conflito entre tabela e visualização. Ver `BCE/fontes/CLASSIFICACAO_F3_3_ID262.md`. |
+| E03-16 | replay de diagnóstico PWA/interface com falha observada | `KNOWLEDGE/info/20260422_175707_É possível criar um app para simuladores_ - Manus/` | Frontend Vite + Vue, tentativa de ajuste de hosts, endereço de dev e diagnóstico de tela branca em iPhone | Apenas saída Vite; sem projeto Vue, build, logs, backend, testes de simulador, gráficos ou reprodução; validação ficou pendente. Ver `BCE/fontes/CLASSIFICACAO_F3_3_ID120.md`. |
 
 Os `links.txt` incluem links de ação, redirecionadores e um destino de relatório externo. Eles foram registrados como referências declaradas, sem seguir endpoints de ação ou reproduzir parâmetros opacos. A fonte Briar menciona token inválido/novo token em seu histórico; nenhum valor foi copiado. O material sensível deve ser rotacionado/revogado se algum valor real ainda estiver presente fora desta síntese.
 
@@ -178,6 +181,7 @@ Os `links.txt` incluem links de ação, redirecionadores e um destino de relató
 | Auditoria F3.3/ID-229 (2026-10-27; prefixo do caminho bruto: 2026-04-22) | Tarefa Manus Lite para analisar `meshwave_simulator.py` | Análise interrompida a pedido do usuário; a interface mostra a reprodução da tarefa concluída | `content.txt`, `code_blocks.txt`, `FULL.png` | Apenas anexo anunciado e excerto incompleto; não é evidência de execução do simulador nem resolve se há encaminhamento |
 | Auditoria F3.3/ID-206 (2026-10-28; prefixo do caminho bruto: 2026-04-22) | Desenvolvimento de interface de simulador e geração de imagens | Formulário visual com parâmetros de CPAs, usuários e mobilidade; transcrição Vite repetida; nenhum resultado executado | `content.txt`, `code_blocks.txt`, `FULL.png`, `img_000.jpg` | Interface/replay e código parcial; sem fonte Python/React completo, versão, dependências, testes, dados ou logs |
 | Auditoria F3.3/ID-262 (2026-10-28; prefixo do caminho bruto: 2026-04-22) | Inconsistências entre resultados do simulador e código-fonte | Alegações de endpoints corrigidos, redeploy e teste 5×8; imagem mostra resultados tabulares, enquanto a transcrição registra falha gráfica recorrente e créditos esgotados | `content.txt`, `code_blocks.txt`, `FULL.png`, `img_000.jpg`, `links.txt` | Interface/replay e resultado alegado; sem código, commit, logs, CSV completo, gráfico de rotas ou reprodução independente |
+| Auditoria F3.3/ID-120 (2026-10-28; integração publicada em 2026-10-31; prefixo do caminho bruto: 2026-04-22) | Possibilidade de criar app para simuladores; diagnóstico de PWA Vite + Vue | Host allowlist alegadamente ajustado, servidor Vite iniciado e frontend entregue para validação; captura móvel mostra tela branca persistente e replay termina aguardando usuário | `content.txt`, `code_blocks.txt`, `FULL.png`, `img_000.jpg`, `links.txt` | Sem código Vue, configuração, dependências, build de produção, logs, backend, teste de simulador ou resultado; não confirma execução nem encaminhamento |
 
 ## 10. Decisões tomadas
 
@@ -250,7 +254,8 @@ As correções Android registradas atacam recursos XML ausentes, referências de
 | `0.1.1` | `2026-10-27` | Integrada a auditoria F3.3/ID-229; anexo e fragmento de código registrados sem confirmar execução ou encaminhamento; §14.12 permanece em aberto. | `BCE/fontes/CLASSIFICACAO_F3_3_ID229.md` (`38ea48a`) |
 | `0.1.2` | `2026-10-28` | Integrada auditoria F3.3/ID-206; interface de parâmetros e código Vite parcial registrados; ausência de fonte Python, execução, testes e logs permanece. | `BCE/fontes/CLASSIFICACAO_F3_3_ID206.md` (`cc82908`) |
 | `0.1.3` | `2026-10-28` | Integrada auditoria F3.3/ID-262; resultados tabulares e alegações de redeploy registrados como replay/resultado alegado; conflito gráfico e ausência de código, logs e reprodução permanecem. | `BCE/fontes/CLASSIFICACAO_F3_3_ID262.md` (`823ed6f`) |
+| `0.1.4` | `2026-10-31` | Integrada auditoria F3.3/ID-120; PWA Vite/Vue, falha de tela branca no iPhone e validação pendente registrados; ausência de projeto, build, logs e simulador executável permanece. | `BCE/fontes/CLASSIFICACAO_F3_3_ID120.md` (`349b60a`) |
 
 ## 17. Próximo passo de curadoria
 
-Processar o próximo caminho físico formalmente designado após o fechamento de ID-262 e atualizar este DOM-03 somente com caminhos, versões, hashes, logs e resultados reproduzíveis; manter `REVISÃO` até existir uma implementação ou experimento de rede confirmável, especialmente para resolver a divergência entre resultados tabulares e rotas gráficas.
+Após o fechamento de ID-120, processar o próximo caminho físico formalmente designado e atualizar este DOM-03 somente com caminhos, versões, hashes, logs e resultados reproduzíveis; manter `REVISÃO` até existir uma implementação ou experimento de rede confirmável, incluindo resolução da divergência gráfica de ID-262 e da tela branca de ID-120.
