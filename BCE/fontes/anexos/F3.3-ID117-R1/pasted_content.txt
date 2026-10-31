@@ -1,0 +1,140 @@
+#!/bin/bash
+
+# Script para automatizar a configuração e execução do Simulador de Rede
+
+APP_DIR_NAME="simulation_app"
+EXPECTED_CWD_SUFFIX="/${APP_DIR_NAME}"
+
+# Verifica se o script está sendo executado de dentro da pasta simulation_app
+# ou se a pasta simulation_app é um subdiretório imediato.
+
+# Obter o diretório onde o script está localizado
+SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
+
+# Define o diretório da aplicação. Assume que o script está na raiz de simulation_app
+PROJECT_ROOT_DIR="${SCRIPT_DIR}"
+
+# Verifica se estamos no diretório correto (onde requirements.txt e src/ existem)
+if [ ! -f "${PROJECT_ROOT_DIR}/requirements.txt" ] || [ ! -d "${PROJECT_ROOT_DIR}/src" ]; then
+    echo "Erro: Este script deve ser colocado e executado a partir do diretório raiz do projeto 'simulation_app'"
+    echo "(o diretório que contém 'requirements.txt' e a pasta 'src')."
+    echo "Diretório atual: $(pwd)"
+    echo "Diretório esperado (onde o script está): ${PROJECT_ROOT_DIR}"
+    exit 1
+fi
+
+cd "${PROJECT_ROOT_DIR}" || exit
+
+echo "Diretório do projeto: $(pwd)"
+
+VENV_DIR="venv"
+PYTHON_CMD="python3"
+
+echo "Verificando Python 3..."
+if ! command -v $PYTHON_CMD &> /dev/null
+then
+    echo "Erro: Python 3 não encontrado. Por favor, instale Python 3."
+    exit 1
+fi
+
+echo "Verificando pip para Python 3..."
+if ! $PYTHON_CMD -m pip --version &> /dev/null
+then
+    echo "Erro: pip não encontrado para $PYTHON_CMD. Por favor, instale python3-pip."
+    exit 1
+fi
+
+if [ ! -d "$VENV_DIR" ]; then
+    echo "Criando ambiente virtual em ./${VENV_DIR}/ ..."
+    $PYTHON_CMD -m venv $VENV_DIR
+    if [ $? -ne 0 ]; then
+        echo "Erro ao criar o ambiente virtual."
+        exit 1
+    fi
+else
+    echo "Ambiente virtual ./${VENV_DIR}/ já existe."
+fi
+
+echo "Ativando ambiente virtual..."
+# shellcheck disable=SC1091
+source "${VENV_DIR}/bin/activate"
+if [ $? -ne 0 ]; then
+    echo "Erro ao ativar o ambiente virtual."
+    exit 1
+fi
+
+echo "Instalando dependências de requirements.txt ..."
+pip install -r requirements.txt
+if [ $? -ne 0 ]; then
+    echo "Erro ao instalar dependências."
+    deactivate
+    exit 1
+fi
+
+FLASK_APP_SCRIPT="src/main.py"
+FLASK_HOST="127.0.0.1"
+FLASK_PORT="5000"
+URL="http://${FLASK_HOST}:${FLASK_PORT}"
+
+# Verifica se a porta 5000 já está em uso
+if netstat -tuln | grep -q ":${FLASK_PORT} "; then
+    echo "Aviso: A porta ${FLASK_PORT} já parece estar em uso."
+    echo "Se o simulador já estiver rodando, você pode acessá-lo em ${URL}"
+    echo "Caso contrário, por favor, pare o processo que está usando a porta ${FLASK_PORT} e tente novamente."
+    # Tenta abrir o navegador mesmo assim, caso o servidor já esteja rodando
+    echo "Tentando abrir o navegador em ${URL} ..."
+    if command -v xdg-open &> /dev/null; then
+        xdg-open "${URL}" &
+    elif command -v gnome-open &> /dev/null; then # Para sistemas mais antigos
+        gnome-open "${URL}" &
+    elif command -v firefox &> /dev/null; then
+        firefox "${URL}" &
+    else
+        echo "Não foi possível encontrar um comando para abrir o navegador automaticamente."
+        echo "Por favor, abra manualmente: ${URL}"
+    fi
+    deactivate
+    exit 0
+fi
+
+echo "Iniciando servidor Flask (python ${FLASK_APP_SCRIPT}) em segundo plano..."
+# Executa o servidor Flask em segundo plano e redireciona a saída para um arquivo de log
+# Isso permite que o script continue e abra o navegador.
+nohup $PYTHON_CMD "${FLASK_APP_SCRIPT}" > flask_server.log 2>&1 &
+FLASK_PID=$!
+echo "Servidor Flask iniciado com PID: ${FLASK_PID}. Logs em flask_server.log"
+
+echo "Aguardando o servidor iniciar (5 segundos)..."
+sleep 5
+
+# Verifica se o processo Flask ainda está rodando
+if ! ps -p $FLASK_PID > /dev/null; then
+   echo "Erro: O servidor Flask parece não ter iniciado corretamente."
+   echo "Verifique o arquivo flask_server.log para mais detalhes."
+   deactivate
+   exit 1
+fi
+
+echo "Abrindo o navegador em ${URL} ..."
+if command -v xdg-open &> /dev/null; then
+    xdg-open "${URL}" &
+elif command -v gnome-open &> /dev/null; then
+    gnome-open "${URL}" &
+elif command -v firefox &> /dev/null; then
+    firefox "${URL}" &
+else
+    echo "Não foi possível encontrar um comando para abrir o navegador automaticamente."
+    echo "Por favor, abra manualmente: ${URL}"
+fi
+
+echo ""
+echo "O servidor Flask está rodando em segundo plano."
+echo "Para parar o servidor, você pode fechar o terminal onde este script foi executado ou encontrar e parar o processo Python manualmente."
+echo "Uma forma de parar é: kill ${FLASK_PID}"
+echo "Ou, se você fechou este terminal, use: pkill -f '${FLASK_APP_SCRIPT}'"
+echo "Lembre-se de desativar o ambiente virtual ('deactivate') se você abrir um novo terminal na pasta do projeto."
+
+# Não desativar aqui, pois o servidor está rodando no venv
+# deactivate
+
+exit 0
