@@ -3,7 +3,7 @@
 **Repositório canônico:** `https://github.com/meshwave65/Foundation_MeshWave`
 **Blueprint:** `BCE/BLUEPRINT_F3_3_EXECUCAO_PARALELA.md`
 **Protocolo de handoff:** `BCE/PROTOCOLO_MISSOES_E_HANDOFF.md`
-**Último checkpoint remoto confirmado:** `origin/main@15a7d04`; abertura da reauditoria ID-117-R1 registrada em `BCE/sessoes/2026-10-31_f3-3-id117-r1-abertura.md`
+**Último checkpoint remoto confirmado:** `origin/main@e765d5f`; fechamento da reauditoria ID-117-R1 registrado em `BCE/sessoes/2026-10-31_f3-3-id117-r1-fechamento.md`
 **Estado da missão:** `PROGRESS`
 
 | ID | Tarefa | Status | Instância | Repositório/artefato | Próxima ação única |
@@ -22,10 +22,11 @@
 | F3.3-CLOSE-004 | Integrar classificação, fechar lock e emitir handoff | DONE | Manus / sandbox:root:9a8vVvOkKgNlcDNLamYLk7 | Classificação `8847661`; DOM-03/índice `046391d`; fechamento | ID-117 concluído; reconciliar próximo caminho físico |
 | F3.3-COORD-005 | Reconciliar fila restante e selecionar o próximo contato físico | STAGED | — | Inventário/classificações F3.3; nenhum claim ativo após ID-117 | Sincronizar `origin/main`, mapear somente metadados e publicar novo claim antes da leitura |
 | F3.3-REAUDIT-001 | Integrar evidência adicional fornecida pelo usuário para ID-117 | PROGRESS | Manus / sandbox:root:9a8vVvOkKgNlcDNLamYLk7 | `BCE/locks/F3.3-ID117-R1.lock.md`; `BCE/sessoes/2026-10-31_f3-3-id117-r1-abertura.md` | Preservar o anexo, conferir SHA-256 e atualizar classificação/DOM-03 sem executar o script |
+| F3.3-CLOSE-REAUDIT-001 | Fechar a reauditoria, preservar proveniência e emitir handoff | DONE | Manus / sandbox:root:9a8vVvOkKgNlcDNLamYLk7 | Classificação `767ee0e`; DOM-03/índice `e765d5f`; cópia em `BCE/fontes/anexos/F3.3-ID117-R1/` | Launcher incorporado como evidência parcial; não executar; reconciliar fila somente em nova unidade |
 
 ## Regra de assunção
 
-Assumir somente a próxima linha `STAGED` após confirmar que não há instância concorrente. ID-206, ID-262, ID-120 e ID-117 estão encerrados; a reauditoria ID-117-R1 está ativa exclusivamente para o anexo fornecido pelo usuário. Não abrir outro caminho ou anexo durante este claim.
+Assumir somente a próxima linha `STAGED` após confirmar que não há instância concorrente. ID-206, ID-262, ID-120, ID-117 e ID-117-R1 estão encerrados; a coordenação seguinte deve mapear candidatos apenas por inventário/metadados e publicar claim antes de qualquer nova leitura ou anexo.
 
 ## Critérios de fechamento
 
