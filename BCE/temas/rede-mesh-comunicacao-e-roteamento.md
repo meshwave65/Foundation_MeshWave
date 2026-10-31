@@ -6,7 +6,7 @@
 |---|---|
 | ID curatorial | `DOM-03` |
 | Status | `REVISÃO` — síntese F2.3 com auditorias F3.3; protocolos e implementação não validados |
-| Versão do documento | `0.1.4` |
+| Versão do documento | `0.1.6` |
 | Última atualização | `2026-10-31` |
 | Curador | `Manus — curadoria BCE MeshWave` |
 | Confiança geral | Média para a existência das propostas e do histórico de decisões; baixa para implementação, interoperabilidade e operação em rede |
@@ -146,6 +146,8 @@ F3.3/ID-120 registra um frontend PWA Vite + Vue destinado a selecionar e executa
 
 F3.3/ID-117 registra a criação de um atalho `.desktop` chamado “Simulador de Rede”, cujo comando aponta para `~/Desktop/simulation_app/run_simulator_ubuntu.sh`. A captura mostra instruções sobre o ícone, o terminal e o caminho do script, além do estado visual de tarefa concluída. O pacote não contém o script, o diretório `simulation_app`, código do simulador, dependências, logs ou resultados. O bloco `.desktop` é configuração de lançamento/replay, não prova de execução de roteamento ou encaminhamento.
 
+F3.3/ID-117-R1 acrescenta o conteúdo recuperado do launcher Bash apontado pelo atalho. O script verifica `requirements.txt` e `src/`, cria/reutiliza `venv`, instala dependências, inicia `src/main.py` como Flask em `127.0.0.1:5000`, grava `flask_server.log` e abre o navegador. Isso materializa a lógica do launcher e especifica os artefatos esperados, mas não fornece o projeto Flask, `requirements.txt`, `src/main.py`, dados, logs, versão, commit ou resultados. O script não foi executado; portanto, a nova evidência eleva a descrição do launcher, não a confirmação do simulador ou do encaminhamento.
+
 ## 8. Evidências e fontes
 
 | Evidência | Tipo | Caminho relativo | O que sustenta | Limitações |
@@ -167,6 +169,7 @@ F3.3/ID-117 registra a criação de um atalho `.desktop` chamado “Simulador de
 | E03-15 | interface/replay, imagem de resultados e alegação de redeploy | `KNOWLEDGE/omaci2008/20260422_172245_Inconsistências nos Resultados do Simulador e Código-Fonte - Manus/` | Captura de resultados com 40 CPAs, 280 usuários, 10 etapas e prévia CSV; transcrição de correção de endpoints e teste 5×8 | Sem código, commit, versão, logs, CSV completo, requisições/respostas, gráfico de rotas ou reprodução independente; a fonte registra conflito entre tabela e visualização. Ver `BCE/fontes/CLASSIFICACAO_F3_3_ID262.md`. |
 | E03-16 | replay de diagnóstico PWA/interface com falha observada | `KNOWLEDGE/info/20260422_175707_É possível criar um app para simuladores_ - Manus/` | Frontend Vite + Vue, tentativa de ajuste de hosts, endereço de dev e diagnóstico de tela branca em iPhone | Apenas saída Vite; sem projeto Vue, build, logs, backend, testes de simulador, gráficos ou reprodução; validação ficou pendente. Ver `BCE/fontes/CLASSIFICACAO_F3_3_ID120.md`. |
 | E03-17 | configuração/replay de inicialização local | `KNOWLEDGE/info/20260422_175452_Como criar um simulador gráfico com execução simplificada - Manus/` | Atalho `.desktop` “Simulador de Rede” com comando para `run_simulator_ubuntu.sh` e terminal visível | Script, diretório, código, dependências, logs e saída não estão no pacote; “Tarefa concluída” refere-se à criação/entrega do atalho. Ver `BCE/fontes/CLASSIFICACAO_F3_3_ID117.md`. |
+| E03-18 | launcher Bash recuperado / configuração de execução | `BCE/fontes/anexos/F3.3-ID117-R1/pasted_content.txt` | Verifica estrutura do projeto, prepara `venv`, instala requirements, inicia `src/main.py` via Flask na porta 5000 e grava log | Não contém o projeto, `requirements.txt`, `src/main.py`, script do simulador, dados, logs, versão, commit ou resultado; não executado. Ver `BCE/fontes/CLASSIFICACAO_F3_3_ID117_R1.md`. |
 
 Os `links.txt` incluem links de ação, redirecionadores e um destino de relatório externo. Eles foram registrados como referências declaradas, sem seguir endpoints de ação ou reproduzir parâmetros opacos. A fonte Briar menciona token inválido/novo token em seu histórico; nenhum valor foi copiado. O material sensível deve ser rotacionado/revogado se algum valor real ainda estiver presente fora desta síntese.
 
@@ -260,6 +263,7 @@ As correções Android registradas atacam recursos XML ausentes, referências de
 | `0.1.3` | `2026-10-28` | Integrada auditoria F3.3/ID-262; resultados tabulares e alegações de redeploy registrados como replay/resultado alegado; conflito gráfico e ausência de código, logs e reprodução permanecem. | `BCE/fontes/CLASSIFICACAO_F3_3_ID262.md` (`823ed6f`) |
 | `0.1.4` | `2026-10-31` | Integrada auditoria F3.3/ID-120; PWA Vite/Vue, falha de tela branca no iPhone e validação pendente registrados; ausência de projeto, build, logs e simulador executável permanece. | `BCE/fontes/CLASSIFICACAO_F3_3_ID120.md` (`349b60a`) |
 | `0.1.5` | `2026-10-31` | Integrada auditoria F3.3/ID-117; atalho `.desktop` e comando para script externo registrados como configuração/replay; ausência do script, código, logs e execução verificável permanece. | `BCE/fontes/CLASSIFICACAO_F3_3_ID117.md` (`8847661`) |
+| `0.1.6` | `2026-10-31` | Reauditado ID-117 com launcher Bash recuperado; fluxo de venv/requirements/Flask/log foi documentado, sem elevar a evidência a execução ou implementação do simulador. | `BCE/fontes/CLASSIFICACAO_F3_3_ID117_R1.md` (`767ee0e`) |
 
 ## 17. Próximo passo de curadoria
 
