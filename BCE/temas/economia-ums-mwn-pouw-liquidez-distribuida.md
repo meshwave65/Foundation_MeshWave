@@ -9,7 +9,7 @@
 
 ## 1. Objetivo
 
-Registrar de forma rastreável as conclusões conceituais alcançadas sobre a relação entre Proof of Useful Work (PoUW), UMS e MWN no ecossistema MeshWave, incluindo a analogia do reservatório hidrelétrico, os modos de gestão de saldo dos MeshWalkers e os riscos de fabricação artificial de demanda.
+Registrar de forma rastreável as conclusões conceituais alcançadas sobre a relação entre Proof of Useful Work (PoUW), UMS e MWN no ecossistema MeshWave, incluindo a analogia do reservatório hidrelétrico, os modos de gestão de saldo dos MeshWalkers, o reconhecimento de contribuições úteis de diferentes naturezas — inclusive contribuições financeiras ao desenvolvimento do ecossistema — e os riscos de fabricação artificial de demanda.
 
 O documento distingue:
 - **Princípios conceituais estabelecidos nesta discussão**;
@@ -24,7 +24,7 @@ Este registro não afirma que os mecanismos descritos já estejam implementados.
 
 **PoW (Proof of Work)**, no contexto desta discussão, comprova que determinado trabalho computacional foi realizado. A execução pode ser real, mensurável e tecnicamente correta, mas isso não demonstra, por si só, que a rede obteve utilidade.
 
-**PoUW (Proof of Useful Work)** comprova que o trabalho realizado foi útil para a rede, atendendo a uma necessidade legítima e produzindo benefício efetivo verificável.
+**PoUW (Proof of Useful Work)** comprova que uma contribuição realizada foi útil para a rede, atendendo a uma necessidade legítima e produzindo benefício efetivo verificável. Na MeshWave, o conceito não se limita à execução de trabalho computacional: pode abranger qualquer contribuição mensurável que gere utilidade para o ecossistema, observados os critérios de reconhecimento definidos pelo protocolo e pela governança.
 
 A distinção fundamental não é entre trabalho real e trabalho fictício apenas. Um trabalho pode ser computacionalmente real e ainda assim não ser útil ou economicamente legítimo para a rede.
 
@@ -349,3 +349,48 @@ O parceiro não recebe autoridade para creditar UMS. Somente o módulo de fronte
 
 O responsável pelo projeto esclareceu que essa é a lógica pretendida para o Mercado e considera possível que o ciclo já esteja operacional no simulador. A árvore e a documentação técnica do repositório examinadas nesta análise não expõem código do simulador nem uma implementação verificável desse fluxo. Portanto, o desenho acima é **clarificação arquitetural fornecida pelo responsável**; a existência e o comportamento do fluxo no simulador permanecem **não confirmados** até inspeção do código executável ou demonstração reproduzível.
 
+
+
+## 14. PoUW ampliada: contribuições mensuráveis e emissão Genesis de UMS — 2026-11-01
+
+**Origem:** esclarecimento do responsável pelo projeto nesta sessão. Esta seção registra a definição conceitual pretendida; não constitui especificação técnica final, decisão tributária, nem comprovação de implementação.
+
+### 14.1 Princípio geral
+
+Na MeshWave, **Proof of Useful Work (PoUW) não se limita a trabalho computacional**. PoUW é o reconhecimento de toda contribuição mensurável que produza utilidade efetiva para o ecossistema, conforme critérios de elegibilidade, mensuração e validação que serão definidos pelo protocolo e pela governança.
+
+A contribuição pode consistir, entre outras possibilidades, em:
+- processamento computacional (CPU/GPU) para tarefas legítimas da rede;
+- armazenamento, disponibilidade e preservação de dados;
+- banda, roteamento e compartilhamento de conectividade;
+- infraestrutura, equipamentos ou capacidade operacional disponibilizados;
+- desenvolvimento de software, protocolos, documentação ou componentes úteis;
+- serviços técnicos, operacionais, científicos, institucionais ou de integração;
+- contribuição financeira destinada ao desenvolvimento e à expansão do ecossistema;
+- outras contribuições que demonstrem utilidade mensurável para a MeshWave.
+
+**Esta enumeração é exemplificativa e não exaustiva.** A natureza financeira, por si só, não torna uma contribuição automaticamente elegível: sua finalidade, registro, mensuração e reconhecimento devem obedecer às regras aplicáveis. Da mesma forma, a simples execução, despesa ou transferência de recursos não constitui PoUW sem reconhecimento de utilidade.
+
+### 14.2 Reconhecimento e remuneração em UMS
+
+Quando uma contribuição for reconhecida como PoUW segundo as regras do sistema, sua remuneração/recompensa é contabilizada em UMS, de acordo com a métrica e a escala definidas para aquela modalidade. A UMS continua sendo a unidade interna comum de reconhecimento de contribuição útil; a modalidade de contribuição explica a origem do reconhecimento, não cria necessariamente uma espécie distinta de UMS.
+
+As categorias, evidências exigidas, métodos de mensuração, limites, fatores de remuneração, prevenção de duplicidade, validação e procedimentos de contestação serão definidos oportunamente pela governança de forma **clara, objetiva e verificável**. Até essa definição, os exemplos desta seção não devem ser tratados como uma lista normativa fechada nem como regras já implementadas.
+
+### 14.3 Contribuições financeiras para o desenvolvimento
+
+Uma contribuição financeira voluntária destinada ao desenvolvimento do ecossistema pode, conceitualmente, ser reconhecida como uma modalidade de PoUW: o MeshWalker fornece um recurso útil ao desenvolvimento da rede e, após o reconhecimento protocolar dessa contribuição, recebe UMS como recompensa.
+
+O enquadramento conceitual separa a contribuição recebida pela MeshWave da UMS concedida pelo protocolo e da eventual conversão posterior UMS → MWN. Ele não determina, por si só, a classificação jurídica ou tributária da contribuição, nem antecipa a resposta da consulta apresentada à Receita Federal. A operação efetiva, os direitos atribuídos e as regras de conversão precisam permanecer consistentes com os documentos jurídicos e operacionais aplicáveis.
+
+### 14.4 Critério da emissão Genesis
+
+A emissão Genesis de UMS é conceitualmente fundamentada no mesmo princípio: reconhecer contribuições úteis que viabilizaram a formação inicial e o desenvolvimento do ecossistema MeshWave. Portanto, a Genesis não é apresentada como emissão arbitrária ou desvinculada de PoUW, mas como reconhecimento inicial de contribuições mensuráveis e úteis já realizadas para constituir a rede.
+
+A definição do inventário de contribuições reconhecidas na Genesis, sua mensuração, atribuição, documentação e eventuais limites deve ser especificada e registrada pela governança. Esta clarificação registra o critério conceitual indicado pelo responsável; não confirma que a emissão Genesis tenha sido tecnicamente executada, nem fecha sua distribuição ou cálculo.
+
+### 14.5 Relação com os princípios anteriores e estado de definição
+
+Esta ampliação refina a expressão “trabalho útil” usada nas seções anteriores para abranger contribuições úteis de natureza computacional, material, técnica, operacional, institucional ou financeira. Os princípios de integridade permanecem: utilidade real, mensuração, evidência, reconhecimento, atribuição única e prevenção de demanda ou contribuição artificial.
+
+O princípio geral está estabelecido conceitualmente pelo responsável do projeto. As categorias formais e seus critérios objetivos permanecem sob definição futura da governança. Não se deve inferir elegibilidade automática, taxa fixa de UMS, equivalência monetária ou tratamento tributário a partir dos exemplos.
