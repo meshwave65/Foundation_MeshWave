@@ -63,7 +63,7 @@ Este índice define a arquitetura documental da Base de Conhecimento Evolutivo. 
 | DOM-14 | `BCE/temas/seguranca-privacidade-lgpd-e-governanca.md` | Quais princípios de segurança, privacidade, LGPD, controle e governança existem? | material LGPD, autenticação, identidade, persistência, exposição de credenciais e práticas operacionais | PENDENTE |
 | DOM-15 | `BCE/temas/apis-integracoes-e-protocolos.md` | Quais APIs, protocolos e integrações conectam os módulos? | Sofia API, DafsAPI, APIs de desenvolvedores, MWC/UMS, Briar e Chroma; L002-03 como mapa de Integração 6G, SDN, SATSI, LEO e interface terahertz | PENDENTE — L002-03 fornece somente rótulos de integração/roadmap, sem contratos ou protocolos verificáveis |
 
-| DOM-20 | `BCE/temas/economia-ums-mwn-pouw-liquidez-distribuida.md` | Como UMS, MWN e o módulo Mercado conectam a economia interna isolada à negociação e liquidação externas? | Documento conceitual BCE e clarificação do responsável do projeto em 2026-10-27 | REVISÃO — clarificação arquitetural do Mercado como exchange de fronteira; código do simulador e operação do fluxo não confirmados |
+| DOM-20 | `BCE/temas/economia-ums-mwn-pouw-liquidez-distribuida.md` | Como PoUW, UMS, MWN e o módulo Mercado conectam contribuição útil, economia interna e fronteira externa? | Documento conceitual BCE; clarificações do responsável em 2026-10-27 e 2026-11-01 | REVISÃO — PoUW ampliada para contribuições mensuráveis, inclusive financeiras; Genesis UMS fundamentada conceitualmente em contribuições úteis iniciais. Critérios formais de governança e implementação permanecem pendentes; fluxo Mercado ainda não confirmado em código |
 
 ### P3 — Estratégia, implantação institucional e contexto externo
 
@@ -136,6 +136,8 @@ Fontes que apenas mencionam o projeto sem conteúdo técnico devem ser registrad
 | `BCE/arqueologia/MATRIZ_DECISOES_F3_2.md` | F3.2 — arqueologia de decisões e alternativas | v0.2.0; 17 registros (A-01–A-17), revisão documental de DOM-01–DOM-06. `KNOWLEDGE/`, fontes primárias e links não foram reabertos nesta unidade; referências primárias citadas nos DOMs são mediadas, não auditoria direta. Nenhuma proposta foi promovida a implementação ou decisão normativa. |
 | `BCE/sessoes/2026-10-26_f3-2-matriz-documental.md` | F3.2 — checkpoint da expansão documental | Registra A-01–A-17, limites de evidência mediada, commits e o próximo passo de delimitação de F3.3; nenhuma fonte primária foi reaberta. |
 | `BCE/BLUEPRINT_F3_3_EXECUCAO_PARALELA.md` | F3.3 — blueprint de execução coordenada | v0.2.0; define faixas paralelizáveis, protocolo de claims, critérios de classificação, handoffs, critérios de aceite e bloqueio atual. Incorpora `SofiaControlPanel@main 1957359`, seu `AGENTS.md`, blueprint Missão 0009, catálogo de skills, Operational Reports e separação entre BCE e SCP. |
+
+| `BCE/sessoes/2026-11-01_pouw-contribuicoes-e-genesis-ums.md` | Clarificação de PoUW ampliada, contribuições financeiras e critério da Genesis UMS | Registra o princípio informado pelo responsável; exemplos não são lista fechada e critérios objetivos permanecem para governança. |
 
 ## Classificações de fontes publicadas
 
