@@ -73,6 +73,7 @@ Este índice define a arquitetura documental da Base de Conhecimento Evolutivo. 
 | DOM-17 | `BCE/temas/modelo-de-negocio-e-implantacao-institucional.md` | Como o MeshWave é apresentado a governos, parceiros e mercados? | materiais para Nigéria, Inovarse, fintech/blockchain, estratégia MWC/UMS | PENDENTE |
 | DOM-18 | `BCE/temas/impacto-ambiental-social-e-recursos.md` | Quais impactos ambientais, sociais e de infraestrutura foram considerados? | environmental impact, data centers, uso de dispositivos obsoletos | PENDENTE |
 | DOM-19 | `BCE/temas/temas-externos-e-fora-de-escopo.md` | Quais fontes não pertencem ao núcleo MeshWave e como devem ser isoladas? | saúde, instalação elétrica, academia, aluguel, tanque Osório, política e demais temas externos | PENDENTE |
+| DOM-21 | `BCE/temas/governanca-mercado-mwn-prioridade-meshwalkers.md` | Quais regras impedem a MeshWave/tesouraria de obter prioridade sobre ordens de usuários no mercado MWN? | princípio informado pelo responsável em 2026-11-01; documento-base de investidores e checkpoint da sessão | CONCEITO REGISTRADO — regulamento operacional, matching engine e controles ainda não implementados/verificados |
 
 ## Matriz de dependências
 
@@ -171,3 +172,12 @@ Fontes que apenas mencionam o projeto sem conteúdo técnico devem ser registrad
 | `BCE/temas/sofia-agentes-missoes-e-oraculo.md` | F2.6 — DOM-06 v0.3.5 | Auditoria profunda completa das 23 fontes. F2.6-15 registra busca do `sofia_opman.md`, tarefa 315, subtarefa e interrupção por créditos; claim, manual, subtarefa, backend e persistência não confirmados. Fila F2.6 encerrada; próximo: F3.1; status `REVISÃO`. |
 
 As classificações são inventários de evidência e qualidade, não documentos de estado da arte. Elas não promovem alegações de conversa, capturas de interface, código incompleto ou rótulos de conclusão a fatos de implementação, build, upload ou produção. Consultar cada documento para conflitos, fontes ausentes e próximas verificações.
+
+
+## Materiais estratégicos preliminares MWN
+
+Estes documentos são materiais de projeto para preparação e diálogo; não são documentos de estado da arte auditados nem oferta de investimento:
+
+- `BCE/temas/documento-base-investidores-mwn.md` — visão conceitual, estágio, plano em etapas, riscos e limites de métricas.
+- `BCE/temas/governanca-mercado-mwn-prioridade-meshwalkers.md` — princípio de prioridade dos Meshwalkers e requisitos preliminares para o regulamento.
+- `BCE/sessoes/2026-11-01_governanca-e-mercado-mwn.md` — checkpoint de rastreabilidade.
