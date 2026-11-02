@@ -394,3 +394,19 @@ A definição do inventário de contribuições reconhecidas na Genesis, sua men
 Esta ampliação refina a expressão “trabalho útil” usada nas seções anteriores para abranger contribuições úteis de natureza computacional, material, técnica, operacional, institucional ou financeira. Os princípios de integridade permanecem: utilidade real, mensuração, evidência, reconhecimento, atribuição única e prevenção de demanda ou contribuição artificial.
 
 O princípio geral está estabelecido conceitualmente pelo responsável do projeto. As categorias formais e seus critérios objetivos permanecem sob definição futura da governança. Não se deve inferir elegibilidade automática, taxa fixa de UMS, equivalência monetária ou tratamento tributário a partir dos exemplos.
+
+
+## 15. Governança do mercado próprio e prioridade dos Meshwalkers — 2026-11-01
+
+O responsável definiu que a plataforma MeshWave poderá coexistir como canal de aquisição primária, carteira, mercado próprio de compra/venda (quando implementado) e integração a exchanges externas. A integração externa não deverá monopolizar os canais de aquisição ou negociação próprios.
+
+Foi estabelecido o princípio de que **ordens de usuários (Meshwalkers) têm prioridade sobre ordens próprias da MeshWave**. A organização não poderá priorizar a venda de reservas próprias nem suas ordens de compra enquanto existirem ordens de usuários compatíveis e executáveis que devam ser atendidas primeiro segundo as regras publicadas. O princípio inclui operações associadas a Genesis, tesouraria e reservas sob controle direto ou indireto da MeshWave.
+
+A regra deverá residir no mecanismo de correspondência de ordens (*matching engine*) e produzir registros auditáveis; não basta uma indicação na interface ou uma política manual. O regulamento deverá definir o tratamento de preço/tempo, compatibilidade, execução parcial, cancelamento, liquidação, taxas, ordens próprias, contas relacionadas e falhas.
+
+Documentos específicos:
+- [Governança do Mercado MWN — Prioridade dos Meshwalkers](governanca-mercado-mwn-prioridade-meshwalkers.md)
+- [Documento-base preliminar para investidores](documento-base-investidores-mwn.md)
+- [Checkpoint documental de 2026-11-01](../sessoes/2026-11-01_governanca-e-mercado-mwn.md)
+
+**Limite de evidência:** este registro formaliza a regra pretendida; não afirma que o matching engine, mercado secundário, compra/venda entre usuários ou controles de prioridade já estejam implementados. Aquisições primárias da MeshWave devem permanecer separadas de volume secundário entre participantes. A implementação e a operação requerem especificação e avaliação jurídica/regulatória aplicável.
