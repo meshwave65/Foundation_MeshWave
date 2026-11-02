@@ -98,3 +98,14 @@ Estados permitidos: `PROPOSTA`, `ADOTADA`, `SUBSTITUÍDA`, `REJEITADA`, `PENDENT
 | Data | Alteração | Commit |
 |---|---|---|
 | 2026-10-08 | Registro criado com decisões BCE-001 a BCE-009 | a publicar |
+
+
+## Referência temática — Governança do Mercado MWN (2026-11-01)
+
+O princípio de prioridade de ordens dos Meshwalkers foi registrado como decisão temática do responsável, nos documentos específicos do projeto, não como decisão estrutural da BCE:
+
+- `BCE/temas/governanca-mercado-mwn-prioridade-meshwalkers.md` — princípio de governança e requisitos preliminares do matching engine.
+- `BCE/temas/documento-base-investidores-mwn.md` — apresentação conceitual preliminar, incluindo o princípio e os limites das alegações.
+- `BCE/sessoes/2026-11-01_governanca-e-mercado-mwn.md` — checkpoint, escopo de persistência e pendências.
+
+A regra foi informada pelo responsável. Não há confirmação de implementação no código da exchange/carteira; os documentos mantêm essa distinção explícita.
