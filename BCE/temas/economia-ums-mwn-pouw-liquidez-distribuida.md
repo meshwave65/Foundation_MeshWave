@@ -410,3 +410,14 @@ Documentos específicos:
 - [Checkpoint documental de 2026-11-01](../sessoes/2026-11-01_governanca-e-mercado-mwn.md)
 
 **Limite de evidência:** este registro formaliza a regra pretendida; não afirma que o matching engine, mercado secundário, compra/venda entre usuários ou controles de prioridade já estejam implementados. Aquisições primárias da MeshWave devem permanecer separadas de volume secundário entre participantes. A implementação e a operação requerem especificação e avaliação jurídica/regulatória aplicável.
+
+
+## 16. Consulta tributária UMS → MWN — 2025-10-14
+
+A consulta apresentada à Receita Federal do Brasil (RFB), no processo e-Processo nº 10265.426240/2025-40, submete a tese de que a conversão UMS → MWN representa a realização da receita da atividade produtiva, enquanto eventual ganho ou perda de capital seria apurado em alienação posterior do MWN. A fundamentação apresentada inclui analogia com programas de fidelidade/milhagem e distinção entre crédito de utilidade e ativo com valor de mercado.
+
+**Estado:** consulta protocolada em 14/10/2025; não há, no registro documental atual, resposta formal positiva ou negativa da RFB. A tese deve ser descrita como posição submetida pela consulente, não como entendimento oficial confirmado.
+
+A consulta é referência para compreender a separação entre economia interna e externa, mas seu texto original descreve principalmente a geração de UMS associada a recursos da rede. A ampliação conceitual posterior de PoUW para contribuições financeiras úteis ao ecossistema permanece registrada na seção 14 e não deve ser apresentada como objeto especificamente validado por resposta da RFB.
+
+Ver [Consulta à Receita Federal: UMS, MWN e realização econômica](consulta-rfb-ums-mwn-natureza-tributaria.md), que documenta a tese, a analogia, a situação processual e os limites de interpretação.
