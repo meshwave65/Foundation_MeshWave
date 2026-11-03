@@ -65,6 +65,10 @@ Este índice define a arquitetura documental da Base de Conhecimento Evolutivo. 
 
 | DOM-20 | `BCE/temas/economia-ums-mwn-pouw-liquidez-distribuida.md` | Como PoUW, UMS, MWN e o módulo Mercado conectam contribuição útil, economia interna e fronteira externa? | Documento conceitual BCE; clarificações do responsável em 2026-10-27 e 2026-11-01 | REVISÃO — PoUW ampliada para contribuições mensuráveis, inclusive financeiras; Genesis UMS fundamentada conceitualmente em contribuições úteis iniciais. Critérios formais de governança e implementação permanecem pendentes; fluxo Mercado ainda não confirmado em código |
 
+### Referência temática MWN — consulta tributária
+
+- `BCE/temas/consulta-rfb-ums-mwn-natureza-tributaria.md` — registra a consulta apresentada à RFB sobre conversão UMS → MWN, a tese de realização de receita, a analogia com milhagem e a situação processual. Consulta protocolada; resposta formal positiva ou negativa ainda não registrada. O documento distingue tese da consulente de manifestação oficial.
+
 ### P3 — Estratégia, implantação institucional e contexto externo
 
 | ID | Documento-alvo | Pergunta central | Fontes candidatas observadas | Status |
