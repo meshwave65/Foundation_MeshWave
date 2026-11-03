@@ -92,6 +92,12 @@ Nenhuma afirmação neste documento representa promessa de retorno, valorizaçã
 - [Modelo econômico: PoUW, UMS, MWN e liquidez distribuída](economia-ums-mwn-pouw-liquidez-distribuida.md)
 - [Checkpoint documental de 2026-11-01](../sessoes/2026-11-01_governanca-e-mercado-mwn.md)
 
+## 9.1 Consulta tributária sobre UMS e MWN
+
+A MeshWave documenta uma consulta apresentada à Receita Federal do Brasil sobre a natureza tributária da conversão UMS → MWN e a distinção entre realização de receita da atividade e eventual ganho de capital em alienação posterior. A consulta foi protocolada em 14/10/2025, no processo e-Processo nº 10265.426240/2025-40. **Até o registro documental atual, não há resposta formal positiva ou negativa da RFB**; a tese permanece identificada como entendimento submetido pela consulente, não como posição oficial confirmada.
+
+A consulta usa uma analogia com programas de fidelidade/milhagem para explicar a diferença entre crédito interno de utilidade e ativo com valor de mercado. Consulte o [documento temático completo](consulta-rfb-ums-mwn-natureza-tributaria.md). Esta referência não substitui análise jurídica e não constitui garantia de tratamento fiscal.
+
 ## 10. Limite de uso
 
 Este documento é um ponto de partida para diálogo e preparação de materiais. Antes de apresentação pública a investidores, as métricas, afirmações de funcionamento, regras de emissão e aspectos jurídicos devem ser atualizados e validados. Não constitui oferta de investimento, prospecto, aconselhamento financeiro ou parecer jurídico.
