@@ -6,8 +6,8 @@
 |---|---|
 | ID curatorial | `DOM-03` |
 | Status | `REVISÃO` — síntese F2.3 com auditorias F3.3; protocolos e implementação não validados |
-| Versão do documento | `0.1.6` |
-| Última atualização | `2026-10-31` |
+| Versão do documento | `0.1.7` |
+| Última atualização | `2026-11-03` |
 | Curador | `Manus — curadoria BCE MeshWave` |
 | Confiança geral | Média para a existência das propostas e do histórico de decisões; baixa para implementação, interoperabilidade e operação em rede |
 | Documento relacionado no índice | `BCE/INDICE_CURATORIAL.md` — DOM-03 |
@@ -148,6 +148,8 @@ F3.3/ID-117 registra a criação de um atalho `.desktop` chamado “Simulador de
 
 F3.3/ID-117-R1 acrescenta o conteúdo recuperado do launcher Bash apontado pelo atalho. O script verifica `requirements.txt` e `src/`, cria/reutiliza `venv`, instala dependências, inicia `src/main.py` como Flask em `127.0.0.1:5000`, grava `flask_server.log` e abre o navegador. Isso materializa a lógica do launcher e especifica os artefatos esperados, mas não fornece o projeto Flask, `requirements.txt`, `src/main.py`, dados, logs, versão, commit ou resultados. O script não foi executado; portanto, a nova evidência eleva a descrição do launcher, não a confirmação do simulador ou do encaminhamento.
 
+F3.3/ID-245, apesar do título “Desenvolvimento de Simuladores Web”, registra principalmente a organização alegada de uma base de conhecimento com READMEs placeholder, diretórios documentais, histórico de conversas e um ZIP exibido na interface. O pacote auditado não contém o ZIP, os READMEs, projeto web, código de simulador, dependências, versão, commit, build, logs ou resultados. `code_blocks.txt` é apenas uma listagem transcrita de caminhos/compactação e `FULL.png` é interface/replay. ID-245 é organização editorial e ausência crítica, não implementação de simulador ou evidência de encaminhamento.
+
 ## 8. Evidências e fontes
 
 | Evidência | Tipo | Caminho relativo | O que sustenta | Limitações |
@@ -189,6 +191,7 @@ Os `links.txt` incluem links de ação, redirecionadores e um destino de relató
 | Auditoria F3.3/ID-262 (2026-10-28; prefixo do caminho bruto: 2026-04-22) | Inconsistências entre resultados do simulador e código-fonte | Alegações de endpoints corrigidos, redeploy e teste 5×8; imagem mostra resultados tabulares, enquanto a transcrição registra falha gráfica recorrente e créditos esgotados | `content.txt`, `code_blocks.txt`, `FULL.png`, `img_000.jpg`, `links.txt` | Interface/replay e resultado alegado; sem código, commit, logs, CSV completo, gráfico de rotas ou reprodução independente |
 | Auditoria F3.3/ID-120 (2026-10-28; integração publicada em 2026-10-31; prefixo do caminho bruto: 2026-04-22) | Possibilidade de criar app para simuladores; diagnóstico de PWA Vite + Vue | Host allowlist alegadamente ajustado, servidor Vite iniciado e frontend entregue para validação; captura móvel mostra tela branca persistente e replay termina aguardando usuário | `content.txt`, `code_blocks.txt`, `FULL.png`, `img_000.jpg`, `links.txt` | Sem código Vue, configuração, dependências, build de produção, logs, backend, teste de simulador ou resultado; não confirma execução nem encaminhamento |
 | Auditoria F3.3/ID-117 (2026-10-31; prefixo do caminho bruto: 2026-04-22) | Criação de atalho para simulador gráfico de rede | `.desktop` declara comando para `~/Desktop/simulation_app/run_simulator_ubuntu.sh`; captura mostra instruções e tarefa concluída | `content.txt`, `code_blocks.txt`, `FULL.png`, `links.txt` | Sem script, diretório, fonte, dependências, logs, dados ou execução; não confirma simulador nem encaminhamento |
+| Auditoria F3.3/ID-245 (2026-11-03; prefixo do caminho bruto: 2026-04-22) | Desenvolvimento de Simuladores Web / organização de base de conhecimento | READMEs placeholder, diretórios documentais, histórico de conversas e ZIP alegado na interface; sem pacote recuperável ou simulador | `content.txt`, `code_blocks.txt`, `FULL.png`, `links.txt` | Organização editorial/interface-replay com ruído e ausência crítica; sem projeto web, código, versão, dependências, testes, logs ou encaminhamento |
 
 ## 10. Decisões tomadas
 
@@ -236,7 +239,7 @@ As correções Android registradas atacam recursos XML ausentes, referências de
 9. É tecnicamente possível e autorizado usar rádios celulares de aparelhos comerciais para comunicação direta sem ERB? Qual hardware/SDR e modo regulatório seriam necessários?
 10. Como se resolvem sincronização de tempo/frequência, espectro, interferência, potência e bateria na hipótese GSM mesh?
 11. Qual é a política formal de gateway/fallback, incluindo consentimento, privacidade, custo, retorno e comportamento sem conectividade externa?
-12. O simulador publicado é apenas visual ou implementa encaminhamento; onde estão seus fontes, versão, testes e dados? ID-229 mostra na interface um anexo `meshwave_simulator.py` de 19,67 KB e um fragmento truncado, mas o arquivo completo não integra o pacote; a análise foi interrompida. ID-206 mostra uma interface de parâmetros para CPAs, usuários, raio, TTL, etapas e mobilidade, mas não contém o projeto, o simulador Python, saída ou logs. ID-262 mostra resultados tabulares alegados (40 CPAs, 280 usuários, 10 etapas e CSV com `SUCESSO`) e afirma correção de endpoints/redeploy, mas não fornece código, commit, logs, CSV completo ou gráfico de rotas; a fonte registra que a visualização gráfica continua inconsistente. Localizar o fonte auditável com versão/commit, dependências, entradas, testes, dados, logs e saída gráfica. Estados de reprodução, interfaces e resultados alegados não confirmam implementação ou encaminhamento.
+12. O simulador publicado é apenas visual ou implementa encaminhamento; onde estão seus fontes, versão, testes e dados? ID-229 mostra na interface um anexo `meshwave_simulator.py` de 19,67 KB e um fragmento truncado, mas o arquivo completo não integra o pacote; a análise foi interrompida. ID-206 mostra uma interface de parâmetros para CPAs, usuários, raio, TTL, etapas e mobilidade, mas não contém o projeto, o simulador Python, saída ou logs. ID-262 mostra resultados tabulares alegados (40 CPAs, 280 usuários, 10 etapas e CSV com `SUCESSO`) e afirma correção de endpoints/redeploy, mas não fornece código, commit, logs, CSV completo ou gráfico de rotas; a fonte registra que a visualização gráfica continua inconsistente. ID-245 adiciona somente uma alegação de base documental/ZIP e nenhum artefato de simulador. Localizar o fonte auditável com versão/commit, dependências, entradas, testes, dados, logs e saída gráfica. Estados de reprodução, interfaces, ZIPs alegados e resultados não confirmam implementação ou encaminhamento.
 13. O relatório Briar foi realmente publicado e qual é o conteúdo técnico do plugin; o material sensível histórico foi revogado?
 14. Onde estão os arquivos `previous_task_context.md`, planilhas e roteiros citados pelas fontes?
 
@@ -264,7 +267,8 @@ As correções Android registradas atacam recursos XML ausentes, referências de
 | `0.1.4` | `2026-10-31` | Integrada auditoria F3.3/ID-120; PWA Vite/Vue, falha de tela branca no iPhone e validação pendente registrados; ausência de projeto, build, logs e simulador executável permanece. | `BCE/fontes/CLASSIFICACAO_F3_3_ID120.md` (`349b60a`) |
 | `0.1.5` | `2026-10-31` | Integrada auditoria F3.3/ID-117; atalho `.desktop` e comando para script externo registrados como configuração/replay; ausência do script, código, logs e execução verificável permanece. | `BCE/fontes/CLASSIFICACAO_F3_3_ID117.md` (`8847661`) |
 | `0.1.6` | `2026-10-31` | Reauditado ID-117 com launcher Bash recuperado; fluxo de venv/requirements/Flask/log foi documentado, sem elevar a evidência a execução ou implementação do simulador. | `BCE/fontes/CLASSIFICACAO_F3_3_ID117_R1.md` (`767ee0e`) |
+| `0.1.7` | `2026-11-03` | Integrada auditoria F3.3/ID-245; organização documental, ZIP alegado e replay de interface registrados como ausência crítica, sem evidência de simulador, código ou encaminhamento. | `BCE/fontes/CLASSIFICACAO_F3_3_ID245.md` (`c6a0db8`) |
 
 ## 17. Próximo passo de curadoria
 
-Após o fechamento de ID-117, processar o próximo caminho físico formalmente designado e atualizar este DOM-03 somente com caminhos, versões, hashes, logs e resultados reproduzíveis; manter `REVISÃO` até existir uma implementação ou experimento de rede confirmável, incluindo resolução da divergência gráfica de ID-262, da tela branca de ID-120 e da ausência do script apontado por ID-117.
+Após o fechamento de ID-245, reconciliar a fila e processar sequencialmente o próximo caminho formalmente designado, atualizando este DOM-03 somente com caminhos, versões, hashes, logs e resultados reproduzíveis; manter `REVISÃO` até existir uma implementação ou experimento de rede confirmável, incluindo resolução da divergência gráfica de ID-262, da tela branca de ID-120 e das ausências críticas registradas em ID-117 e ID-245.
