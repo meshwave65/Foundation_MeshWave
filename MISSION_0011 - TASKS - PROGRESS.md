@@ -25,13 +25,14 @@
 | F3.3-COORD-006 | Reconciliar fila após ID-245 e selecionar o próximo contato físico | DONE | Manus / sandbox:root:9a8vVvOkKgNlcDNLamYLk7 | Remoto/locks reconciliados; ID-246 reivindicado em `BCE/locks/F3.3-ID246.lock.md` | Prosseguir somente no caminho ID-246 |
 | F3.3-UNIT-006 | Auditar a unidade física ID-246 com lock exclusivo | DONE | Manus / sandbox:root:9a8vVvOkKgNlcDNLamYLk7 | Classificação `ee50aca`; DOM-03 `7f824b2`; índice `627bb3d`; fechamento `BCE/sessoes/2026-11-03_f3-3-id246-fechamento.md` | ID-246 encerrado; reconciliar fila e reivindicar somente o próximo caminho elegível |
 | F3.3-COORD-007 | Reconciliar fila após ID-246 e selecionar o próximo contato físico | DONE | Manus / sandbox:root:9a8vVvOkKgNlcDNLamYLk7 | Remoto/locks reconciliados; ID-248 reivindicado em `BCE/locks/F3.3-ID248.lock.md` | Prosseguir somente no caminho ID-248 |
-| F3.3-UNIT-007 | Auditar a unidade física ID-248 com lock exclusivo | PROGRESS | Manus / sandbox:root:9a8vVvOkKgNlcDNLamYLk7 | `BCE/locks/F3.3-ID248.lock.md`; `BCE/sessoes/2026-11-03_f3-3-id248-abertura.md` | Revalidar os quatro SHA-256 e ler somente os quatro artefatos pré-registrados |
+| F3.3-UNIT-007 | Auditar a unidade física ID-248 com lock exclusivo | DONE | Manus / sandbox:root:9a8vVvOkKgNlcDNLamYLk7 | Classificação `1722b70`; DOM-03 `4b36ea8`; índice `97cafff`; fechamento `BCE/sessoes/2026-11-03_f3-3-id248-fechamento.md` | ID-248 encerrado; reconciliar fila antes de novo claim |
+| F3.3-COORD-008 | Reconciliar fila após ID-248 e selecionar o próximo contato físico | STAGED | Manus / sandbox:root:9a8vVvOkKgNlcDNLamYLk7 | Nenhum claim novo publicado | Sincronizar remoto, verificar locks e mapear próximos candidatos somente por metadados |
 | F3.3-REAUDIT-001 | Integrar evidência adicional fornecida pelo usuário para ID-117 | PROGRESS | Manus / sandbox:root:9a8vVvOkKgNlcDNLamYLk7 | `BCE/locks/F3.3-ID117-R1.lock.md`; `BCE/sessoes/2026-10-31_f3-3-id117-r1-abertura.md` | Preservar o anexo, conferir SHA-256 e atualizar classificação/DOM-03 sem executar o script |
 | F3.3-CLOSE-REAUDIT-001 | Fechar a reauditoria, preservar proveniência e emitir handoff | DONE | Manus / sandbox:root:9a8vVvOkKgNlcDNLamYLk7 | Classificação `767ee0e`; DOM-03/índice `e765d5f`; cópia em `BCE/fontes/anexos/F3.3-ID117-R1/` | Launcher incorporado como evidência parcial; não executar; reconciliar fila somente em nova unidade |
 
 ## Regra de assunção
 
-Assumir somente a próxima linha `STAGED` após confirmar que não há instância concorrente. ID-206, ID-262, ID-120, ID-117, ID-117-R1, ID-245 e ID-246 estão encerrados; ID-248 é o único claim ativo e nenhum outro caminho deve ser aberto durante esta unidade.
+Assumir somente a próxima linha `STAGED` após confirmar que não há instância concorrente. ID-206, ID-262, ID-120, ID-117, ID-117-R1, ID-245, ID-246 e ID-248 estão encerrados; F3.3-COORD-008 deve reconciliar a fila antes de qualquer novo claim.
 
 ## Critérios de fechamento
 

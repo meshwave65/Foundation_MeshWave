@@ -7,7 +7,7 @@
 | Campo | Valor |
 |---|---|
 | Status global | `EM_ANDAMENTO — FASE 3: Curadoria profunda` |
-| Última atualização | 2026-11-03 21:52 (-03:00) — reconciliação concluída; ID-248 reivindicado e pré-registrado antes da leitura. |
+| Última atualização | 2026-11-03 21:53 (-03:00) — ID-248 classificado, integrado e encerrado; fila liberada para nova reconciliação. |
 | Publicação de F2.6-07 | Os cinco commits da unidade (`c55e31d`, `b3c8864`, `8870caa`, `290895f`, `629125a`) foram publicados em `main`; a correção factual posterior foi registrada em `f8649ba`. |
 | Publicação de F2.6-08 | DOM-06 `74eba5f`; índice `14e2768` (cobertura) e `aec133d` (linha principal DOM-06); checkpoint de fechamento `6f99eaa`, todos publicados em `main`. |
 | Publicação de F2.6-09 | DOM-06 `97dea42`; índice `a39441b`; pré-registro `56c5ff8`; fechamento `f186adc`; controle `b79cf1d`, publicados em `main`.
@@ -23,16 +23,16 @@
 | Publicação de F3.1/E006 | Pré-registro `d6d6db1`; classificação `5ba3e9f`; DOM-01 v0.3.5 `84fe537`; índice `ecbbb19`; checkpoint `b934e53`; controle `98ca271`, publicados em `main`; hashes 5/5 conferidos. |
 | Publicação de F3.1/E007 | Pré-registro `a2475e0`; classificação `411671a`; controle após classificação `d164694`; DOM-01 v0.3.6 `17869b4`; índice `3940767`/`8fba35b`; correção `93916a6`; fechamento `f4df418`; publicados em `main`. |
 | Publicação de F3.3/ID-229 | Claim `edd2262`; pré-registro `38876c9`; classificação `38ea48a`; DOM-03 v0.1.1 `623d911`; índice `593a497`; controle pré-fechamento `5bf470e`; checkpoint e estado `CONCLUÍDO` do claim publicados conjuntamente no commit de fechamento. Hashes 4/4 conferidos. |
-| Estado local/remoto | `main` e `origin/main` sincronizadas em `c084383` antes do claim; ID-248 é o único lock `ATIVO`; claim/pré-registro/controle aguardam publicação atômica. |
+| Estado local/remoto | `main` e `origin/main` sincronizadas antes do fechamento; classificação/DOM-03/índice publicados; fechamento, lock e controle desta unidade aguardam publicação atômica. Nenhum lock F3.3 deve permanecer ativo após essa publicação. |
 | Branch de trabalho | `main` |
-| Último item concluído | F3.3/ID-246 — quatro artefatos auditados, hashes 4/4; classificação `ee50aca`, DOM-03 v0.1.8 `7f824b2`, índice `627bb3d`; proposta de portal/interface-replay, sem simulador verificável. DOM-03 §14.12 continua aberto. |
-| Item em andamento | `MISSION_0011` / F3.3 — ID-246 concluído; `F3.3/ID-248` em `PROGRESS` sob claim exclusivo. |
-| Último caminho processado | `KNOWLEDGE/natalia/20260422_172140_Desenvolvimento de Simuladores Integrados em Página Web - Manus/` — ID-248; quatro artefatos, hashes pré-registrados; lock ativo antes da leitura. |
+| Último item concluído | F3.3/ID-248 — quatro artefatos auditados, hashes 4/4; classificação `1722b70`, DOM-03 v0.1.9 `4b36ea8`, índice `97cafff`; diagnóstico de build Android, sem APK ou simulador verificável. DOM-03 §14.12 continua aberto. |
+| Item em andamento | `MISSION_0011` / F3.3 — ID-248 concluído; F3.3-COORD-008 em `STAGED` para nova reconciliação de fila. |
+| Último caminho processado | `KNOWLEDGE/natalia/20260422_172140_Desenvolvimento de Simuladores Integrados em Página Web - Manus/` — ID-248; quatro artefatos, hashes 4/4 revalidados; lock encerrado após integração. |
 | Fontes de governança/contexto lidas nesta unidade | Estado remoto, locks F3.3, controle, MISSION_0011, blueprint F3.3, inventário/metadados e reauditoria ID-117-R1. Não houve intervenção concorrente; nenhum artefato bruto de ID-245 foi aberto antes do claim. |
-| Arquivos curatoriais alterados | Fechamento ID-246 publicado; claim `BCE/locks/F3.3-ID248.lock.md` e pré-registro `BCE/sessoes/2026-11-03_f3-3-id248-abertura.md` nesta unidade. Fontes brutas preservadas. |
-| Próximo item | `MISSION_0011/F3.3-UNIT-007`: revalidar os quatro SHA-256 e ler somente o caminho ID-248; interromper em caso de divergência. |
+| Arquivos curatoriais alterados | Classificação `BCE/fontes/CLASSIFICACAO_F3_3_ID248.md`; DOM-03 v0.1.9; índice; fechamento `BCE/sessoes/2026-11-03_f3-3-id248-fechamento.md`; lock encerrado. Fontes brutas preservadas. |
+| Próximo item | `MISSION_0011/F3.3-COORD-008`: sincronizar remoto, confirmar ausência de locks ativos e mapear apenas metadados antes de novo claim. |
 | Conflitos, lacunas e impedimentos | DOM-03 §14.12 permanece aberto: faltam implementação de simulador, versão/commit, dependências, testes, logs e resultados de encaminhamento. ID-245 foi escolhido por ordem de fila entre candidatos web não processados. |
-| Responsável pela sessão | Manus — ID-248 reivindicado de forma exclusiva; processar somente os quatro artefatos pré-registrados e não abrir outro contato. |
+| Responsável pela sessão | Manus — ID-248 encerrado atomicamente; próximo agente deve reconciliar a fila antes de reivindicar outro contato. |
 | Atualização lateral 2026-10-27 | Clarificação do Mercado como exchange/integrador de fronteira registrada em DOM-20; conteúdo `31cde69`, índice `1418103`, checkpoint `71b9ed0`, publicados em `main`. Não abriu fontes brutas e não substitui o próximo passo F3.3. |
 
 ## Como retomar em cinco minutos
