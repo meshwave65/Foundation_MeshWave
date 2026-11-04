@@ -7,7 +7,7 @@
 | Campo | Valor |
 |---|---|
 | Status global | `EM_ANDAMENTO — FASE 3: Curadoria profunda` |
-| Última atualização | 2026-10-31 11:12 (-03:00) — remoto reconciliado em `de1f9ca`; ID-245 selecionado, reivindicado e pré-registrado antes da leitura. |
+| Última atualização | 2026-11-03 21:26 (-03:00) — remoto reconciliado em `f226b88`; commits concorrentes não tocaram F3.3/ID-245; claim permanece ativo. |
 | Publicação de F2.6-07 | Os cinco commits da unidade (`c55e31d`, `b3c8864`, `8870caa`, `290895f`, `629125a`) foram publicados em `main`; a correção factual posterior foi registrada em `f8649ba`. |
 | Publicação de F2.6-08 | DOM-06 `74eba5f`; índice `14e2768` (cobertura) e `aec133d` (linha principal DOM-06); checkpoint de fechamento `6f99eaa`, todos publicados em `main`. |
 | Publicação de F2.6-09 | DOM-06 `97dea42`; índice `a39441b`; pré-registro `56c5ff8`; fechamento `f186adc`; controle `b79cf1d`, publicados em `main`.
@@ -23,7 +23,7 @@
 | Publicação de F3.1/E006 | Pré-registro `d6d6db1`; classificação `5ba3e9f`; DOM-01 v0.3.5 `84fe537`; índice `ecbbb19`; checkpoint `b934e53`; controle `98ca271`, publicados em `main`; hashes 5/5 conferidos. |
 | Publicação de F3.1/E007 | Pré-registro `a2475e0`; classificação `411671a`; controle após classificação `d164694`; DOM-01 v0.3.6 `17869b4`; índice `3940767`/`8fba35b`; correção `93916a6`; fechamento `f4df418`; publicados em `main`. |
 | Publicação de F3.3/ID-229 | Claim `edd2262`; pré-registro `38876c9`; classificação `38ea48a`; DOM-03 v0.1.1 `623d911`; índice `593a497`; controle pré-fechamento `5bf470e`; checkpoint e estado `CONCLUÍDO` do claim publicados conjuntamente no commit de fechamento. Hashes 4/4 conferidos. |
-| Estado local/remoto | `main` e `origin/main` sincronizadas em `de1f9ca` antes do claim; claim/pré-registro/controle do ID-245 estão locais até o commit de publicação; nenhum outro claim `ATIVO`. |
+| Estado local/remoto | `main` e `origin/main` sincronizadas em `f226b88`; os 16 commits posteriores a `270f04c` não alteraram o claim, a missão ou os artefatos de ID-245; ID-245 é o único lock `ATIVO`. |
 | Branch de trabalho | `main` |
 | Último item concluído | F3.3/ID-229 — quatro artefatos auditados, hashes 4/4; classificação, DOM-03 v0.1.1, índice e checkpoint publicados; claim encerrado. DOM-03 §14.12 continua aberto, sem confirmação de fonte completa, versão, testes ou encaminhamento. |
 | Item em andamento | `MISSION_0011` / F3.3 — ID-206, ID-262, ID-120, ID-117 e R1 concluídos; `F3.3/ID-245` está em `PROGRESS` sob claim exclusivo. |
