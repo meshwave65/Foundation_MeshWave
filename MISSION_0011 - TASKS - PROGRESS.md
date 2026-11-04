@@ -3,7 +3,7 @@
 **Repositório canônico:** `https://github.com/meshwave65/Foundation_MeshWave`
 **Blueprint:** `BCE/BLUEPRINT_F3_3_EXECUCAO_PARALELA.md`
 **Protocolo de handoff:** `BCE/PROTOCOLO_MISSOES_E_HANDOFF.md`
-**Último checkpoint remoto confirmado:** `origin/main@f226b88`; reconciliação de 2026-11-03 confirmou que os commits concorrentes não alteraram o ID-245.
+**Último checkpoint remoto confirmado:** `origin/main@4d50fb6`; reconciliação de 2026-11-03 confirmou que o ID-245 continua `ATIVO` e não há novo contato elegível.
 **Estado da missão:** `PROGRESS`
 
 | ID | Tarefa | Status | Instância | Repositório/artefato | Próxima ação única |
@@ -27,7 +27,7 @@
 
 ## Regra de assunção
 
-Assumir somente a próxima linha `STAGED` após confirmar que não há instância concorrente. ID-206, ID-262, ID-120, ID-117 e ID-117-R1 estão encerrados; ID-245 é o único claim ativo e nenhum outro caminho ou anexo deve ser aberto durante esta unidade.
+Assumir somente a próxima linha `STAGED` após confirmar que não há instância concorrente. ID-206, ID-262, ID-120, ID-117 e ID-117-R1 estão encerrados; ID-245 continua como único claim ativo. Não reivindicar ID-246, ID-248 ou qualquer outro caminho até o fechamento formal do ID-245.
 
 ## Critérios de fechamento
 
