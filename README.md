@@ -7,6 +7,7 @@ Repositório de documentação e materiais do ecossistema MeshWave.
 - [Documento-base preliminar para investidores](BCE/temas/documento-base-investidores-mwn.md)
 - [Governança do Mercado MWN — Prioridade dos Meshwalkers](BCE/temas/governanca-mercado-mwn-prioridade-meshwalkers.md)
 - [Modelo econômico: PoUW, UMS, MWN e liquidez distribuída](BCE/temas/economia-ums-mwn-pouw-liquidez-distribuida.md)
+- [Economia centrada no MeshWalker e carteira unificada por DID](BCE/temas/economia-centrada-no-meshwalker-carteira-unificada.md)
 - [Consulta à RFB: UMS, MWN e realização econômica](BCE/temas/consulta-rfb-ums-mwn-natureza-tributaria.md)
 - [Checkpoint documental — 2026-11-01](BCE/sessoes/2026-11-01_governanca-e-mercado-mwn.md)
 
