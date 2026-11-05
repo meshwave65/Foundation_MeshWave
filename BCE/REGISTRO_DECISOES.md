@@ -109,3 +109,13 @@ O princípio de prioridade de ordens dos Meshwalkers foi registrado como decisã
 - `BCE/sessoes/2026-11-01_governanca-e-mercado-mwn.md` — checkpoint, escopo de persistência e pendências.
 
 A regra foi informada pelo responsável. Não há confirmação de implementação no código da exchange/carteira; os documentos mantêm essa distinção explícita.
+
+## Referência temática — Economia centrada no MeshWalker e carteira unificada (2026-11-05)
+
+O responsável definiu que a unidade econômica da rede é o MeshWalker identificado por DID único, com carteira lógica unificada para todos os nós associados. Nós superavitários podem compensar o consumo de nós deficitários pertencentes ao mesmo DID por consolidação contábil, sem transferência entre carteiras. A regra de UMS continua proibindo movimentações diretas entre carteiras comuns; operações institucionais e correções devem usar carteiras administrativas autorizadas e fluxo auditável.
+
+- `BCE/temas/economia-centrada-no-meshwalker-carteira-unificada.md` — princípio, exemplo, requisitos e distinção entre conceito e implementação.
+- `BCE/temas/economia-ums-mwn-pouw-liquidez-distribuida.md` — conexão com o modelo econômico geral.
+- `BCE/temas/identidade-dids-e-identificador-de-equipamento.md` — relação entre DID, identidade e nó.
+
+O registro é conceitual; não confirma a implementação do DID único, agregação, carteira unificada ou ledger.
