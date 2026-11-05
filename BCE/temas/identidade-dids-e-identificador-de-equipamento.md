@@ -260,3 +260,9 @@ Nenhuma dessas melhorias foi implementada no lote; são requisitos para a próxi
 ## 17. Próximo passo de curadoria
 
 Fechar o claim F3.1/L002-01 e manter DOM-04 em `REVISÃO`. A reauditoria não acrescenta evidência independente; revisar o documento novamente somente se uma fonte futura trouxer método DID, ciclo de vida, chaves, resolução, testes ou decisão formal de identidade.
+
+## 10. Princípio arquitetural registrado — identidade e carteira unificadas por DID
+
+A concepção econômica agora registrada estabelece que a identidade do MeshWalker (humano ou institucional) é única e pode agregar vários nós/equipamentos, enquanto sua carteira lógica permanece unificada e vinculada ao DID. Os equipamentos não são titulares econômicos independentes nem geram carteiras separadas automaticamente. Créditos e consumo dos nós associados são consolidados na carteira do DID, preservando-se a referência operacional de cada evento.
+
+Essa regra é uma definição arquitetural informada pelo responsável, não evidência de implementação. O detalhamento econômico e os requisitos de agregação, contabilização e segregação de UMS estão em [Economia centrada no MeshWalker e carteira unificada por DID](economia-centrada-no-meshwalker-carteira-unificada.md).
