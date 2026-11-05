@@ -432,3 +432,13 @@ A consulta apresentada à Receita Federal do Brasil (RFB), no processo e-Process
 A consulta é referência para compreender a separação entre economia interna e externa, mas seu texto original descreve principalmente a geração de UMS associada a recursos da rede. A ampliação conceitual posterior de PoUW para contribuições financeiras úteis ao ecossistema permanece registrada na seção 14 e não deve ser apresentada como objeto especificamente validado por resposta da RFB.
 
 Ver [Consulta à Receita Federal: UMS, MWN e realização econômica](consulta-rfb-ums-mwn-natureza-tributaria.md), que documenta a tese, a analogia, a situação processual e os limites de interpretação.
+
+## 9. Unidade econômica: MeshWalker e carteira unificada por DID
+
+A unidade de contabilização econômica é o MeshWalker identificado por um DID único, e não cada equipamento agregado. Um DID pode reunir vários nós, com produção e consumo de UMS consolidados em uma carteira lógica unificada. Um nó superavitário pode compensar contabilmente o consumo de outro nó do mesmo titular sem que ocorra transferência entre carteiras.
+
+A contabilização deve preservar a origem de cada evento por nó para auditoria, mas não deve exigir carteiras ou gestão de saldo separadas por equipamento. A carteira permanece vinculada ao DID.
+
+A regra de segregação permanece: UMS não pode ser transferida diretamente entre carteiras comuns de MeshWalkers. Movimentações permitidas envolvendo UMS devem passar por carteiras institucionais/administrativas do sistema explicitamente autorizadas; estornos e correções seguem fluxo administrativo auditável. A agregação de nós no mesmo DID é consolidação contábil, não transferência entre usuários.
+
+O exemplo, os requisitos derivados e os limites entre princípio e implementação estão no documento específico [Economia centrada no MeshWalker e carteira unificada por DID](economia-centrada-no-meshwalker-carteira-unificada.md).
