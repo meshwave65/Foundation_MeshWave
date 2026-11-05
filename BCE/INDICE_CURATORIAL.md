@@ -78,6 +78,7 @@ Este índice define a arquitetura documental da Base de Conhecimento Evolutivo. 
 | DOM-18 | `BCE/temas/impacto-ambiental-social-e-recursos.md` | Quais impactos ambientais, sociais e de infraestrutura foram considerados? | environmental impact, data centers, uso de dispositivos obsoletos | PENDENTE |
 | DOM-19 | `BCE/temas/temas-externos-e-fora-de-escopo.md` | Quais fontes não pertencem ao núcleo MeshWave e como devem ser isoladas? | saúde, instalação elétrica, academia, aluguel, tanque Osório, política e demais temas externos | PENDENTE |
 | DOM-21 | `BCE/temas/governanca-mercado-mwn-prioridade-meshwalkers.md` | Quais regras impedem a MeshWave/tesouraria de obter prioridade sobre ordens de usuários no mercado MWN? | princípio informado pelo responsável em 2026-11-01; documento-base de investidores e checkpoint da sessão | CONCEITO REGISTRADO — regulamento operacional, matching engine e controles ainda não implementados/verificados |
+| DOM-22 | `BCE/temas/economia-centrada-no-meshwalker-carteira-unificada.md` | Como a identidade MeshWalker agrega nós e consolida a economia/UMS em uma carteira vinculada ao DID? | definição informada pelo responsável em 2026-11-05; exemplo de nó superavitário e nó consumidor; relação com DOM-04 e DOM-20 | CONCEITO REGISTRADO — DID, agregação e ledger ainda exigem especificação técnica e verificação de implementação |
 
 ## Matriz de dependências
 
