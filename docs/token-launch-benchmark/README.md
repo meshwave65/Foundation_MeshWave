@@ -78,3 +78,4 @@ Os relatórios são cumulativos por etapa e não substituem os arquivos de caso 
 
 
 - [15 — HUMA e ASTER: checkpoints D+7/D+30 em Spot](./reports/2026-11-06-stage-15-huma-aster-d7-d30-spot-checkpoints.md): candles exatos no horário UTC da primeira negociação, close-to-close D+7/D+30, volumes-base/quote separados, barras diárias ASTER como série distinta e verificações de arquivo/fontes.
+- [16 — Expansão da amostra: seleção de tokens e trilha de validação](./reports/2026-11-06-stage-16-expanded-sample-source-triage.md): fontes primárias de horário de listagem para JUP, BERA e LINEA; candidatos e método definidos, OHLCV ainda pendente e não estimado.
