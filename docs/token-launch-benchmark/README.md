@@ -58,8 +58,10 @@ Os relatórios são cumulativos por etapa e não substituem os arquivos de caso 
 
 - [06 — Coleta empírica inicial: HUMA e ASTER](./reports/2026-11-05-stage-06-huma-aster-initial-data.md): eventos e horários, números publicados, discrepâncias entre fontes, conclusões e campos ainda não validados.
 
-- [07 — Extração intradiária e reconciliação de venues (HUMA / ASTER](./reports/2026-11-05-stage-07-intraday-extraction-and-venue-reconciliation.md): tentativa de extração primária, resposta HTTP 451 e evidência de negociação ASTER na LBank no próprio dia do TGE.
+- [07 — Extração intradiária e reconciliação de venues (HUMA / ASTER](./reports/2026-11-05-stage-07-intraday-extraction-and-venue-reconciliation.md): tentativa de extração primária, resposta HTTP 451 e registro inicial de listagem LBank anunciado para o TGE, posteriormente adiado; abertura real documentada em 22/09.
 
-- [08 — Rota de aquisição de dados históricos](./reports/2026-11-05-stage-08-historical-data-acquisition-route.md): padrão Binance Vision, checksum/timestamp, APIs públicas LBank e limites da extração ainda não realizada.
+- [08 — Rota de aquisição de dados históricos](./reports/2026-11-05-stage-08-historical-data-acquisition-route.md): padrão Binance Vision, checksum/timestamp, APIs públicas LBank; a extração ASTER foi realizada na Etapa 10.
 
 - [09 — Inspeção do arquivo bruto HUMA/USDT](./reports/2026-11-05-stage-09-huma-archive-inspection.md): CSV oficial Binance Vision extraído e SHA-256 validado; primeira hora, 24h rolling e D0 parcial agregados, com volume-base/quote separados. D7/D30 pendentes.
+
+- [10 — ASTER/USDT: LBank, correção cronológica e candles inaugurais](./reports/2026-11-05-stage-10-aster-lbank-historical-candles.md): anúncio inicial de 17/09 adiado; candles a partir de 22/09 05:00 UTC, janelas 60m/24h/D0, volume API e anomalias OHLC.
