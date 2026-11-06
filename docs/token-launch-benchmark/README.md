@@ -75,3 +75,6 @@ Os relatórios são cumulativos por etapa e não substituem os arquivos de caso 
 - [13 — ASTER: definição da janela de TGE e lacuna histórica](./reports/2026-11-05-stage-13-aster-tge-window-and-history-gap.md): separa claim às 09:00 UTC da negociação Spot às 12:00 UTC; seis janelas pré-mercado e aggTrades antes do corte vazias. A janela de 24h da etapa 12 é apoiada pelo primeiro trade, mas US$371M continua sem janela/metodologia expressas.
 
 - [14 — Reflexão pré-lançamento: estrutura empresarial e realidade econômica](./reports/2026-11-05-stage-14-prelaunch-business-structure-and-economic-reality.md): distingue fontes de recursos, estrutura mínima administrativa/jurídica/contábil/tesouraria, princípios de prudência e sequência pré-lançamento. É uma orientação estratégica preliminar, não parecer.
+
+
+- [15 — HUMA e ASTER: checkpoints D+7/D+30 em Spot](./reports/2026-11-06-stage-15-huma-aster-d7-d30-spot-checkpoints.md): candles exatos no horário UTC da primeira negociação, close-to-close D+7/D+30, volumes-base/quote separados, barras diárias ASTER como série distinta e verificações de arquivo/fontes.
