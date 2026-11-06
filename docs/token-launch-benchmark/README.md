@@ -59,3 +59,5 @@ Os relatórios são cumulativos por etapa e não substituem os arquivos de caso 
 - [06 — Coleta empírica inicial: HUMA e ASTER](./reports/2026-11-05-stage-06-huma-aster-initial-data.md): eventos e horários, números publicados, discrepâncias entre fontes, conclusões e campos ainda não validados.
 
 - [07 — Extração intradiária e reconciliação de venues (HUMA / ASTER](./reports/2026-11-05-stage-07-intraday-extraction-and-venue-reconciliation.md): tentativa de extração primária, resposta HTTP 451 e evidência de negociação ASTER na LBank no próprio dia do TGE.
+
+- [08 — Rota de aquisição de dados históricos](./reports/2026-11-05-stage-08-historical-data-acquisition-route.md): padrão Binance Vision, checksum/timestamp, APIs públicas LBank e limites da extração ainda não realizada.
