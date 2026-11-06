@@ -42,3 +42,6 @@ Os textos em [drafts](./drafts/README.md) são esqueletos editáveis e **não ap
 
 ## Próxima revisão
 Completar dados comparáveis por caso: TGE UTC, preço inicial por venue, liquidez efetivamente provisionada, volume token-specific 24h/7d/30d, preço e volume em D+7/D+30, unlocks, fonte e confiança. Registrar metodologia e captura da fonte.
+
+## Reconciliação de métricas
+- [Reconciliação preliminar D0/D1 e protocolo de coleta](./reconciliation-inaugural-metrics.md): separa fontes de preços, volumes de token, volume de protocolo, captação e métricas de liquidez; explicita divergências e lacunas antes de criar uma tabela comparável.
