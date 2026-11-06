@@ -69,3 +69,5 @@ Os relatórios são cumulativos por etapa e não substituem os arquivos de caso 
 - [11 — ASTER TGE: rastreabilidade do volume inaugural](./reports/2026-11-05-stage-11-aster-tge-volume-traceability.md): separa Aster Spot Off Chain de pools on-chain externas; API Spot reproduz open/high do release, mas o claim de volume on-chain ainda exige reconciliação independente.
 
 - [12 — ASTER TGE: reconciliação quantitativa pela API Spot oficial](./reports/2026-11-05-stage-12-aster-tge-official-spot-api-reconciliation.md): janela inicial, D0/D1/D7/D30, volumes-base/quote e confronto com a cifra de US$371M do projeto.
+
+- [12 — ASTER Spot: validação quantitativa do volume do TGE](./reports/2026-11-05-stage-12-aster-spot-tge-volume-validation.md): candles públicas de 1m, cobertura 24h a partir de 17/09 12:00 UTC, 379,894660M USDT e divergência de ~2,40% ante o claim de US$371M; janela parcial anterior permanece ausente.
