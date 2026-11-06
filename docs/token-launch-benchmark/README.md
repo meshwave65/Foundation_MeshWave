@@ -55,3 +55,5 @@ Os relatórios são cumulativos por etapa e não substituem os arquivos de caso 
 - [04 — Reconciliação preliminar das métricas inaugurais](./reports/2026-11-05-stage-reconciliation-inaugural-metrics.md): evidências por token, definições, lacunas e próxima coleta quantitativa.
 - [05 — Método de coleta de OHLCV histórico](./reports/2026-11-05-stage-05-historical-market-data-method.md): fontes técnicas avaliadas, convenções de janelas, campos necessários, procedimento e limitações.
 
+
+- [06 — Coleta empírica inicial: HUMA e ASTER](./reports/2026-11-05-stage-06-huma-aster-initial-data.md): eventos e horários, números publicados, discrepâncias entre fontes, conclusões e campos ainda não validados.
