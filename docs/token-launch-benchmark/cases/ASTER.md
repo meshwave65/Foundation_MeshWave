@@ -38,4 +38,4 @@ O anúncio inicial de LBank para 17/09/2025 12:30 UTC foi adiado. A LBank anunci
 - [Aster PRNewswire release](https://www.prnewswire.co.uk/news-releases/aster-tge-day-one-performance-shines-exclusive-aster-dex-launch-drives-371-million-trading-volume-and-nearly-330-000-new-users-302561466.html)
 - [LBank delay notice](https://www.lbank.com/support/articles/1968291802968489984)
 - [LBank later listing notice](https://www.lbank.com/fr/support/articles/1969984335821930496)
-- [Stage 11 quantitative report](../reports/2026-11-05-stage-11-aster-tge-official-spot-api-reconciliation.md)
+- [Stage 12 quantitative report](../reports/2026-11-05-stage-12-aster-tge-official-spot-api-reconciliation.md)
