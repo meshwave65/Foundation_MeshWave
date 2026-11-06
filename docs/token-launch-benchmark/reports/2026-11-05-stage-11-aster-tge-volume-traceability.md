@@ -1,8 +1,23 @@
 # Etapa 11 — ASTER TGE: rastreabilidade do volume inaugural
 
 **Data:** 2026-11-05  
-**Status:** investigação documental; volume inaugural on-chain não reconciliado.  
+**Status atualizado (2026-11-06):** a API pública oficial Aster Spot foi recuperada. O preço de abertura (US$0,03015) e a máxima (US$0,528) do release foram reproduzidos; quote-volume de 24h calculado foi US$379,895M contra US$371M divulgados (+2,40%). O claim específico “on-chain” ainda não foi reconciliado independentemente.  
 **Escopo:** ASTER no TGE de 17/09/2025. Não usar dados da LBank (listagem posterior em 22/09) como substitutos.
+
+
+## Atualização empírica posterior — API pública Aster Spot
+
+A documentação oficial de Spot e o endpoint público `GET /api/v1/klines` permitem recuperar a série histórica ASTERUSDT. O horário do mercado foi reportado como 20:00 UTC+8 (12:00 UTC), e a primeira candle observada inicia em 17/09/2025 12:00 UTC com open US$0,03015.
+
+Janela rolling exata [17/09 12:00, 18/09 12:00 UTC), 1.440 candles de 1 minuto:
+- OHLC: **0,03015 / 0,52800 / 0,03015 / 0,44550 USDT**.
+- Volume-base: **1.374.581.953,34 ASTER**.
+- Quote-volume: **US$379.894.660,36485**.
+- Trades: **460.041**; série sem lacunas nem inconsistências OHLC.
+
+O quote-volume da API é aproximadamente US$8,895M (+2,40%) acima do release de US$371M. A API é dado primário de mercado Spot, mas não é por si só uma auditoria da metodologia “on-chain” do comunicado. Os agregados completos D0/D1/D7/D30 estão no [relatório quantitativo Etapa 12](./2026-11-05-stage-12-aster-tge-official-spot-api-reconciliation.md).
+
+Fonte técnica: [Aster Spot API V1](https://github.com/asterdex/api-docs/blob/master/V1%28Legacy%29/EN/aster-finance-spot-api.md); endpoint: https://sapi.asterdex.com/api/v1/klines.
 
 ## 1. Pergunta de pesquisa
 
@@ -44,14 +59,14 @@ Como a pool foi criada três dias depois do TGE, seus dados não medem a negocia
 
 1. **TGE e venue inicial confirmados:** 17/09/2025; negociação em Aster Spot.
 2. **US$ 371M / 24h:** claim divulgado pelo projeto; não validado independentemente nesta etapa.
-3. **Preço inicial US$ 0,03015 e máxima US$ 0,528:** reportados pela mesma fonte do projeto; falta série transacional primária que confirme preço, janela e metodologia.
+3. **Preço inicial US$ 0,03015 e máxima US$ 0,528:** agora reproduzidos pela API pública oficial Spot para a janela do TGE; quote-volume da API de US$379,895M diverge em ~2,40% do claim de US$371M. A diferença de metodologia on-chain continua aberta.
 4. A descrição “on-chain” no comunicado não basta para reproduzir o volume. O painel DefiLlama classifica parte do volume da Aster Spot como Off Chain.
 5. LBank: separado, abertura em 22/09/2025; não serve como proxy para o TGE de 17/09.
-6. Sem arquivo histórico de trades / API arquivada / método público que permita recomputar a fita, classificar o volume do TGE como **não confirmado independentemente**.
+6. A API pública de candles Spot já fornece a série de mercado e permite reproduzir OHLCV por janela. O claim específico de volume on-chain ainda não está confirmado independentemente; a API de mercado não substitui a auditoria on-chain.
 
 ## 6. Próxima coleta
 
-Buscar especificamente uma fonte primária de histórico de trades da Aster Spot que exponha (a) timestamp UTC, (b) par, (c) preço e quantidade, (d) unidade de volume, (e) identificação de trades agregados/duplicados e (f) janela exata. Em paralelo, avaliar os eventos on-chain de distribuição/retirada apenas como trilha de transferências, não como volume de negociação.
+Para explicar a diferença de ~2,40%, buscar fonte independente de trades/swaps e definição exata do volume on-chain do release; manter timestamps UTC, par, venue, preço/quantidade, unidade de volume, duplicação/agregação e janela explícitos. Transferências de claim/retirada não são volume de negociação.
 
 ## Fontes consultadas
 
@@ -63,4 +78,4 @@ Buscar especificamente uma fonte primária de histórico de trades da Aster Spot
 - [DexPaprika — ASTER/USDT pool](https://dexpaprika.com/bsc/pool/0x7e58f160b5b77b8b24cd9900c09a3e730215ac47)
 - [WhatToFarm — ASTER/USDT pool](https://whattofarm.io/pairs/bnb-chain-pancakeswapv-aster-usdt-created-2025-09-20)
 
-**Limitação:** pesquisa documental nesta etapa; não foi coletado arquivo de trades do Aster Spot nem recomputado o volume on-chain de 17/09.
+**Limitação atual:** candles históricas oficiais Spot foram recuperadas e agregadas; ainda não foi reproduzido independentemente o volume descrito como on-chain no release.
