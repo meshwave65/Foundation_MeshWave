@@ -20,7 +20,7 @@ API pública oficial Spot:
 - Endpoint: `GET /api/v1/klines`
 - Símbolo: `ASTERUSDT`
 - Intervalos usados: `1m` para primeira hora, D0 parcial e rolling 24h; `1h` para D1 UTC, D7 e D30.
-- Referência de especificação: [Aster Spot API V3 — documentação oficial](https://github.com/asterdex/api-docs/blob/master/V3%28Recommended%29/EN/aster-finance-spot-api-v3.md).
+- Referência de especificação: [Aster Spot API V1 (legacy), documentação oficial do endpoint público consultado](https://github.com/asterdex/api-docs/blob/master/V1%28Legacy%29/EN/aster-finance-spot-api.md).
 
 O schema oficial retorna open time, OHLC, volume-base, close time, quote-asset volume, trade count, taker-buy base/quote e campo de controle. Portanto, o quote-volume é somado diretamente em USDT; não foi estimado multiplicando preço por volume-base.
 
@@ -89,7 +89,7 @@ O valor secundário próximo de US$0,08 pode representar uma cotação intrahora
 - Aster Spot API docs: https://github.com/asterdex/api-docs/blob/master/V3%28Recommended%29/EN/aster-finance-spot-api-v3.md
 - Public exchange metadata: https://sapi.asterdex.com/api/v1/exchangeInfo
 - Public 1m kline API (TGE start): `https://sapi.asterdex.com/api/v1/klines?symbol=ASTERUSDT&interval=1m&startTime=1758110400000&endTime=1758196800000&limit=1000` (recovery paginated; use half-open interval).
-- Public 1h kline API (D7/D30): `https://sapi.asterdex.com/api/v1/klines?symbol=ASTERUSDT&interval=1h&startTime=1758110400000&endTime=1760698800000&limit=1000`.
+- Public 1h kline API (D7/D30): `https://sapi.asterdex.com/api/v1/klines?symbol=ASTERUSDT&interval=1h&startTime=1758110400000&endTime=1760702400000&limit=1000`.
 - Aster TGE docs: https://docs.asterdex.com/usdaster-token/tge
 - Aster project release (PRNewswire): https://www.prnewswire.co.uk/news-releases/aster-tge-day-one-performance-shines-exclusive-aster-dex-launch-drives-371-million-trading-volume-and-nearly-330-000-new-users-302561466.html
 - Time-zone cross-check: https://www.gate.com/de/blog/12297/aster-aster-token-has-been-listed-for-trading-on-aster-spot
