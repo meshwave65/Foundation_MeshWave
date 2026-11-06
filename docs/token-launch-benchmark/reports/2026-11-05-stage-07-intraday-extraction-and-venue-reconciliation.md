@@ -51,14 +51,15 @@ Fontes:
 
 ### 3.2 Evidência de CEX ativa no próprio dia
 
-LBank publicou anúncio informando ASTER/USDT spot:
-- depósitos a partir de 11:00 UTC de 17/09/2025;
-- início de negociação às **12:30 UTC de 17/09/2025**.
+LBank inicialmente anunciou ASTER/USDT Spot para 17/09/2025 às 12:30 UTC, com depósitos desde 11:00 UTC, mas publicou um aviso explícito de adiamento no próprio dia. A listagem foi anunciada novamente para 22/09/2025 às 05:00 UTC, e a API pública de candles apresenta a primeira barra nesse horário. A série histórica extraída na Etapa 10 começa nessa data, não no dia do TGE.
 
-Fonte:
-- https://www.lbank.com/support/articles/1968250114875064320
+Fontes:
+- Anúncio inicial: https://www.lbank.com/support/articles/1968250114875064320
+- Aviso de adiamento: https://www.lbank.com/support/articles/1968291802968489984
+- Anúncio posterior: https://www.lbank.com/fr/support/articles/1969984335821930496
+- Relatório quantitativo: ./2026-11-05-stage-10-aster-lbank-historical-candles.md
 
-Essa evidência é um alerta material: a narrativa de exclusividade da Aster DEX nas primeiras 24 horas precisa ser confrontada com a listagem da LBank. Ainda não temos confirmação independente do primeiro trade real da LBank nem da definição temporal usada pelo comunicado de Aster (horário UTC, janela exata e abrangência de venue). Não se deve declarar, sem reconciliação, que o volume de US$371M é volume global consolidado ou exclusivamente de uma única venue.
+**Correção de interpretação:** o anúncio de 17/09 era uma programação que foi adiada, não evidência de CEX efetivamente ativa no dia do TGE. A afirmação de exclusividade de Aster Spot nas primeiras 24h permanece a ser verificada com swaps/trades on-chain independentes; não deve ser contestada usando a série LBank que começa cinco dias depois.
 
 ### 3.3 ASTER DEX on-chain versus pools externos
 
@@ -74,20 +75,20 @@ Fontes exploratórias:
 |---|---|---|---|
 | HUMA | Binance Spot | Listagem oficial em 26/05/2025 13:00 UTC; endpoint histórico testado retornou HTTP 451 no canal de pesquisa | horário confirmado; série bruta pendente |
 | ASTER | Aster TGE / Spot | TGE 17/09/2025; projeto publicou $0,03015 open, $0,528 high, $371M em 24h | dados divulgados pelo projeto, ainda não reproduzidos |
-| ASTER | LBank Spot ASTER/USDT | Negociação anunciada para 17/09/2025 12:30 UTC | venue CEX concorrente documentada; first trade e volume pendentes |
+| ASTER | LBank Spot ASTER/USDT | Anúncio inicial 17/09 foi adiado; listagem posterior anunciada e primeira candle observada a partir de 22/09/2025 05:00 UTC | não constitui CEX ativa no TGE; volume da LBank separado (Etapa 10) |
 | ASTER | PancakeSwap V3 ASTER/USDT | pool público conhecido criado em 20/09/2025 | posterior ao TGE; não serve como primeira venue |
 
 ## 5. Conclusões da etapa
 
 1. HUMA: o caminho de API direta não entregou dados; é necessário usar o arquivo público histórico ou outro canal que permita obter e verificar o dataset.
-2. ASTER: o comunicado do projeto não deve ser tomado como evidência suficiente de exclusividade da DEX. A listagem LBank em 12:30 UTC no próprio dia do TGE exige reconciliação.
+2. ASTER: o anúncio inicial LBank para 17/09 foi adiado. A série LBank disponível começa em 22/09; ela não é contraponto de venue ativa na primeira janela do TGE. A exclusividade e os números do comunicado da Aster exigem verificação on-chain independente.
 3. O benchmark deve manter campos separados por venue: preço inicial, timestamp do primeiro trade, quote-volume e número de trades. Volume da plataforma e TVL ficam em campos próprios.
 4. A comparação de D0/D1/D7/D30 ainda não pode ser marcada como calculada para nenhum dos dois ativos sem uma série verificável.
 
 ## 6. Próxima etapa recomendada
 
 - obter ZIP Binance Vision HUMAUSDT 1m/trades de maio de 2025, checar checksum e extrair first trade + janelas;
-- obter registros de negociação LBank ASTER/USDT para o dia TGE, e procurar documentação/trades do mercado Aster Spot;
+- recuperar trades/swaps on-chain do Aster Spot na janela TGE de 17/09; para LBank, estudar separadamente o mercado após sua abertura em 22/09;
 - estabelecer a hora inicial efetiva do ASTER na Aster Spot; comparar trades agregados e declaração de US$371M, sem dupla contagem;
 - somente então gerar tabelas D0, D1, D7 e D30, com métodos e timestamps registrados.
 
