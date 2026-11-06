@@ -21,6 +21,20 @@ Janelas semiabertas [início, fim). Open = abertura da primeira vela; High/Low =
 | D7 UTC | — | — | — | — | — | — | — | — | Não disponível integralmente no ZIP de maio |
 | D30 UTC | — | — | — | — | — | — | — | — | Não disponível neste ZIP |
 
+## Adendo — agregados diários UTC calculados
+As métricas abaixo são candles diários construídos com os candles de 1 minuto disponíveis; são específicas da Binance HUMA/USDT. Taker-buy volumes são os campos informados pelo CSV da Binance.
+
+| Dia UTC | O/H/L/C (USDT) | Volume HUMA | Volume USDT | Trades | Taker buy HUMA | Taker buy USDT |
+|---|---|---:|---:|---:|---:|---:|
+| 26 mai (parcial 13:00–24:00) | 0,01000000 / 0,10600000 / 0,01000000 / 0,06693000 | 1.538.894.126 | 113.149.865,88865 | 633.257 | 743.132.596 | 54.678.867,88728 |
+| 27 mai | 0,06692000 / 0,06969000 / 0,05550000 / 0,05932000 | 1.126.366.878 | 69.132.602,64897 | 459.457 | 543.492.137 | 33.405.734,93771 |
+| 28 mai | 0,05932000 / 0,05934000 / 0,05047000 / 0,05207000 | 734.147.932 | 39.937.746,18489 | 271.717 | 348.749.783 | 18.975.397,85106 |
+| 29 mai | 0,05207000 / 0,05590000 / 0,05102000 / 0,05155000 | 652.816.835 | 35.067.448,35134 | 268.437 | 325.851.665 | 17.518.535,92155 |
+| 30 mai | 0,05153000 / 0,05257000 / 0,03808000 / 0,03828000 | 729.904.033 | 32.742.378,57804 | 289.553 | 342.644.739 | 15.357.723,42148 |
+| 31 mai | 0,03827000 / 0,03893000 / 0,03570000 / 0,03715000 | 519.602.661 | 19.269.240,46539 | 277.751 | 256.048.050 | 9.501.593,89931 |
+
+O dataset agregado (26 mai 13:00–1 jun 00:00) fecha em 0,03715 USDT; volume 5.301.732.465 HUMA / 309.299.282,11728 USDT; 2.200.172 trades. Este total é apenas o intervalo disponível, não D7.
+
 ## Primeira vela (13:00 UTC)
 O/H/L/C: 0,01000000 / 0,10600000 / 0,01000000 / 0,08887000 USDT; volume base 63.402.250 HUMA; volume cotado 5.910.044,74637 USDT; 21.473 trades; taker-buy base 31.867.194 HUMA; taker-buy quote 2.988.728,54012 USDT.
 
@@ -50,4 +64,4 @@ Linha CSV:
 - Secondary comparison only: https://www.odaily.news/en/post/5204939
 
 ---
-**Registro de estado:** checksum e métricas de janelas acima verificados; D7/D30 e ASTER seguem em aberto até aquisição dos dados específicos.
+**Registro de estado:** checksum, primeira hora, janela rolling 24h, D0 parcial e agregados de cada dia disponível verificados; D7/D30 e ASTER seguem em aberto até aquisição dos dados específicos.
