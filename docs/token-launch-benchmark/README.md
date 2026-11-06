@@ -65,3 +65,5 @@ Os relatórios são cumulativos por etapa e não substituem os arquivos de caso 
 - [09 — Inspeção do arquivo bruto HUMA/USDT](./reports/2026-11-05-stage-09-huma-archive-inspection.md): CSV oficial Binance Vision extraído e SHA-256 validado; primeira hora, 24h rolling, D0 parcial e dias UTC subsequentes agregados, com volume-base/quote separados. D7/D30 pendentes.
 
 - [10 — ASTER/USDT: LBank, correção cronológica e candles inaugurais](./reports/2026-11-05-stage-10-aster-lbank-historical-candles.md): anúncio inicial de 17/09 adiado; candles a partir de 22/09 05:00 UTC, janelas 60m/24h/D0, volume API e anomalias OHLC.
+
+- [11 — ASTER TGE: rastreabilidade do volume inaugural](./reports/2026-11-05-stage-11-aster-tge-volume-traceability.md): confirma venue inicial Aster Spot, registra o claim de US$371M como não validado independentemente e diferencia o volume classificado como Off Chain de pools on-chain externas posteriores.
