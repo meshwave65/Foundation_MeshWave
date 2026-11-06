@@ -45,3 +45,6 @@ Completar dados comparáveis por caso: TGE UTC, preço inicial por venue, liquid
 
 ## Reconciliação de métricas
 - [Reconciliação preliminar D0/D1 e protocolo de coleta](./reconciliation-inaugural-metrics.md): separa fontes de preços, volumes de token, volume de protocolo, captação e métricas de liquidez; explicita divergências e lacunas antes de criar uma tabela comparável.
+## Relatórios parciais por etapa
+
+- [2026-11-05 — Reconciliação preliminar das métricas inaugurais](./reports/2026-11-05-stage-reconciliation-inaugural-metrics.md): escopo, critérios de comparabilidade, achados por token, fontes, conclusões, lacunas e próximo passo. Cada nova etapa deverá acrescentar um relatório autônomo a esta seção.
