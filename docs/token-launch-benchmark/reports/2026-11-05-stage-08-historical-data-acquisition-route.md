@@ -2,7 +2,7 @@
 
 **Data:** 2026-11-05  
 **Escopo:** especificar caminhos verificáveis para aquisição de dados históricos de HUMA (Binance Spot) e ASTER (LBank Spot), após o bloqueio geográfico da API Binance na tentativa anterior.  
-**Status:** ZIP mensal HUMAUSDT 1m e arquivo CHECKSUM baixados com sucesso pelo navegador de pesquisa (tamanhos reportados: 315.539 bytes e 89 bytes). Ainda não foram inspecionados nem verificados criptograficamente; ASTER/LBank não foi extraído. Não é dataset empírico consolidado.
+**Status atualizado:** HUMA foi posteriormente extraída e validada na Etapa 09; ASTER/LBank foi recuperada e agregada na Etapa 10. Esta etapa documenta a rota técnica original; métricas não são consolidadas entre venues.
 
 ## 1. Objetivo
 
@@ -53,20 +53,23 @@ A documentação expõe candles com OHLC e volume, mas o endpoint K-line documen
 
 ### 3.2 Listagem ASTER na LBank
 
-Anúncio de listagem registrado na etapa 07: ASTER/USDT trading em 17/09/2025 12:30 UTC. A janela inicial de análise LBank será alinhada ao horário do anúncio, mas preço inicial calculado só após recuperar candle/trade histórico verificável.
+**Correção posterior:** o anúncio inicial marcou 17/09/2025 12:30 UTC, mas a LBank publicou adiamento. Um aviso posterior programou ASTER/USDT para 22/09/2025 05:00 UTC; a API histórica retorna primeira candle em 05:00. A extração/medição está registrada na Etapa 10. Não usar a listagem inicialmente programada em 17/09 como evento real.
 
-Fonte:
-- https://www.lbank.com/support/articles/1968250114875064320
+Fontes:
+- anúncio inicial: https://www.lbank.com/support/articles/1968250114875064320
+- adiamento: https://www.lbank.com/support/articles/1968291802968489984
+- listagem posterior: https://www.lbank.com/fr/support/articles/1969984335821930496
+- candles calculadas: ./2026-11-05-stage-10-aster-lbank-historical-candles.md
 
 ## 4. Evidência disponível e limite de execução
 
 | Mercado | Fonte | Método | Estado |
 |---|---|---|---|
 | HUMAUSDT Spot | Binance Vision archive | ZIP mensal de klines 1m + CHECKSUM; timestamps µs em 2025 | arquivos baixados; checksum e CSV pendentes de inspeção |
-| ASTER/USDT Spot | LBank public market API | kline endpoint; histórico de trades conforme disponibilidade e janela do endpoint | documentação localizada; candles/trades não extraídos |
+| ASTER/USDT Spot | LBank public market API | Kline minute1, 2.000 barras; primeira candle em 22/09/2025 05:00 UTC | 60m/24h/D0 calculados na Etapa 10; quote-volume/trade count ausentes do payload Kline |
 | ASTER Aster Spot | Documentação/projeto + venue data ainda por localizar | determinar API/contrato/pool e recuperar swaps/trades | pendente; números do comunicado permanecem auto-reportados |
 
-Não foram calculados OHLCV, volume quote, D0/D1/D7/D30 ou preços de first trade nesta etapa. O próximo passo técnico requer um canal que permita baixar ZIP público e/ou solicitar API histórica, seguido de cálculo local e registro dos dados brutos ou de seus hashes e fontes.
+Esta etapa foi de desenho da rota. As extrações e métricas posteriores são documentadas nos relatórios 09 (HUMA) e 10 (ASTER/LBank); quote-volume, trade count, D7/D30 e ASTER Spot on-chain seguem pendentes. O próximo passo técnico requer um canal que permita baixar ZIP público e/ou solicitar API histórica, seguido de cálculo local e registro dos dados brutos ou de seus hashes e fontes.
 
 ## 5. Conclusões
 
@@ -78,7 +81,7 @@ Não foram calculados OHLCV, volume quote, D0/D1/D7/D30 ou preços de first trad
 ## 6. Próxima etapa
 
 - obter acesso aos arquivos baixados no ambiente de análise, validar o checksum, inspecionar o CSV e calcular a janela de HUMA;
-- recuperar LBank ASTER/USDT candles para 17–18/09/2025 e testar disponibilidade de janela histórica;
+- buscar trade-level LBank com quoteQty para reconciliar volume da Kline; não tratar 17/09 como abertura efetiva da LBank;
 - identificar a API ou o pool de ASTER Spot e recuperar os swaps;
 - só após isso consolidar comparativo por venue e janela.
 
