@@ -26,6 +26,10 @@
 | [HUMA — Huma Finance](./cases/HUMA.md) | Launchpool + listagem | abertura reportada $0,06683; volume do primeiro dia $310,37M | Dados de fonte secundária, validar venue e janela |
 | [MET — Meteora](./cases/MET.md) | LGE + distribuição em LP | pool MET/USDC aberto a $0,50 (FDV indicada $500M) | Dados de relatório do projeto; volume inicial não confirmado |
 
+## Pesquisa aprofundada complementar
+- [Pesquisa ampliada 2024–2026](./research-expanded-2024-2026.md): evidências adicionais para FJO, PRCL, DRIFT, GRASS, PUFFER, VVV, NIL, ZORA, PUMP e GRAIL; inclui qualidade da evidência, distinções métricas e critérios de comparação. Este é um conjunto complementar — não substitui a lista inicial de casos.
+- [Relatório externo completo](https://agent.tinyfish.ai/research/01a1ae29-fc3d-7fc4-9265-b65ab92af524): execução de pesquisa com fontes e ressalvas.
+
 ## Relatórios agregados
 - [Memento Research — State of 2025 Token Launches](https://mementoresearch.com/reports/state-of-2025-token-launches-year-in-review): 118 lançamentos observados; 84,7% abaixo da valuation TGE em 20 dez 2025. Universo/metodologia próprios.
 - [CoinGecko — Q2 2024 Crypto Industry Report](https://www.coingecko.com/research/publications/2024-q2-crypto-report): dados agregados sobre baixo float e FDV.
