@@ -79,3 +79,4 @@ Os relatórios são cumulativos por etapa e não substituem os arquivos de caso 
 
 - [15 — HUMA e ASTER: checkpoints D+7/D+30 em Spot](./reports/2026-11-06-stage-15-huma-aster-d7-d30-spot-checkpoints.md): candles exatos no horário UTC da primeira negociação, close-to-close D+7/D+30, volumes-base/quote separados, barras diárias ASTER como série distinta e verificações de arquivo/fontes.
 - [16 — Expansão da amostra: seleção de tokens e trilha de validação](./reports/2026-11-06-stage-16-expanded-sample-source-triage.md): fontes primárias de horário de listagem para JUP, BERA e LINEA; candidatos e método definidos, OHLCV ainda pendente e não estimado.
+- [17 — Coorte Binance Spot e método de comparação](./reports/2026-11-06-stage-17-binance-spot-cohort-and-method.md): MANTA, ENA, OMNI, BIO e BERA com horários UTC D0/D+7/D+30 e procedimento de extração oficial; valores OHLCV ainda não calculados.
