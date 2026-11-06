@@ -26,7 +26,7 @@ Endpoint público documentado:
 - `time`: 1758517200 (Unix seconds = 2025-09-22 05:00:00 UTC)
 - `size`: 2.000 candles retornados
 - Cobertura: 2025-09-22 05:00 UTC a 2025-09-23 14:19 UTC.
-- Cada linha API contém [timestamp, open, high, low, close, volume]. Não há campo quote-volume nem trade count no payload Kline consultado.
+- Cada linha API contém [timestamp, open, high, low, close, volume]. Não há campo quote-volume nem trade count no payload Kline.
 - Documentação: https://www.lbank.info/docs/
 
 O payload contém as 1.440 barras da primeira janela rolling de 24h. Os timestamps avançaram exatamente 60 segundos, sem lacunas na janela analisada.
@@ -63,23 +63,35 @@ Campos na ordem documentada: timestamp, open, high, low, close, volume. O open d
 5. Estes dados são da LBank Spot. Não são comparáveis diretamente ao volume de US$371M auto-reportado pela Aster DEX no primeiro dia do TGE (17/09) porque venue, evento e janela temporal diferem. A listagem LBank ocorreu cinco dias depois.
 6. Para medir TGE ASTER em 17/09, a linha prioritária segue sendo recuperar trades/swaps do Aster Spot on-chain desde a abertura efetiva, e não usar a série LBank de 22/09 como substituto.
 
-## 6. Atualização dos relatórios anteriores
+## 6. Adendo — consulta da janela originalmente anunciada
+
+Em uma consulta independente à API com o parâmetro `time` apontando para **17/09/2025 12:30 UTC** (`1758112200`), o endpoint respondeu com sucesso e 2.000 registros, mas o primeiro candle retornado foi **22/09/2025 04:59 UTC** e o último **23/09/2025 14:18 UTC**. A resposta não incluiu candles de 17–18/09. Isso corrobora a lacuna para a data inicialmente anunciada e, junto ao aviso de adiamento da LBank, impede calcular métricas inaugurais de 17/09 para o par LBank ASTER/USDT.
+
+A consulta adicional é:
+https://api.lbank.info/v2/kline.do?symbol=aster_usdt&size=2000&type=minute1&time=1758112200
+
+O endpoint retornou linhas no formato `[timestamp, open, high, low, close, volume]`; timestamp do candle e parâmetro `time` em segundos Unix, `ts` no envelope em milissegundos. A sexta coluna é compatível com quantidade base ASTER, verificada contra `qty=3`, `quoteQty=2.1`, `price=0.7` em trade da mesma barra, mas a documentação/resposta não etiqueta explicitamente unidade de base ou cotada. Kline não possui trade count.
+
+Essa resposta começa em 04:59 UTC, um minuto antes do recorte de 05:00 UTC usado no agregado da seção 4; não se altera a janela agregada já calculada sem reprocessar a série completa e conferir a semântica de corte da API. A discrepância de início deve ficar explícita.
+
+## 7. Atualização dos relatórios anteriores
 
 - Etapa 07: a frase sobre LBank ativa no dia TGE foi corrigida para refletir anúncio inicial, adiamento e abertura posterior em 22/09.
 - Etapa 08: a rota de coleta LBank foi atualizada com a aquisição real da série e a nova cronologia.
 - A cronologia ASTER passa a distinguir TGE/Spot da Aster em 17/09 de ASTER/USDT Spot na LBank em 22/09.
 
-## 7. Próxima etapa
+## 8. Próxima etapa
 
 - Recuperar a série on-chain da Aster Spot para o TGE em 17/09/2025: identificar contrato/pool e trades/swaps oficiais, horário de abertura e cálculo independente da cifra de US$371M.
 - Para LBank, buscar fonte de trades com quoteQty e trade count para reconciliar os candles Kline e as anomalias.
 - Manter D7/D30 ASTER por venue como campos em aberto até recuperação dos dados completos.
 - Corrigir e consolidar o comparativo HUMA/ASTER somente após harmonizar evento, venue, intervalo, unidade de volume e qualidade.
 
-## 8. Fontes técnicas e cronológicas
+## 9. Fontes técnicas e cronológicas
 
-- LBank API docs: https://www.lbank.info/docs/
-- LBank Kline endpoint: https://api.lbank.info/v2/kline.do?symbol=aster_usdt&size=2000&type=minute1&time=1758517200
+- LBank API docs: https://www.lbank.com/docs/
+- LBank Kline endpoint (22/09 query): https://api.lbank.info/v2/kline.do?symbol=aster_usdt&size=2000&type=minute1&time=1758517200
+- LBank Kline endpoint (query starting 17/09): https://api.lbank.info/v2/kline.do?symbol=aster_usdt&size=2000&type=minute1&time=1758112200
 - LBank initial announcement: https://www.lbank.com/support/articles/1968250114875064320
 - LBank delay notice: https://www.lbank.com/support/articles/1968291802968489984
 - LBank later ASTER listing notice: https://www.lbank.com/fr/support/articles/1969984335821930496
