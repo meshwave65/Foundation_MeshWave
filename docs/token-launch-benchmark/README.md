@@ -47,4 +47,12 @@ Completar dados comparáveis por caso: TGE UTC, preço inicial por venue, liquid
 - [Reconciliação preliminar D0/D1 e protocolo de coleta](./reconciliation-inaugural-metrics.md): separa fontes de preços, volumes de token, volume de protocolo, captação e métricas de liquidez; explicita divergências e lacunas antes de criar uma tabela comparável.
 ## Relatórios parciais por etapa
 
+Os relatórios são cumulativos por etapa e não substituem os arquivos de caso nem os drafts.
+
+- [01 — Escopo e seleção inicial dos casos](./reports/2026-11-05-stage-01-benchmark-scope-and-case-selection.md): objetivo do benchmark externo, amostra inicial e estrutura documental.
+- [02 — Pesquisa ampliada e lições de mercado](./reports/2026-11-05-stage-02-expanded-research-and-market-lessons.md): casos complementares, tendências agregadas, conclusões e limitações.
+- [03 — Preparação dos drafts MWN](./reports/2026-11-05-stage-03-mwn-draft-materials.md): artefatos criados e guardrails para não inventar parâmetros de lançamento.
+- [04 — Reconciliação preliminar das métricas inaugurais](./reports/2026-11-05-stage-reconciliation-inaugural-metrics.md): evidências por token, definições, lacunas e próxima coleta quantitativa.
+
+
 - [2026-11-05 — Reconciliação preliminar das métricas inaugurais](./reports/2026-11-05-stage-reconciliation-inaugural-metrics.md): escopo, critérios de comparabilidade, achados por token, fontes, conclusões, lacunas e próximo passo. Cada nova etapa deverá acrescentar um relatório autônomo a esta seção.
