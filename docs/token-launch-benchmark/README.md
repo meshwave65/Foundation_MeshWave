@@ -66,6 +66,6 @@ Os relatórios são cumulativos por etapa e não substituem os arquivos de caso 
 
 - [10 — ASTER/USDT: LBank, correção cronológica e candles inaugurais](./reports/2026-11-05-stage-10-aster-lbank-historical-candles.md): anúncio inicial de 17/09 adiado; candles a partir de 22/09 05:00 UTC, janelas 60m/24h/D0, volume API e anomalias OHLC.
 
-- [11 — ASTER TGE: rastreabilidade do volume inaugural](./reports/2026-11-05-stage-11-aster-tge-volume-traceability.md): confirma venue inicial Aster Spot, registra o claim de US$371M como não validado independentemente e diferencia o volume classificado como Off Chain de pools on-chain externas posteriores.
+- [11 — ASTER TGE: rastreabilidade do volume inaugural](./reports/2026-11-05-stage-11-aster-tge-volume-traceability.md): separa Aster Spot Off Chain de pools on-chain externas; API Spot reproduz open/high do release, mas o claim de volume on-chain ainda exige reconciliação independente.
 
-- [11 — ASTER TGE: reconciliação quantitativa pela API Spot oficial](./reports/2026-11-05-stage-11-aster-tge-official-spot-api-reconciliation.md): janela inicial, D0/D1/D7/D30, volumes-base/quote e confronto com a cifra de US$371M do projeto.
+- [12 — ASTER TGE: reconciliação quantitativa pela API Spot oficial](./reports/2026-11-05-stage-12-aster-tge-official-spot-api-reconciliation.md): janela inicial, D0/D1/D7/D30, volumes-base/quote e confronto com a cifra de US$371M do projeto.
