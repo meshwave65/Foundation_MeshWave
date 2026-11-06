@@ -84,3 +84,5 @@ Os relatórios são cumulativos por etapa e não substituem os arquivos de caso 
 - [18 — Coorte Binance Spot: coleta quantitativa D0/D+7/D+30](./reports/2026-11-06-stage-18-binance-cohort-d0-d7-d30-data.md): 30 checkpoints de minuto e 15 candles diárias UTC para MANTA, ENA, OMNI, BIO e BERA; retornos close-to-close, OHLCV-base/quote separados, fonte oficial e limitações.
 
 - [19 — Volume de mercado em janelas rolling 24h/7d/30d](./reports/2026-11-06-stage-19-launch-volume-windows-24h-7d-30d.md): soma de candles oficiais Binance Spot 1m para MANTA, ENA, OMNI, BIO e BERA desde o horário de lançamento; contagem completa de candles, base/quote separados e checksums validados.
+
+- [20 — Cruzamento preço-volume e protocolo de ampliação da amostra](./reports/2026-11-06-stage-20-price-volume-cross-analysis-and-sample-expansion-protocol.md): associação descritiva (n=5), ressalvas de causalidade e critérios de inclusão cronológica Binance Spot; candidatos documentais, ainda não quantificados.
