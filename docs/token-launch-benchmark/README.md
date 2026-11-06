@@ -19,7 +19,7 @@
 | [PUMP — Pump.fun](./cases/PUMP.md) | Venda pública | sale price $0,004; $500M captados em 12 min (não é volume secundário) | Grande venda e alta demanda inicial |
 | [BERA — Berachain](./cases/BERA.md) | Airdrop + CEX | volume diário >$2B no lançamento, segundo Arrakis; FDV de abertura reportado $4,3B | Premium em relação à valuation da rodada; queda posterior |
 | [LINEA](./cases/LINEA.md) | TGE + listagem | pico reportado $0,046; volume de negociação ~$418M em primeiro dia | Preço/pico não confundir com abertura |
-| [ASTER](./cases/ASTER.md) | Lançamento DEX | fontes divergem sobre preço de abertura ($0,03015 vs cerca de $0,08) | PR do projeto versus cobertura secundária; validar |
+| [ASTER](./cases/ASTER.md) | TGE / Aster Spot | API oficial reproduz open $0,03015 e high $0,528; quote-volume 24h calculado $379,895M vs release $371M | diferença de volume ~2,40% permanece para reconciliação metodológica/on-chain |
 | [JUP — Jupiter](./cases/JUP.md) | Airdrop + pool DEX | pool inicial citado a $0,40; 1,35B tokens (13,5%) circulantes no lançamento | Volume de plataforma Jupiter não é volume do token |
 | [HYPE — Hyperliquid](./cases/HYPE.md) | Airdrop | abertura perto de $2; 310M tokens (31%) distribuídos; cotação perto de $9,80 em 1 dez 2024 | Movimento de preço não é volume |
 | [KAITO](./cases/KAITO.md) | TGE / distribuição | dados de preço/volume inaugural a consolidar | Caso para estudar estrutura de distribuição e desempenho posterior |
@@ -67,3 +67,5 @@ Os relatórios são cumulativos por etapa e não substituem os arquivos de caso 
 - [10 — ASTER/USDT: LBank, correção cronológica e candles inaugurais](./reports/2026-11-05-stage-10-aster-lbank-historical-candles.md): anúncio inicial de 17/09 adiado; candles a partir de 22/09 05:00 UTC, janelas 60m/24h/D0, volume API e anomalias OHLC.
 
 - [11 — ASTER TGE: rastreabilidade do volume inaugural](./reports/2026-11-05-stage-11-aster-tge-volume-traceability.md): confirma venue inicial Aster Spot, registra o claim de US$371M como não validado independentemente e diferencia o volume classificado como Off Chain de pools on-chain externas posteriores.
+
+- [11 — ASTER TGE: reconciliação quantitativa pela API Spot oficial](./reports/2026-11-05-stage-11-aster-tge-official-spot-api-reconciliation.md): janela inicial, D0/D1/D7/D30, volumes-base/quote e confronto com a cifra de US$371M do projeto.
