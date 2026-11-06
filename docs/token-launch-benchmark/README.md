@@ -62,4 +62,4 @@ Os relatórios são cumulativos por etapa e não substituem os arquivos de caso 
 
 - [08 — Rota de aquisição de dados históricos](./reports/2026-11-05-stage-08-historical-data-acquisition-route.md): padrão Binance Vision, checksum/timestamp, APIs públicas LBank e limites da extração ainda não realizada.
 
-- [09 — Inspeção do arquivo bruto HUMA/USDT](./reports/2026-11-05-stage-09-huma-archive-inspection.md): CSV oficial Binance Vision extraído, primeira/última vela e limites; métricas agregadas e checksum ainda pendentes.
+- [09 — Inspeção do arquivo bruto HUMA/USDT](./reports/2026-11-05-stage-09-huma-archive-inspection.md): CSV oficial Binance Vision extraído e SHA-256 validado; primeira hora, 24h rolling e D0 parcial agregados, com volume-base/quote separados. D7/D30 pendentes.
