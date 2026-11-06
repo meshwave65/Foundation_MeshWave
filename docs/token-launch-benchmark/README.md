@@ -73,3 +73,5 @@ Os relatórios são cumulativos por etapa e não substituem os arquivos de caso 
 - [12 — ASTER Spot: validação quantitativa do volume do TGE](./reports/2026-11-05-stage-12-aster-spot-tge-volume-validation.md): candles públicas de 1m, cobertura 24h a partir de 17/09 12:00 UTC, 379,894660M USDT e divergência de ~2,40% ante o claim de US$371M; janela parcial anterior permanece ausente.
 
 - [13 — ASTER: definição da janela de TGE e lacuna histórica](./reports/2026-11-05-stage-13-aster-tge-window-and-history-gap.md): separa claim às 09:00 UTC da negociação Spot às 12:00 UTC; seis janelas pré-mercado e aggTrades antes do corte vazias. A janela de 24h da etapa 12 é apoiada pelo primeiro trade, mas US$371M continua sem janela/metodologia expressas.
+
+- [14 — Reflexão pré-lançamento: estrutura empresarial e realidade econômica](./reports/2026-11-05-stage-14-prelaunch-business-structure-and-economic-reality.md): distingue fontes de recursos, estrutura mínima administrativa/jurídica/contábil/tesouraria, princípios de prudência e sequência pré-lançamento. É uma orientação estratégica preliminar, não parecer.
