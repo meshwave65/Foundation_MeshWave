@@ -65,11 +65,11 @@ Fontes:
 
 | Mercado | Fonte | Método | Estado |
 |---|---|---|---|
-| HUMAUSDT Spot | Binance Vision archive | ZIP mensal de klines 1m + CHECKSUM; timestamps µs em 2025 | arquivos baixados; checksum e CSV pendentes de inspeção |
+| HUMAUSDT Spot | Binance Vision archive | ZIP mensal de klines 1m + CHECKSUM; timestamps µs em 2025 | posteriormente extraído e SHA-256 validado; agregados 60m/24h/D0 estão na Etapa 09; D7/D30 pendentes |
 | ASTER/USDT Spot | LBank public market API | Kline minute1, 2.000 barras; primeira candle em 22/09/2025 05:00 UTC | 60m/24h/D0 calculados na Etapa 10; quote-volume/trade count ausentes do payload Kline |
 | ASTER Aster Spot | Documentação/projeto + venue data ainda por localizar | determinar API/contrato/pool e recuperar swaps/trades | pendente; números do comunicado permanecem auto-reportados |
 
-Esta etapa foi de desenho da rota. As extrações e métricas posteriores são documentadas nos relatórios 09 (HUMA) e 10 (ASTER/LBank); quote-volume, trade count, D7/D30 e ASTER Spot on-chain seguem pendentes. O próximo passo técnico requer um canal que permita baixar ZIP público e/ou solicitar API histórica, seguido de cálculo local e registro dos dados brutos ou de seus hashes e fontes.
+Esta etapa registrou o desenho da rota à época. Os estados posteriores foram atualizados nos relatórios 09 (HUMA) e 10 (ASTER/LBank). Ainda permanecem pendentes: quote-volume/trade count LBank, D7/D30, e os trades/swaps do Aster Spot on-chain no TGE.
 
 ## 5. Conclusões
 
@@ -94,4 +94,4 @@ Esta etapa foi de desenho da rota. As extrações e métricas posteriores são d
 - Binance HUMA launch announcement: https://www.binance.com/en/support/announcement/detail/515c45c283ea44c59b7f4623a3512666
 
 ---
-**Classificação:** etapa de aquisição parcialmente realizada: download HUMA confirmado, checksum/CSV ainda não validados; ASTER/LBank permanece pendente. Nenhum resultado quantitativo foi calculado.
+**Classificação atualizada:** os resultados quantitativos posteriores estão nos relatórios 09 e 10; este relatório preserva a rota de aquisição e as limitações identificadas naquela etapa.
