@@ -2,7 +2,7 @@
 
 **Data:** 2026-11-05  
 **Escopo:** especificar caminhos verificáveis para aquisição de dados históricos de HUMA (Binance Spot) e ASTER (LBank Spot), após o bloqueio geográfico da API Binance na tentativa anterior.  
-**Status:** método e endpoints documentados; arquivos brutos ainda não baixados nem processados. Não é dataset empírico consolidado.
+**Status:** ZIP mensal HUMAUSDT 1m e arquivo CHECKSUM baixados com sucesso pelo navegador de pesquisa (tamanhos reportados: 315.539 bytes e 89 bytes). Ainda não foram inspecionados nem verificados criptograficamente; ASTER/LBank não foi extraído. Não é dataset empírico consolidado.
 
 ## 1. Objetivo
 
@@ -28,7 +28,7 @@ https://data.binance.vision/data/spot/monthly/klines/HUMAUSDT/1m/HUMAUSDT-1m-202
 https://data.binance.vision/data/spot/monthly/klines/HUMAUSDT/1m/HUMAUSDT-1m-2025-05.zip.CHECKSUM
 ```
 
-Este caminho é especificado a partir do padrão publicado; **não afirmamos que o arquivo HUMAUSDT específico foi baixado ou validado**. Próximo procedimento:
+O download do ZIP e do CHECKSUM foi concluído nesta etapa. O navegador informou estes arquivos e tamanhos: `HUMAUSDT-1m-2025-05.zip` (315.539 bytes) e `HUMAUSDT-1m-2025-05.zip.CHECKSUM` (89 bytes). **Ainda não foi possível confirmar a integridade SHA-256 nem abrir/processar o CSV**, portanto nenhum OHLCV é apresentado como resultado calculado. Próximo procedimento:
 1. baixar ZIP e CHECKSUM;
 2. validar SHA-256 conforme instrução oficial;
 3. importar CSV com timestamp em microssegundos;
@@ -62,7 +62,7 @@ Fonte:
 
 | Mercado | Fonte | Método | Estado |
 |---|---|---|---|
-| HUMAUSDT Spot | Binance Vision archive | ZIP mensal de klines 1m + SHA-256; timestamps µs em 2025 | caminho documentado; arquivo ainda não baixado/validado |
+| HUMAUSDT Spot | Binance Vision archive | ZIP mensal de klines 1m + CHECKSUM; timestamps µs em 2025 | arquivos baixados; checksum e CSV pendentes de inspeção |
 | ASTER/USDT Spot | LBank public market API | kline endpoint; histórico de trades conforme disponibilidade e janela do endpoint | documentação localizada; candles/trades não extraídos |
 | ASTER Aster Spot | Documentação/projeto + venue data ainda por localizar | determinar API/contrato/pool e recuperar swaps/trades | pendente; números do comunicado permanecem auto-reportados |
 
@@ -70,14 +70,14 @@ Não foram calculados OHLCV, volume quote, D0/D1/D7/D30 ou preços de first trad
 
 ## 5. Conclusões
 
-1. O HTTP 451 da Binance REST não significa que o arquivo histórico público inexista; Binance publica o padrão de arquivos públicos e checksum.
+1. O HTTP 451 da Binance REST não impede a obtenção do arquivo histórico público: o ZIP HUMAUSDT mensal e o CHECKSUM foram baixados nesta etapa. A integridade ainda precisa ser verificada.
 2. Para HUMA, arquivo mensal Spot de maio de 2025 deve cobrir o evento, mas precisa ser baixado e validado antes de qualquer número calculado.
 3. Para ASTER/LBank, API pública documentada é uma rota promissora para candles; a cobertura histórica e parâmetros reais precisam ser testados. Não se assume que o endpoint de trades recentes permita obter todo o histórico de TGE.
 4. A fonte para o mercado inicial da própria Aster Spot continua pendente; não é substituível por dados de CEX posterior nem por volume total do protocolo.
 
 ## 6. Próxima etapa
 
-- adquirir o ZIP HUMAUSDT maio/2025 e verificar o checksum;
+- obter acesso aos arquivos baixados no ambiente de análise, validar o checksum, inspecionar o CSV e calcular a janela de HUMA;
 - recuperar LBank ASTER/USDT candles para 17–18/09/2025 e testar disponibilidade de janela histórica;
 - identificar a API ou o pool de ASTER Spot e recuperar os swaps;
 - só após isso consolidar comparativo por venue e janela.
@@ -91,4 +91,4 @@ Não foram calculados OHLCV, volume quote, D0/D1/D7/D30 ou preços de first trad
 - Binance HUMA launch announcement: https://www.binance.com/en/support/announcement/detail/515c45c283ea44c59b7f4623a3512666
 
 ---
-**Classificação:** relatório de método e aquisição; não há extração bruta nem resultado quantitativo validado nesta etapa.
+**Classificação:** etapa de aquisição parcialmente realizada: download HUMA confirmado, checksum/CSV ainda não validados; ASTER/LBank permanece pendente. Nenhum resultado quantitativo foi calculado.
