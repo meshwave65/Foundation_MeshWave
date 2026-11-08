@@ -442,3 +442,14 @@ A contabilização deve preservar a origem de cada evento por nó para auditoria
 A regra de segregação permanece: UMS não pode ser transferida diretamente entre carteiras comuns de MeshWalkers. Movimentações permitidas envolvendo UMS devem passar por carteiras institucionais/administrativas do sistema explicitamente autorizadas; estornos e correções seguem fluxo administrativo auditável. A agregação de nós no mesmo DID é consolidação contábil, não transferência entre usuários.
 
 O exemplo, os requisitos derivados e os limites entre princípio e implementação estão no documento específico [Economia centrada no MeshWalker e carteira unificada por DID](economia-centrada-no-meshwalker-carteira-unificada.md).
+
+
+## 17. PoUW aplicada à aferição opcional de serviços — 2026-11-08
+
+O responsável acrescentou a possibilidade de PoUW abranger um módulo de aferição de serviços contínuos ou amostrais. A aferição pode medir disponibilidade, qualidade e cumprimento de compromissos contratados; pode ser oferecida pela MeshWave ou por terceiros homologados, com protocolos abertos e verificáveis.
+
+A contratação da aferição individual é opcional. Sem adesão, o cliente aceita tacitamente a prestação conforme os termos contratados e não terá redução dos valores contratados por falhas individualmente aferidas. A MeshWave mantém monitoramento sistêmico, mas a telemetria específica do usuário sem adesão não deve ser persistida de forma identificável e não pode ser recuperada posteriormente. Com adesão, a medição individual e eventuais ajustes seguem os critérios previamente acordados.
+
+A aferição pode ser atividade útil elegível a reconhecimento por PoUW e remuneração em UMS, mas somente conforme critérios formais futuros. Protocolos, métricas, regras contratuais, comissão permanente com representantes das empresas, homologação, contestação e salvaguardas contra reidentificação permanecem propostas a especificar. A existência do conceito não confirma implementação.
+
+Documento de referência: [Módulo de Aferição de Serviços, Qualidade e Privacidade por Adesão](afericao-servicos-qualidade-e-privacidade.md).
