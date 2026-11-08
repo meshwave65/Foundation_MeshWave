@@ -8,6 +8,7 @@
 |---|---|
 | Status global | `EM_ANDAMENTO — FASE 3: Curadoria profunda` |
 | Última atualização | 2026-11-03 21:53 (-03:00) — ID-248 classificado, integrado e encerrado; fila liberada para nova reconciliação. |
+| Atualização lateral 2026-11-08 | DOM-23 — módulo conceitual de aferição opcional de serviços, qualidade e privacidade por adesão documentado e indexado; integração ao roadmap e PoUW/UMS; nenhuma fonte bruta aberta e fila F3.3 preservada. Checkpoint `BCE/sessoes/2026-11-08_dom23-afericao-servicos.md`. |
 | Publicação de F2.6-07 | Os cinco commits da unidade (`c55e31d`, `b3c8864`, `8870caa`, `290895f`, `629125a`) foram publicados em `main`; a correção factual posterior foi registrada em `f8649ba`. |
 | Publicação de F2.6-08 | DOM-06 `74eba5f`; índice `14e2768` (cobertura) e `aec133d` (linha principal DOM-06); checkpoint de fechamento `6f99eaa`, todos publicados em `main`. |
 | Publicação de F2.6-09 | DOM-06 `97dea42`; índice `a39441b`; pré-registro `56c5ff8`; fechamento `f186adc`; controle `b79cf1d`, publicados em `main`.
