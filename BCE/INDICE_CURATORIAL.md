@@ -146,6 +146,7 @@ Fontes que apenas mencionam o projeto sem conteúdo técnico devem ser registrad
 | `BCE/BLUEPRINT_F3_3_EXECUCAO_PARALELA.md` | F3.3 — blueprint de execução coordenada | v0.2.0; define faixas paralelizáveis, protocolo de claims, critérios de classificação, handoffs, critérios de aceite e bloqueio atual. Incorpora `SofiaControlPanel@main 1957359`, seu `AGENTS.md`, blueprint Missão 0009, catálogo de skills, Operational Reports e separação entre BCE e SCP. |
 
 | `BCE/sessoes/2026-11-01_pouw-contribuicoes-e-genesis-ums.md` | Clarificação de PoUW ampliada, contribuições financeiras e critério da Genesis UMS | Registra o princípio informado pelo responsável; exemplos não são lista fechada e critérios objetivos permanecem para governança. |
+| `BCE/sessoes/2026-11-08_dom23-afericao-servicos.md` | Checkpoint do módulo DOM-23 — aferição opcional, qualidade e privacidade por adesão | Atualização documental lateral; links ao roadmap e PoUW/UMS; implementação e requisitos detalhados permanecem pendentes. |
 
 ## Classificações de fontes publicadas
 
