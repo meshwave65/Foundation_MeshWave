@@ -119,3 +119,13 @@ O responsável definiu que a unidade econômica da rede é o MeshWalker identifi
 - `BCE/temas/identidade-dids-e-identificador-de-equipamento.md` — relação entre DID, identidade e nó.
 
 O registro é conceitual; não confirma a implementação do DID único, agregação, carteira unificada ou ledger.
+
+
+### DEC-BCE-010 — Registrar aferição opcional de serviços como módulo conceitual de roadmap
+
+- **Data:** 2026-11-08
+- **Estado:** ADOTADA
+- **Decisão:** Registrar no Foundation_MeshWave o módulo conceitual de aferição de serviços, qualidade e privacidade por adesão, conectado à arquitetura e ao modelo PoUW/UMS.
+- **Motivo:** a definição do responsável amplia a PoUW para aferição de serviços, explicita escolha contratual do cliente e estabelece separação entre observabilidade sistêmica e telemetria individual consentida.
+- **Limites:** a decisão adota o registro documental do conceito, não a especificação técnica, cronograma, fase, homologação, composição efetiva da comissão ou implementação. Protocolos, critérios de aferição, governança, contratos e salvaguardas de privacidade permanecem pendentes.
+- **Referências:** `BCE/temas/afericao-servicos-qualidade-e-privacidade.md`; `BCE/temas/arquitetura-geral-e-implantacao.md`; `BCE/temas/economia-ums-mwn-pouw-liquidez-distribuida.md`.
