@@ -53,6 +53,8 @@ Este índice define a arquitetura documental da Base de Conhecimento Evolutivo. 
 | DOM-09 | `BCE/temas/simuladores-e-visualizacoes.md` | Quais simuladores existem, que modelos executam e como os resultados são visualizados? | “Criar site com simulador”, “Como criar um simulador gráfico”, inconsistências entre simulador e código, gráficos não exibidos | PENDENTE |
 | DOM-10 | `BCE/temas/android-dispositivos-e-compatibilidade.md` | Como Android, dispositivos obsoletos, Bluetooth e versões de bibliotecas entram no sistema? | erros de build Android, dispositivos antigos, compatibilidade de bibliotecas/APIs | PENDENTE |
 
+| DOM-23 | `BCE/temas/afericao-servicos-qualidade-e-privacidade.md` | Como aferição opcional, protocolos abertos, homologação, governança e privacidade por adesão podem apoiar a verificação de serviços? | Definição conceitual do responsável em 2026-11-08; relacionada a DOM-02, DOM-14, DOM-15 e DOM-20 | CONCEITO REGISTRADO PARA ROADMAP — requisitos, comissão, homologação, aferidores e implementação pendentes |
+
 ### P2 — Implementação, operações e segurança
 
 | ID | Documento-alvo | Pergunta central | Fontes candidatas observadas | Status |
