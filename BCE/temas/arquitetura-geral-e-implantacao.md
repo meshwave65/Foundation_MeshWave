@@ -237,3 +237,14 @@ Os `links.txt` de E02, E04 e E06 têm zero bytes. Busca no repositório não loc
 ## 14. Próximo passo de curadoria
 
 Fechar o claim F3.1/L002-03 e manter DOM-02 em `REVISÃO`. A próxima fonte somente deve ser aberta após reconciliação explícita da fila no controle mestre; preservar o diagrama como roadmap e não promover módulos a implantação sem artefatos rastreáveis.
+
+
+## 5. Módulo conceitual de roadmap: aferição de serviços
+
+Em 2026-11-08 foi registrado um módulo conceitual para aferição opcional de qualidade, disponibilidade e cumprimento de serviços contratados. A solução poderá ser oferecida pela MeshWave ou por terceiros homologados, apoiada em protocolos abertos e verificáveis e em uma comissão permanente com representantes das empresas participantes.
+
+A aferição individual depende da adesão do cliente. Sem adesão, a telemetria individual identificável não deve ser persistida nem recuperável; o monitoramento sistêmico agregado pode continuar. Com adesão, medição e possíveis ajustes devem obedecer a critérios contratuais prévios. A proposta busca criar incentivos sistêmicos para maior conformidade dos fornecedores com o que foi contratado.
+
+Referência: [DOM-23 — Aferição de Serviços, Qualidade e Privacidade por Adesão](afericao-servicos-qualidade-e-privacidade.md).
+
+**Classificação:** proposta conceitual de roadmap, sem fase, cronograma, protocolo final, comissão constituída ou implementação confirmada. Não altera o roadmap gráfico/horizonte temporal anteriormente registrado como não validado.
