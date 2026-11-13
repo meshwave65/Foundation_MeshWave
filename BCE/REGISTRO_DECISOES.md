@@ -134,8 +134,8 @@ O registro é conceitual; não confirma a implementação do DID único, agrega�
 
 - **Data:** 2026-11-13
 - **Estado:** ADOTADA
-- **Decisão:** Tabelas no mesmo projeto Supabase podem pertencer a projetos e domínios diferentes. A ausência de RLS em tabelas de outros domínios não deve ser tratada automaticamente como falha de segurança do Sofia Control Panel.
-- **Motivo:** O catálogo compartilhado do banco não define, por si só, o proprietário funcional, o consumidor autorizado ou o contrato de segurança de cada tabela. Alterar RLS indiscriminadamente pode quebrar integrações legítimas.
-- **Impacto:** Auditorias futuras devem identificar domínio, proprietário e fluxo de acesso antes de recomendar alteração de RLS. O SCP deve ser avaliado separadamente das tabelas públicas de outros projetos.
-- **Limites:** Esta decisão é uma regra de escopo e classificação. Não declara que toda tabela sem RLS é segura nem substitui um inventário técnico de proprietários e consumidores.
+- **Decisão:** Tabelas no mesmo projeto Supabase podem pertencer a projetos e domínios diferentes ou ter permanecido no ambiente histórico por causa da migração parcial da estrutura MWN para a conta/projeto `mwn`. A ausência de RLS não deve ser tratada automaticamente como falha específica do Sofia Control Panel, mas também não deve ser presumida segura.
+- **Motivo:** Vários projetos foram construídos sob a conta `meshwave65`, criando uma base compartilhada. A tentativa de separação para `mwn` não foi concluída, especialmente no domínio de `auth.users` e usuários associados. O catálogo compartilhado não revela, por si só, proprietário funcional, consumidor autorizado, estado de migração ou contrato de segurança.
+- **Impacto:** Auditorias futuras devem identificar domínio, proprietário, fluxo de acesso e estado de migração antes de recomendar alteração de RLS. O SCP deve ser avaliado separadamente, enquanto a separação incompleta de projetos e identidades deve ser tratada como risco sistêmico de segurança e governança.
+- **Limites:** Esta decisão é uma regra de escopo e classificação. Não declara que tabelas sem RLS são seguras nem substitui um inventário de proprietários, consumidores, dependências e itens migrados/não migrados.
 - **Referência:** `BCE/temas/fronteiras-de-dominio-e-rls.md`.
