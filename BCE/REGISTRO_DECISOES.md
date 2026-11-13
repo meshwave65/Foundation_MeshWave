@@ -129,3 +129,13 @@ O registro é conceitual; não confirma a implementação do DID único, agrega�
 - **Motivo:** a definição do responsável amplia a PoUW para aferição de serviços, explicita escolha contratual do cliente e estabelece separação entre observabilidade sistêmica e telemetria individual consentida.
 - **Limites:** a decisão adota o registro documental do conceito, não a especificação técnica, cronograma, fase, homologação, composição efetiva da comissão ou implementação. Protocolos, critérios de aferição, governança, contratos e salvaguardas de privacidade permanecem pendentes.
 - **Referências:** `BCE/temas/afericao-servicos-qualidade-e-privacidade.md`; `BCE/temas/arquitetura-geral-e-implantacao.md`; `BCE/temas/economia-ums-mwn-pouw-liquidez-distribuida.md`.
+
+### DEC-BCE-011 — Separar fronteiras de domínio antes de classificar ausência de RLS
+
+- **Data:** 2026-11-13
+- **Estado:** ADOTADA
+- **Decisão:** Tabelas no mesmo projeto Supabase podem pertencer a projetos e domínios diferentes. A ausência de RLS em tabelas de outros domínios não deve ser tratada automaticamente como falha de segurança do Sofia Control Panel.
+- **Motivo:** O catálogo compartilhado do banco não define, por si só, o proprietário funcional, o consumidor autorizado ou o contrato de segurança de cada tabela. Alterar RLS indiscriminadamente pode quebrar integrações legítimas.
+- **Impacto:** Auditorias futuras devem identificar domínio, proprietário e fluxo de acesso antes de recomendar alteração de RLS. O SCP deve ser avaliado separadamente das tabelas públicas de outros projetos.
+- **Limites:** Esta decisão é uma regra de escopo e classificação. Não declara que toda tabela sem RLS é segura nem substitui um inventário técnico de proprietários e consumidores.
+- **Referência:** `BCE/temas/fronteiras-de-dominio-e-rls.md`.

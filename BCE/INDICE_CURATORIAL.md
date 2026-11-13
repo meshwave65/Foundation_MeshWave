@@ -65,6 +65,12 @@ Este índice define a arquitetura documental da Base de Conhecimento Evolutivo. 
 | DOM-14 | `BCE/temas/seguranca-privacidade-lgpd-e-governanca.md` | Quais princípios de segurança, privacidade, LGPD, controle e governança existem? | material LGPD, autenticação, identidade, persistência, exposição de credenciais e práticas operacionais | PENDENTE |
 | DOM-15 | `BCE/temas/apis-integracoes-e-protocolos.md` | Quais APIs, protocolos e integrações conectam os módulos? | Sofia API, DafsAPI, APIs de desenvolvedores, MWC/UMS, Briar e Chroma; L002-03 como mapa de Integração 6G, SDN, SATSI, LEO e interface terahertz | PENDENTE — L002-03 fornece somente rótulos de integração/roadmap, sem contratos ou protocolos verificáveis |
 
+### Documento transversal — fronteiras de domínio e segurança
+
+| ID | Documento | Finalidade | Status |
+|---|---|---|---|
+| XDOM-01 | `BCE/temas/fronteiras-de-dominio-e-rls.md` | Registrar que tabelas do mesmo Supabase podem pertencer a projetos/domínios distintos e que ausência de RLS não deve ser classificada automaticamente como falha do SCP | ADOTADA como regra de escopo |
+
 | DOM-20 | `BCE/temas/economia-ums-mwn-pouw-liquidez-distribuida.md` | Como PoUW, UMS, MWN e o módulo Mercado conectam contribuição útil, economia interna e fronteira externa? | Documento conceitual BCE; clarificações do responsável em 2026-10-27 e 2026-11-01 | REVISÃO — PoUW ampliada para contribuições mensuráveis, inclusive financeiras; Genesis UMS fundamentada conceitualmente em contribuições úteis iniciais. Critérios formais de governança e implementação permanecem pendentes; fluxo Mercado ainda não confirmado em código |
 
 ### Referência temática MWN — consulta tributária
