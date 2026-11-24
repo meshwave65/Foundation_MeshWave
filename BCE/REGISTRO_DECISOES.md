@@ -129,3 +129,15 @@ O registro é conceitual; não confirma a implementação do DID único, agrega�
 - **Motivo:** a definição do responsável amplia a PoUW para aferição de serviços, explicita escolha contratual do cliente e estabelece separação entre observabilidade sistêmica e telemetria individual consentida.
 - **Limites:** a decisão adota o registro documental do conceito, não a especificação técnica, cronograma, fase, homologação, composição efetiva da comissão ou implementação. Protocolos, critérios de aferição, governança, contratos e salvaguardas de privacidade permanecem pendentes.
 - **Referências:** `BCE/temas/afericao-servicos-qualidade-e-privacidade.md`; `BCE/temas/arquitetura-geral-e-implantacao.md`; `BCE/temas/economia-ums-mwn-pouw-liquidez-distribuida.md`.
+
+
+
+### DEC-BCE-011 — Persistir decisões e conhecimento relevante produzido em sessões
+
+- **Data:** 2026-11-24
+- **Estado:** ADOTADA
+- **Decisão:** Conversas de trabalho que produzam decisões, requisitos, mudanças de entendimento, evidências operacionais ou pendências relevantes para MeshWave/SOFIA devem gerar registro versionado na BCE, mesmo quando não estiverem vinculadas a uma missão. O registro mínimo é um checkpoint em `BCE/sessoes/`; quando houver evolução do estado de um tema, atualizar também o documento temático, o índice e o controle mestre.
+- **Motivo:** impedir perda de conhecimento entre conversas, retomadas e agentes; evitar que decisões e evidências permaneçam apenas no histórico do chat.
+- **Método:** separar decisões explícitas, fatos observados, propostas, hipóteses, implementações confirmadas e pendências; criar commits verificáveis; declarar o que não foi persistido/publicado.
+- **Limites:** não criar missão artificial para registrar conhecimento; checkpoint lateral não altera a fila de curadoria nem substitui artefatos operacionais de outros pipelines. Preservar separação entre BCE e SCP e não misturar estados, locks, artefatos ou commits.
+- **Referências:** `BCE/ORIENTACAO_AGENTES.md` §3.3; `BCE/sessoes/2026-11-24_sofia-scp-execucao-oportunista-e-continuidade.md`; `BCE/temas/sofia-agentes-missoes-e-oraculo.md` §18.
