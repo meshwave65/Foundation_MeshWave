@@ -6,8 +6,8 @@
 |---|---|
 | ID curatorial | `DOM-06` |
 | Status | `REVISÃO` |
-| Versão do documento | `0.3.6` |
-| Última atualização | `2026-10-26` |
+| Versão do documento | `0.3.7` |
+| Última atualização | `2026-11-24` |
 | Curador(es) | Agente BCE MeshWave |
 | Confiança geral | `média-baixa` |
 | Documento relacionado no índice | [`BCE/INDICE_CURATORIAL.md`](../INDICE_CURATORIAL.md) |
@@ -581,6 +581,42 @@ F2.6-09 usa o rótulo “Ciclo de Processamento Atômico (CPA)”, mas não desc
 
 
 > A convenção comunicada para versionamento do sistema MeshWave considera o estado atual dos módulos como versão `1.0` e incrementos futuros como `1.01`, `1.02` etc. Essa convenção de versão de produto não altera retroativamente o histórico numérico deste documento curatorial; a versão do módulo SOFIA/API em si permanece **não confirmada** nas fontes analisadas.
+
+
+
+## 18. Atualização lateral — execução oportunista, agentes e continuidade SCP/Sandbox (2026-11-24)
+
+Esta seção registra decisões explícitas posteriores à auditoria das 23 fontes F2.6. Ela não altera retroativamente os achados arqueológicos nem declara que os requisitos abaixo já estejam implementados.
+
+### 18.1 Seleção oportunista de ferramentas e modelos
+
+O SOFIA deve selecionar a alternativa de menor custo que satisfaça os requisitos de resultado, qualidade, confiabilidade e segurança. Não deve consumir a ferramenta mais poderosa apenas porque ela está disponível no plano. Deve preferir regras determinísticas quando suficientes, modelos menores quando atingirem os mesmos critérios e ferramentas gratuitas/open source quando entregarem o resultado exigido. Escalonamento ocorre somente quando a alternativa econômica não é suficiente.
+
+Planos gratuitos, intermediários e avançados podem habilitar universos diferentes de provedores e capacidades; o plano não determina automaticamente qual recurso será consumido. O usuário poderá configurar conectores/provedores e credenciais próprias quando permitido. O seletor do SOFIA deve continuar otimizando custo, latência, confiabilidade, qualidade, segurança e recuperação.
+
+Playwright, Browser Use, Stagehand, Steel Browser e Anchor Browser foram listados como candidatos para avaliação. Nenhum foi homologado nesta sessão. TinyFish não é ferramenta adotada e não deve ser pressuposta como dependência.
+
+### 18.2 Governança dos agentes entre SCP original e Sandbox
+
+O SCP original é a fonte de verdade e o único ambiente de administração dos agentes. O Sandbox é somente consumidor de uma projeção de leitura, sincronizada unidirecionalmente do original para o Sandbox. Campos genéricos permitidos podem incluir nome, estado operacional e créditos. E-mails, senhas, tokens, chaves, ciphertext e demais credenciais/configurações secretas não devem ser replicados nem expostos. A projeção deve usar allowlist.
+
+O comportamento-alvo para execução é que missões apresentadas no Sandbox solicitem a execução por meio da autoridade operacional do SCP original; agentes e credenciais permanecem no original. A solicitação e o retorno de resultados precisam ser autenticados, idempotentes e rastreáveis. A implementação integral desse fluxo ainda não foi confirmada.
+
+### 18.3 Elegibilidade por créditos
+
+A idade da última consulta de créditos, isoladamente, não deve excluir um agente operacional com saldo conhecido suficiente. A atualização do saldo deve ocorrer em background. Saldo desconhecido não deve ser interpretado como suficiente. Essa regra foi explicitada pelo responsável e deve orientar a correção do seletor de agentes.
+
+### 18.4 Provas de execução automática solicitadas
+
+O responsável definiu duas provas, nesta ordem: (1) concluir automaticamente a missão existente no Sandbox com TR aprovado; (2) criar uma missão sistêmica simples de teste, com TR aprovado automaticamente, e comprovar o ciclo completo sem intervenção humana. Nenhuma das duas provas foi declarada concluída nesta sessão.
+
+### 18.5 Evidência operacional e limites
+
+A sessão consultou o Supabase original e observou 19 registros de agentes online, dos quais 17 conectados e 2 configurados; a consulta não garante disponibilidade futura. A tarefa original SCP-TASK-000046 estava STAGED, atribuída ao agente INFO (ID 18), sem `manusTaskId`, com `manusStatus=dispatch_pending`. A última consulta de créditos de INFO era de 2026-11-22; a idade do dado, sozinha, não determina inelegibilidade.
+
+No repositório Sandbox foram observados despacho automático desabilitado na migração `drizzle/0003_automatic_task_dispatch.sql`, endpoint interno ainda ligado ao orquestrador Manus e campos sensíveis legados no schema de agentes. A consulta SQL ao banco Sandbox expirou nesta sessão, impedindo reconfirmação do estado de suas missões. Esses achados são fotografia operacional, não certificação de produção.
+
+O checkpoint detalhado e a proveniência desta atualização estão em [`BCE/sessoes/2026-11-24_sofia-scp-execucao-oportunista-e-continuidade.md`](../sessoes/2026-11-24_sofia-scp-execucao-oportunista-e-continuidade.md). O registro não substitui os documentos operacionais canônicos do SCP (TR, Blueprint, OR, FOR, Checkpoint e Handoff).
 
 ## 17. Próximo passo de curadoria
 
