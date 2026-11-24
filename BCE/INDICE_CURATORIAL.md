@@ -192,3 +192,9 @@ Estes documentos são materiais de projeto para preparação e diálogo; não s�
 - `BCE/temas/documento-base-investidores-mwn.md` — visão conceitual, estágio, plano em etapas, riscos e limites de métricas.
 - `BCE/temas/governanca-mercado-mwn-prioridade-meshwalkers.md` — princípio de prioridade dos Meshwalkers e requisitos preliminares para o regulamento.
 - `BCE/sessoes/2026-11-01_governanca-e-mercado-mwn.md` — checkpoint de rastreabilidade.
+
+
+## Registro lateral — SOFIA/SCP (2026-11-24)
+
+- `BCE/sessoes/2026-11-24_sofia-scp-execucao-oportunista-e-continuidade.md` — checkpoint de decisões explícitas sobre seleção oportunista de ferramentas, planos/provedores, governança de agentes entre SCP original e Sandbox, elegibilidade por créditos e duas provas de execução automática. Não é missão BCE nem altera a fila de fontes.
+- `BCE/temas/sofia-agentes-missoes-e-oraculo.md` — DOM-06 v0.3.7, atualização lateral §18 com o estado conceitual e evidências observadas em 2026-11-24.
