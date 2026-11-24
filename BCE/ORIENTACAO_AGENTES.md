@@ -65,6 +65,21 @@ Selecione a skill pela fonte versionada e registre nome, versão e commit no che
 
 O handoff deve declarar objetivo, entradas, saídas, validações, incertezas, impedimentos, commits publicados e próximo passo único. Se faltar caminho físico, autorização ou estado inequívoco, registrar `BLOCKED` e não abrir fonte bruta.
 
+## 3.3 Persistência de decisões e conhecimento produzido em sessões
+
+Conversas de trabalho que produzam decisões, requisitos, mudanças de entendimento, evidências operacionais ou pendências relevantes para o ecossistema MeshWave/SOFIA não devem permanecer apenas no histórico conversacional.
+
+Ao encerrar uma unidade relevante ou antes de transferir a continuidade:
+
+1. criar ou atualizar um checkpoint em `BCE/sessoes/AAAA-MM-DD_<tema>.md`, mesmo quando o trabalho não estiver vinculado a uma missão;
+2. distinguir decisões explícitas, fatos observados, propostas, hipóteses, implementações confirmadas e pendências;
+3. atualizar o documento temático pertinente quando o conhecimento representar evolução do estado atual, sem apagar a história arqueológica;
+4. atualizar `BCE/INDICE_CURATORIAL.md` e `BCE/CONTROLE_MESTRE.md` para que o registro seja localizável e retomável;
+5. criar commits rastreáveis e verificar a publicação em `main`, quando autorizada e disponível;
+6. declarar explicitamente qualquer conteúdo não persistido ou não publicado.
+
+Não criar uma missão artificial apenas para obter persistência. Checkpoints laterais não alteram a fila de curadoria nem substituem os artefatos canônicos de outros pipelines (por exemplo, TR, OR, FOR, Blueprint, Checkpoint e Handoff do SCP). Não misturar estados, locks, artefatos ou commits de pipelines distintos.
+
 ## 4. Regra de commits
 
 É obrigatório fazer commits pequenos e frequentes. Não acumular alterações de tarefas distintas para um commit final.
