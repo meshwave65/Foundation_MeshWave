@@ -580,6 +580,8 @@ F2.6-09 usa o rótulo “Ciclo de Processamento Atômico (CPA)”, mas não desc
 | `0.3.5` | `2026-10-19` | Acrescenta F2.6-15, fecha a auditoria profunda em 23/23 e registra busca do manual `sofia_opman.md`, claim/subtarefa narrados para a tarefa 315 e interrupção por créditos em 3/4; mantém `REVISÃO` e encerra a fila F2.6 para consolidação F3. | F2.6-15 `content.txt`, `code_blocks.txt`, `links.txt`, `FULL.png`; pré-registro `BCE/sessoes/2026-10-19_f2-6-item15-abertura.md`. |
 
 
+| `0.3.7` | `2026-11-24` | Registra diretrizes explícitas de seleção oportunista de ferramentas, planos/provedores, governança de agentes SCP/Sandbox, elegibilidade por créditos e duas provas de execução automática; distingue requisitos definidos de implementação ainda não confirmada. | Checkpoint `BCE/sessoes/2026-11-24_sofia-scp-execucao-oportunista-e-continuidade.md`; inspeção operacional de 2026-11-24. |
+
 > A convenção comunicada para versionamento do sistema MeshWave considera o estado atual dos módulos como versão `1.0` e incrementos futuros como `1.01`, `1.02` etc. Essa convenção de versão de produto não altera retroativamente o histórico numérico deste documento curatorial; a versão do módulo SOFIA/API em si permanece **não confirmada** nas fontes analisadas.
 
 
