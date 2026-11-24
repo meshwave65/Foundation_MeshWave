@@ -365,3 +365,13 @@ Critérios: registrar a referência exatamente sem reproduzir credenciais ou dad
 - **Arquivos/commits:** DOM-06 v0.2.9 (`97dea42`), índice (`a39441b`), checkpoint de fechamento F2.6-09 (`f186adc`) e este controle. Nenhum arquivo de `KNOWLEDGE/` foi modificado.
 - **Próximo passo inequívoco:** pré-registrar F2.6-10 em `KNOWLEDGE/dinelson/20260422_154718_Instruções para Execução da Missão com Sistema Remoto - Manus/`, publicar o checkpoint de abertura e atualizar o controle antes de ler o conteúdo.
 - **Conflitos/lacunas/impedimentos:** C06-19/20; conclusão e persistência não confirmadas; itens 10–15 ainda aguardam auditoria canônica. Sem impedimento operacional.
+
+
+## Atualização lateral — SOFIA/SCP (2026-11-24)
+
+- **Registro:** `BCE/sessoes/2026-11-24_sofia-scp-execucao-oportunista-e-continuidade.md`.
+- **Documento temático atualizado:** `BCE/temas/sofia-agentes-missoes-e-oraculo.md`, DOM-06 v0.3.7, seção 18.
+- **Conteúdo:** princípio de seleção oportunista por menor custo suficiente; planos com provedores/conectores configuráveis; candidatos de automação de navegador ainda não homologados; TinyFish não adotado; SCP original como fonte de verdade dos agentes; Sandbox como espelho read-only sem credenciais; elegibilidade por saldo conhecido sem corte arbitrário de 60 segundos; objetivo de duas provas de execução automática.
+- **Estado:** decisões e requisitos registrados; implementação e duas provas permanecem pendentes. A consulta ao banco Sandbox expirou. Nenhuma missão foi declarada concluída.
+- **Limite:** esta atualização é documental e lateral; não altera o próximo item nem a fila principal de curadoria BCE, e não substitui OR/FOR/TR/Blueprint/Checkpoint/Handoff canônicos do SCP.
+- **Commits desta unidade:** checkpoint criado em `2bacedad8ba4b3bd144a4dff8785b612952467a4`; DOM-06 e índice atualizados nos commits subsequentes desta sequência.
