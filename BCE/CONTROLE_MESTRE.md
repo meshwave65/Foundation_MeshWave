@@ -375,3 +375,5 @@ Critérios: registrar a referência exatamente sem reproduzir credenciais ou dad
 - **Estado:** decisões e requisitos registrados; implementação e duas provas permanecem pendentes. A consulta ao banco Sandbox expirou. Nenhuma missão foi declarada concluída.
 - **Limite:** esta atualização é documental e lateral; não altera o próximo item nem a fila principal de curadoria BCE, e não substitui OR/FOR/TR/Blueprint/Checkpoint/Handoff canônicos do SCP.
 - **Commits desta unidade:** checkpoint inicial `2bacedad`; DOM-06 §18 `170cb891`; índice `1aad4287`; controle mestre `4dcab4ef`. Correções de contagem/histórico/índice foram registradas em commits subsequentes; consultar o histórico Git para a cadeia completa.
+
+- **Regra de continuidade adotada:** DEC-BCE-011 determina persistir conversas relevantes fora de missões por checkpoint BCE, com atualização do tema, índice e controle quando aplicável; orientação em `BCE/ORIENTACAO_AGENTES.md` §3.3.
