@@ -107,7 +107,7 @@ Consulta ao projeto Supabase original `ufylccbdjfzydbwhpmpp`, schema `sofia`, ta
 - 19 registros de agentes retornados com status `online`;
 - 17 estavam com `connectionStatus=connected`;
 - 2 estavam com `connectionStatus=configured`;
-- 17 registros tinham saldo conhecido de 300 créditos, exceto o agente `meshwave` com saldo 0; os dois configurados não tinham saldo registrado;
+- 16 agentes conectados tinham saldo registrado de 300 créditos; um agente conectado (`meshwave`) tinha saldo 0; os dois agentes configurados não tinham saldo registrado;
 - os horários de atualização de créditos observados eram de 20 a 22/11/2026.
 
 Esses dados são uma fotografia da consulta, não uma garantia de disponibilidade no momento de uma execução posterior.
