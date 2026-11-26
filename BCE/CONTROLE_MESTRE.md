@@ -7,7 +7,7 @@
 | Campo | Valor |
 |---|---|
 | Status global | `EM_ANDAMENTO — FASE 3: Curadoria profunda` |
-| Última atualização | 2026-11-16 23:40 (-03:00) — clone local reconstruído a partir de `origin/main@55431c0`; reconciliação F3.3 concluída sem novo caminho físico inequívoco. |
+| Última atualização | 2026-11-26 — atualização lateral DOM-17 v0.1.0 e checkpoint; fila principal F3.3 preservada, ainda bloqueada aguardando caminho físico único. |
 | Atualização lateral 2026-11-08 | DOM-23 — módulo conceitual de aferição opcional de serviços, qualidade e privacidade por adesão documentado e indexado; integração ao roadmap e PoUW/UMS; nenhuma fonte bruta aberta e fila F3.3 preservada. Checkpoint `BCE/sessoes/2026-11-08_dom23-afericao-servicos.md`. |
 | Publicação de F2.6-07 | Os cinco commits da unidade (`c55e31d`, `b3c8864`, `8870caa`, `290895f`, `629125a`) foram publicados em `main`; a correção factual posterior foi registrada em `f8649ba`. |
 | Publicação de F2.6-08 | DOM-06 `74eba5f`; índice `14e2768` (cobertura) e `aec133d` (linha principal DOM-06); checkpoint de fechamento `6f99eaa`, todos publicados em `main`. |
@@ -377,3 +377,16 @@ Critérios: registrar a referência exatamente sem reproduzir credenciais ou dad
 - **Commits desta unidade:** checkpoint inicial `2bacedad`; DOM-06 §18 `170cb891`; índice `1aad4287`; controle mestre `4dcab4ef`. Correções de contagem/histórico/índice foram registradas em commits subsequentes; consultar o histórico Git para a cadeia completa.
 
 - **Regra de continuidade adotada:** DEC-BCE-011 determina persistir conversas relevantes fora de missões por checkpoint BCE, com atualização do tema, índice e controle quando aplicável; orientação em `BCE/ORIENTACAO_AGENTES.md` §3.3.
+
+
+## Atualização lateral — DOM-17: expansão por aquisição e integração de ativos digitais (2026-11-26)
+
+- **Documento criado:** `BCE/temas/estrategia-expansao-aquisicao-integracao-ativos-digitais-comunidades.md`, DOM-17 v0.1.0, status `EM_CURADORIA`.
+- **Escopo:** estratégia MeshWave de aquisição, licenciamento, parceria, reativação e integração de produtos digitais e comunidades preexistentes, visando incorporar nós operacionais. A métrica central é custo por nó operacional efetivamente incorporado.
+- **Jardim do Éden:** registrado como caso estratégico, não como finalidade comercial isolada. A referência histórica superior a 15 milhões de downloads foi marcada como informada pelo responsável e ainda não auditada. Relações com MIA-D e UMS registradas com limites explícitos.
+- **Exemplo de comunidade persistente:** Commandos: Behind Enemy Lines, citado pelo responsável; exemplo ilustrativo, não oportunidade de aquisição avaliada.
+- **Limites:** 1% de processamento e 1% de armazenamento permanecem hipótese inicial de modelagem. Participação em recursos deve ser autorizada, configurável e revogável. Nenhuma fonte bruta, licença, contrato, código ou métrica histórica foi auditada nesta atualização.
+- **Arquivos:** DOM-17, índice curatorial e checkpoint `BCE/sessoes/2026-11-26_dom17-estrategia-expansao-ativos-digitais.md`.
+- **Commits:** DOM-17 `e94de26818562d16f0eefdb175733cb80bbb65b9`; índice `e40d6d43f51f138fce8f74a2c1f7b8a7bb147fe6`; checkpoint `3844429a7e9bbef08dc0c43a7ef97ffaa8594cae`; este controle mestre será commitado em unidade própria.
+- **Próximo passo lateral:** pesquisar o corpus BCE e inventário `KNOWLEDGE/` por Jardim do Éden, SimCity, MIA-D, jogos, comunidades, aquisição, parcerias e distribuição; identificar caminhos físicos antes de abrir fontes.
+- **Continuidade:** esta atualização não altera o item principal F3.3-COORD-008 nem a fila/locks da curadoria profunda.
