@@ -394,7 +394,7 @@ Critérios: registrar a referência exatamente sem reproduzir credenciais ou dad
 
 ## Atualização lateral — DOM-24: cooperativa de capacidade computacional e agentes (2026-11-27)
 
-- **Documento criado:** BCE/temas/cooperativa-capacidade-computacional-agentes-ums.md, DOM-24 v0.1; conceito registrado, sem validação contratual ou implementação confirmada.
+- **Documento criado:** BCE/temas/cooperativa-capacidade-computacional-agentes-ums.md, DOM-24 v0.1; conceito registrado, sem validação contratual ou implementação confirmada. O DOM-20 recebeu a seção 18 como clarificação histórica da natureza interna da UMS e referência cruzada ao DOM-24.
 - **Conteúdo:** contribuição voluntária de capacidade/agentes de IA; benefício recíproco da capacidade coletiva; exemplo de milhares de contas com cerca de 300 créditos/dia explicitamente hipotético; UMS como unidade interna sem valor financeiro inerente e sem venda/transferência direta entre participantes; conversão prévia em ativo cripto para circulação/negociação; governança administrativa aventada como hipótese; riscos de termos dos fornecedores, segurança, privacidade, mensuração PoUW e retirada.
 - **Consulta RFB:** processo 10265.426240/2025-40, protocolado em 09/10/2025 segundo relato do responsável; Termo de Preparo em fevereiro de 2026 segundo relato; resposta final não confirmada. Não caracterizar como decisão favorável ou certificação.
 - **Registro operacional relacionado:** SCP-TASK-000007 / PoUW-01 e OR-COOP-UMS-001, documento 75, v1, publicado no SCP. A BCE e o SCP mantêm registros complementares e separados.
