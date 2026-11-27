@@ -183,6 +183,19 @@ Cada documento de tema deve conter, quando aplicável:
 18. histórico de versões do documento;
 19. próximo passo de curadoria.
 
+## 7.1 Regra de fonte canônica e hipertexto documental
+
+A BCE e os artefatos MeshWave devem funcionar como um hipertexto de conhecimento, com uma fonte canônica por assunto e referências cruzadas navegáveis, evitando duplicação de conteúdo.
+
+1. Antes de criar ou ampliar um artefato, pesquise o índice e os documentos existentes para localizar a fonte canônica do assunto.
+2. Mantenha definições, explicações, requisitos e decisões completas em um único documento temático canônico, salvo quando a separação de domínio for realmente necessária.
+3. Nos documentos relacionados, registre apenas o contexto mínimo para orientar o leitor e inclua link Markdown relativo direto ao documento e, quando pertinente, ao cabeçalho/seção específica (âncora).
+4. Não copie parágrafos, tabelas, listas de requisitos ou decisões de outro documento apenas para tornar o documento local aparentemente completo. Use a referência direta.
+5. Se um assunto evoluir, atualize a fonte canônica; revise somente os links e breves descrições dos documentos dependentes.
+6. Crie um novo DOM apenas quando houver escopo coeso e conteúdo próprio não coberto pela fonte existente. Não crie DOM por conveniência ou para replicar conteúdo.
+7. Índice, controle mestre, registro de decisões e checkpoints devem resumir o estado e apontar para os documentos canônicos; não devem se tornar cópias paralelas do conteúdo temático.
+8. Preserve registros históricos quando necessário para auditoria, mas substitua duplicações operacionais atuais por referências quando a informação canônica estiver estabelecida.
+
 ## 8. Tratamento de evidências e conflitos
 
 - Não transformar hipótese em fato.
