@@ -392,6 +392,9 @@ Critérios: registrar a referência exatamente sem reproduzir credenciais ou dad
 - **Continuidade:** esta atualização não altera o item principal F3.3-COORD-008 nem a fila/locks da curadoria profunda.
 
 
+
+- **Regra documental vigente:** [DEC-BCE-013](REGISTRO_DECISOES.md#dec-bce-013-adotar-fonte-canônica-única-e-referências-cruzadas-hipertextuais), operacionalizada em [ORIENTACAO_AGENTES.md §7.1](ORIENTACAO_AGENTES.md#71-regra-de-fonte-canonica-e-hipertexto-documental), no [_TEMPLATE.md §15](temas/_TEMPLATE.md#15-relações-com-outros-documentos) e na [skill de curadoria](../skills/meshwave-bce-curation/SKILL.md).
+
 ## Atualização lateral — DOM-24 (2026-11-27)
 
 - **Fonte canônica:** [DOM-24 — Cooperativa de capacidade computacional e contribuição voluntária de agentes](temas/cooperativa-capacidade-computacional-agentes-ums.md).
