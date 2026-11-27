@@ -122,7 +122,7 @@ A formulação “aceitação tácita” da prestação sem aferição individua
 
 **Estado atual: proposta conceitual registrada para o roadmap.** Não há neste registro especificação final, cronograma, fase aprovada, código, aferidor operacional, comissão constituída ou homologação vigente.
 
-Próxima etapa documental/técnica, quando priorizada: transformar os princípios em requisitos verificáveis, mapear dependências com DOM-02, DOM-14, DOM-15 e DOM-20, e submeter desenho de privacidade, contrato de aferição, protocolo de evidências e governança a validação antes de qualquer implementação.
+Próxima etapa documental/técnica, quando priorizada: transformar os princípios em requisitos verificáveis, mapear dependências com DOM-02, DOM-14, DOM-15 e DOM-20, e submeter desenho de privacidade, contrato de aferição, protocolo de evidências e governança a validação antes de qualquer implementação. Para o tema correlato de contribuição cooperativa de agentes e capacidade coletiva, consultar [DOM-24 — seção 3: Modelo conceitual de funcionamento](cooperativa-capacidade-computacional-agentes-ums.md#3-modelo-conceitual-de-funcionamento); este DOM mantém apenas a especificação própria de aferição.
 
 ## Histórico
 
