@@ -453,3 +453,16 @@ A contratação da aferição individual é opcional. Sem adesão, o cliente ace
 A aferição pode ser atividade útil elegível a reconhecimento por PoUW e remuneração em UMS, mas somente conforme critérios formais futuros. Protocolos, métricas, regras contratuais, comissão permanente com representantes das empresas, homologação, contestação e salvaguardas contra reidentificação permanecem propostas a especificar. A existência do conceito não confirma implementação.
 
 Documento de referência: [Módulo de Aferição de Serviços, Qualidade e Privacidade por Adesão](afericao-servicos-qualidade-e-privacidade.md).
+
+
+## 18. Clarificação sobre a natureza interna da UMS e contribuição cooperativa — 2026-11-27
+
+Em esclarecimento posterior do responsável, fica explicitado que a UMS é uma unidade interna da MeshWave, utilizada para permitir que seu titular opere dentro da rede. Ela não possui valor financeiro inerente dentro do ambiente MeshWave e não pode ser vendida nem transferida diretamente entre participantes.
+
+Para que o valor contabilizado em UMS ingresse em forma transferível ou negociável, deve ocorrer previamente a conversão no ativo de criptomoeda previsto pelo protocolo. A circulação posterior é do ativo cripto resultante, não de UMS transferida diretamente. A denominação/ticker, a taxa e as condições operacionais devem seguir a especificação vigente; não são redefinidas por esta clarificação.
+
+Essa formulação complementa as seções anteriores sobre circulação por MWN e a regra de não transferência direta entre carteiras comuns. Movimentações administrativas/institucionais mencionadas em versões anteriores devem ser interpretadas como operações internas restritas e auditáveis, não como autorização para venda ou transferência direta de UMS entre participantes.
+
+A contribuição voluntária de agentes e capacidade computacional para uma capacidade coletiva, com benefício recíproco para participantes, está documentada separadamente em [DOM-24 — Cooperativa de capacidade computacional e contribuição voluntária de agentes](cooperativa-capacidade-computacional-agentes-ums.md). A hipótese não comprova permissão dos fornecedores de IA, implementação ou classificação jurídica/tributária.
+
+**Referência operacional:** SCP OR-COOP-UMS-001, documento 75, versão 1, publicado em 2026-11-27.
