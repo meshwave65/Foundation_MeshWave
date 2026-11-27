@@ -115,6 +115,11 @@ Mantenha a história arqueológica e a cronologia. Diferencie alegações de res
 
 ### 6. Atualizar artefatos curatoriais
 
+#### Fonte canônica e referências cruzadas (regra obrigatória)
+
+Antes de criar ou atualizar conteúdo, localize a fonte canônica existente no índice e no corpus BCE. Mantenha o conteúdo completo de cada assunto em um único documento. Em documentos relacionados, inclua apenas uma nota contextual curta e um link Markdown relativo direto ao documento/seção canônica (âncora quando disponível). Não replique definições, explicações, tabelas ou requisitos. Atualize a fonte canônica quando o assunto evoluir e ajuste os links dependentes. Crie novo DOM somente quando houver domínio coeso e conteúdo próprio ainda não coberto. Índice, controle, decisões e checkpoints devem apontar para os documentos canônicos, sem se tornarem cópias temáticas. Preserve conteúdo histórico necessário para auditoria; elimine duplicação apenas da camada operacional atual.
+
+
 Use `BCE/temas/_TEMPLATE.md` para criar ou atualizar o documento de tema. Cubra, quando aplicável: escopo, terminologia, estado da arte, arquitetura/fluxos, código, evidências com caminhos relativos, evolução, decisões, alternativas/descartes, otimizações, conflitos, lacunas, relações e próximo passo. Preserve a distinção entre texto, código, imagens e links.
 
 Atualize `BCE/INDICE_CURATORIAL.md` para refletir o estado real. Registre decisões curatoriais novas no `BCE/REGISTRO_DECISOES.md` com IDs estáveis, justificativas e relação com decisões anteriores; não reescreva decisões históricas. Não promova um documento a `CONCLUÍDO` sem cumprir os critérios da BCE.
