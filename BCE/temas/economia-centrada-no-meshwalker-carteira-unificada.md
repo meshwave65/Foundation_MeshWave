@@ -87,3 +87,4 @@ A especificação técnica deverá definir, entre outros pontos: esquema de asso
 - [Modelo econômico da MeshWave: PoUW, UMS, MWN e liquidez distribuída](economia-ums-mwn-pouw-liquidez-distribuida.md)
 - [Arquitetura geral e implantação](arquitetura-geral-e-implantacao.md)
 - [Registro de decisões curatoriais](../REGISTRO_DECISOES.md)
+- [DOM-24 — Cooperativa de capacidade computacional e contribuição voluntária de agentes](cooperativa-capacidade-computacional-agentes-ums.md#3-modelo-conceitual-de-funcionamento) — referência para a relação entre participantes, contribuição de agentes e capacidade coletiva; detalhes permanecem no DOM-24.
