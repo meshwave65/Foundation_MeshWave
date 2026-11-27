@@ -147,7 +147,15 @@ O registro é conceitual; não confirma a implementação do DID único, agrega�
 
 - **Data:** 2026-11-27
 - **Estado:** ADOTADA — registro conceitual; validações externas e implementação pendentes.
-- **Decisão:** Registrar em documento temático próprio (DOM-24) o modelo de contribuição voluntária de agentes/capacidade computacional, benefício recíproco pela capacidade coletiva e os esclarecimentos de que UMS é unidade interna da MeshWave, não pode ser vendida nem transferida diretamente entre participantes e somente ingressa em forma transferível/negociável após conversão no ativo cripto previsto pelo protocolo.
-- **Motivo:** preservar o conceito discutido e evitar que a cooperação seja descrita incorretamente como venda direta de contas, venda de capacidade por dinheiro ou transferência direta de UMS. Distinguir a caracterização econômica pretendida da classificação jurídica, contratual e tributária, que depende de análise própria.
-- **Limites:** não confirma que fornecedores de IA autorizem agregação ou compartilhamento de capacidade; não aprova compartilhamento de credenciais; não define ticker, taxa ou liquidez do ativo cripto; não constitui parecer jurídico/tributário nem comprova implementação. A hipótese de milhares de contas com cerca de 300 créditos diários é apenas ilustrativa. A consulta RFB 10265.426240/2025-40 foi relatada como protocolada em 09/10/2025 e com Termo de Preparo em fevereiro de 2026; decisão final não confirmada.
-- **Referências:** DOM-24; DOM-20; DOM-22; SCP SCP-TASK-000007 / PoUW-01; OR-COOP-UMS-001 (SCP documento 75, v1).
+- **Decisão:** Manter o conceito e suas definições no documento canônico [DOM-24 — Cooperativa de capacidade computacional e contribuição voluntária de agentes](temas/cooperativa-capacidade-computacional-agentes-ums.md).
+- **Limites:** esta entrada é apenas o registro da decisão e não replica o conteúdo temático. Validações externas e pendências permanecem descritas no DOM-24.
+- **Referências:** [DOM-24](temas/cooperativa-capacidade-computacional-agentes-ums.md); [DOM-20 — economia, UMS e PoUW](temas/economia-ums-mwn-pouw-liquidez-distribuida.md); SCP OR-COOP-UMS-001 (documento 75, v1).
+
+### DEC-BCE-013 — Adotar fonte canônica única e referências cruzadas hipertextuais
+
+- **Data:** 2026-11-27
+- **Estado:** ADOTADA
+- **Decisão:** Para criação e atualização de artefatos BCE/MeshWave, manter o conteúdo completo de cada assunto em sua fonte canônica. Documentos relacionados devem conter apenas contexto mínimo e hiperlinks Markdown diretos para o documento ou seção canônica. Não duplicar definições, explicações, requisitos, tabelas ou decisões.
+- **Aplicação:** antes de criar um artefato, pesquisar o índice e o corpus existente; atualizar a fonte canônica quando o assunto já estiver coberto; criar novo DOM somente quando houver escopo coeso e conteúdo próprio. Índice, controle mestre, registro de decisões e checkpoints devem apontar para as fontes canônicas, não reproduzir seu conteúdo.
+- **Histórico:** preservar versões e registros necessários à auditoria; substituir duplicações operacionais por referências sem apagar a proveniência.
+- **Referências normativas:** [BCE/ORIENTACAO_AGENTES.md §7.1](ORIENTACAO_AGENTES.md#71-regra-de-fonte-canonica-e-hipertexto-documental); [template de temas](temas/_TEMPLATE.md#15-relações-com-outros-documentos); [skill de curadoria](../skills/meshwave-bce-curation/SKILL.md).
