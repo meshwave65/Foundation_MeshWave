@@ -392,13 +392,11 @@ Critérios: registrar a referência exatamente sem reproduzir credenciais ou dad
 - **Continuidade:** esta atualização não altera o item principal F3.3-COORD-008 nem a fila/locks da curadoria profunda.
 
 
-## Atualização lateral — DOM-24: cooperativa de capacidade computacional e agentes (2026-11-27)
+## Atualização lateral — DOM-24 (2026-11-27)
 
-- **Documento criado:** BCE/temas/cooperativa-capacidade-computacional-agentes-ums.md, DOM-24 v0.1; conceito registrado, sem validação contratual ou implementação confirmada. O DOM-20 recebeu a seção 18 como clarificação histórica da natureza interna da UMS e referência cruzada ao DOM-24.
-- **Conteúdo:** contribuição voluntária de capacidade/agentes de IA; benefício recíproco da capacidade coletiva; exemplo de milhares de contas com cerca de 300 créditos/dia explicitamente hipotético; UMS como unidade interna sem valor financeiro inerente e sem venda/transferência direta entre participantes; conversão prévia em ativo cripto para circulação/negociação; governança administrativa aventada como hipótese; riscos de termos dos fornecedores, segurança, privacidade, mensuração PoUW e retirada.
-- **Consulta RFB:** processo 10265.426240/2025-40, protocolado em 09/10/2025 segundo relato do responsável; Termo de Preparo em fevereiro de 2026 segundo relato; resposta final não confirmada. Não caracterizar como decisão favorável ou certificação.
-- **Registro operacional relacionado:** SCP-TASK-000007 / PoUW-01 e OR-COOP-UMS-001, documento 75, v1, publicado no SCP. A BCE e o SCP mantêm registros complementares e separados.
-- **Arquivos desta atualização:** DOM-24; BCE/INDICE_CURATORIAL.md; BCE/REGISTRO_DECISOES.md (DEC-BCE-012); checkpoint BCE/sessoes/2026-11-27_dom24-cooperativa-capacidade-computacional.md; este controle.
-- **Limites da curadoria:** atualização lateral baseada nos esclarecimentos do responsável e no OR do SCP; nenhuma fonte bruta em KNOWLEDGE/ foi aberta; nenhum termo de fornecedor foi auditado; nenhuma implementação foi inspecionada. DOM-20 permanece relacionado e precisa de reconciliação explícita futura quanto à terminologia e ao fluxo de conversão.
-- **Commits publicados:** DOM-24 e099d1a8a9b763b2b702cc17251407e02513e757; índice 24450be58c7088c802bf5625bc7371f12507ec36; decisão 007e09ad2fa944434f8dd2a115c50c7a0221f14a. Checkpoint publicado em a14633f842f33ccbe77eba2d16e94ad3e411e471.
-- **Continuidade principal:** F3.3-COORD-008 permanece bloqueada após reconciliação sem próximo caminho físico único. Esta atualização documental lateral não altera a fila, não cria claim e não autoriza leitura de KNOWLEDGE/.
+- **Fonte canônica:** [DOM-24 — Cooperativa de capacidade computacional e contribuição voluntária de agentes](temas/cooperativa-capacidade-computacional-agentes-ums.md).
+- **Referências relacionadas:** [DOM-20 §18 — UMS e cooperativa](temas/economia-ums-mwn-pouw-liquidez-distribuida.md#18-cooperativa-de-capacidade-computacional-e-natureza-interna-da-ums-2026-11-27); [DOM-22 — economia por MeshWalker](temas/economia-centrada-no-meshwalker-carteira-unificada.md#8-documentos-relacionados); [DOM-23 — aferição de serviços](temas/afericao-servicos-qualidade-e-privacidade.md#10-estado-e-próximos-passos).
+- **Registro operacional:** SCP-TASK-000007 / PoUW-01; OR-COOP-UMS-001, documento 75, v1. A BCE e o SCP mantêm registros complementares.
+- **Checkpoint:** [sessão DOM-24 de 2026-11-27](sessoes/2026-11-27_dom24-cooperativa-capacidade-computacional.md).
+- **Regra documental:** [DEC-BCE-013 — fonte canônica única e referências cruzadas](REGISTRO_DECISOES.md#dec-bce-013-adotar-fonte-canônica-única-e-referências-cruzadas-hipertextuais).
+- **Continuidade principal:** F3.3-COORD-008 permanece bloqueada após reconciliação sem próximo caminho físico único. Esta atualização lateral não altera a fila nem autoriza leitura de KNOWLEDGE/.
