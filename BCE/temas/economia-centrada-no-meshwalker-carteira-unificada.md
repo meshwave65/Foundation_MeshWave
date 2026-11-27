@@ -55,7 +55,7 @@ A associação de titularidade, por si só, não torna uma atividade útil nem r
 ## 5. Segregação de UMS e movimentações entre carteiras
 
 A carteira unificada não revoga a regra de segregação de UMS:
-- transferências diretas de UMS entre carteiras comuns de MeshWalkers são proibidas;
+- a natureza interna da UMS e a vedação de venda ou transferência direta entre participantes seguem a regra canônica do [DOM-24, seção 5 — Natureza e limites da UMS](cooperativa-capacidade-computacional-agentes-ums.md#5-natureza-e-limites-da-ums-no-modelo-cooperativo);
 - somente carteiras institucionais/administrativas do sistema, explicitamente autorizadas, podem enviar ou receber UMS em operações permitidas;
 - correções, estornos ou modificações de operações devem seguir fluxo administrativo autorizado e auditável, sem migrar UMS diretamente entre carteiras comuns;
 - a Genesis é uma carteira institucional do sistema; futuras carteiras institucionais devem ser cadastradas e autorizadas como tais, sem exceções genéricas baseadas apenas em nome ou tipo de operação.
