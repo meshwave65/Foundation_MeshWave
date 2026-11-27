@@ -7,7 +7,7 @@
 | Campo | Valor |
 |---|---|
 | Status global | `EM_ANDAMENTO — FASE 3: Curadoria profunda` |
-| Última atualização | 2026-11-26 — atualização lateral DOM-17 v0.1.0 e checkpoint; fila principal F3.3 preservada, ainda bloqueada aguardando caminho físico único. |
+| Última atualização | 2026-11-27 — atualização lateral DOM-24 sobre cooperativa de capacidade computacional, contribuição voluntária de agentes e natureza interna da UMS; fila principal F3.3 preservada, ainda bloqueada aguardando caminho físico único. |
 | Atualização lateral 2026-11-08 | DOM-23 — módulo conceitual de aferição opcional de serviços, qualidade e privacidade por adesão documentado e indexado; integração ao roadmap e PoUW/UMS; nenhuma fonte bruta aberta e fila F3.3 preservada. Checkpoint `BCE/sessoes/2026-11-08_dom23-afericao-servicos.md`. |
 | Publicação de F2.6-07 | Os cinco commits da unidade (`c55e31d`, `b3c8864`, `8870caa`, `290895f`, `629125a`) foram publicados em `main`; a correção factual posterior foi registrada em `f8649ba`. |
 | Publicação de F2.6-08 | DOM-06 `74eba5f`; índice `14e2768` (cobertura) e `aec133d` (linha principal DOM-06); checkpoint de fechamento `6f99eaa`, todos publicados em `main`. |
@@ -390,3 +390,15 @@ Critérios: registrar a referência exatamente sem reproduzir credenciais ou dad
 - **Commits:** DOM-17 `e94de26818562d16f0eefdb175733cb80bbb65b9`; índice `e40d6d43f51f138fce8f74a2c1f7b8a7bb147fe6`; checkpoint `3844429a7e9bbef08dc0c43a7ef97ffaa8594cae`; este controle mestre será commitado em unidade própria.
 - **Próximo passo lateral:** pesquisar o corpus BCE e inventário `KNOWLEDGE/` por Jardim do Éden, SimCity, MIA-D, jogos, comunidades, aquisição, parcerias e distribuição; identificar caminhos físicos antes de abrir fontes.
 - **Continuidade:** esta atualização não altera o item principal F3.3-COORD-008 nem a fila/locks da curadoria profunda.
+
+
+## Atualização lateral — DOM-24: cooperativa de capacidade computacional e agentes (2026-11-27)
+
+- **Documento criado:** BCE/temas/cooperativa-capacidade-computacional-agentes-ums.md, DOM-24 v0.1; conceito registrado, sem validação contratual ou implementação confirmada.
+- **Conteúdo:** contribuição voluntária de capacidade/agentes de IA; benefício recíproco da capacidade coletiva; exemplo de milhares de contas com cerca de 300 créditos/dia explicitamente hipotético; UMS como unidade interna sem valor financeiro inerente e sem venda/transferência direta entre participantes; conversão prévia em ativo cripto para circulação/negociação; governança administrativa aventada como hipótese; riscos de termos dos fornecedores, segurança, privacidade, mensuração PoUW e retirada.
+- **Consulta RFB:** processo 10265.426240/2025-40, protocolado em 09/10/2025 segundo relato do responsável; Termo de Preparo em fevereiro de 2026 segundo relato; resposta final não confirmada. Não caracterizar como decisão favorável ou certificação.
+- **Registro operacional relacionado:** SCP-TASK-000007 / PoUW-01 e OR-COOP-UMS-001, documento 75, v1, publicado no SCP. A BCE e o SCP mantêm registros complementares e separados.
+- **Arquivos desta atualização:** DOM-24; BCE/INDICE_CURATORIAL.md; BCE/REGISTRO_DECISOES.md (DEC-BCE-012); checkpoint BCE/sessoes/2026-11-27_dom24-cooperativa-capacidade-computacional.md; este controle.
+- **Limites da curadoria:** atualização lateral baseada nos esclarecimentos do responsável e no OR do SCP; nenhuma fonte bruta em KNOWLEDGE/ foi aberta; nenhum termo de fornecedor foi auditado; nenhuma implementação foi inspecionada. DOM-20 permanece relacionado e precisa de reconciliação explícita futura quanto à terminologia e ao fluxo de conversão.
+- **Commits publicados:** DOM-24 e099d1a8a9b763b2b702cc17251407e02513e757; índice 24450be58c7088c802bf5625bc7371f12507ec36; decisão 007e09ad2fa944434f8dd2a115c50c7a0221f14a. O checkpoint e este controle serão publicados em commits próprios.
+- **Continuidade principal:** F3.3-COORD-008 permanece bloqueada após reconciliação sem próximo caminho físico único. Esta atualização documental lateral não altera a fila, não cria claim e não autoriza leitura de KNOWLEDGE/.
