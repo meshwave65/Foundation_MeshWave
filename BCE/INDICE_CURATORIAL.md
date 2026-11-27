@@ -54,6 +54,7 @@ Este índice define a arquitetura documental da Base de Conhecimento Evolutivo. 
 | DOM-10 | `BCE/temas/android-dispositivos-e-compatibilidade.md` | Como Android, dispositivos obsoletos, Bluetooth e versões de bibliotecas entram no sistema? | erros de build Android, dispositivos antigos, compatibilidade de bibliotecas/APIs | PENDENTE |
 
 | DOM-23 | `BCE/temas/afericao-servicos-qualidade-e-privacidade.md` | Como aferição opcional, protocolos abertos, homologação, governança e privacidade por adesão podem apoiar a verificação de serviços? | Definição conceitual do responsável em 2026-11-08; relacionada a DOM-02, DOM-14, DOM-15 e DOM-20 | CONCEITO REGISTRADO PARA ROADMAP — requisitos, comissão, homologação, aferidores e implementação pendentes |
+| DOM-24 | `BCE/temas/cooperativa-capacidade-computacional-agentes-ums.md` | Como participantes podem contribuir voluntariamente com agentes/capacidade de IA e usufruir da capacidade coletiva, respeitando a natureza interna da UMS e as regras dos fornecedores? | Esclarecimentos do responsável em 2026-11-27; OR-COOP-UMS-001 (SCP documento 75, v1); relação com DOM-20/22/23 | CONCEITO REGISTRADO — termos dos fornecedores, governança, mensuração PoUW, mecanismo técnico e classificação jurídica/tributária pendentes |
 
 ### P2 — Implementação, operações e segurança
 
