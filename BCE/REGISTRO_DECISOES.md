@@ -141,3 +141,13 @@ O registro é conceitual; não confirma a implementação do DID único, agrega�
 - **Método:** separar decisões explícitas, fatos observados, propostas, hipóteses, implementações confirmadas e pendências; criar commits verificáveis; declarar o que não foi persistido/publicado.
 - **Limites:** não criar missão artificial para registrar conhecimento; checkpoint lateral não altera a fila de curadoria nem substitui artefatos operacionais de outros pipelines. Preservar separação entre BCE e SCP e não misturar estados, locks, artefatos ou commits.
 - **Referências:** `BCE/ORIENTACAO_AGENTES.md` §3.3; `BCE/sessoes/2026-11-24_sofia-scp-execucao-oportunista-e-continuidade.md`; `BCE/temas/sofia-agentes-missoes-e-oraculo.md` §18.
+
+
+### DEC-BCE-012 — Registrar a cooperativa de capacidade computacional e a natureza interna da UMS
+
+- **Data:** 2026-11-27
+- **Estado:** ADOTADA — registro conceitual; validações externas e implementação pendentes.
+- **Decisão:** Registrar em documento temático próprio (DOM-24) o modelo de contribuição voluntária de agentes/capacidade computacional, benefício recíproco pela capacidade coletiva e os esclarecimentos de que UMS é unidade interna da MeshWave, não pode ser vendida nem transferida diretamente entre participantes e somente ingressa em forma transferível/negociável após conversão no ativo cripto previsto pelo protocolo.
+- **Motivo:** preservar o conceito discutido e evitar que a cooperação seja descrita incorretamente como venda direta de contas, venda de capacidade por dinheiro ou transferência direta de UMS. Distinguir a caracterização econômica pretendida da classificação jurídica, contratual e tributária, que depende de análise própria.
+- **Limites:** não confirma que fornecedores de IA autorizem agregação ou compartilhamento de capacidade; não aprova compartilhamento de credenciais; não define ticker, taxa ou liquidez do ativo cripto; não constitui parecer jurídico/tributário nem comprova implementação. A hipótese de milhares de contas com cerca de 300 créditos diários é apenas ilustrativa. A consulta RFB 10265.426240/2025-40 foi relatada como protocolada em 09/10/2025 e com Termo de Preparo em fevereiro de 2026; decisão final não confirmada.
+- **Referências:** DOM-24; DOM-20; DOM-22; SCP SCP-TASK-000007 / PoUW-01; OR-COOP-UMS-001 (SCP documento 75, v1).
