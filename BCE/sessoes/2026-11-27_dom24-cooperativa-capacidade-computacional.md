@@ -35,17 +35,22 @@ O registro foi relacionado à missão SCP-TASK-000007 / PoUW-01 e ao OR-COOP-UMS
 | Artefato | Commit |
 |---|---|
 | DOM-24 | e099d1a8a9b763b2b702cc17251407e02513e757 |
+| Complemento histórico DOM-20 §18 | 3afad924a283c6086a76172b338b34eaa68b90e1 |
 | Índice curatorial | 24450be58c7088c802bf5625bc7371f12507ec36 |
 | DEC-BCE-012 | 007e09ad2fa944434f8dd2a115c50c7a0221f14a |
 | Controle mestre | 62ec9ed852f147c287632174303f67b5020b3fa7 |
 | Este checkpoint | a registrar após criação |
 | Atualização final do controle mestre | a registrar após checkpoint |
 
-## 5. Fontes e limites
+## 5. Complemento ao DOM-20
+
+O DOM-20 recebeu a seção 18, registrando a clarificação de 2026-11-27 sobre UMS como unidade interna, vedação de venda/transferência direta entre participantes e conversão prévia em ativo cripto para circulação. O texto preserva as seções históricas e referencia o DOM-24. Commit: 3afad924a283c6086a76172b338b34eaa68b90e1.
+
+## 6. Fontes e limites
 
 A atualização foi baseada nos esclarecimentos do responsável nesta sessão e no OR-COOP-UMS-001 do SCP, conforme registro de readback já realizado. Nenhum arquivo bruto em KNOWLEDGE/ foi aberto, nenhum termo de fornecedor foi examinado, nenhuma API externa foi consultada e nenhum código/ambiente foi inspecionado. Não se afirma conformidade de fornecedor, implementação ou decisão tributária favorável.
 
-## 6. Continuidade
+## 7. Continuidade
 
 - Atualizar o controle mestre após a publicação deste checkpoint.
 - A fila principal F3.3 permanece inalterada: F3.3-COORD-008 continua bloqueada aguardando seleção/aprovação formal de um único caminho físico.
