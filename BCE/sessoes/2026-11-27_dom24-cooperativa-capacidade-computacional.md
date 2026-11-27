@@ -14,17 +14,9 @@ O responsável esclareceu que o conceito de cooperativa de capacidade computacio
 - Identificador DOM-24, versão documental v0.1.
 - Estado: CONCEITO REGISTRADO; validações externas, especificações e implementação pendentes.
 
-## 2. Conhecimento registrado
+## 2. Fonte canônica
 
-- Participação voluntária para disponibilizar capacidade de agentes/serviços de IA à capacidade coletiva da MeshWave.
-- Benefício recíproco: participantes podem contribuir e usufruir da capacidade coletiva, segundo regras de alocação ainda não especificadas.
-- Exemplo de milhares de contas gratuitas com cerca de 300 créditos diários por conta é hipótese ilustrativa, não promessa nem capacidade verificada.
-- UMS é unidade interna para operar dentro da MeshWave; não possui valor financeiro inerente dentro da rede e não pode ser vendida nem transferida diretamente entre participantes.
-- Para ingressar em forma transferível/negociável, a UMS precisa primeiro ser convertida no ativo cripto previsto pelo protocolo; somente esse ativo resultante poderá ser transferido/negociado. Ticker, taxa e mecanismo exatos não foram presumidos.
-- A caracterização econômica pretendida é cooperação e benefício recíproco, não venda direta da conta ou venda direta de capacidade por dinheiro. A classificação jurídica/tributária não foi concluída.
-- Acesso administrativo amplo e aprovação de TRs foram registrados como hipótese de governança, ainda sem política aprovada.
-- Termos dos fornecedores de IA, consentimento, credenciais, privacidade, limites, mensuração PoUW e retirada são pendências críticas.
-- Consulta RFB 10265.426240/2025-40, protocolada em 09/10/2025 segundo relato; Termo de Preparo em fevereiro de 2026 segundo relato; resposta final não confirmada.
+O conteúdo temático completo, as decisões conceituais, os limites e as pendências estão mantidos em [DOM-24 — Cooperativa de capacidade computacional e contribuição voluntária de agentes](../temas/cooperativa-capacidade-computacional-agentes-ums.md). Este checkpoint não replica esse conteúdo; registra a origem da atualização e os artefatos afetados.
 
 ## 3. Relação com o SCP
 
@@ -37,14 +29,19 @@ O registro foi relacionado à missão SCP-TASK-000007 / PoUW-01 e ao OR-COOP-UMS
 | DOM-24 | e099d1a8a9b763b2b702cc17251407e02513e757 |
 | Complemento histórico DOM-20 §18 | 3afad924a283c6086a76172b338b34eaa68b90e1 |
 | Índice curatorial | 24450be58c7088c802bf5625bc7371f12507ec36 |
-| DEC-BCE-012 | 007e09ad2fa944434f8dd2a115c50c7a0221f14a |
-| Controle mestre | 62ec9ed852f147c287632174303f67b5020b3fa7 |
+| DEC-BCE-012 / DEC-BCE-013 | 79ee18c6f23fde69e01ee160c7d572b3993b6cd0 |
+| Regra documental em ORIENTACAO_AGENTES | 31bfea62fe618c80d51caf04799243372cb89601 |
+| Regra documental no template | 2c228efdf89d5f62ef580cb3882acb8fdf702179 |
+| Skill de curadoria | a4606bea17d118e955dd49a23d4c4dc1c1edb0e9 |
+| Referências DOM-22/DOM-23 | 40ce64eb0cd8e05cc0e7d01817a9005917dcc72f / 157d841010a9a9dcf4a46a29f3ae8f5bdd8ecc94 |
+| DOM-20 seção 18 substituída por link | 9c277dfdc048dff408380cb388ed01e4251e146 |
+| Controle mestre | 80c4ad0df6082afaa7339830eef6012d1679045d |
 | Este checkpoint | a registrar após criação |
 | Atualização final do controle mestre | a registrar após checkpoint |
 
-## 5. Complemento ao DOM-20
+## 5. Referência cruzada ao DOM-20
 
-O DOM-20 recebeu a seção 18, registrando a clarificação de 2026-11-27 sobre UMS como unidade interna, vedação de venda/transferência direta entre participantes e conversão prévia em ativo cripto para circulação. O texto preserva as seções históricas e referencia o DOM-24. Commit: 3afad924a283c6086a76172b338b34eaa68b90e1.
+O DOM-20 aponta para o assunto canônico no [DOM-24, seção 5 — Natureza e limites da UMS](../temas/cooperativa-capacidade-computacional-agentes-ums.md#5-natureza-e-limites-da-ums-no-modelo-cooperativo). A referência foi mantida no DOM-20 sem duplicar as definições.
 
 ## 6. Fontes e limites
 
@@ -52,8 +49,8 @@ A atualização foi baseada nos esclarecimentos do responsável nesta sessão e 
 
 ## 7. Continuidade
 
-- Atualizar o controle mestre após a publicação deste checkpoint.
+- Controle mestre atualizado após a consolidação das referências.
 - A fila principal F3.3 permanece inalterada: F3.3-COORD-008 continua bloqueada aguardando seleção/aprovação formal de um único caminho físico.
-- Em uma sessão futura, reconciliar DOM-24 com DOM-20 quanto à terminologia e ao fluxo UMS/ativo cripto, sem apagar o histórico.
+- DOM-20, DOM-22 e DOM-23 agora apontam para o DOM-24 nos pontos pertinentes; evitar reintroduzir conteúdo duplicado.
 - Antes de qualquer operação real, verificar os termos de cada fornecedor e definir segurança, consentimento, revogação e isolamento.
 
