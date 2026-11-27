@@ -393,6 +393,7 @@ Critérios: registrar a referência exatamente sem reproduzir credenciais ou dad
 
 
 
+- **Ajustes de referências cruzadas:** DOM-20 §18 (`9c277df`), DOM-22 (`40ce64e`, `8b9edc9`) e DOM-23 (`157d841`) apontam para o conteúdo canônico do DOM-24; detalhes permanecem concentrados no DOM-24.
 - **Regra documental vigente:** [DEC-BCE-013](REGISTRO_DECISOES.md#dec-bce-013-adotar-fonte-canônica-única-e-referências-cruzadas-hipertextuais), operacionalizada em [ORIENTACAO_AGENTES.md §7.1](ORIENTACAO_AGENTES.md#71-regra-de-fonte-canonica-e-hipertexto-documental), no [_TEMPLATE.md §15](temas/_TEMPLATE.md#15-relações-com-outros-documentos) e na [skill de curadoria](../skills/meshwave-bce-curation/SKILL.md).
 
 ## Atualização lateral — DOM-24 (2026-11-27)
