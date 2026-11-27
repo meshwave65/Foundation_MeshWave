@@ -22,7 +22,7 @@ Este índice define a arquitetura documental da Base de Conhecimento Evolutivo. 
 | GOV-01 | `BCE/ORIENTACAO_AGENTES.md` | Regras de operação, continuidade, evidências, persistência de sessões e commits; §3.3 adotado em 2026-11-24 | CONCLUÍDO |
 | GOV-02 | `BCE/CONTROLE_MESTRE.md` | Backlog, status, checkpoints e próximo passo | CONCLUÍDO |
 | GOV-03 | `BCE/INDICE_CURATORIAL.md` | Este mapa documental | EM_CURADORIA |
-| GOV-04 | `BCE/REGISTRO_DECISOES.md` | Log de decisões e justificativas; DEC-BCE-008/009 permanecem pendentes de validação; DEC-BCE-011 adotada em 2026-11-24 | CONCLUÍDO |
+| GOV-04 | `BCE/REGISTRO_DECISOES.md` | Log de decisões e justificativas; DEC-BCE-008/009 permanecem pendentes de validação; DEC-BCE-011 e DEC-BCE-013 adotadas em 2026-11-24 e 2026-11-27; DEC-BCE-013 estabelece fonte canônica única e referências cruzadas | CONCLUÍDO |
 | GOV-05 | `BCE/temas/_TEMPLATE.md` | Modelo padrão de documento curado | CONCLUÍDO |
 | GOV-06 | `BCE/fontes/INVENTARIO_FONTES.md` | Inventário técnico reproduzível de 273 conjuntos; não equivale a classificação semântica integral | CONCLUÍDO |
 | GOV-07 | `BCE/artefatos/INDICE_IMAGENS_E_DIAGRAMAS.md` | Relação entre imagens e conceitos | CONCLUÍDO |
