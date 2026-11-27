@@ -108,8 +108,11 @@ Priorizar as perguntas que impedem validação ou implementação. Cada lacuna d
 
 ## 15. Relações com outros documentos
 
-- `[DOM-XX]` — `[relação]`
-- `[GOV-XX]` — `[relação]`
+- Incluir somente referências necessárias, com links Markdown relativos que abram diretamente o documento e, quando útil, a seção específica.
+- Identificar em uma frase a relação/dependência; não reproduzir conteúdo, definições, requisitos ou decisões que tenham documento canônico próprio.
+- Antes de criar uma seção ou documento novo, pesquisar se o assunto já está coberto. Se estiver, atualizar a fonte canônica e acrescentar referência cruzada no documento relacionado; criar novo DOM somente quando houver domínio coeso e conteúdo próprio que justifique separação.
+- `[DOM-XX]` — `[relação objetiva]` — `[link relativo para documento/seção canônica]`
+- `[GOV-XX]` — `[relação objetiva]` — `[link relativo]`
 
 ## 16. Histórico de versões do documento
 
